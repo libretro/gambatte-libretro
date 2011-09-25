@@ -1,9 +1,11 @@
 #include <libsnes.hpp>
+#include "resamplerinfo.h"
 
 #define HAVE_STDINT_H
 #include <gambatte.h>
 
 #include <assert.h>
+#include <iostream>
 
 static snes_audio_sample_t audio_cb;
 static snes_video_refresh_t video_cb;
@@ -31,6 +33,7 @@ class SNESInput : public gambatte::InputGetter
    public:
       unsigned operator()()
       {
+         input_poll_cb();
          unsigned res = 0;
          for (unsigned i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
          {
@@ -41,13 +44,22 @@ class SNESInput : public gambatte::InputGetter
       }
 } static gb_input;
 
+//static Resampler resampler(35112 * 60.0, 32000.0);
+static Resampler *resampler;
 
 void snes_init()
 {
+   // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
    gb.setInputGetter(&gb_input);
+
+   resampler = ResamplerInfo::get(ResamplerInfo::num() - 1).create(35112 * 60.0, 32000.0, 2 * 2064);
 }
-void snes_term() {}
+
+void snes_term()
+{
+   delete resampler;
+}
 
 void snes_set_video_refresh(snes_video_refresh_t cb) { video_cb = cb; }
 void snes_set_audio_sample(snes_audio_sample_t cb) { audio_cb = cb; }
@@ -129,23 +141,36 @@ static void convert_frame(uint16_t *output, const uint32_t *input)
    }
 }
 
+static void output_audio(const int16_t *samples, unsigned frames)
+{
+   int16_t output[2 * 2064];
+   std::size_t len = resampler->resample(output, samples, frames);
+
+   for (unsigned i = 0; i < len; i++)
+   {
+      int16_t left  = output[2 * i + 0];
+      int16_t right = output[2 * i + 1];
+      audio_cb(left, right);
+   }
+}
+
 void snes_run()
 {
    union
    {
       uint32_t u32[2064 + 2064];
-      int16_t u16[2 * (2064 + 2064)];
+      int16_t i16[2 * (2064 + 2064)];
    } sound_buf;
    unsigned samples = 2064;
-
-   input_poll_cb();
 
    uint32_t video_buf[256 * 144];
    while (gb.runFor(video_buf, 256, sound_buf.u32, samples) == -1)
    {
-      // TODO: Output audio here.
+      output_audio(sound_buf.i16, samples);
       samples = 2064;
    }
+
+   output_audio(sound_buf.i16, samples);
 
    // libsnes uses fixed pitch of 2048 bytes on non-interlaced video.
    uint16_t output_video[1024 * 144];
