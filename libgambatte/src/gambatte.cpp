@@ -41,6 +41,8 @@ struct GB::Priv {
 	bool gbaCgbMode;
 	
 	Priv() : stateNo(1), gbaCgbMode(false) {}
+
+	void on_load_succeeded(unsigned flags);
 };
 	
 GB::GB() : p_(new Priv) {}
@@ -87,22 +89,37 @@ void GB::setSaveDir(const std::string &sdir) {
 	p_->cpu.setSaveDir(sdir);
 }
 
+void GB::Priv::on_load_succeeded(unsigned flags) {
+	SaveState state;
+	cpu.setStatePtrs(state);
+	setInitState(state, cpu.isCgb(), gbaCgbMode = flags & GBA_CGB);
+	cpu.loadState(state);
+	cpu.loadSavedata();
+
+	stateNo = 1;
+	cpu.setOsdElement(std::auto_ptr<OsdElement>());
+}
+
 bool GB::load(const std::string &romfile, const unsigned flags) {
 	if (p_->cpu.loaded())
 		p_->cpu.saveSavedata();
 	
 	const bool failed = p_->cpu.load(romfile, flags & FORCE_DMG);
 	
-	if (!failed) {
-		SaveState state;
-		p_->cpu.setStatePtrs(state);
-		setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode = flags & GBA_CGB);
-		p_->cpu.loadState(state);
-		p_->cpu.loadSavedata();
-		
-		p_->stateNo = 1;
-		p_->cpu.setOsdElement(std::auto_ptr<OsdElement>());
-	}
+	if (!failed)
+		p_->on_load_succeeded(flags);
+	
+	return failed;
+}
+
+bool GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
+	if (p_->cpu.loaded())
+		p_->cpu.saveSavedata();
+	
+	const bool failed = p_->cpu.load(romdata, romsize, flags & FORCE_DMG);
+	
+	if (!failed)
+		p_->on_load_succeeded(flags);
 	
 	return failed;
 }

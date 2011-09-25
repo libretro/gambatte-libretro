@@ -18,6 +18,8 @@ Free Software Foundation, Inc.,
 ***************************************************************************/
 
 #include <fstream>
+#include <vector>
+#include <stdint.h>
 
 namespace gambatte {
 
@@ -31,16 +33,27 @@ class File {
 
   void zip(const char *filename);
 
+  // Memory backed file.
+  struct
+  {
+	  bool active;
+	  std::vector<uint8_t> data;
+	  size_t size;
+	  size_t ptr;
+	  size_t count;
+  } mem;
+
   public:
   File(const char *filename);
+  File(const void *buffer, std::size_t size); // Memory backed file.
   ~File();
   void rewind();
   bool is_open();
   void close();
-  std::size_t size() const { return fsize; };
+  std::size_t size() const { if (mem.active) return mem.size; else return fsize; };
   void read(char *buffer, std::size_t amount);
-  std::size_t gcount() const { return count; }
-  bool fail() const { return stream.fail(); }
+  std::size_t gcount() const { if (mem.active) return mem.count; else return count; }
+  bool fail() const { if (mem.active) return false; else return stream.fail(); }
 };
 
 }

@@ -43,6 +43,8 @@ public:
 	  * @return true if failed to load ROM image.
 	  */
 	bool load(const std::string &romfile, unsigned flags = 0);
+
+   bool load(const void *romdata, unsigned size, unsigned flags = 0);
 	
 	/** Emulates until at least 'samples' stereo sound samples are produced in the supplied buffer,
 	  * or until a video frame has been drawn.

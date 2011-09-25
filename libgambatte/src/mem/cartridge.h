@@ -22,6 +22,7 @@
 #include "memptrs.h"
 #include "rtc.h"
 #include <string>
+#include "file/file.h"
 
 namespace gambatte {
 
@@ -41,6 +42,8 @@ class Cartridge {
 	
 	unsigned rambanks() const { return (memptrs.rambankdataend() - memptrs.rambankdata()) / 0x2000; }
 	unsigned rombanks() const { return (memptrs.romdataend()     - memptrs.romdata(0)   ) / 0x4000; }
+
+   bool loadROM(File &file, const std::string &romfile, const bool forceDmg);
 	
 public:
 	Cartridge();
@@ -74,6 +77,7 @@ public:
 	const std::string saveBasePath() const;
 	void setSaveDir(const std::string &dir);
 	bool loadROM(const std::string &romfile, bool forceDmg);
+	bool loadROM(const void *romdata, unsigned romsize, bool forceDmg);
 };
 
 }

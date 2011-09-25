@@ -18,6 +18,7 @@ Free Software Foundation, Inc.,
 ***************************************************************************/
 
 #include "file.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ namespace gambatte {
 
 File::File(const char *filename) : stream(filename, ios::in | ios::binary), is_zip(false), fsize(0), count(0)
 {
+  mem.active = false;
   if (stream)
   {
     stream.seekg(0, ios::end);
@@ -35,14 +37,32 @@ File::File(const char *filename) : stream(filename, ios::in | ios::binary), is_z
   }
 }
 
+File::File(const void *buffer, std::size_t size) : is_zip(false)
+{
+  mem.active = true;
+  mem.ptr = 0;
+  mem.size = size;
+  mem.data.reserve(size);
+  std::copy(reinterpret_cast<const uint8_t*>(buffer),
+      reinterpret_cast<const uint8_t*>(buffer) + size,
+      mem.data.begin());
+}
+
 File::~File()
 {
-  close();
+  if (!mem.active)
+  {
+    close();
+  }
 }
 
 void File::rewind()
 {
-  if (is_open())
+  if (mem.active)
+  {
+    mem.ptr = 0;
+  }
+  else if (is_open())
   {
     stream.seekg(0, ios::beg);
   }
@@ -50,6 +70,7 @@ void File::rewind()
 
 bool File::is_open()
 {
+  if (mem.active) return true;
   return(stream.is_open());
 }
 
@@ -63,14 +84,26 @@ void File::close()
 
 void File::read(char *buffer, size_t amount)
 {
-  if (is_open())
+  if (mem.active)
   {
-    stream.read(buffer, amount);
-    count = stream.gcount();
+    size_t max_read = std::min(amount, mem.size - mem.ptr);
+    std::copy(reinterpret_cast<const char*>(&mem.data[mem.ptr]),
+        reinterpret_cast<const char*>(&mem.data[mem.ptr + max_read]),
+        buffer);
+    mem.ptr += max_read;
+    mem.count = max_read;
   }
   else
   {
-    count = 0;
+    if (is_open())
+    {
+      stream.read(buffer, amount);
+      count = stream.gcount();
+    }
+    else
+    {
+      count = 0;
+    }
   }
 }
 

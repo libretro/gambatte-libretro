@@ -1,5 +1,5 @@
 
-TARGET := libgambatte.so
+TARGET := libgambatte.a
 
 GAMBATTE_SRC := src/bitmap_font.cpp \
 	src/cpu.cpp \
@@ -32,7 +32,8 @@ GAMBATTE_SRC := src/bitmap_font.cpp \
 
 GAMBATTE_OBJ := $(GAMBATTE_SRC:.cpp=.o)
 
-GAMBATTE_FLAGS := -O2 -fomit-frame-pointer -Wall -Wextra -fno-exceptions -fno-rtti -DHAVE_STDINT_H -fPIC -Isrc -Iinclude -I../common
+#GAMBATTE_FLAGS := -O2 -fomit-frame-pointer -Wall -Wextra -fno-exceptions -fno-rtti -DHAVE_STDINT_H -fPIC -Isrc -Iinclude -I../common
+GAMBATTE_FLAGS := -O0 -g -Wall -Wextra -fno-exceptions -fno-rtti -DHAVE_STDINT_H -fPIC -Isrc -Iinclude -I../common
 
 all: $(TARGET)
 
@@ -40,7 +41,7 @@ all: $(TARGET)
 	$(CXX) -c -o $@ $< $(CXXFLAGS) $(GAMBATTE_FLAGS)
 
 $(TARGET): $(GAMBATTE_OBJ)
-	$(CXX) -o $@ $(GAMBATTE_OBJ) -shared -fPIC -Wl,--no-undefined
+	$(AR) rcs $@ $(GAMBATTE_OBJ)
 
 clean:
 	rm -f $(TARGET)

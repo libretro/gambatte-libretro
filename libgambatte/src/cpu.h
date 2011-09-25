@@ -75,6 +75,7 @@ public:
 	}
 	
 	bool load(const std::string &romfile, bool forceDmg);
+	bool load(const void *romdata, unsigned romsize, bool forceDmg);
 	bool loaded() const { return memory.loaded(); }
 	
 	void setSoundBuffer(uint_least32_t *const buf) { memory.setSoundBuffer(buf); }

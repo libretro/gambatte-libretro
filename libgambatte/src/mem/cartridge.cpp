@@ -17,7 +17,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "cartridge.h"
-#include "file/file.h"
 #include "../savestate.h"
 #include <cassert>
 #include <cstdio>
@@ -269,12 +268,21 @@ static unsigned pow2ceil(unsigned n) {
 	return n;
 }
 
+bool Cartridge::loadROM(const void *romdata, unsigned romsize, const bool forceDmg) {
+	File rom(romdata, romsize);
+	return loadROM(rom, "foogame.gbc", forceDmg);
+}
+
 bool Cartridge::loadROM(const std::string &romfile, const bool forceDmg) {
 	File rom(romfile.c_str());
-
 	if (!rom.is_open()) {
-		return 1;
+		return true;
 	}
+
+	return loadROM(rom, romfile, forceDmg);
+}
+
+bool Cartridge::loadROM(File &rom, const std::string &romfile, const bool forceDmg) {
 	
 	unsigned rambanks = 1;
 	unsigned rombanks = 2;

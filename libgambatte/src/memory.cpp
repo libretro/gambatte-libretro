@@ -974,6 +974,16 @@ bool Memory::loadROM(const std::string &romfile, const bool forceDmg) {
 	return false;
 }
 
+bool Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg) {
+	if (cart.loadROM(romdata, romsize, forceDmg))
+		return true;
+
+	sound.init(cart.isCgb());
+	display.reset(ioamhram, cart.isCgb());
+
+	return false;
+}
+
 unsigned Memory::fillSoundBuffer(const unsigned long cycleCounter) {
 	sound.generate_samples(cycleCounter, isDoubleSpeed());
 	return sound.fillBuffer();

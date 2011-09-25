@@ -129,6 +129,7 @@ public:
 	unsigned long resetCounters(unsigned long cycleCounter);
 
 	bool loadROM(const std::string &romfile, bool forceDmg);
+	bool loadROM(const void *romdata, unsigned romsize, bool forceDmg);
 	void setSaveDir(const std::string &dir) { cart.setSaveDir(dir); }
 
 	void setInputGetter(InputGetter *getInput) {
