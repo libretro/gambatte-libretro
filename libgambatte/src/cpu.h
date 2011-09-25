@@ -53,6 +53,8 @@ public:
 	
 	void loadSavedata() { memory.loadSavedata(); }
 	void saveSavedata() { memory.saveSavedata(); }
+   void *savedata_ptr() { return memory.savedata_ptr(); }
+   unsigned savedata_size() { return memory.savedata_size(); }
 	
 	void setVideoBuffer(uint_least32_t *const videoBuf, const int pitch) {
 		memory.setVideoBuffer(videoBuf, pitch);

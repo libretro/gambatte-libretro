@@ -11,8 +11,11 @@ all: $(TARGET)
 %.o: %.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS) $(LIBSNES_FLAGS)
 
-$(TARGET): $(LIBSNES_OBJ)
+$(TARGET): $(LIBSNES_OBJ) ../libgambatte.a
 	$(CXX) -o $@ $(LIBSNES_OBJ) -shared ../libgambatte.a -Wl,--no-undefined
+
+../libgambatte.a:
+	$(MAKE) -C ../
 
 clean:
 	rm -f $(TARGET) $(LIBSNES_OBJ)

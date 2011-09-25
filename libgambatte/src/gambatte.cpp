@@ -100,6 +100,9 @@ void GB::Priv::on_load_succeeded(unsigned flags) {
 	cpu.setOsdElement(std::auto_ptr<OsdElement>());
 }
 
+void *GB::savedata_ptr() { return p_->cpu.savedata_ptr(); }
+unsigned GB::savedata_size() { return p_->cpu.savedata_size(); }
+
 bool GB::load(const std::string &romfile, const unsigned flags) {
 	if (p_->cpu.loaded())
 		p_->cpu.saveSavedata();

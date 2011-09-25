@@ -85,6 +85,9 @@ public:
 	
 	/** Sets the directory used for storing save data. The default is the same directory as the ROM Image file. */
 	void setSaveDir(const std::string &sdir);
+
+   void *savedata_ptr();
+   unsigned savedata_size();
 	
 	/** Returns true if the currently loaded ROM image is treated as having CGB support. */
 	bool isCgb() const;

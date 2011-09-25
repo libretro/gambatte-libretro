@@ -80,6 +80,8 @@ public:
 	void loadState(const SaveState &state/*, unsigned long oldCc*/);
 	void loadSavedata() { cart.loadSavedata(); }
 	void saveSavedata() { cart.saveSavedata(); }
+   void *savedata_ptr() { return cart.savedata_ptr(); }
+   unsigned savedata_size() { return cart.savedata_size(); }
 	const std::string saveBasePath() const { return cart.saveBasePath(); }
 	
 	void setOsdElement(std::auto_ptr<OsdElement> osdElement) {

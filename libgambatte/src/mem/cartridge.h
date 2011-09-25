@@ -78,6 +78,9 @@ public:
 	void setSaveDir(const std::string &dir);
 	bool loadROM(const std::string &romfile, bool forceDmg);
 	bool loadROM(const void *romdata, unsigned romsize, bool forceDmg);
+
+   void *savedata_ptr() { return memptrs.rambankdata(); }
+   unsigned savedata_size() { return memptrs.rambankdataend() - memptrs.rambankdata(); }
 };
 
 }
