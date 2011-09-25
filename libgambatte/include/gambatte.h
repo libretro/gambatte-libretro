@@ -117,7 +117,7 @@ public:
 	/** Loads emulator state from the file given by 'filepath'.
 	  */
 	void loadState(const std::string &filepath);
-	
+
 	/** Selects which state slot to save state to or load state from.
 	  * There are 10 such slots, numbered from 0 to 9 (periodically extended for all n).
 	  */
