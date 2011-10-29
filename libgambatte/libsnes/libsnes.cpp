@@ -47,6 +47,9 @@ class SNESInput : public gambatte::InputGetter
 //static Resampler resampler(35112 * 60.0, 32000.0);
 static Resampler *resampler;
 
+// SSNES extension.
+static snes_environment_t environ_cb;
+void snes_set_environment(snes_environment_t cb) { environ_cb = cb; }
 void snes_init()
 {
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
@@ -54,6 +57,12 @@ void snes_init()
    gb.setInputGetter(&gb_input);
 
    resampler = ResamplerInfo::get(ResamplerInfo::num() - 1).create(35112 * 60.0, 32000.0, 2 * 2064);
+
+   if (environ_cb)
+   {
+      snes_geometry geom = { 160, 144, 160, 144 };
+      environ_cb(SNES_ENVIRONMENT_SET_GEOMETRY, &geom);
+   }
 }
 
 void snes_term()
