@@ -44,7 +44,6 @@ class SNESInput : public gambatte::InputGetter
       }
 } static gb_input;
 
-//static Resampler resampler(35112 * 60.0, 32000.0);
 static Resampler *resampler;
 
 // SSNES extension.
@@ -84,7 +83,7 @@ void snes_reset() { gb.reset(); }
 // Über inefficient. TODO: Hack libgambatte to use raw buffers.
 unsigned snes_serialize_size()
 {
-   const char *tmp = tmpnam(NULL);
+   const char *tmp = "gambatte_tmp_state__.state";
    gb.saveState(0, 0, tmp);
 
    FILE *file = fopen(tmp, "rb");
@@ -99,9 +98,10 @@ unsigned snes_serialize_size()
    return len;
 }
 
+// Gambatte has no good way to do this. :(
 bool snes_serialize(uint8_t *data, unsigned size)
 {
-   const char *tmp = tmpnam(NULL);
+   const char *tmp = "gambatte_tmp_state__.state";
    gb.saveState(0, 0, tmp);
 
    FILE *file = fopen(tmp, "rb");
@@ -118,7 +118,7 @@ bool snes_serialize(uint8_t *data, unsigned size)
 
 bool snes_unserialize(const uint8_t *data, unsigned size)
 {
-   const char *tmp = tmpnam(NULL);
+   const char *tmp = "gambatte_tmp_state__.state";
 
    FILE *file = fopen(tmp, "wb");
    if (!file)
