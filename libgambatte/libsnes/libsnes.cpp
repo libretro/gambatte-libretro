@@ -88,59 +88,35 @@ void snes_set_cartridge_basename(const char *) {}
 void snes_power() { gb.reset(); }
 void snes_reset() { gb.reset(); }
 
-// Über inefficient. TODO: Hack libgambatte to use raw buffers.
+static unsigned serialize_size = 0;
 unsigned snes_serialize_size()
 {
-   const char *tmp = "gambatte_tmp_state__.state";
-   gb.saveState(0, 0, tmp);
-
-   FILE *file = fopen(tmp, "rb");
-   if (!file)
-      return 0;
-
-   fseek(file, 0, SEEK_END);
-   unsigned len = ftell(file);
-   fclose(file);
-   remove(tmp);
-
-   return len;
+   return gb.stateSize();
 }
 
-// Gambatte has no good way to do this. :(
 bool snes_serialize(uint8_t *data, unsigned size)
 {
-   const char *tmp = "gambatte_tmp_state__.state";
-   gb.saveState(0, 0, tmp);
+   if (serialize_size == 0)
+      serialize_size = snes_serialize_size();
 
-   FILE *file = fopen(tmp, "rb");
-   if (!file)
+   if (size != serialize_size)
       return false;
 
-   fread(data, 1, size, file);
-   fclose(file);
-
-   remove(tmp);
-
+   gb.saveState(data);
    return true;
 }
 
 bool snes_unserialize(const uint8_t *data, unsigned size)
 {
-   const char *tmp = "gambatte_tmp_state__.state";
+   if (serialize_size == 0)
+      serialize_size = snes_serialize_size();
 
-   FILE *file = fopen(tmp, "wb");
-   if (!file)
+   if (size != serialize_size)
       return false;
 
-   fwrite(data, 1, size, file);
-   fclose(file);
-
-   gb.loadState(tmp);
-   remove(tmp);
-
+   gb.loadState(data);
    return true;
 }
-////
 
 void snes_cheat_reset() {}
 void snes_cheat_set(unsigned, bool, const char *) {}

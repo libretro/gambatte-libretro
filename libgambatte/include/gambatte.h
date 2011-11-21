@@ -36,14 +36,6 @@ public:
 		GBA_CGB   = 2  /**< Use GBA intial CPU register values when in CGB mode. */
 	};
 	
-	/** Load ROM image.
-	  *
-	  * @param romfile  Path to rom image file. Typically a .gbc, .gb, or .zip-file (if zip-support is compiled in).
-	  * @param flags    ORed combination of LoadFlags.
-	  * @return true if failed to load ROM image.
-	  */
-	bool load(const std::string &romfile, unsigned flags = 0);
-
    bool load(const void *romdata, unsigned size, unsigned flags = 0);
 	
 	/** Emulates until at least 'samples' stereo sound samples are produced in the supplied buffer,
@@ -95,37 +87,10 @@ public:
 	/** Returns true if a ROM image is loaded. */
 	bool isLoaded() const;
 	
-	/** Saves emulator state to the state slot selected with selectState().
-	  * The data will be stored in the directory given by setSaveDir().
-	  *
-	  * @param videoBuf 160x144 RGB32 (native endian) video frame buffer or 0. Used for storing a thumbnail.
-	  * @param pitch distance in number of pixels (not bytes) from the start of one line to the next in videoBuf.
-	  */
-	void saveState(const gambatte::uint_least32_t *videoBuf, int pitch);
-	
-	/** Loads emulator state from the state slot selected with selectState().
-	  */
-	void loadState();
-	
-	/** Saves emulator state to the file given by 'filepath'.
-	  *
-	  * @param videoBuf 160x144 RGB32 (native endian) video frame buffer or 0. Used for storing a thumbnail.
-	  * @param pitch distance in number of pixels (not bytes) from the start of one line to the next in videoBuf.
-	  */
-	void saveState(const gambatte::uint_least32_t *videoBuf, int pitch, const std::string &filepath);
-	
-	/** Loads emulator state from the file given by 'filepath'.
-	  */
-	void loadState(const std::string &filepath);
+   void saveState(void *data);
+   void loadState(const void *data);
+   size_t stateSize() const;
 
-	/** Selects which state slot to save state to or load state from.
-	  * There are 10 such slots, numbered from 0 to 9 (periodically extended for all n).
-	  */
-	void selectState(int n);
-	
-	/** Current state slot selected with selectState(). Returns a value between 0 and 9 inclusive. */
-	int currentState() const;
-	
 private:
 	struct Priv;
 	Priv *const p_;

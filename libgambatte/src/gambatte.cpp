@@ -24,16 +24,6 @@
 #include "state_osd_elements.h"
 #include <sstream>
 
-static const std::string itos(const int i) {
-	std::stringstream ss;
-	ss << i;
-	return ss.str();
-}
-
-static const std::string statePath(const std::string &basePath, const int stateNo) {
-	return basePath + "_" + itos(stateNo) + ".gqs";
-}
-
 namespace gambatte {
 struct GB::Priv {
 	CPU cpu;
@@ -103,18 +93,6 @@ void GB::Priv::on_load_succeeded(unsigned flags) {
 void *GB::savedata_ptr() { return p_->cpu.savedata_ptr(); }
 unsigned GB::savedata_size() { return p_->cpu.savedata_size(); }
 
-bool GB::load(const std::string &romfile, const unsigned flags) {
-	if (p_->cpu.loaded())
-		p_->cpu.saveSavedata();
-	
-	const bool failed = p_->cpu.load(romfile, flags & FORCE_DMG);
-	
-	if (!failed)
-		p_->on_load_succeeded(flags);
-	
-	return failed;
-}
-
 bool GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
 	if (p_->cpu.loaded())
 		p_->cpu.saveSavedata();
@@ -139,53 +117,38 @@ void GB::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) 
 	p_->cpu.setDmgPaletteColor(palNum, colorNum, rgb32);
 }
 
-void GB::loadState(const std::string &filepath, const bool osdMessage) {
+void GB::loadState(const void *data) {
 	if (p_->cpu.loaded()) {
 		p_->cpu.saveSavedata();
 		
 		SaveState state;
 		p_->cpu.setStatePtrs(state);
 		
-		if (StateSaver::loadState(state, filepath)) {
+		if (StateSaver::loadState(state, data)) {
 			p_->cpu.loadState(state);
-			
-			if (osdMessage)
-				p_->cpu.setOsdElement(newStateLoadedOsdElement(p_->stateNo));
 		}
 	}
 }
 
-void GB::saveState(const gambatte::uint_least32_t *const videoBuf, const int pitch) {
-	if (p_->cpu.loaded()) {
-		saveState(videoBuf, pitch, statePath(p_->cpu.saveBasePath(), p_->stateNo));
-		p_->cpu.setOsdElement(newStateSavedOsdElement(p_->stateNo));
-	}
-}
-
-void GB::loadState() {
-	loadState(statePath(p_->cpu.saveBasePath(), p_->stateNo), true);
-}
-
-void GB::saveState(const gambatte::uint_least32_t *const videoBuf, const int pitch, const std::string &filepath) {
+void GB::saveState(void *data) {
 	if (p_->cpu.loaded()) {
 		SaveState state;
 		p_->cpu.setStatePtrs(state);
 		p_->cpu.saveState(state);
-		StateSaver::saveState(state, videoBuf, pitch, filepath);
+		StateSaver::saveState(state, data);
 	}
 }
 
-void GB::loadState(const std::string &filepath) {
-	loadState(filepath, false);
+size_t GB::stateSize() const {
+	if (p_->cpu.loaded()) {
+		SaveState state;
+		p_->cpu.setStatePtrs(state);
+		p_->cpu.saveState(state);
+		return StateSaver::stateSize(state);
+	} else {
+      return 0;
+   }
 }
 
-void GB::selectState(int n) {
-	n -= (n / 10) * 10;
-	p_->stateNo = n < 0 ? n + 10 : n;
-	
-	if (p_->cpu.loaded())
-		p_->cpu.setOsdElement(newSaveStateOsdElement(statePath(p_->cpu.saveBasePath(), p_->stateNo), p_->stateNo));
 }
 
-int GB::currentState() const { return p_->stateNo; }
-}

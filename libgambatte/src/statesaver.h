@@ -35,9 +35,9 @@ public:
 	enum { SS_WIDTH = 160 >> SS_SHIFT };
 	enum { SS_HEIGHT = 144 >> SS_SHIFT };
 	
-	static void saveState(const SaveState &state,
-			const uint_least32_t *videoBuf, int pitch, const std::string &filename);
-	static bool loadState(SaveState &state, const std::string &filename);
+   static void saveState(const SaveState &state, void *data);
+   static bool loadState(SaveState &state, const void *data);
+   static size_t stateSize(const SaveState &state);
 };
 
 }
