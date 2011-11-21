@@ -22,24 +22,10 @@ Free Software Foundation, Inc.,
 
 using namespace std;
 
-static const unsigned int MAX_FILE_NAME = 512;
-
 namespace gambatte {
 
-File::File(const char *filename) : stream(filename, ios::in | ios::binary), is_zip(false), fsize(0), count(0)
+File::File(const void *buffer, std::size_t size)
 {
-  mem.active = false;
-  if (stream)
-  {
-    stream.seekg(0, ios::end);
-    fsize = stream.tellg();
-    stream.seekg(0, ios::beg);
-  }
-}
-
-File::File(const void *buffer, std::size_t size) : is_zip(false)
-{
-  mem.active = true;
   mem.ptr = 0;
   mem.size = size;
   mem.data.reserve(size);
@@ -49,62 +35,29 @@ File::File(const void *buffer, std::size_t size) : is_zip(false)
 }
 
 File::~File()
-{
-  if (!mem.active)
-  {
-    close();
-  }
-}
+{}
 
 void File::rewind()
 {
-  if (mem.active)
-  {
-    mem.ptr = 0;
-  }
-  else if (is_open())
-  {
-    stream.seekg(0, ios::beg);
-  }
+   mem.ptr = 0;
 }
 
 bool File::is_open()
 {
-  if (mem.active) return true;
-  return(stream.is_open());
+  return true;
 }
 
 void File::close()
-{
-  if (is_open())
-  {
-    stream.close();
-  }
-}
+{}
 
 void File::read(char *buffer, size_t amount)
 {
-  if (mem.active)
-  {
-    size_t max_read = std::min(amount, mem.size - mem.ptr);
-    std::copy(reinterpret_cast<const char*>(&mem.data[mem.ptr]),
-        reinterpret_cast<const char*>(&mem.data[mem.ptr + max_read]),
-        buffer);
-    mem.ptr += max_read;
-    mem.count = max_read;
-  }
-  else
-  {
-    if (is_open())
-    {
-      stream.read(buffer, amount);
-      count = stream.gcount();
-    }
-    else
-    {
-      count = 0;
-    }
-  }
+   size_t max_read = std::min(amount, mem.size - mem.ptr);
+   std::copy(reinterpret_cast<const char*>(&mem.data[mem.ptr]),
+         reinterpret_cast<const char*>(&mem.data[mem.ptr + max_read]),
+         buffer);
+   mem.ptr += max_read;
+   mem.count = max_read;
 }
 
 }

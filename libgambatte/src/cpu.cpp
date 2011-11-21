@@ -53,10 +53,6 @@ long CPU::runFor(const unsigned long cycles) {
 	return csb;
 }
 
-bool CPU::load(const std::string &romfile, const bool forceDmg) {
-	return memory.loadROM(romfile, forceDmg);
-}
-
 bool CPU::load(const void *romfile, unsigned romsize, const bool forceDmg) {
 	return memory.loadROM(romfile, romsize, forceDmg);
 }

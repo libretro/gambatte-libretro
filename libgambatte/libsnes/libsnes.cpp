@@ -128,9 +128,6 @@ bool snes_load_cartridge_normal(
    if (gb.load(rom_data, rom_size))
       return false;
 
-   if (!gb.isLoaded())
-      return false;
-
    return true;
 }
 
@@ -162,6 +159,8 @@ uint8_t *snes_get_memory_data(unsigned id)
 {
    if (id == SNES_MEMORY_CARTRIDGE_RAM)
       return reinterpret_cast<uint8_t*>(gb.savedata_ptr());
+   if (id == SNES_MEMORY_CARTRIDGE_RTC)
+      return reinterpret_cast<uint8_t*>(gb.rtcdata_ptr());
 
    return 0;
 }
@@ -170,6 +169,8 @@ unsigned snes_get_memory_size(unsigned id)
 {
    if (id == SNES_MEMORY_CARTRIDGE_RAM)
       return gb.savedata_size();
+   if (id == SNES_MEMORY_CARTRIDGE_RTC)
+      return gb.rtcdata_size();
 
    return 0;
 }
@@ -198,6 +199,9 @@ static void convert_frame(uint16_t *output, const uint32_t *input)
 
 static void output_audio(const int16_t *samples, unsigned frames)
 {
+   if (!frames)
+      return;
+
    int16_t output[2 * 2064];
    std::size_t len = resampler->resample(output, samples, frames);
 

@@ -55,10 +55,10 @@ public:
 		return activeData;
 	}
 	
-	std::time_t getBaseTime() const {
+	std::time_t& getBaseTime() {
 		return baseTime;
 	}
-	
+
 	void setBaseTime(const std::time_t baseTime) {
 		this->baseTime = baseTime;
 // 		doLatch();

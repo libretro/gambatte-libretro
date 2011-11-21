@@ -56,14 +56,6 @@ void Cartridge::saveState(SaveState &state) const {
 	rtc.saveState(state);
 }
 
-static bool hasRtc(const unsigned headerByte0x147) {
-	switch (headerByte0x147) {
-	case 0x0F:
-	case 0x10: return true;
-	default: return false;
-	}
-}
-
 static Cartridgetype cartridgeType(const unsigned headerByte0x147) {
 	static const unsigned char typeLut[] = {
 		/* [0x00] = */ PLAIN,
@@ -105,7 +97,7 @@ static Cartridgetype cartridgeType(const unsigned headerByte0x147) {
 }
 
 void Cartridge::loadState(const SaveState &state) {
-	rtc.loadState(state, hasRtc(memptrs.romdata(0)[0x147]) ? state.mem.enableRam : false);
+	rtc.loadState(state, hasRtc() ? state.mem.enableRam : false);
 
 	rombank = state.mem.rombank & (rombanks() - 1);
 	rambank = state.mem.rambank & (rambanks() - 1);
@@ -125,7 +117,7 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 
 		enableRam = (data & 0x0F) == 0xA;
 
-		if (hasRtc(memptrs.romdata(0)[0x147]))
+		if (hasRtc())
 			rtc.setEnabled(enableRam);
 
 		memptrs.setRambank(enableRam, rtc.getActive(), rambank);
@@ -188,7 +180,7 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 			memptrs.setRombank(adjustedRombank(rombank, romtype));
 			return;
 		case MBC3:
-			if (hasRtc(memptrs.romdata(0)[0x147]))
+			if (hasRtc())
 				rtc.swapActive(data);
 
 			rambank = data & 0x03;
@@ -221,42 +213,6 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 	}
 }
 
-static const std::string stripExtension(const std::string &str) {
-	const std::string::size_type lastDot = str.find_last_of('.');
-	const std::string::size_type lastSlash = str.find_last_of('/');
-
-	if (lastDot != std::string::npos && (lastSlash == std::string::npos || lastSlash < lastDot))
-		return str.substr(0, lastDot);
-
-	return str;
-}
-
-static const std::string stripDir(const std::string &str) {
-	const std::string::size_type lastSlash = str.find_last_of('/');
-
-	if (lastSlash != std::string::npos)
-		return str.substr(lastSlash + 1);
-
-	return str;
-}
-
-const std::string Cartridge::saveBasePath() const {
-	return saveDir.empty() ? defaultSaveBasePath : saveDir + stripDir(defaultSaveBasePath);
-}
-
-void Cartridge::setSaveDir(const std::string &dir) {
-	saveDir = dir;
-
-	if (!saveDir.empty() && saveDir[saveDir.length() - 1] != '/')
-		saveDir += '/';
-}
-
-static void enforce8bit(unsigned char *data, unsigned long sz) {
-	if (static_cast<unsigned char>(0x100))
-		while (sz--)
-			*data++ &= 0xFF;
-}
-
 static unsigned pow2ceil(unsigned n) {
 	--n;
 	n |= n >> 1;
@@ -270,19 +226,10 @@ static unsigned pow2ceil(unsigned n) {
 
 bool Cartridge::loadROM(const void *romdata, unsigned romsize, const bool forceDmg) {
 	File rom(romdata, romsize);
-	return loadROM(rom, "foogame.gbc", forceDmg);
+	return loadROM(rom, forceDmg);
 }
 
-bool Cartridge::loadROM(const std::string &romfile, const bool forceDmg) {
-	File rom(romfile.c_str());
-	if (!rom.is_open()) {
-		return true;
-	}
-
-	return loadROM(rom, romfile, forceDmg);
-}
-
-bool Cartridge::loadROM(File &rom, const std::string &romfile, const bool forceDmg) {
+bool Cartridge::loadROM(File &rom, const bool forceDmg) {
 	
 	unsigned rambanks = 1;
 	unsigned rombanks = 2;
@@ -363,8 +310,6 @@ bool Cartridge::loadROM(File &rom, const std::string &romfile, const bool forceD
 			break;
 		}
 		
-		defaultSaveBasePath = stripExtension(romfile);
-
 		cgb = header[0x0143] >> 7 & (1 ^ forceDmg);
 		std::printf("cgb: %d\n", cgb);
 	}
@@ -380,75 +325,12 @@ bool Cartridge::loadROM(File &rom, const std::string &romfile, const bool forceD
 	rom.read(reinterpret_cast<char*>(memptrs.romdata(0)), (rom.size() / 0x4000) * 0x4000ul);
 	// In case rombanks isn't a power of 2, allocate a disabled area for invalid rombank addresses.
 	std::memset(memptrs.romdata(0) + (rom.size() / 0x4000) * 0x4000ul, 0xFF, (rombanks - rom.size() / 0x4000) * 0x4000ul);
-	enforce8bit(memptrs.romdata(0), rombanks * 0x4000ul);
 
-	if (rom.fail()) {
-		defaultSaveBasePath.clear(); // indicates no valid ROM loaded.
+	if (rom.fail())
 		return 1;
-	}
 
 	return 0;
 }
 
-static bool hasBattery(const char headerByte0x147) {
-	switch (headerByte0x147) {
-	case 0x03:
-	case 0x06:
-	case 0x09:
-	case 0x0F:
-	case 0x10:
-	case 0x13:
-	case 0x1B:
-	case 0x1E: return true;
-	default: return false;
-	}
 }
 
-void Cartridge::loadSavedata() {
-	const std::string &sbp = saveBasePath();
-
-	if (hasBattery(memptrs.romdata(0)[0x147])) {
-		std::ifstream file((sbp + ".sav").c_str(), std::ios::binary | std::ios::in);
-
-		if (file.is_open()) {
-			file.read(reinterpret_cast<char*>(memptrs.rambankdata()), memptrs.rambankdataend() - memptrs.rambankdata());
-			enforce8bit(memptrs.rambankdata(), memptrs.rambankdataend() - memptrs.rambankdata());
-		}
-	}
-
-	if (hasRtc(memptrs.romdata(0)[0x147])) {
-		std::ifstream file((sbp + ".rtc").c_str(), std::ios::binary | std::ios::in);
-
-		if (file.is_open()) {
-			unsigned long basetime = file.get() & 0xFF;
-
-			basetime = basetime << 8 | (file.get() & 0xFF);
-			basetime = basetime << 8 | (file.get() & 0xFF);
-			basetime = basetime << 8 | (file.get() & 0xFF);
-
-			rtc.setBaseTime(basetime);
-		}
-	}
-}
-
-void Cartridge::saveSavedata() {
-	const std::string &sbp = saveBasePath();
-
-	if (hasBattery(memptrs.romdata(0)[0x147])) {
-		std::ofstream file((sbp + ".sav").c_str(), std::ios::binary | std::ios::out);
-
-		file.write(reinterpret_cast<const char*>(memptrs.rambankdata()), memptrs.rambankdataend() - memptrs.rambankdata());
-	}
-
-	if (hasRtc(memptrs.romdata(0)[0x147])) {
-		std::ofstream file((sbp + ".rtc").c_str(), std::ios::binary | std::ios::out);
-		const unsigned long basetime = rtc.getBaseTime();
-
-		file.put(basetime >> 24 & 0xFF);
-		file.put(basetime >> 16 & 0xFF);
-		file.put(basetime >> 8 & 0xFF);
-		file.put(basetime & 0xFF);
-	}
-}
-
-}

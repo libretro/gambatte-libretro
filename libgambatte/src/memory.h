@@ -73,16 +73,13 @@ class Memory {
 public:
 	explicit Memory(const Interrupter &interrupter);
 	
-	bool loaded() const { return cart.loaded(); }
-
 	void setStatePtrs(SaveState &state);
 	unsigned long saveState(SaveState &state, unsigned long cc);
 	void loadState(const SaveState &state/*, unsigned long oldCc*/);
-	void loadSavedata() { cart.loadSavedata(); }
-	void saveSavedata() { cart.saveSavedata(); }
    void *savedata_ptr() { return cart.savedata_ptr(); }
    unsigned savedata_size() { return cart.savedata_size(); }
-	const std::string saveBasePath() const { return cart.saveBasePath(); }
+   void *rtcdata_ptr() { return cart.rtcdata_ptr(); }
+   unsigned rtcdata_size() { return cart.rtcdata_size(); }
 	
 	void setOsdElement(std::auto_ptr<OsdElement> osdElement) {
 		display.setOsdElement(osdElement);

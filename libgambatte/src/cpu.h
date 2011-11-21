@@ -51,10 +51,10 @@ public:
 	void saveState(SaveState &state);
 	void loadState(const SaveState &state);
 	
-	void loadSavedata() { memory.loadSavedata(); }
-	void saveSavedata() { memory.saveSavedata(); }
    void *savedata_ptr() { return memory.savedata_ptr(); }
    unsigned savedata_size() { return memory.savedata_size(); }
+   void *rtcdata_ptr() { return memory.rtcdata_ptr(); }
+   unsigned rtcdata_size() { return memory.rtcdata_size(); }
 	
 	void setVideoBuffer(uint_least32_t *const videoBuf, const int pitch) {
 		memory.setVideoBuffer(videoBuf, pitch);
@@ -68,17 +68,12 @@ public:
 		memory.setSaveDir(sdir);
 	}
 	
-	const std::string saveBasePath() const {
-		return memory.saveBasePath();
-	}
-	
 	void setOsdElement(std::auto_ptr<OsdElement> osdElement) {
 		memory.setOsdElement(osdElement);
 	}
 	
 	bool load(const std::string &romfile, bool forceDmg);
 	bool load(const void *romdata, unsigned romsize, bool forceDmg);
-	bool loaded() const { return memory.loaded(); }
 	
 	void setSoundBuffer(uint_least32_t *const buf) { memory.setSoundBuffer(buf); }
 	unsigned fillSoundBuffer() { return memory.fillSoundBuffer(cycleCounter_); }

@@ -32,9 +32,6 @@ class Cartridge {
 	MemPtrs memptrs;
 	Rtc rtc;
 	
-	std::string defaultSaveBasePath;
-	std::string saveDir;
-	
 	unsigned short rombank;
 	unsigned char rambank;
 	bool enableRam;
@@ -43,15 +40,35 @@ class Cartridge {
 	unsigned rambanks() const { return (memptrs.rambankdataend() - memptrs.rambankdata()) / 0x2000; }
 	unsigned rombanks() const { return (memptrs.romdataend()     - memptrs.romdata(0)   ) / 0x4000; }
 
-   bool loadROM(File &file, const std::string &romfile, const bool forceDmg);
+   bool loadROM(File &file, const bool forceDmg);
+
+   bool hasBattery() const {
+      switch (memptrs.romdata(0)[0x147]) {
+         case 0x03:
+         case 0x06:
+         case 0x09:
+         case 0x0F:
+         case 0x10:
+         case 0x13:
+         case 0x1B:
+         case 0x1E: return true;
+         default: return false;
+      }
+   }
+
+   bool hasRtc() const {
+      switch (memptrs.romdata(0)[0x147]) {
+         case 0x0F:
+         case 0x10: return true;
+         default: return false;
+      }
+   }
 	
 public:
 	Cartridge();
 	void setStatePtrs(SaveState &);
 	void saveState(SaveState &) const;
 	void loadState(const SaveState &);
-	
-	bool loaded() const { return !defaultSaveBasePath.empty(); }
 	
 	const unsigned char * rmem(unsigned area) const { return memptrs.rmem(area); }
 	unsigned char * wmem(unsigned area) const { return memptrs.wmem(area); }
@@ -72,15 +89,43 @@ public:
 	void rtcWrite(unsigned data) { rtc.write(data); }
 	unsigned char rtcRead() const { return *rtc.getActive(); }
 	
-	void loadSavedata();
-	void saveSavedata();
 	const std::string saveBasePath() const;
 	void setSaveDir(const std::string &dir);
-	bool loadROM(const std::string &romfile, bool forceDmg);
 	bool loadROM(const void *romdata, unsigned romsize, bool forceDmg);
 
-   void *savedata_ptr() { return memptrs.rambankdata(); }
-   unsigned savedata_size() { return memptrs.rambankdataend() - memptrs.rambankdata(); }
+   void *savedata_ptr()
+   {
+      // Check ROM header for battery.
+      if (hasBattery())
+         return memptrs.rambankdata();
+      else
+         return 0;
+   }
+
+   unsigned savedata_size()
+   {
+      if (hasBattery())
+         return memptrs.rambankdataend() - memptrs.rambankdata();
+      else
+         return 0;
+   }
+
+   // Not endian-safe at all, but hey.
+   void *rtcdata_ptr()
+   {
+      if (hasRtc())
+         return &rtc.getBaseTime();
+      else
+         return 0;
+   }
+
+   unsigned rtcdata_size()
+   { 
+      if (hasRtc())
+         return sizeof(rtc.getBaseTime());
+      else
+         return 0;
+   }
 };
 
 }

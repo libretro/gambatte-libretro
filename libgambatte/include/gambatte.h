@@ -80,6 +80,8 @@ public:
 
    void *savedata_ptr();
    unsigned savedata_size();
+   void *rtcdata_ptr();
+   unsigned rtcdata_size();
 	
 	/** Returns true if the currently loaded ROM image is treated as having CGB support. */
 	bool isCgb() const;

@@ -38,18 +38,13 @@ struct GB::Priv {
 GB::GB() : p_(new Priv) {}
 
 GB::~GB() {
-	if (p_->cpu.loaded())
-		p_->cpu.saveSavedata();
-	
 	delete p_;
 }
 
 long GB::runFor(gambatte::uint_least32_t *const videoBuf, const int pitch,
 			gambatte::uint_least32_t *const soundBuf, unsigned &samples) {
-	if (!p_->cpu.loaded()) {
-		samples = 0;
-		return -1;
-	}
+   samples = 0;
+   return -1;
 	
 	p_->cpu.setVideoBuffer(videoBuf, pitch);
 	p_->cpu.setSoundBuffer(soundBuf);
@@ -60,23 +55,14 @@ long GB::runFor(gambatte::uint_least32_t *const videoBuf, const int pitch,
 }
 
 void GB::reset() {
-	if (p_->cpu.loaded()) {
-		p_->cpu.saveSavedata();
-		
-		SaveState state;
-		p_->cpu.setStatePtrs(state);
-		setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
-		p_->cpu.loadState(state);
-		p_->cpu.loadSavedata();
-	}
+   SaveState state;
+   p_->cpu.setStatePtrs(state);
+   setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
+   p_->cpu.loadState(state);
 }
 
 void GB::setInputGetter(InputGetter *getInput) {
 	p_->cpu.setInputGetter(getInput);
-}
-
-void GB::setSaveDir(const std::string &sdir) {
-	p_->cpu.setSaveDir(sdir);
 }
 
 void GB::Priv::on_load_succeeded(unsigned flags) {
@@ -84,7 +70,6 @@ void GB::Priv::on_load_succeeded(unsigned flags) {
 	cpu.setStatePtrs(state);
 	setInitState(state, cpu.isCgb(), gbaCgbMode = flags & GBA_CGB);
 	cpu.loadState(state);
-	cpu.loadSavedata();
 
 	stateNo = 1;
 	cpu.setOsdElement(std::auto_ptr<OsdElement>());
@@ -92,11 +77,10 @@ void GB::Priv::on_load_succeeded(unsigned flags) {
 
 void *GB::savedata_ptr() { return p_->cpu.savedata_ptr(); }
 unsigned GB::savedata_size() { return p_->cpu.savedata_size(); }
+void *GB::rtcdata_ptr() { return p_->cpu.rtcdata_ptr(); }
+unsigned GB::rtcdata_size() { return p_->cpu.rtcdata_size(); }
 
 bool GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
-	if (p_->cpu.loaded())
-		p_->cpu.saveSavedata();
-	
 	const bool failed = p_->cpu.load(romdata, romsize, flags & FORCE_DMG);
 	
 	if (!failed)
@@ -110,7 +94,7 @@ bool GB::isCgb() const {
 }
 
 bool GB::isLoaded() const {
-	return p_->cpu.loaded();
+	return true;
 }
 
 void GB::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) {
@@ -118,36 +102,26 @@ void GB::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) 
 }
 
 void GB::loadState(const void *data) {
-	if (p_->cpu.loaded()) {
-		p_->cpu.saveSavedata();
-		
-		SaveState state;
-		p_->cpu.setStatePtrs(state);
-		
-		if (StateSaver::loadState(state, data)) {
-			p_->cpu.loadState(state);
-		}
-	}
+   SaveState state;
+   p_->cpu.setStatePtrs(state);
+
+   if (StateSaver::loadState(state, data)) {
+      p_->cpu.loadState(state);
+   }
 }
 
 void GB::saveState(void *data) {
-	if (p_->cpu.loaded()) {
-		SaveState state;
-		p_->cpu.setStatePtrs(state);
-		p_->cpu.saveState(state);
-		StateSaver::saveState(state, data);
-	}
+   SaveState state;
+   p_->cpu.setStatePtrs(state);
+   p_->cpu.saveState(state);
+   StateSaver::saveState(state, data);
 }
 
 size_t GB::stateSize() const {
-	if (p_->cpu.loaded()) {
-		SaveState state;
-		p_->cpu.setStatePtrs(state);
-		p_->cpu.saveState(state);
-		return StateSaver::stateSize(state);
-	} else {
-      return 0;
-   }
+   SaveState state;
+   p_->cpu.setStatePtrs(state);
+   p_->cpu.saveState(state);
+   return StateSaver::stateSize(state);
 }
 
 }

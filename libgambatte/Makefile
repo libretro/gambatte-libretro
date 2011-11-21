@@ -33,7 +33,7 @@ GAMBATTE_SRC := src/bitmap_font.cpp \
 
 GAMBATTE_OBJ := $(GAMBATTE_SRC:.cpp=.o)
 
-GAMBATTE_FLAGS := -O3 -Wall -Wextra -fno-exceptions -fno-rtti -DHAVE_STDINT_H $(fpic) -Isrc -Iinclude -I../common
+GAMBATTE_FLAGS := -O0 -g -Wall -Wextra -fno-exceptions -fno-rtti -DHAVE_STDINT_H $(fpic) -Isrc -Iinclude -I../common
 
 all: $(TARGET)
 
