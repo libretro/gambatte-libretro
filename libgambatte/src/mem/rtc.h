@@ -20,6 +20,7 @@
 #define RTC_H
 
 #include <ctime>
+#include <stdint.h>
 
 namespace gambatte {
 
@@ -29,8 +30,8 @@ class Rtc {
 private:
 	unsigned char *activeData;
 	void (Rtc::*activeSet)(unsigned);
-	std::time_t baseTime;
-	std::time_t haltTime;
+   uint64_t baseTime;
+   uint64_t haltTime;
 	unsigned char index;
 	unsigned char dataDh;
 	unsigned char dataDl;
@@ -55,11 +56,11 @@ public:
 		return activeData;
 	}
 	
-	std::time_t& getBaseTime() {
+	uint64_t& getBaseTime() {
 		return baseTime;
 	}
 
-	void setBaseTime(const std::time_t baseTime) {
+	void setBaseTime(const uint64_t baseTime) {
 		this->baseTime = baseTime;
 // 		doLatch();
 	}

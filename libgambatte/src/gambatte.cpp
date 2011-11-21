@@ -43,8 +43,6 @@ GB::~GB() {
 
 long GB::runFor(gambatte::uint_least32_t *const videoBuf, const int pitch,
 			gambatte::uint_least32_t *const soundBuf, unsigned &samples) {
-   samples = 0;
-   return -1;
 	
 	p_->cpu.setVideoBuffer(videoBuf, pitch);
 	p_->cpu.setSoundBuffer(soundBuf);
