@@ -71,6 +71,8 @@ extern "C" {
 #define SNES_ENVIRONMENT_GET_FULLPATH 0   // const char **
 #define SNES_ENVIRONMENT_SET_GEOMETRY 1   // const struct snes_geometry *
 #define SNES_ENVIRONMENT_SET_PITCH 2      // const unsigned *
+#define SNES_ENVIRONMENT_GET_OVERSCAN 3   // bool * -- Boolean value whether or not the implementation should use overscan.
+#define SNES_ENVIRONMENT_SET_TIMING 4     // const struct snes_system_timing * -- Set exact timings of the system.
 
 struct snes_geometry
 {
@@ -78,6 +80,12 @@ struct snes_geometry
    unsigned base_height;   // Nominal video height of system.
    unsigned max_width;     // Maximum possible width of system.
    unsigned max_height;    // Maximum possible height of system.
+};
+
+struct snes_system_timing
+{
+   double fps;
+   double sample_rate;
 };
 
 typedef bool (*snes_environment_t)(unsigned cmd, void *data);

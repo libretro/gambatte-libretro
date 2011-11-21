@@ -55,12 +55,20 @@ void snes_init()
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
    gb.setInputGetter(&gb_input);
 
-   resampler = ResamplerInfo::get(ResamplerInfo::num() - 1).create(35112 * 60.0, 32000.0, 2 * 2064);
+   resampler = ResamplerInfo::get(ResamplerInfo::num() - 1).create(35112.0 * 60.0, 32000.0, 2 * 2064);
 
    if (environ_cb)
    {
       snes_geometry geom = { 160, 144, 160, 144 };
       environ_cb(SNES_ENVIRONMENT_SET_GEOMETRY, &geom);
+
+      snes_system_timing timing;
+      timing.fps = 60.0;
+
+      unsigned long mul, div;
+      resampler->exactRatio(mul, div);
+      timing.sample_rate = 35112.0 * 60.0 * (double)mul / (double)div;
+      environ_cb(SNES_ENVIRONMENT_SET_TIMING, &timing);
    }
 }
 
@@ -227,6 +235,8 @@ static void output_audio(const int16_t *samples, unsigned frames)
 
 void snes_run()
 {
+   input_poll_cb();
+
    union
    {
       uint32_t u32[2064 + 2064];
