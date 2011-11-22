@@ -55,7 +55,10 @@ void snes_init()
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
    gb.setInputGetter(&gb_input);
 
-   resampler = ResamplerInfo::get(ResamplerInfo::num() - 1).create(35112.0 * 60.0, 32000.0, 2 * 2064);
+   double fps = 4194304.0 / 70224.0;
+   double sample_rate = fps * 35112;
+
+   resampler = ResamplerInfo::get(ResamplerInfo::num() - 1).create(sample_rate, 32000.0, 2 * 2064);
 
    if (environ_cb)
    {
@@ -63,10 +66,12 @@ void snes_init()
       environ_cb(SNES_ENVIRONMENT_SET_GEOMETRY, &geom);
 
       snes_system_timing timing;
-      timing.fps = 60.0;
+      timing.fps = fps;
 
-      // Found by experimentation. Values as given by gambatte itself do not seem to be quite right.
-      timing.sample_rate = 32002.4445;
+      unsigned long mul, div;
+      resampler->exactRatio(mul, div);
+
+      timing.sample_rate = sample_rate * mul / div;
       environ_cb(SNES_ENVIRONMENT_SET_TIMING, &timing);
    }
 }
