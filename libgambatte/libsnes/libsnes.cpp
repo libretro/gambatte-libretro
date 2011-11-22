@@ -65,9 +65,8 @@ void snes_init()
       snes_system_timing timing;
       timing.fps = 60.0;
 
-      unsigned long mul, div;
-      resampler->exactRatio(mul, div);
-      timing.sample_rate = 35112.0 * 60.0 * (double)mul / (double)div;
+      // Found by experimentation. Values as given by gambatte itself do not seem to be quite right.
+      timing.sample_rate = 32002.4445;
       environ_cb(SNES_ENVIRONMENT_SET_TIMING, &timing);
    }
 }
