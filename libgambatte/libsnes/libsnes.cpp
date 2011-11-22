@@ -48,6 +48,7 @@ static Resampler *resampler;
 
 // SSNES extension.
 static snes_environment_t environ_cb;
+static bool can_dupe = false;
 void snes_set_environment(snes_environment_t cb) { environ_cb = cb; }
 void snes_init()
 {
@@ -73,6 +74,10 @@ void snes_init()
 
       timing.sample_rate = sample_rate * mul / div;
       environ_cb(SNES_ENVIRONMENT_SET_TIMING, &timing);
+
+      environ_cb(SNES_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
+      if (can_dupe)
+         fprintf(stderr, "[Gambatte]: Will dupe frames with NULL!\n");
    }
 }
 
@@ -219,7 +224,20 @@ static void output_audio(const int16_t *samples, unsigned frames)
 
 void snes_run()
 {
+   static uint64_t samples_count = 0;
+   static uint64_t frames_count = 0;
+   // libsnes uses fixed pitch of 2048 bytes on non-interlaced video.
+   static uint16_t output_video[1024 * 144];
+
    input_poll_cb();
+
+   uint64_t expected_frames = samples_count / 35112;
+   if (frames_count < expected_frames) // Detect frame dupes.
+   {
+      video_cb(can_dupe ? 0 : output_video, 160, 144);
+      frames_count++;
+      return;
+   }
 
    union
    {
@@ -232,16 +250,16 @@ void snes_run()
    while (gb.runFor(video_buf, 256, sound_buf.u32, samples) == -1)
    {
       output_audio(sound_buf.i16, samples);
+      samples_count += samples;
       samples = 2064;
    }
 
    output_audio(sound_buf.i16, samples);
+   samples_count += samples;
 
-   // libsnes uses fixed pitch of 2048 bytes on non-interlaced video.
-   uint16_t output_video[1024 * 144];
    convert_frame(output_video, video_buf);
-
    video_cb(output_video, 160, 144);
+   frames_count++;
 }
 
 const char *snes_library_id() { return "libgambatte"; }

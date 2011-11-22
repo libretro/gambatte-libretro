@@ -73,6 +73,9 @@ extern "C" {
 #define SNES_ENVIRONMENT_SET_PITCH 2      // const unsigned *
 #define SNES_ENVIRONMENT_GET_OVERSCAN 3   // bool * -- Boolean value whether or not the implementation should use overscan.
 #define SNES_ENVIRONMENT_SET_TIMING 4     // const struct snes_system_timing * -- Set exact timings of the system.
+#define SNES_ENVIRONMENT_GET_CAN_DUPE 5   // bool * -- Boolean value whether or not SSNES supports frame duping,
+                                          // passing NULL to video frame callback.
+   
 
 struct snes_geometry
 {
