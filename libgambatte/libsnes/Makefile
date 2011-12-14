@@ -13,7 +13,12 @@ all: $(TARGET)
 	$(CXX) -c -o $@ $< $(CXXFLAGS) $(LIBSNES_FLAGS)
 
 $(TARGET): $(LIBSNES_OBJ) ../libgambatte.a
+ifeq ($(platform), wii)
+	$(AR) x ../libgambatte.a
+	$(AR) rcs $@ $(LIBSNES_OBJ) $(shell $(AR) t ../libgambatte.a)
+else
 	$(CXX) -o $@ $(LIBSNES_OBJ) $(SHARED) ../libgambatte.a -Wl,--no-undefined $(LDFLAGS)
+endif
 
 ../libgambatte.a:
 	$(MAKE) -C ../
@@ -22,3 +27,4 @@ clean:
 	rm -f $(TARGET) $(LIBSNES_OBJ)
 
 .PHONY: clean
+

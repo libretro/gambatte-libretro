@@ -18,6 +18,11 @@ else ifeq ($(platform), osx)
    TARGET := libsnes.dylib
    fpic := -fPIC
    SHARED := -dynamiclib
+else ifeq ($(platform), wii)
+   TARGET := libsnes.a
+   CXX = powerpc-eabi-g++
+   AR = powerpc-eabi-ar
+   CXXFLAGS += -mrvl -mcpu=750 -DGEKKO -meabi -mhard-float
 else
    TARGET := snes.dll
    CC = gcc
