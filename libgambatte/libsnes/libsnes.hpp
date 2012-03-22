@@ -75,7 +75,50 @@ extern "C" {
 #define SNES_ENVIRONMENT_SET_TIMING 4     // const struct snes_system_timing * -- Set exact timings of the system.
 #define SNES_ENVIRONMENT_GET_CAN_DUPE 5   // bool * -- Boolean value whether or not SSNES supports frame duping,
                                           // passing NULL to video frame callback.
+#define SNES_ENVIRONMENT_SET_NEED_FULLPATH 6 // const bool * --
+                                                // Boolean value telling if implementation needs a valid fullpath to be able to run.
+                                                // If this is the case, SSNES will not open the rom directly,
+                                                // and pass NULL to rom data.
+                                                // Implementation must then use SNES_ENVIRONMENT_GET_FULLPATH.
+                                                // This is useful for implementations with very large roms,
+                                                // which are impractical to load fully into RAM.
+#define SNES_ENVIRONMENT_GET_CAN_REWIND 7 // bool * --
+                                                // Boolean value telling if SSNES is able to rewind.
+                                                // Some implementations might need to take extra precautions
+                                                // to allow this as smoothly as possible.
+                                                //
+#define SNES_ENVIRONMENT_GET_VARIABLE 8 // struct snes_variable * --
+                                                // Interface to aquire user-defined information from environment
+                                                // that cannot feasibly be supported in a multi-system way.
+                                                // Mostly used for obscure,
+                                                // specific features that the user can tap into when neseccary.
+                                                //
+#define SNES_ENVIRONMENT_SET_VARIABLES 9 // const struct snes_variable * --
+                                                // Allows an implementation to signal the environment
+                                                // which variables it might want to check for later using GET_VARIABLE.
+                                                // 'data' points to an array of snes_variable structs terminated by a { NULL, NULL } element.
+                                                // snes_variable::value should contain a human readable description of the key.
+                                                //
+#define SNES_ENVIRONMENT_SET_BATCH_LOAD 10 // const bool * --
+                                                // If true, the implementation will load several roms in batch.
+                                                // This means the rom must be provided exactly as is, i.e. it cannot be extracted.
+                                                // If supported, this must be called directly when snes_set_environment() is called.
+                                                // (Used on consoles).
+                                                //
+#define SNES_ENVIRONMENT_SET_ROM_FORMATS 11 // const char * --
+                                                // Sets rom extensions the core generally supports.
+                                                // If supported, this must be called directly when snes_set_environment() is called.
+                                                // Formats are delimited with '|', i.e. "foo|bar|baz".
+                                                // (Used on consoles).
+                                                //
+#define SNES_ENVIRONMENT_SET_MESSAGE 12 // const struct snes_message * --
+                                                // Sets a message to be displayed in implementation-specific manner for a certain amount of 'frames'.
    
+struct snes_message
+{
+   const char *msg;
+   unsigned frames;
+};
 
 struct snes_geometry
 {

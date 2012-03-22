@@ -49,7 +49,15 @@ static Resampler *resampler;
 // SSNES extension.
 static snes_environment_t environ_cb;
 static bool can_dupe = false;
-void snes_set_environment(snes_environment_t cb) { environ_cb = cb; }
+void snes_set_environment(snes_environment_t cb)
+{
+   bool dummy;
+   environ_cb = cb;
+   dummy = 0;
+   cb(SNES_ENVIRONMENT_SET_BATCH_LOAD, &dummy);
+   cb(SNES_ENVIRONMENT_SET_ROM_FORMATS, (void*)"gb|gbc|dmg|zip|GB|GBC|DMG|ZIP");
+}
+
 void snes_init()
 {
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
@@ -262,7 +270,11 @@ void snes_run()
    frames_count++;
 }
 
-const char *snes_library_id() { return "libgambatte"; }
+const char *snes_library_id()
+{
+   return "Gambatte";
+}
+
 unsigned snes_library_revision_major() { return 1; }
 unsigned snes_library_revision_minor() { return 3; }
 
