@@ -113,6 +113,16 @@ extern "C" {
                                                 //
 #define SNES_ENVIRONMENT_SET_MESSAGE 12 // const struct snes_message * --
                                                 // Sets a message to be displayed in implementation-specific manner for a certain amount of 'frames'.
+#define SNES_ENVIRONMENT_GET_AUDIO_BATCH_CB 13  // snes_audio_sample_batch_t * --
+                                                // Retrieves callback to a more optimized audio callback.
+#define SNES_ENVIRONMENT_SET_ROTATION 14        // const unsigned * --
+                                                // Sets screen rotation of graphics.
+                                                // Is only implemented if rotation can be accelerated by hardware.
+                                                // Valid values are 0, 1, 2, 3, which rotates screen by 0, 90, 180, 270 degrees
+                                                // counter-clockwise respectively.
+                                                //
+#define SNES_ENVIRONMENT_SET_CORE_VERSION 15    // const char * --
+                                                // Sets version of core as a human readable string.
    
 struct snes_message
 {
@@ -138,7 +148,9 @@ typedef bool (*snes_environment_t)(unsigned cmd, void *data);
 
 // Must be called before calling snes_init().
 void snes_set_environment(snes_environment_t);
-////
+
+// Performance extension. Retrieved from environ callback.
+typedef unsigned (*snes_audio_sample_batch_t)(const int16_t *data, unsigned frames);
 
 
 typedef void (*snes_video_refresh_t)(const uint16_t *data, unsigned width, unsigned height);

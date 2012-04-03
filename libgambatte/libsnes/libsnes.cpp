@@ -11,6 +11,7 @@ static snes_audio_sample_t audio_cb;
 static snes_video_refresh_t video_cb;
 static snes_input_poll_t input_poll_cb;
 static snes_input_state_t input_state_cb;
+static snes_audio_sample_batch_t audio_batch_cb;
 static gambatte::GB gb;
 
 namespace input
@@ -56,6 +57,7 @@ void snes_set_environment(snes_environment_t cb)
    dummy = 0;
    cb(SNES_ENVIRONMENT_SET_BATCH_LOAD, &dummy);
    cb(SNES_ENVIRONMENT_SET_ROM_FORMATS, (void*)"gb|gbc|dmg|zip|GB|GBC|DMG|ZIP");
+   cb(SNES_ENVIRONMENT_SET_CORE_VERSION, (void*)"0.5.0");
 }
 
 void snes_init()
@@ -82,6 +84,7 @@ void snes_init()
 
       timing.sample_rate = sample_rate * mul / div;
       environ_cb(SNES_ENVIRONMENT_SET_TIMING, &timing);
+      environ_cb(SNES_ENVIRONMENT_GET_AUDIO_BATCH_CB, &audio_batch_cb);
 
       environ_cb(SNES_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
       if (can_dupe)
@@ -222,11 +225,16 @@ static void output_audio(const int16_t *samples, unsigned frames)
    int16_t output[2 * 2064];
    std::size_t len = resampler->resample(output, samples, frames);
 
-   for (unsigned i = 0; i < len; i++)
+   if(audio_batch_cb)
+	audio_batch_cb(output, len);
+   else
    {
-      int16_t left  = output[2 * i + 0];
-      int16_t right = output[2 * i + 1];
-      audio_cb(left, right);
+	   for (unsigned i = 0; i < len; i++)
+	   {
+		   int16_t left  = output[2 * i + 0];
+		   int16_t right = output[2 * i + 1];
+		   audio_cb(left, right);
+	   }
    }
 }
 
