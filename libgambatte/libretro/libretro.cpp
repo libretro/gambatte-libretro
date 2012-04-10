@@ -1,7 +1,6 @@
 #include "libretro.h"
 #include "resamplerinfo.h"
 
-#define HAVE_STDINT_H
 #include <gambatte.h>
 
 #include <assert.h>
