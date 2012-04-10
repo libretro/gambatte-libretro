@@ -1,5 +1,5 @@
 {
-   global: snes_*;
+   global: retro_*;
    local: *;
 };
 
