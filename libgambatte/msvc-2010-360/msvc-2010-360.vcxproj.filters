@@ -27,8 +27,8 @@
     <Filter Include="Source Files\resampler">
       <UniqueIdentifier>{e2083396-20f9-42a2-a09f-59a19ec295c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\libsnes">
-      <UniqueIdentifier>{e5db3d3a-4a95-4993-a2b9-870789a63faa}</UniqueIdentifier>
+    <Filter Include="Source Files\libretro">
+      <UniqueIdentifier>{8328f716-5a8e-4c0d-ad80-1057b626b35c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -131,8 +131,8 @@
     <ClCompile Include="..\..\common\resample\src\resamplerinfo.cpp">
       <Filter>Source Files\resampler</Filter>
     </ClCompile>
-    <ClCompile Include="..\libsnes\libsnes.cpp">
-      <Filter>Source Files\libsnes</Filter>
+    <ClCompile Include="..\libretro\libretro.cpp">
+      <Filter>Source Files\libretro</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
