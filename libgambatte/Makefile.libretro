@@ -47,7 +47,7 @@ else ifeq ($(platform), wii)
    AR = powerpc-eabi-ar
    PLATFORM_DEFINES += -DGEKKO -mrvl -mcpu=750 -meabi -mhard-float
 else
-   TARGET := snes.dll
+   TARGET := retro.dll
    CC = gcc
    CXX = g++
    SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=libretro/link.T
