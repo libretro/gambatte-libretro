@@ -34,6 +34,12 @@ else ifeq ($(platform), sncps3)
    CXX = $(CELL_SDK)/host-win32/sn/bin/ps3ppusnc.exe
    AR = $(CELL_SDK)/host-win32/sn/bin/ps3snarl.exe
    PLATFORM_DEFINES := -D__CELLOS_LV2__
+else ifeq ($(platform), psl1ght)
+   TARGET := libretro_psl1ght.a
+   CC = $(PS3DEV)/ppu/bin/ppu-gcc
+   CXX = $(PS3DEV)/ppu/bin/ppu-g++
+   AR = $(PS3DEV)/ppu/bin/ppu-ar
+   PLATFORM_DEFINES := -D__CELLOS_LV2__
 else ifeq ($(platform), xenon)
    TARGET := libretro.a
    CC = xenon-gcc
@@ -89,6 +95,8 @@ $(TARGET): $(OBJS)
 ifeq ($(platform), ps3)
 	$(AR) rcs $@ $(OBJS)
 else ifeq ($(platform), sncps3)
+	$(AR) rcs $@ $(OBJS)
+else ifeq ($(platform), psl1ght)
 	$(AR) rcs $@ $(OBJS)
 else ifeq ($(platform), xenon)
 	$(AR) rcs $@ $(OBJS)
