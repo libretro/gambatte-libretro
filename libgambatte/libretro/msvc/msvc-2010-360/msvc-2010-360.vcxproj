@@ -27,40 +27,40 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\common\resample\src\chainresampler.cpp" />
-    <ClCompile Include="..\..\common\resample\src\i0.cpp" />
-    <ClCompile Include="..\..\common\resample\src\makesinckernel.cpp" />
-    <ClCompile Include="..\..\common\resample\src\resamplerinfo.cpp" />
-    <ClCompile Include="..\..\common\resample\src\u48div.cpp" />
-    <ClCompile Include="..\libretro\libretro.cpp" />
-    <ClCompile Include="..\src\bitmap_font.cpp" />
-    <ClCompile Include="..\src\cpu.cpp" />
-    <ClCompile Include="..\src\file\file.cpp" />
-    <ClCompile Include="..\src\gambatte.cpp" />
-    <ClCompile Include="..\src\initstate.cpp" />
-    <ClCompile Include="..\src\interrupter.cpp" />
-    <ClCompile Include="..\src\interruptrequester.cpp" />
-    <ClCompile Include="..\src\memory.cpp" />
-    <ClCompile Include="..\src\mem\cartridge.cpp" />
-    <ClCompile Include="..\src\mem\memptrs.cpp" />
-    <ClCompile Include="..\src\mem\rtc.cpp" />
-    <ClCompile Include="..\src\sound.cpp" />
-    <ClCompile Include="..\src\sound\channel1.cpp" />
-    <ClCompile Include="..\src\sound\channel2.cpp" />
-    <ClCompile Include="..\src\sound\channel3.cpp" />
-    <ClCompile Include="..\src\sound\channel4.cpp" />
-    <ClCompile Include="..\src\sound\duty_unit.cpp" />
-    <ClCompile Include="..\src\sound\envelope_unit.cpp" />
-    <ClCompile Include="..\src\sound\length_counter.cpp" />
-    <ClCompile Include="..\src\statesaver.cpp" />
-    <ClCompile Include="..\src\state_osd_elements.cpp" />
-    <ClCompile Include="..\src\tima.cpp" />
-    <ClCompile Include="..\src\video.cpp" />
-    <ClCompile Include="..\src\video\lyc_irq.cpp" />
-    <ClCompile Include="..\src\video\ly_counter.cpp" />
-    <ClCompile Include="..\src\video\next_m0_time.cpp" />
-    <ClCompile Include="..\src\video\ppu.cpp" />
-    <ClCompile Include="..\src\video\sprite_mapper.cpp" />
+    <ClCompile Include="..\..\..\..\common\resample\src\chainresampler.cpp" />
+    <ClCompile Include="..\..\..\..\common\resample\src\i0.cpp" />
+    <ClCompile Include="..\..\..\..\common\resample\src\makesinckernel.cpp" />
+    <ClCompile Include="..\..\..\..\common\resample\src\resamplerinfo.cpp" />
+    <ClCompile Include="..\..\..\..\common\resample\src\u48div.cpp" />
+    <ClCompile Include="..\..\..\src\bitmap_font.cpp" />
+    <ClCompile Include="..\..\..\src\cpu.cpp" />
+    <ClCompile Include="..\..\..\src\file\file.cpp" />
+    <ClCompile Include="..\..\..\src\gambatte.cpp" />
+    <ClCompile Include="..\..\..\src\initstate.cpp" />
+    <ClCompile Include="..\..\..\src\interrupter.cpp" />
+    <ClCompile Include="..\..\..\src\interruptrequester.cpp" />
+    <ClCompile Include="..\..\..\src\memory.cpp" />
+    <ClCompile Include="..\..\..\src\mem\cartridge.cpp" />
+    <ClCompile Include="..\..\..\src\mem\memptrs.cpp" />
+    <ClCompile Include="..\..\..\src\mem\rtc.cpp" />
+    <ClCompile Include="..\..\..\src\sound.cpp" />
+    <ClCompile Include="..\..\..\src\sound\channel1.cpp" />
+    <ClCompile Include="..\..\..\src\sound\channel2.cpp" />
+    <ClCompile Include="..\..\..\src\sound\channel3.cpp" />
+    <ClCompile Include="..\..\..\src\sound\channel4.cpp" />
+    <ClCompile Include="..\..\..\src\sound\duty_unit.cpp" />
+    <ClCompile Include="..\..\..\src\sound\envelope_unit.cpp" />
+    <ClCompile Include="..\..\..\src\sound\length_counter.cpp" />
+    <ClCompile Include="..\..\..\src\statesaver.cpp" />
+    <ClCompile Include="..\..\..\src\state_osd_elements.cpp" />
+    <ClCompile Include="..\..\..\src\tima.cpp" />
+    <ClCompile Include="..\..\..\src\video.cpp" />
+    <ClCompile Include="..\..\..\src\video\lyc_irq.cpp" />
+    <ClCompile Include="..\..\..\src\video\ly_counter.cpp" />
+    <ClCompile Include="..\..\..\src\video\next_m0_time.cpp" />
+    <ClCompile Include="..\..\..\src\video\ppu.cpp" />
+    <ClCompile Include="..\..\..\src\video\sprite_mapper.cpp" />
+    <ClCompile Include="..\..\libretro.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A79F81F6-3FEE-48AA-9157-24EB772B624E}</ProjectGuid>
@@ -145,9 +145,9 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;_XBOX;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_XBOX;_XBOX360;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\common;..\libsnes;..\..\common\resample</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -165,9 +165,9 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;_XBOX;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_XBOX;_XBOX360;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\common;..\libsnes;..\..\common\resample</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\src\;..\..\..\src\video;..\..\..\src\file;..\..\..\src\sound;..\..\..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -186,9 +186,9 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX;PROFILE;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_XBOX;_XBOX360;PROFILE;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\common;..\libsnes;..\..\common\resample</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\src\;..\..\..\src\video;..\..\..\src\file;..\..\..\src\sound;..\..\..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -211,8 +211,8 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX;PROFILE;FASTCAP;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\common;..\libsnes;..\..\common\resample</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_XBOX;_XBOX360;PROFILE;FASTCAP;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\src\;..\..\..\src\video;..\..\..\src\file;..\..\..\src\sound;..\..\..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -233,8 +233,8 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\common;..\libsnes;..\..\common\resample</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_XBOX;_XBOX360;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\src\;..\..\..\src\video;..\..\..\src\file;..\..\..\src\sound;..\..\..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -255,8 +255,8 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX;LTCG;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\common;..\libsnes;..\..\common\resample</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_XBOX;_XBOX360;LTCG;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\src\;..\..\..\src\video;..\..\..\src\file;..\..\..\src\sound;..\..\..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

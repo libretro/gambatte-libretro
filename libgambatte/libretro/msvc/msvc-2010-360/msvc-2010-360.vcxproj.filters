@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{c6b3d008-3362-4d55-a3d9-6e980fb09074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\video">
+      <UniqueIdentifier>{b1fb6fc7-40b0-46c5-86f5-c5d62718be48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\file">
+      <UniqueIdentifier>{ec7ab185-9a6d-4fa6-95f4-2921e8dd9d06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\mem">
+      <UniqueIdentifier>{f5709d8a-86dc-402f-825c-25a7e425bddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\sound">
+      <UniqueIdentifier>{6c58fa31-84ab-4bdf-94ba-61cd802cac92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resampler">
+      <UniqueIdentifier>{e2083396-20f9-42a2-a09f-59a19ec295c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libretro">
+      <UniqueIdentifier>{8328f716-5a8e-4c0d-ad80-1057b626b35c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\libretro.cpp">
+      <Filter>Source Files\libretro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\common\resample\src\chainresampler.cpp">
+      <Filter>Source Files\resampler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\common\resample\src\u48div.cpp">
+      <Filter>Source Files\resampler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\common\resample\src\resamplerinfo.cpp">
+      <Filter>Source Files\resampler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\common\resample\src\makesinckernel.cpp">
+      <Filter>Source Files\resampler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\common\resample\src\i0.cpp">
+      <Filter>Source Files\resampler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\bitmap_font.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\video.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\tima.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\statesaver.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\state_osd_elements.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sound.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\memory.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\interruptrequester.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\interrupter.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\initstate.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gambatte.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\cpu.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sound\length_counter.cpp">
+      <Filter>Source Files\src\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sound\channel1.cpp">
+      <Filter>Source Files\src\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sound\channel2.cpp">
+      <Filter>Source Files\src\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sound\channel3.cpp">
+      <Filter>Source Files\src\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sound\channel4.cpp">
+      <Filter>Source Files\src\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sound\duty_unit.cpp">
+      <Filter>Source Files\src\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sound\envelope_unit.cpp">
+      <Filter>Source Files\src\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\mem\rtc.cpp">
+      <Filter>Source Files\src\mem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\mem\cartridge.cpp">
+      <Filter>Source Files\src\mem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\mem\memptrs.cpp">
+      <Filter>Source Files\src\mem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\file\file.cpp">
+      <Filter>Source Files\src\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\video\sprite_mapper.cpp">
+      <Filter>Source Files\src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\video\ly_counter.cpp">
+      <Filter>Source Files\src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\video\lyc_irq.cpp">
+      <Filter>Source Files\src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\video\next_m0_time.cpp">
+      <Filter>Source Files\src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\video\ppu.cpp">
+      <Filter>Source Files\src\video</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
