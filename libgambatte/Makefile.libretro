@@ -48,9 +48,9 @@ else ifeq ($(platform), xenon)
    PLATFORM_DEFINES := -D__LIBXENON__
 else ifeq ($(platform), wii)
    TARGET := libretro_wii.a
-   CC = powerpc-eabi-gcc
-   CXX = powerpc-eabi-g++
-   AR = powerpc-eabi-ar
+   CC = $(DEVKITPPC)/bin/powerpc-eabi-gcc
+   CXX = $(DEVKITPPC)/bin/powerpc-eabi-g++
+   AR = $(DEVKITPPC)/bin/powerpc-eabi-ar
    PLATFORM_DEFINES += -DGEKKO -mrvl -mcpu=750 -meabi -mhard-float
 else
    TARGET := retro.dll
