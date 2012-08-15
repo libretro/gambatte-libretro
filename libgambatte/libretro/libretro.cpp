@@ -49,6 +49,7 @@ void retro_get_system_info(struct retro_system_info *info)
    info->library_name = "gambatte";
    info->library_version = "v0.5.0";
    info->need_fullpath = false;
+   info->nonblock_state = false;
    info->block_extract = false;
    info->valid_extensions = "gb|gbc|dmg|zip|GB|GBC|DMG|ZIP";
 }
