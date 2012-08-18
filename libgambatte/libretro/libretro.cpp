@@ -169,28 +169,6 @@ size_t retro_get_memory_size(unsigned id)
    return 0;
 }
 
-static void convert_frame(uint16_t *output, const uint32_t *input)
-{
-   for (unsigned y = 0; y < 144; y++)
-   {
-      const uint32_t *src = input + y * 256;
-      uint16_t *dst = output + y * 256;
-
-      for (unsigned x = 0; x < 160; x++)
-      {
-         unsigned color = src[x];
-         unsigned out_color = 0;
-
-         // ARGB8888 => XRGB555. Should output 32-bit directly if libretro gets ARGB support later on.
-         out_color |= (color & 0xf80000) >> (3 + 6);
-         out_color |= (color & 0x00f800) >> (3 + 3);
-         out_color |= (color & 0x0000f8) >> (3 + 0);
-
-         dst[x] = out_color;
-      }
-   }
-}
-
 static void output_audio(const int16_t *samples, unsigned frames)
 {
    if (!frames)
@@ -221,13 +199,14 @@ void retro_run()
 
    union
    {
-      uint32_t u32[2064 + 2064];
+      gambatte::uint_least32_t u32[2064 + 2064];
       int16_t i16[2 * (2064 + 2064)];
    } sound_buf;
    unsigned samples = 2064;
 
-   uint32_t video_buf[256 * 144];
-   while (gb.runFor(video_buf, 256, sound_buf.u32, samples) == -1)
+   gambatte::uint_least32_t video_buf[256 * 144];
+   gambatte::uint_least32_t param2 = 256;
+   while (gb.runFor(video_buf, param2, sound_buf.u32, samples) == -1)
    {
       output_audio(sound_buf.i16, samples);
       samples_count += samples;
@@ -237,7 +216,25 @@ void retro_run()
    samples_count += samples;
    output_audio(sound_buf.i16, samples);
 
-   convert_frame(output_video, video_buf);
+   for (unsigned y = 0; y < 144; y++)
+   {
+      const gambatte::uint_least32_t *src = video_buf + y * 256;
+      uint16_t *dst = output_video + y * 256;
+
+      for (unsigned x = 0; x < 160; x++)
+      {
+         unsigned color = src[x];
+         unsigned out_color = 0;
+
+         // ARGB8888 => XRGB555. Should output 32-bit directly if libretro gets ARGB support later on.
+         out_color |= (color & 0xf80000) >> (3 + 6);
+         out_color |= (color & 0x00f800) >> (3 + 3);
+         out_color |= (color & 0x0000f8) >> (3 + 0);
+
+         dst[x] = out_color;
+      }
+   }
+
    video_cb(output_video, 160, 144, 512);
    frames_count++;
 }

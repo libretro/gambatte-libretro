@@ -23,6 +23,6 @@
 #include <cstdlib>
 
 void makeSincKernel(short *kernel, unsigned phases,
-		unsigned phaseLen, double fc, double (*win)(long m, long M));
+		unsigned phaseLen, double fc, double (*win)(const long m, const long M));
 
 #endif

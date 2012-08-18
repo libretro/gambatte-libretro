@@ -21,7 +21,7 @@
 				Optimization="0"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\msvc-2003-xbox1&quot;;..\..\..\src;..\..\..\..\common;..\..\..\..\common\resample;..\..\..\include"
-				PreprocessorDefinitions="_DEBUG;_XBOX;_LIB"
+				PreprocessorDefinitions="_DEBUG;_XBOX;_LIB;_XBOX1;__LIBRETRO__;LSB_FIRST"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -35,7 +35,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/$(ProjectName).lib"/>
+				OutputFile="$(OutDir)/libretro_xdk.lib"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -55,7 +55,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\msvc-2003-xbox1&quot;;..\..\..\src;..\..\..\..\common;..\..\..\..\common\resample;..\..\..\include"
-				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;_LIB"
+				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;_LIB;_XBOX1;__LIBRETRO__;LSB_FIRST"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
@@ -70,7 +70,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/$(ProjectName).lib"/>
+				OutputFile="$(OutDir)/libretro_xdk.lib"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -90,7 +90,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\msvc-2003-xbox1&quot;;..\..\..\src;..\..\..\..\common;..\..\..\..\common\resample;..\..\..\include"
-				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;FASTCAP;_LIB"
+				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;FASTCAP;_LIB;_XBOX1;__LIBRETRO__;LSB_FIRST"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
@@ -106,7 +106,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/$(ProjectName).lib"/>
+				OutputFile="$(OutDir)/libretro_xdk.lib"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -126,7 +126,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\msvc-2003-xbox1&quot;;..\..\..\src;..\..\..\..\common;..\..\..\..\common\resample;..\..\..\include"
-				PreprocessorDefinitions="NDEBUG;_XBOX;_LIB"
+				PreprocessorDefinitions="NDEBUG;_XBOX;_LIB;_XBOX1;__LIBRETRO__;LSB_FIRST"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
@@ -141,7 +141,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/$(ProjectName).lib"/>
+				OutputFile="$(OutDir)/libretro_xdk.lib"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -162,7 +162,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\msvc-2003-xbox1&quot;;..\..\..\src;..\..\..\..\common;..\..\..\..\common\resample;..\..\..\include"
-				PreprocessorDefinitions="NDEBUG;_XBOX;LTCG;_LIB"
+				PreprocessorDefinitions="NDEBUG;_XBOX;LTCG;_LIB;_XBOX1;__LIBRETRO__;LSB_FIRST"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
@@ -177,7 +177,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/$(ProjectName).lib"/>
+				OutputFile="$(OutDir)/libretro_xdk.lib"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -196,6 +196,9 @@
 			<Filter
 				Name="libretro"
 				Filter="">
+				<File
+					RelativePath="..\..\libretro.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="src"

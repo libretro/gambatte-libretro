@@ -19,7 +19,7 @@
 #include "makesinckernel.h"
 #include "array.h"
 
-void makeSincKernel(short *const kernel, const unsigned phases, const unsigned phaseLen, double fc, double (*win)(long m, long M)) {
+void makeSincKernel(short *const kernel, const unsigned phases, const unsigned phaseLen, double fc, double (*win)(const long m, const long M)) {
 	static const double PI = 3.14159265358979323846;
 	fc /= phases;
 	

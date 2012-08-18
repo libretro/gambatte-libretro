@@ -19,6 +19,7 @@
 #include "statesaver.h"
 #include "savestate.h"
 #include "array.h"
+#include <stdint.h>
 #include <vector>
 #include <cstring>
 #include <algorithm>

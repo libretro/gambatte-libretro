@@ -70,16 +70,16 @@ class MinKeeper {
 	};
 	
 	template<int dummy> struct FillLut<-1,dummy> {
-		static void fillLut(MinKeeper<ids> *) {}
+		static void fillLut(MinKeeper<ids> *const) {}
 	};
 	
 	
 	unsigned long values[ids];
 	unsigned long minValue_;
-	void (*updateValueLut[Num<LEVELS-1>::RESULT])(MinKeeper<ids>*);
+	void (*updateValueLut[Num<LEVELS-1>::RESULT])(MinKeeper<ids>*const);
 	int a[Sum<LEVELS>::RESULT];
 	
-	template<int id> static void updateValue(MinKeeper<ids> *s);
+	template<int id> static void updateValue(MinKeeper<ids> *const s);
 	
 public:
 	MinKeeper(unsigned long initValue = 0xFFFFFFFF);
