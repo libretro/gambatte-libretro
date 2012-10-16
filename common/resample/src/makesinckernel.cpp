@@ -17,7 +17,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "makesinckernel.h"
-#include "array.h"
+#include "gambatte-array.h"
 
 void makeSincKernel(short *const kernel, const unsigned phases, const unsigned phaseLen, double fc, double (*win)(const long m, const long M)) {
 	static const double PI = 3.14159265358979323846;

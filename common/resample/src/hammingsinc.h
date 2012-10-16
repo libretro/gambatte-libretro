@@ -23,7 +23,7 @@
 #include "subresampler.h"
 #include "makesinckernel.h"
 #include "cic3.h"
-#include "array.h"
+#include "gambatte-array.h"
 #include <cmath>
 #include <cstdlib>
 

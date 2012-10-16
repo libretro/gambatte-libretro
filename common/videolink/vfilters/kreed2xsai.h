@@ -21,7 +21,7 @@
 
 #include "../videolink.h"
 #include "../vfilterinfo.h"
-#include "array.h"
+#include "gambatte-array.h"
 #include "gbint.h"
 
 class Kreed2xSaI : public VideoLink {

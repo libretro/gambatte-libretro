@@ -21,7 +21,7 @@
 
 #include "../blitterwidget.h"
 #include "persistcheckbox.h"
-#include "array.h"
+#include "gambatte-array.h"
 #include <memory>
 
 class X11Blitter : public BlitterWidget {

@@ -21,7 +21,7 @@
 
 #include <algorithm>
 #include <cstring>
-#include "array.h"
+#include "gambatte-array.h"
 #include "rshift16_round.h"
 
 template<unsigned channels, unsigned phases>

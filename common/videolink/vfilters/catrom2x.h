@@ -21,7 +21,7 @@
 
 #include "../videolink.h"
 #include "../vfilterinfo.h"
-#include "array.h"
+#include "gambatte-array.h"
 #include "gbint.h"
 
 class Catrom2x : public VideoLink {

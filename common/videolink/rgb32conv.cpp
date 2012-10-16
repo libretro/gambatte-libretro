@@ -18,7 +18,7 @@
  ***************************************************************************/
 #include "rgb32conv.h"
 #include "videolink.h"
-#include "array.h"
+#include "gambatte-array.h"
 #include "gbint.h"
 #include <algorithm>
 

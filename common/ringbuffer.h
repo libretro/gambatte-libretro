@@ -19,7 +19,7 @@
 #ifndef RINGBUFFER_H
 #define RINGBUFFER_H
 
-#include "array.h"
+#include "gambatte-array.h"
 #include <cstddef>
 #include <algorithm>
 #include <cstring>

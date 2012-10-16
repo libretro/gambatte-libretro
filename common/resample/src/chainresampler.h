@@ -24,7 +24,7 @@
 #include <cassert>
 #include <cstddef>
 #include <list>
-#include "array.h"
+#include "gambatte-array.h"
 #include "subresampler.h"
 #include "../resampler.h"
 #include "upsampler.h"

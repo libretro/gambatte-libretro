@@ -22,7 +22,7 @@
 #include "../blitterwidget.h"
 #include "../dwmcontrol.h"
 #include "persistcheckbox.h"
-#include "array.h"
+#include "gambatte-array.h"
 #include <memory>
 
 class QGLBlitter : public BlitterWidget {
