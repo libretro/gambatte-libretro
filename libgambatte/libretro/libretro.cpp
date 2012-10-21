@@ -12,6 +12,7 @@ static retro_input_state_t input_state_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
 static gambatte::GB gb;
+static bool g_has_rgb32;
 
 namespace input
 {
@@ -72,7 +73,7 @@ void retro_init()
    double fps = 4194304.0 / 70224.0;
    double sample_rate = fps * 35112;
 
-   resampler = ResamplerInfo::get(ResamplerInfo::num() - 1).create(sample_rate, 32000.0, 2 * 2064);
+   resampler = ResamplerInfo::get(ResamplerInfo::num() - 2).create(sample_rate, 32000.0, 2 * 2064);
 
    if (environ_cb)
    {
@@ -140,6 +141,15 @@ void retro_cheat_set(unsigned, bool, const char *) {}
 
 bool retro_load_game(const struct retro_game_info *info)
 {
+   enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
+   if (environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
+      g_has_rgb32 = true;
+   else
+   {
+      fprintf(stderr, "[gambatte]: XRGB8888 is not supported. Will have to perform slow conversion to ARGB1555.\n");
+      g_has_rgb32 = false;
+   }
+
    return !gb.load(info->data, info->size);
 }
 
@@ -216,26 +226,31 @@ void retro_run()
    samples_count += samples;
    output_audio(sound_buf.i16, samples);
 
-   for (unsigned y = 0; y < 144; y++)
+   if (g_has_rgb32)
+      video_cb(video_buf, 160, 144, 1024);
+   else
    {
-      const gambatte::uint_least32_t *src = video_buf + y * 256;
-      uint16_t *dst = output_video + y * 256;
-
-      for (unsigned x = 0; x < 160; x++)
+      for (unsigned y = 0; y < 144; y++)
       {
-         unsigned color = src[x];
-         unsigned out_color = 0;
+         const gambatte::uint_least32_t *src = video_buf + y * 256;
+         uint16_t *dst = output_video + y * 256;
 
-         // ARGB8888 => XRGB555. Should output 32-bit directly if libretro gets ARGB support later on.
-         out_color |= (color & 0xf80000) >> (3 + 6);
-         out_color |= (color & 0x00f800) >> (3 + 3);
-         out_color |= (color & 0x0000f8) >> (3 + 0);
+         for (unsigned x = 0; x < 160; x++)
+         {
+            unsigned color = src[x];
+            unsigned out_color = 0;
 
-         dst[x] = out_color;
+            // ARGB8888 => XRGB555. Should output 32-bit directly if libretro gets ARGB support later on.
+            out_color |= (color & 0xf80000) >> (3 + 6);
+            out_color |= (color & 0x00f800) >> (3 + 3);
+            out_color |= (color & 0x0000f8) >> (3 + 0);
+
+            dst[x] = out_color;
+         }
       }
+      video_cb(output_video, 160, 144, 512);
    }
 
-   video_cb(output_video, 160, 144, 512);
    frames_count++;
 }
 
