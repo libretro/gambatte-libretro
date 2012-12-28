@@ -13,6 +13,7 @@ LOCAL_MODULE    := libretro
 
 ifeq ($(TARGET_ARCH),arm)
 LOCAL_CXXFLAGS += -DANDROID_ARM
+LOCAL_ARM_MODE := arm
 endif
 
 ifeq ($(TARGET_ARCH),x86)

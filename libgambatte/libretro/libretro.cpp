@@ -9,10 +9,9 @@
 static retro_video_refresh_t video_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
-static retro_audio_sample_batch_t audio_batch_cb;
+static retro_audio_sample_t audio_cb;
 static retro_environment_t environ_cb;
 static gambatte::GB gb;
-static bool g_has_rgb32;
 
 namespace input
 {
@@ -44,7 +43,6 @@ class SNESInput : public gambatte::InputGetter
 
 static Resampler *resampler;
 
-
 void retro_get_system_info(struct retro_system_info *info)
 {
    info->library_name = "gambatte";
@@ -54,7 +52,6 @@ void retro_get_system_info(struct retro_system_info *info)
    info->valid_extensions = "gb|gbc|dmg|zip|GB|GBC|DMG|ZIP";
 }
 
-static bool can_dupe = false;
 static struct retro_system_timing g_timing;
 
 void retro_get_system_av_info(struct retro_system_av_info *info)
@@ -83,10 +80,6 @@ void retro_init()
       resampler->exactRatio(mul, div);
 
       g_timing.sample_rate = sample_rate * mul / div;
-
-      environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
-      if (can_dupe)
-         fprintf(stderr, "[Gambatte]: Will dupe frames with NULL!\n");
    }
 }
 
@@ -97,8 +90,8 @@ void retro_deinit()
 
 void retro_set_environment(retro_environment_t cb) { environ_cb = cb; }
 void retro_set_video_refresh(retro_video_refresh_t cb) { video_cb = cb; }
-void retro_set_audio_sample(retro_audio_sample_t) {}
-void retro_set_audio_sample_batch(retro_audio_sample_batch_t cb) { audio_batch_cb = cb; }
+void retro_set_audio_sample(retro_audio_sample_t cb) { audio_cb = cb; }
+void retro_set_audio_sample_batch(retro_audio_sample_batch_t) {}
 void retro_set_input_poll(retro_input_poll_t cb) { input_poll_cb = cb; }
 void retro_set_input_state(retro_input_state_t cb) { input_state_cb = cb; }
 
@@ -141,13 +134,19 @@ void retro_cheat_set(unsigned, bool, const char *) {}
 
 bool retro_load_game(const struct retro_game_info *info)
 {
-   enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
-   if (environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
-      g_has_rgb32 = true;
-   else
+   bool can_dupe = false;
+   environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
+   if (!can_dupe)
    {
-      fprintf(stderr, "[gambatte]: XRGB8888 is not supported. Will have to perform slow conversion to ARGB1555.\n");
-      g_has_rgb32 = false;
+      fprintf(stderr, "[Gambatte]: Cannot dupe frames!\n");
+      return false;
+   }
+
+   enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
+   if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
+   {
+      fprintf(stderr, "[Gambatte]: XRGB8888 is not supported.\n");
+      return false;
    }
 
    return !gb.load(info->data, info->size);
@@ -184,25 +183,26 @@ static void output_audio(const int16_t *samples, unsigned frames)
    if (!frames)
       return;
 
-   int16_t output[2 * 2064];
+   static int16_t output[2 * 2064];
    std::size_t len = resampler->resample(output, samples, frames);
 
-   if (len)
-      audio_batch_cb(output, len);
+   // Gambatte pushes so few samples here that we let frontend handle buffering.
+   len <<= 1;
+   for (std::size_t i = 0; i < len; i += 2)
+      audio_cb(output[i], output[i + 1]);
 }
 
 void retro_run()
 {
    static uint64_t samples_count = 0;
    static uint64_t frames_count = 0;
-   static uint16_t output_video[256 * 144];
 
    input_poll_cb();
 
    uint64_t expected_frames = samples_count / 35112;
    if (frames_count < expected_frames) // Detect frame dupes.
    {
-      video_cb(can_dupe ? 0 : output_video, 160, 144, 512);
+      video_cb(0, 160, 144, 512);
       frames_count++;
       return;
    }
@@ -211,10 +211,10 @@ void retro_run()
    {
       gambatte::uint_least32_t u32[2064 + 2064];
       int16_t i16[2 * (2064 + 2064)];
-   } sound_buf;
+   } static sound_buf;
    unsigned samples = 2064;
 
-   gambatte::uint_least32_t video_buf[256 * 144];
+   static gambatte::uint_least32_t video_buf[256 * 144];
    gambatte::uint_least32_t param2 = 256;
    while (gb.runFor(video_buf, param2, sound_buf.u32, samples) == -1)
    {
@@ -226,30 +226,7 @@ void retro_run()
    samples_count += samples;
    output_audio(sound_buf.i16, samples);
 
-   if (g_has_rgb32)
-      video_cb(video_buf, 160, 144, 1024);
-   else
-   {
-      for (unsigned y = 0; y < 144; y++)
-      {
-         const gambatte::uint_least32_t *src = video_buf + y * 256;
-         uint16_t *dst = output_video + y * 256;
-
-         for (unsigned x = 0; x < 160; x++)
-         {
-            unsigned color = src[x];
-            unsigned out_color = 0;
-
-            // ARGB8888 => XRGB555. Should output 32-bit directly if libretro gets ARGB support later on.
-            out_color |= (color & 0xf80000) >> (3 + 6);
-            out_color |= (color & 0x00f800) >> (3 + 3);
-            out_color |= (color & 0x0000f8) >> (3 + 0);
-
-            dst[x] = out_color;
-         }
-      }
-      video_cb(output_video, 160, 144, 512);
-   }
+   video_cb(video_buf, 160, 144, 1024);
 
    frames_count++;
 }
