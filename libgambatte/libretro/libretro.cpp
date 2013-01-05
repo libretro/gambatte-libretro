@@ -149,7 +149,32 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
 
-   return !gb.load(info->data, info->size);
+   bool load_result = gb.load(info->data, info->size);
+   if(load_result==false) return true;
+   // else
+   std:string custom_palette_path = 
+   if(fileExists(custom_palette_path))
+   {
+      FILE palette_file = fopen(custom_palette_path, "r");
+      
+      unsigned rgb32 = 0;
+      for (unsigned palnum = 0; palnum < 3; ++palnum)
+         for (unsigned colornum = 0; colornum < 4; ++colornum) {
+            // read next line
+            setDmgPaletteColor(palnum, colornum, rgb32);
+         }
+   }
+   
+   return(false);
+}
+
+static bool fileExists(const std::string &filename) {
+   if (std::FILE *const file = std::fopen(filename.c_str(), "rb")) {
+		std::fclose(file);
+		return true;
+	}
+	
+	return false;
 }
 
 bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t) { return false; }
