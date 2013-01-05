@@ -152,7 +152,7 @@ bool retro_load_game(const struct retro_game_info *info)
    bool load_result = gb.load(info->data, info->size);
    if(load_result==false) return true;
    // else
-   std:string custom_palette_path = 
+   //std:string custom_palette_path = TODO: $system_directory/palettes/$input_rom_basename.pal;
    if(fileExists(custom_palette_path))
    {
       FILE palette_file = fopen(custom_palette_path, "r");
@@ -160,8 +160,9 @@ bool retro_load_game(const struct retro_game_info *info)
       unsigned rgb32 = 0;
       for (unsigned palnum = 0; palnum < 3; ++palnum)
          for (unsigned colornum = 0; colornum < 4; ++colornum) {
-            // read next line
-            setDmgPaletteColor(palnum, colornum, rgb32);
+            // read+parse next line
+            // rgb32=...;
+            gb.setDmgPaletteColor(palnum, colornum, rgb32);
          }
    }
    
