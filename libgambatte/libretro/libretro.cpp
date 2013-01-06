@@ -152,19 +152,36 @@ bool retro_load_game(const struct retro_game_info *info)
    bool load_result = gb.load(info->data, info->size);
    if(load_result==false) return true;
    // else
-   //std:string custom_palette_path = TODO: $system_directory/palettes/$input_rom_basename.pal;
-   if(fileExists(custom_palette_path))
+   //std:string custom_palette_path = TODO: $system_directory+/palettes/$input_rom_basename.pal;
+   if(!fileExists(custom_palette_path)) return(false);
+   // else
+
+   FILE palette_file = fopen(custom_palette_path, "r");
+
+   unsigned rgb32 = 0;
+   while(line) // iterate over file lines
    {
-      FILE palette_file = fopen(custom_palette_path, "r");
+      line_value = line.find("=");
+      if(line_value==string::npos) continue; // goto next line
+      line_value++; // skip equal sign
+      rgb32 = // TODO: convert string "line_value" to int
       
-      unsigned rgb32 = 0;
-      for (unsigned palnum = 0; palnum < 3; ++palnum)
-         for (unsigned colornum = 0; colornum < 4; ++colornum) {
-            // read+parse next line
-            // rgb32=...;
-            gb.setDmgPaletteColor(palnum, colornum, rgb32);
-         }
+      if(line.startswith("Background0="))
+      	 gb.setDmgPaletteColor(0, 0, rgb32);
+      else if(line.startswith("Background1="))
+      	 gb.setDmgPaletteColor(0, 1, rgb32);
+      else if(line.startswith("Background2="))
+      	 gb.setDmgPaletteColor(0, 2, rgb32);      	
+      else if(line.startswith("Background3="))
+      	 gb.setDmgPaletteColor(0, 3, rgb32);
+      else if(line.startswith("Sprite%2010="))
+      	 gb.setDmgPaletteColor(1, 0, rgb32);
+      else if(line.startswith("Sprite%2011="))
+      	 gb.setDmgPaletteColor(1, 1, rgb32);
+      ///...
+      
    }
+}
    
    return(false);
 }
