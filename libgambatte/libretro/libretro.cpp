@@ -181,10 +181,16 @@ bool retro_load_game(const struct retro_game_info *info)
       	 gb.setDmgPaletteColor(1, 2, rgb32);
       else if(line.startswith("Sprite%2013="))
       	 gb.setDmgPaletteColor(1, 3, rgb32);
-      ///...
-      
-   }
-}
+      else if(line.startswith("Sprite%2020="))
+      	 gb.setDmgPaletteColor(2, 0, rgb32);
+      else if(line.startswith("Sprite%2021="))
+      	 gb.setDmgPaletteColor(2, 1, rgb32);
+      else if(line.startswith("Sprite%2022="))
+      	 gb.setDmgPaletteColor(2, 2, rgb32);  
+      else if(line.startswith("Sprite%2023="))
+      	 gb.setDmgPaletteColor(2, 3, rgb32);  
+   } // endfor
+
    palette_file.close();
    return(false);
 }
