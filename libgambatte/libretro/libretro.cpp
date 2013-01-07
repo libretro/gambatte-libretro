@@ -153,6 +153,7 @@ bool retro_load_game(const struct retro_game_info *info)
    if(load_result==false) return true;
    // else
    
+   std::string internal_game_name = ""; // gb.??
    // TODO: check GBC BIOS builtin palettes
    
    const char *system_directory = NULL;
@@ -164,8 +165,7 @@ bool retro_load_game(const struct retro_game_info *info)
    std::ifstream palette_file( custom_palette_path ); // try to open the palette file in read-only mode
    if(!palette_file.is_open()) {
    	// try again with the internal game name from the ROM header
-   	//std::string internal_game_name = ??
-   	//custom_palette_path = system_directory + "/palettes/" + internal_game_name + ".pal"
+   	custom_palette_path = system_directory + "/palettes/" + internal_game_name + ".pal"
    	palette_file.open(custom_palette_path);
    }
    if(!palette_file.is_open()) {
