@@ -154,25 +154,25 @@ bool retro_load_game(const struct retro_game_info *info)
    // else
    
    // TODO: check GBC BIOS builtin palettes
+   
    const char *system_directory = NULL;
    environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory);
    if(system_directory==NULL) return(false); // no system directory defined
    
    const char *input_rom_path = info.path;
-   
    std::string custom_palette_path = system_directory + "/palettes/" + basename(input_rom_path) + ".pal";
- 
    std::ifstream palette_file( custom_palette_path ); // try to open the palette file in read-only mode
    if(!palette_file.is_open()) {
-   	//custom_palette_path = ... // TODO: try also $internal_game_name.pal
+   	// try again with the internal game name from the ROM header
+   	//std::string internal_game_name = ??
+   	//custom_palette_path = system_directory + "/palettes/" + internal_game_name + ".pal"
    	palette_file.open(custom_palette_path);
    }
-   // try again with default.pal
    if(!palette_file.is_open()) {
+   	// try again with default.pal
    	custom_palette_path = system_directory + "/palettes/" + "default.pal";
    	palette_file.open(custom_palette_path);
    }
-   	
    if(!palette_file.is_open()) {
    	// unable to find any custom palette file
    	return(false);
@@ -212,6 +212,9 @@ bool retro_load_game(const struct retro_game_info *info)
       	 gb.setDmgPaletteColor(2, 2, rgb32);  
       else if(startswith(line, "Sprite%2023="))
       	 gb.setDmgPaletteColor(2, 3, rgb32);
+      	 
+      // TODO: print warnings on invalid lines?
+      
    } // endfor
 
    palette_file.close();
