@@ -152,11 +152,32 @@ bool retro_load_game(const struct retro_game_info *info)
    bool load_result = gb.load(info->data, info->size);
    if(load_result==false) return true;
    // else
-   //std:string custom_palette_path = TODO: $system_directory/palettes/$input_rom_basename.pal;
-   if(!fileExists(custom_palette_path)) return(false);
-   // else
-
-   std::ifstream palette_file( custom_palette_path ); // open the palette file in read-only mode
+   
+   // TODO: check GBC BIOS builtin palettes
+   const char *system_directory = NULL;
+   environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory);
+   if(system_directory==NULL) return(false); // no system directory defined
+   
+   const char *input_rom_path = info.path;
+   
+   std::string custom_palette_path = system_directory + "/palettes/" + basename(input_rom_path) + ".pal";
+ 
+   std::ifstream palette_file( custom_palette_path ); // try to open the palette file in read-only mode
+   if(!palette_file.is_open()) {
+   	//custom_palette_path = ... // TODO: try also $internal_game_name.pal
+   	palette_file.open(custom_palette_path);
+   }
+   // try again with default.pal
+   if(!palette_file.is_open()) {
+   	custom_palette_path = system_directory + "/palettes/" + "default.pal";
+   	palette_file.open(custom_palette_path);
+   }
+   	
+   if(!palette_file.is_open()) {
+   	// unable to find any custom palette file
+   	return(false);
+   }
+   		
    unsigned rgb32 = 0;
    for( std::string line; getline( palette_file, line ); ) // iterate over file lines
    {
@@ -197,18 +218,29 @@ bool retro_load_game(const struct retro_game_info *info)
    return(false);
 }
 
+static std::string basename(const std::string filename) {
+	// Remove directory if present.
+	// Do this before extension removal incase directory has a period character.
+	const size_t last_slash_idx = filename.find_last_of("\\/");
+	if (std::string::npos != last_slash_idx)
+	{
+	    filename.erase(0, last_slash_idx + 1);
+	}
+	
+	// Remove extension if present.
+	const size_t period_idx = filename.rfind('.');
+	if (std::string::npos != period_idx)
+	{
+	    filename.erase(period_idx);
+	}
+	
+	return filename;
+}
+
 static bool startswith(const std::string s1, const std::string prefix) {
     return(s1.compare(0, prefix.length(), prefix)==0);
 }
 
-static bool fileExists(const std::string &filename) {
-   if (std::FILE *const file = std::fopen(filename.c_str(), "rb")) {
-		std::fclose(file);
-		return true;
-	}
-	
-	return false;
-}
 
 bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t) { return false; }
 
