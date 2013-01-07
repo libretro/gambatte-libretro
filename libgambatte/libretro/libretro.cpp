@@ -162,37 +162,43 @@ bool retro_load_game(const struct retro_game_info *info)
    {
       line_value = line.find("=");
       if(line_value==string::npos) continue; // goto next line
-      line_value++; // skip equal sign
-      rgb32 = // TODO: convert string "line_value" to int + error checking
+      line_value++; // skip the equal sign
+      //  convert the string "line_value" to int + error checking
+      stringstream ss(line_value);
+      rgb32 = ss >> rgb32 ? rgb32 : 0;
       
-      if(line.startswith("Background0="))
+      if(startswith(line, "Background0="))
       	 gb.setDmgPaletteColor(0, 0, rgb32);
-      else if(line.startswith("Background1="))
+      else if(startswith(line, "Background1="))
       	 gb.setDmgPaletteColor(0, 1, rgb32);
-      else if(line.startswith("Background2="))
+      else if(startswith(line, "Background2="))
       	 gb.setDmgPaletteColor(0, 2, rgb32);      	
-      else if(line.startswith("Background3="))
+      else if(startswith(line, "Background3="))
       	 gb.setDmgPaletteColor(0, 3, rgb32);
-      else if(line.startswith("Sprite%2010="))
+      else if(startswith(line, "Sprite%2010="))
       	 gb.setDmgPaletteColor(1, 0, rgb32);
-      else if(line.startswith("Sprite%2011="))
+      else if(startswith(line, "Sprite%2011="))
       	 gb.setDmgPaletteColor(1, 1, rgb32);
-      else if(line.startswith("Sprite%2012="))
+      else if(startswith(line, "Sprite%2012="))
       	 gb.setDmgPaletteColor(1, 2, rgb32);
-      else if(line.startswith("Sprite%2013="))
+      else if(startswith(line, "Sprite%2013="))
       	 gb.setDmgPaletteColor(1, 3, rgb32);
-      else if(line.startswith("Sprite%2020="))
+      else if(startswith(line, "Sprite%2020="))
       	 gb.setDmgPaletteColor(2, 0, rgb32);
-      else if(line.startswith("Sprite%2021="))
+      else if(startswith(line, "Sprite%2021="))
       	 gb.setDmgPaletteColor(2, 1, rgb32);
-      else if(line.startswith("Sprite%2022="))
+      else if(startswith(line, "Sprite%2022="))
       	 gb.setDmgPaletteColor(2, 2, rgb32);  
-      else if(line.startswith("Sprite%2023="))
-      	 gb.setDmgPaletteColor(2, 3, rgb32);  
+      else if(startswith(line, "Sprite%2023="))
+      	 gb.setDmgPaletteColor(2, 3, rgb32);
    } // endfor
 
    palette_file.close();
    return(false);
+}
+
+static bool startswith(const std::string s1, const std::string prefix) {
+    return(s1.compare(0, prefix.length(), prefix)==0);
 }
 
 static bool fileExists(const std::string &filename) {
