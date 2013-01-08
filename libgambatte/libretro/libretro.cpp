@@ -135,29 +135,26 @@ void retro_cheat_reset() {}
 void retro_cheat_set(unsigned, bool, const char *) {}
 
    
-static std::string basename(std::string filename) {
-	// Remove directory if present.
-	// Do this before extension removal incase directory has a period character.
-	const size_t last_slash_idx = filename.find_last_of("\\/");
-	if (std::string::npos != last_slash_idx)
-	{
-	    filename.erase(0, last_slash_idx + 1);
-	}
-	
-	// Remove extension if present.
-	const size_t period_idx = filename.rfind('.');
-	if (std::string::npos != period_idx)
-	{
-	    filename.erase(period_idx);
-	}
-	
-	return filename;
+static std::string basename(std::string filename)
+{
+   // Remove directory if present.
+   // Do this before extension removal incase directory has a period character.
+   const size_t last_slash_idx = filename.find_last_of("\\/");
+   if (std::string::npos != last_slash_idx)
+      filename.erase(0, last_slash_idx + 1);
+
+   // Remove extension if present.
+   const size_t period_idx = filename.rfind('.');
+   if (std::string::npos != period_idx)
+      filename.erase(period_idx);
+
+   return filename;
 }
 
-static bool startswith(const std::string s1, const std::string prefix) {
-    return(s1.compare(0, prefix.length(), prefix)==0);
+static bool startswith(const std::string s1, const std::string prefix)
+{
+    return s1.compare(0, prefix.length(), prefix) == 0;
 }
-
 
 bool retro_load_game(const struct retro_game_info *info)
 {
@@ -176,102 +173,112 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
 
-   bool load_result = gb.load(info->data, info->size);
-   if(load_result==true) return false;
-   // else
+   bool load_fail = gb.load(info->data, info->size);
+   if (load_fail)
+      return false;
    
    //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
    std::string internal_game_name = reinterpret_cast<const char *>((char*)info->data + 0x134);
    /* ALTERNATIVE:
-   char title[0x11] = {0};
-   memcpy(title, info->data + 0x134, 0x10);
-   std::string internal_game_name = title;
-   */
+      char title[0x11] = {0};
+      memcpy(title, info->data + 0x134, 0x10);
+      std::string internal_game_name = title;
+      */
    // ALTERNATIVE2: pass via "info->meta"
-   
+
    // TODO: check GBC BIOS builtin palettes
    /*
-   for (unsigned palnum = 0; palnum < 3; ++palnum)
-	for (unsigned colornum = 0; colornum < 4; ++colornum) {
-		unsigned rgb32 = ...
-		gb.setDmgPaletteColor(palnum, colornum, rgb32);
-	}
-   */
-   
+      for (unsigned palnum = 0; palnum < 3; ++palnum)
+      for (unsigned colornum = 0; colornum < 4; ++colornum) {
+      unsigned rgb32 = ...
+      gb.setDmgPaletteColor(palnum, colornum, rgb32);
+      }
+      */
+
    const char *system_directory_c = NULL;
    environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
-   if(system_directory_c==NULL) {
+   if (!system_directory_c)
+   {
       fprintf(stderr, "[Gambatte]: no system directory defined, unable to look for custom palettes.\n");
-      return(true);
+      return true;
    }
    std::string system_directory(system_directory_c);
-   
+
    const char *input_rom_path = info->path;
    std::string custom_palette_path = system_directory + "/palettes/" + basename(input_rom_path) + ".pal";
-   std::ifstream palette_file( custom_palette_path.c_str() ); // try to open the palette file in read-only mode
-   if(!palette_file.is_open()) {
-   	// try again with the internal game name from the ROM header
-   	custom_palette_path = system_directory + "/palettes/" + internal_game_name + ".pal";
-   	palette_file.open(custom_palette_path.c_str());
+
+   std::ifstream palette_file(custom_palette_path.c_str()); // try to open the palette file in read-only mode
+
+   if (!palette_file.is_open())
+   {
+      // try again with the internal game name from the ROM header
+      custom_palette_path = system_directory + "/palettes/" + internal_game_name + ".pal";
+      palette_file.open(custom_palette_path.c_str());
    }
-   if(!palette_file.is_open()) {
-   	// try again with default.pal
-   	custom_palette_path = system_directory + "/palettes/" + "default.pal";
-   	palette_file.open(custom_palette_path.c_str());
+
+   if (!palette_file.is_open())
+   {
+      // try again with default.pal
+      custom_palette_path = system_directory + "/palettes/" + "default.pal";
+      palette_file.open(custom_palette_path.c_str());
    }
-   if(!palette_file.is_open()) {
-   	// unable to find any custom palette file
-   	return(true);
+
+   if (!palette_file.is_open())
+   {
+      // unable to find any custom palette file
+      return true;
    }
-   
+
    // fprintf(stderr, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
    unsigned rgb32 = 0;
    unsigned line_count = 0;
-   for( std::string line; getline( palette_file, line ); ) // iterate over file lines
+   for (std::string line; getline(palette_file, line); ) // iterate over file lines
    {
       line_count++;
-      if(line.find("=")==std::string::npos) continue; // current line does not contain a palette color definition, so go to next line
-      
-      std::string line_value = line.substr( line.find("=")+1 ); // extract the color value string
+      if (line.find("=") == std::string::npos)
+         continue; // current line does not contain a palette color definition, so go to next line
+
+      std::string line_value = line.substr(line.find("=") + 1); // extract the color value string
       std::stringstream ss(line_value); // convert the color value to int
       //rgb32 = ss >> rgb32 ? rgb32 : 0; // if number conversion fail set it to 0
       ss >> rgb32;
-      if(!ss) {
+      if (!ss)
+      {
          //fprintf(stderr, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
          continue;
       }
 
-      if(startswith(line, "Background0="))
-      	 gb.setDmgPaletteColor(0, 0, rgb32);
-      else if(startswith(line, "Background1="))
-      	 gb.setDmgPaletteColor(0, 1, rgb32);
-      else if(startswith(line, "Background2="))
-      	 gb.setDmgPaletteColor(0, 2, rgb32);      	
-      else if(startswith(line, "Background3="))
-      	 gb.setDmgPaletteColor(0, 3, rgb32);
-      else if(startswith(line, "Sprite%2010="))
-      	 gb.setDmgPaletteColor(1, 0, rgb32);
-      else if(startswith(line, "Sprite%2011="))
-      	 gb.setDmgPaletteColor(1, 1, rgb32);
-      else if(startswith(line, "Sprite%2012="))
-      	 gb.setDmgPaletteColor(1, 2, rgb32);
-      else if(startswith(line, "Sprite%2013="))
-      	 gb.setDmgPaletteColor(1, 3, rgb32);
-      else if(startswith(line, "Sprite%2020="))
-      	 gb.setDmgPaletteColor(2, 0, rgb32);
-      else if(startswith(line, "Sprite%2021="))
-      	 gb.setDmgPaletteColor(2, 1, rgb32);
-      else if(startswith(line, "Sprite%2022="))
-      	 gb.setDmgPaletteColor(2, 2, rgb32);  
-      else if(startswith(line, "Sprite%2023="))
-      	 gb.setDmgPaletteColor(2, 3, rgb32);
+      if (startswith(line, "Background0="))
+         gb.setDmgPaletteColor(0, 0, rgb32);
+      else if (startswith(line, "Background1="))
+         gb.setDmgPaletteColor(0, 1, rgb32);
+      else if (startswith(line, "Background2="))
+         gb.setDmgPaletteColor(0, 2, rgb32);      	
+      else if (startswith(line, "Background3="))
+         gb.setDmgPaletteColor(0, 3, rgb32);
+      else if (startswith(line, "Sprite%2010="))
+         gb.setDmgPaletteColor(1, 0, rgb32);
+      else if (startswith(line, "Sprite%2011="))
+         gb.setDmgPaletteColor(1, 1, rgb32);
+      else if (startswith(line, "Sprite%2012="))
+         gb.setDmgPaletteColor(1, 2, rgb32);
+      else if (startswith(line, "Sprite%2013="))
+         gb.setDmgPaletteColor(1, 3, rgb32);
+      else if (startswith(line, "Sprite%2020="))
+         gb.setDmgPaletteColor(2, 0, rgb32);
+      else if (startswith(line, "Sprite%2021="))
+         gb.setDmgPaletteColor(2, 1, rgb32);
+      else if (startswith(line, "Sprite%2022="))
+         gb.setDmgPaletteColor(2, 2, rgb32);  
+      else if (startswith(line, "Sprite%2023="))
+         gb.setDmgPaletteColor(2, 3, rgb32);
       // else
       // TODO: print warnings on invalid lines?
-      
+
    } // endfor
 
    palette_file.close();
-   return(true);
+   return true;
 }
 
 
