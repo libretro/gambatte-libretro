@@ -180,8 +180,20 @@ bool retro_load_game(const struct retro_game_info *info)
    if(load_result==true) return false;
    // else
    
-   std::string internal_game_name = ""; // gb.??
+   //std::string internal_game_name = gb.romTitle(); // avaiable only in latest Gambatte
+   char title[0x11] = {0};
+   memcpy(title, info->data + 0x134, 0x10);
+   std::string internal_game_name = title;
+   //ALTERNATIVE: std::string internal_game_name = reinterpret_cast<std::string>(info->data + 0x134);
+   
    // TODO: check GBC BIOS builtin palettes
+   /*
+   for (unsigned palnum = 0; palnum < 3; ++palnum)
+	for (unsigned colornum = 0; colornum < 4; ++colornum) {
+		unsigned rgb32 = ...
+		gb.setDmgPaletteColor(palnum, colornum, rgb32);
+	}
+   */
    
    const char *system_directory_c = NULL;
    environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
@@ -340,6 +352,7 @@ void retro_run()
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
+
 
 
 
