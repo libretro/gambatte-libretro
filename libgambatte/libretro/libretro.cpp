@@ -177,7 +177,7 @@ bool retro_load_game(const struct retro_game_info *info)
    }
 
    bool load_result = gb.load(info->data, info->size);
-   if(load_result==false) return true;
+   if(load_result==true) return false;
    // else
    
    std::string internal_game_name = ""; // gb.??
@@ -185,7 +185,10 @@ bool retro_load_game(const struct retro_game_info *info)
    
    const char *system_directory_c = NULL;
    environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
-   if(system_directory_c==NULL) return(false); // no system directory defined
+   if(system_directory_c==NULL) {
+      fprintf(stderr, "[Gambatte]: no system directory defined, unable to look for custom palettes.\n");
+      return(true); // no system directory defined
+   }
    std::string system_directory(system_directory_c);
    
    const char *input_rom_path = info->path;
@@ -203,9 +206,9 @@ bool retro_load_game(const struct retro_game_info *info)
    }
    if(!palette_file.is_open()) {
    	// unable to find any custom palette file
-   	return(false);
+   	return(true);
    }
-   		
+   
    unsigned rgb32 = 0;
    for( std::string line; getline( palette_file, line ); ) // iterate over file lines
    {
@@ -214,6 +217,8 @@ bool retro_load_game(const struct retro_game_info *info)
       std::string line_value = line.substr( line.find("=")+1 ); // extract the color value string
       std::stringstream ss(line_value); // convert the color value to int
       rgb32 = ss >> rgb32 ? rgb32 : 0;
+         // TODO: warning on errors:
+         // fprintf(stderr, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
       
       if(startswith(line, "Background0="))
       	 gb.setDmgPaletteColor(0, 0, rgb32);
@@ -239,13 +244,13 @@ bool retro_load_game(const struct retro_game_info *info)
       	 gb.setDmgPaletteColor(2, 2, rgb32);  
       else if(startswith(line, "Sprite%2023="))
       	 gb.setDmgPaletteColor(2, 3, rgb32);
-      	 
+      // else
       // TODO: print warnings on invalid lines?
       
    } // endfor
 
    palette_file.close();
-   return(false);
+   return(true);
 }
 
 
@@ -329,5 +334,7 @@ void retro_run()
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
+
+
 
 
