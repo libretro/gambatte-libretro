@@ -187,7 +187,7 @@ bool retro_load_game(const struct retro_game_info *info)
    environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
    if(system_directory_c==NULL) {
       fprintf(stderr, "[Gambatte]: no system directory defined, unable to look for custom palettes.\n");
-      return(true); // no system directory defined
+      return(true);
    }
    std::string system_directory(system_directory_c);
    
@@ -209,17 +209,23 @@ bool retro_load_game(const struct retro_game_info *info)
    	return(true);
    }
    
+   // fprintf(stderr, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
    unsigned rgb32 = 0;
+   unsigned line_count = 0;
    for( std::string line; getline( palette_file, line ); ) // iterate over file lines
    {
+      line_count++;
       if(line.find("=")==std::string::npos) continue; // current line does not contain a palette color definition, so go to next line
       
       std::string line_value = line.substr( line.find("=")+1 ); // extract the color value string
       std::stringstream ss(line_value); // convert the color value to int
-      rgb32 = ss >> rgb32 ? rgb32 : 0;
-         // TODO: warning on errors:
-         // fprintf(stderr, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
-      
+      //rgb32 = ss >> rgb32 ? rgb32 : 0; // if number conversion fail set it to 0
+      ss >> rgb32;
+      if(!ss) {
+         //fprintf(stderr, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+         continue;
+      }
+
       if(startswith(line, "Background0="))
       	 gb.setDmgPaletteColor(0, 0, rgb32);
       else if(startswith(line, "Background1="))
