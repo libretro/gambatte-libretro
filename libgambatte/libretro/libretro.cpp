@@ -180,11 +180,14 @@ bool retro_load_game(const struct retro_game_info *info)
    if(load_result==true) return false;
    // else
    
-   //std::string internal_game_name = gb.romTitle(); // avaiable only in latest Gambatte
+   //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
+   std::string internal_game_name = reinterpret_cast<const char *>((char*)info->data + 0x134);
+   /* ALTERNATIVE:
    char title[0x11] = {0};
    memcpy(title, info->data + 0x134, 0x10);
    std::string internal_game_name = title;
-   //ALTERNATIVE: std::string internal_game_name = reinterpret_cast<std::string>(info->data + 0x134);
+   */
+   // ALTERNATIVE2: pass via "info->meta"
    
    // TODO: check GBC BIOS builtin palettes
    /*
@@ -352,8 +355,4 @@ void retro_run()
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
-
-
-
-
 
