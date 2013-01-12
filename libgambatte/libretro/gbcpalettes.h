@@ -361,6 +361,7 @@ static const GbcPaletteEntry gbcTitlePalettes[] = {
 	{ "BA.TOSHINDEN", p50F },
 	{ "BALLOON KID", p006 },
 	{ "BASEBALL", p503 },
+	{ "BOMBERMAN GB", p31C }, // unofficial ("WARIO BLAST" alt.)
 	{ "BOY AND BLOB GB1", p512 },
 	{ "BOY AND BLOB GB2", p512 },
 	{ "BT2RAGNAROKWORLD", p312 },
@@ -414,6 +415,7 @@ static const GbcPaletteEntry gbcTitlePalettes[] = {
 	{ "OTHELLO", p50E },
 	{ "PAC-IN-TIME", p51C },
 	{ "PENGUIN WARS", p30F }, // unofficial ("KINGOFTHEZOO" alt.)
+	{ "PENGUINKUNWARSVS", p30F }, // unofficial ("KINGOFTHEZOO" alt.)
 	{ "PICROSS 2", p012 },
 	{ "PINOCCHIO", p20C },
 	{ "POKEBOM", p30C },
@@ -434,6 +436,7 @@ static const GbcPaletteEntry gbcTitlePalettes[] = {
 	{ "STAR WARS", p512 },
 	{ "STAR WARS-NOA", p512 },
 	{ "STREET FIGHTER 2", p50F },
+	{ "SUPER BOMBLISS  ", p006 }, // unofficial ("TETRIS BLAST" alt.)
 	{ "SUPER MARIOLAND", p30A },
 	{ "SUPER RC PRO-AM", p50F },
 	{ "SUPERDONKEYKONG", p501 },
