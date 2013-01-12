@@ -182,12 +182,13 @@ bool retro_load_game(const struct retro_game_info *info)
    // else it is a GB-mono game -> set a color palette
    
    //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
-   // TODO: provare a rimuovere "reinterpret_cast<const char *>"
-   std::string internal_game_name = reinterpret_cast<const char *>((char*)info->data + 0x134);
+   // reinterpret_cast<const char *>
+   std::string internal_game_name = (char*)(info->data + 0x134);
 
    // load a GBC BIOS builtin palette
    unsigned short* gbc_bios_palette = NULL;
    gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name.c_str()));
+   
    if(gbc_bios_palette==0)
    {
       // no custom palette found, load the default (blue)
@@ -240,6 +241,9 @@ bool retro_load_game(const struct retro_game_info *info)
    for (std::string line; getline(palette_file, line); ) // iterate over file lines
    {
       line_count++;
+
+      if (line[0]=='[') // skip ini sections
+         continue;
 
       if (line[0]==';') // skip ini comments
          continue;
