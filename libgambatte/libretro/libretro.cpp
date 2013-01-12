@@ -186,22 +186,20 @@ bool retro_load_game(const struct retro_game_info *info)
    std::string internal_game_name = reinterpret_cast<const char *>((char*)info->data + 0x134);
 
    // load a GBC BIOS builtin palette
-   /*
-   unsigned short* gbc_bios_title_palette = NULL;
-   gbc_bios_title_palette = findGbcTitlePal(internal_game_name.c_str());
-   if(gbc_bios_title_palette==0)
+   unsigned short* gbc_bios_palette = NULL;
+   gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name.c_str()));
+   if(gbc_bios_palette==0)
    {
       // no custom palette found, load the default (blue)
-      gbc_bios_title_palette = findGbcDirPal("GBC - Blue");
+      gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Blue"));
    }
-   */
-   /*
+   
+   unsigned rgb32 = 0;
    for (unsigned palnum = 0; palnum < 3; ++palnum)
       for (unsigned colornum = 0; colornum < 4; ++colornum) {
-      unsigned rgb32 = ...
+      rgb32 = gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
       gb.setDmgPaletteColor(palnum, colornum, rgb32);
       }
-   */
 
    const char *system_directory_c = NULL;
    environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
@@ -223,7 +221,7 @@ bool retro_load_game(const struct retro_game_info *info)
       palette_file.open(custom_palette_path.c_str());
    }
 
-   if (!palette_file.is_open() && !findGbcTitlePal(internal_game_name.c_str())
+   if (!palette_file.is_open() && !findGbcTitlePal(internal_game_name.c_str()))
    {
       // try again with default.pal
       //  only if no specific title palette from the GBC BIOS is found
@@ -238,16 +236,15 @@ bool retro_load_game(const struct retro_game_info *info)
    }
 
    // fprintf(stderr, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
-   unsigned rgb32 = 0;
    unsigned line_count = 0;
    for (std::string line; getline(palette_file, line); ) // iterate over file lines
    {
       line_count++;
 
-      if (line[0]==";") // skip ini comments
+      if (line[0]==';') // skip ini comments
          continue;
 
-      if (line[0]=="\n") // skip empty lines
+      if (line[0]=='\n') // skip empty lines
          continue;
       
       if (line.find("=") == std::string::npos)
@@ -273,7 +270,7 @@ bool retro_load_game(const struct retro_game_info *info)
       else if (startswith(line, "Background1="))
          gb.setDmgPaletteColor(0, 1, rgb32);
       else if (startswith(line, "Background2="))
-         gb.setDmgPaletteColor(0, 2, rgb32);         
+         gb.setDmgPaletteColor(0, 2, rgb32);      	
       else if (startswith(line, "Background3="))
          gb.setDmgPaletteColor(0, 3, rgb32);
       else if (startswith(line, "Sprite%2010="))
