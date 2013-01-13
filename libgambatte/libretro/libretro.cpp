@@ -182,12 +182,13 @@ bool retro_load_game(const struct retro_game_info *info)
    // else it is a GB-mono game -> set a color palette
    
    //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
-   // reinterpret_cast<const char *>
-   std::string internal_game_name = (char*)(info->data + 0x134);
+   //std::string internal_game_name = reinterpret_cast<const char *>(info->data + 0x134); // buggy with some games ("YOSSY NO COOKIE", "YOSSY NO PANEPON, etc.)
+   char internal_game_name[17] = {0};
+   strncpy(internal_game_name, (const char *)(info->data)+0x134, 16);
 
    // load a GBC BIOS builtin palette
    unsigned short* gbc_bios_palette = NULL;
-   gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name.c_str()));
+   gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
    
    if(gbc_bios_palette==0)
    {
@@ -218,11 +219,11 @@ bool retro_load_game(const struct retro_game_info *info)
    if (!palette_file.is_open())
    {
       // try again with the internal game name from the ROM header
-      custom_palette_path = system_directory + "/palettes/" + internal_game_name + ".pal";
+      custom_palette_path = system_directory + "/palettes/" + std::string(internal_game_name) + ".pal";
       palette_file.open(custom_palette_path.c_str());
    }
 
-   if (!palette_file.is_open() && !findGbcTitlePal(internal_game_name.c_str()))
+   if (!palette_file.is_open() && !findGbcTitlePal(internal_game_name))
    {
       // try again with default.pal
       //  only if no specific title palette from the GBC BIOS is found
