@@ -180,7 +180,7 @@ bool retro_load_game(const struct retro_game_info *info)
    if (gb.isCgb())
       return true;
    // else it is a GB-mono game -> set a color palette
-   
+
    //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
    //std::string internal_game_name = reinterpret_cast<const char *>(info->data + 0x134); // buggy with some games ("YOSSY NO COOKIE", "YOSSY NO PANEPON, etc.)
    char internal_game_name[17] = {0};
@@ -189,19 +189,22 @@ bool retro_load_game(const struct retro_game_info *info)
    // load a GBC BIOS builtin palette
    unsigned short* gbc_bios_palette = NULL;
    gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
-   
-   if(gbc_bios_palette==0)
+
+   if (gbc_bios_palette == 0)
    {
       // no custom palette found, load the default (blue)
       gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Blue"));
    }
-   
+
    unsigned rgb32 = 0;
    for (unsigned palnum = 0; palnum < 3; ++palnum)
-      for (unsigned colornum = 0; colornum < 4; ++colornum) {
-      rgb32 = gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
-      gb.setDmgPaletteColor(palnum, colornum, rgb32);
+   {
+      for (unsigned colornum = 0; colornum < 4; ++colornum)
+      {
+         rgb32 = gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
+         gb.setDmgPaletteColor(palnum, colornum, rgb32);
       }
+   }
 
    const char *system_directory_c = NULL;
    environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
@@ -251,13 +254,14 @@ bool retro_load_game(const struct retro_game_info *info)
 
       if (line[0]=='\n') // skip empty lines
          continue;
-      
+
       if (line.find("=") == std::string::npos)
       {
          fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
          continue; // current line does not contain a palette color definition, so go to next line
       }
-      
+
+      // Supposed to be a typo here.
       if (startswith(line, "slectedScheme="))
          continue;
 
@@ -295,7 +299,7 @@ bool retro_load_game(const struct retro_game_info *info)
       else if (startswith(line, "Sprite%2023="))
          gb.setDmgPaletteColor(2, 3, rgb32);
       else
-		  fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+         fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
 
    } // endfor
 
