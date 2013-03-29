@@ -22,6 +22,7 @@
 #include "inputgetter.h"
 #include "gbint.h"
 #include <string>
+#include <stddef.h>
 
 namespace gambatte {
 enum { BG_PALETTE = 0, SP1_PALETTE = 1, SP2_PALETTE = 2 };

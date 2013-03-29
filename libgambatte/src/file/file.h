@@ -19,7 +19,7 @@ Free Software Foundation, Inc.,
 
 #include <vector>
 #include <stdint.h>
-#include <cstddef>
+#include <stddef.h>
 
 namespace gambatte {
 

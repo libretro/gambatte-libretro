@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
+#include <string.h>
 
 static retro_video_refresh_t video_cb;
 static retro_input_poll_t input_poll_cb;
