@@ -130,6 +130,8 @@ CXXFLAGS += $(fpic) $(DEFINES)
 INCDIRS := -I$(EMU_DIR) -Iinclude -I../common -I../common/resample -Ilibretro
 LIBS :=
 
+all: $(TARGET)
+
 $(TARGET): $(OBJS)
 ifeq ($(platform), ps3)
 	$(AR) rcs $@ $(OBJS)
