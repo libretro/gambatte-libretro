@@ -92,7 +92,18 @@ void retro_deinit()
    delete resampler;
 }
 
-void retro_set_environment(retro_environment_t cb) { environ_cb = cb; }
+void retro_set_environment(retro_environment_t cb)
+{
+   environ_cb = cb;
+
+   static const struct retro_variable vars[] = {
+      { "gb_colorization", "GB Colorization; disabled|enabled" },
+      { NULL, NULL },
+   };
+
+   cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void*)vars);
+}
+
 void retro_set_video_refresh(retro_video_refresh_t cb) { video_cb = cb; }
 void retro_set_audio_sample(retro_audio_sample_t cb) { audio_cb = cb; }
 void retro_set_audio_sample_batch(retro_audio_sample_batch_t) {}
@@ -158,6 +169,157 @@ static bool startswith(const std::string s1, const std::string prefix)
     return s1.compare(0, prefix.length(), prefix) == 0;
 }
 
+static bool gb_colorization_enable = false;
+
+char rom_name[256];
+
+static void check_variables(void)
+{
+   struct retro_variable var = {0};
+   var.key = "gb_colorization";
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var))
+   {
+      if (gb.isCgb())
+         return;
+      
+      // else it is a GB-mono game -> set a color palette
+
+      bool gb_colorization_old = gb_colorization_enable;
+
+      if (strcmp(var.value, "disabled") == 0)
+         gb_colorization_enable = false;
+      else if (strcmp(var.value, "enabled") == 0)
+         gb_colorization_enable = true;
+
+      if (gb_colorization_enable != gb_colorization_old)
+      {
+         retro_reset();
+         //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
+         //std::string internal_game_name = reinterpret_cast<const char *>(info->data + 0x134); // buggy with some games ("YOSSY NO COOKIE", "YOSSY NO PANEPON, etc.)
+         char internal_game_name[17] = {0};
+         strncpy(internal_game_name, (const char *)(rom_name)+0x134, 16);
+
+         // load a GBC BIOS builtin palette
+         unsigned short* gbc_bios_palette = NULL;
+         gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
+
+         if (gbc_bios_palette == 0)
+         {
+            // no custom palette found, load the default (blue)
+            gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Blue"));
+         }
+
+         unsigned rgb32 = 0;
+         for (unsigned palnum = 0; palnum < 3; ++palnum)
+         {
+            for (unsigned colornum = 0; colornum < 4; ++colornum)
+            {
+               rgb32 = gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
+               gb.setDmgPaletteColor(palnum, colornum, rgb32);
+            }
+         }
+
+         const char *system_directory_c = NULL;
+         environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
+         if (!system_directory_c)
+         {
+            fprintf(stderr, "[Gambatte]: no system directory defined, unable to look for custom palettes.\n");
+            return;
+         }
+         std::string system_directory(system_directory_c);
+
+         std::string custom_palette_path = system_directory + "/palettes/" + basename(rom_name) + ".pal";
+
+         std::ifstream palette_file(custom_palette_path.c_str()); // try to open the palette file in read-only mode
+
+         if (!palette_file.is_open())
+         {
+            // try again with the internal game name from the ROM header
+            custom_palette_path = system_directory + "/palettes/" + std::string(internal_game_name) + ".pal";
+            palette_file.open(custom_palette_path.c_str());
+         }
+
+         if (!palette_file.is_open() && !findGbcTitlePal(internal_game_name))
+         {
+            // try again with default.pal
+            //  only if no specific title palette from the GBC BIOS is found
+            custom_palette_path = system_directory + "/palettes/" + "default.pal";
+            palette_file.open(custom_palette_path.c_str());
+         }
+
+         if (!palette_file.is_open())
+            return;  // unable to find any custom palette file
+
+         // fprintf(stderr, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
+         unsigned line_count = 0;
+         for (std::string line; getline(palette_file, line); ) // iterate over file lines
+         {
+            line_count++;
+
+            if (line[0]=='[') // skip ini sections
+               continue;
+
+            if (line[0]==';') // skip ini comments
+               continue;
+
+            if (line[0]=='\n') // skip empty lines
+               continue;
+
+            if (line.find("=") == std::string::npos)
+            {
+               fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+               continue; // current line does not contain a palette color definition, so go to next line
+            }
+
+            // Supposed to be a typo here.
+            if (startswith(line, "slectedScheme="))
+               continue;
+
+            std::string line_value = line.substr(line.find("=") + 1); // extract the color value string
+            std::stringstream ss(line_value); // convert the color value to int
+            ss >> rgb32;
+            if (!ss)
+            {
+               fprintf(stderr, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+               continue;
+            }
+
+            if (startswith(line, "Background0="))
+               gb.setDmgPaletteColor(0, 0, rgb32);
+            else if (startswith(line, "Background1="))
+               gb.setDmgPaletteColor(0, 1, rgb32);
+            else if (startswith(line, "Background2="))
+               gb.setDmgPaletteColor(0, 2, rgb32);      	
+            else if (startswith(line, "Background3="))
+               gb.setDmgPaletteColor(0, 3, rgb32);
+            else if (startswith(line, "Sprite%2010="))
+               gb.setDmgPaletteColor(1, 0, rgb32);
+            else if (startswith(line, "Sprite%2011="))
+               gb.setDmgPaletteColor(1, 1, rgb32);
+            else if (startswith(line, "Sprite%2012="))
+               gb.setDmgPaletteColor(1, 2, rgb32);
+            else if (startswith(line, "Sprite%2013="))
+               gb.setDmgPaletteColor(1, 3, rgb32);
+            else if (startswith(line, "Sprite%2020="))
+               gb.setDmgPaletteColor(2, 0, rgb32);
+            else if (startswith(line, "Sprite%2021="))
+               gb.setDmgPaletteColor(2, 1, rgb32);
+            else if (startswith(line, "Sprite%2022="))
+               gb.setDmgPaletteColor(2, 2, rgb32);  
+            else if (startswith(line, "Sprite%2023="))
+               gb.setDmgPaletteColor(2, 3, rgb32);
+            else
+               fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+
+         } // endfor
+
+         palette_file.close();
+      }
+   }
+}
+
+
 bool retro_load_game(const struct retro_game_info *info)
 {
    bool can_dupe = false;
@@ -177,134 +339,9 @@ bool retro_load_game(const struct retro_game_info *info)
 
    if (gb.load(info->data, info->size))
       return false;
+
+   snprintf(rom_name, sizeof(rom_name), "%s", info->data);
    
-   if (gb.isCgb())
-      return true;
-   // else it is a GB-mono game -> set a color palette
-
-   //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
-   //std::string internal_game_name = reinterpret_cast<const char *>(info->data + 0x134); // buggy with some games ("YOSSY NO COOKIE", "YOSSY NO PANEPON, etc.)
-   char internal_game_name[17] = {0};
-   strncpy(internal_game_name, (const char *)(info->data)+0x134, 16);
-
-   // load a GBC BIOS builtin palette
-   unsigned short* gbc_bios_palette = NULL;
-   gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
-
-   if (gbc_bios_palette == 0)
-   {
-      // no custom palette found, load the default (blue)
-      gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Blue"));
-   }
-
-   unsigned rgb32 = 0;
-   for (unsigned palnum = 0; palnum < 3; ++palnum)
-   {
-      for (unsigned colornum = 0; colornum < 4; ++colornum)
-      {
-         rgb32 = gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
-         gb.setDmgPaletteColor(palnum, colornum, rgb32);
-      }
-   }
-
-   const char *system_directory_c = NULL;
-   environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
-   if (!system_directory_c)
-   {
-      fprintf(stderr, "[Gambatte]: no system directory defined, unable to look for custom palettes.\n");
-      return true;
-   }
-   std::string system_directory(system_directory_c);
-
-   std::string custom_palette_path = system_directory + "/palettes/" + basename(info->path) + ".pal";
-
-   std::ifstream palette_file(custom_palette_path.c_str()); // try to open the palette file in read-only mode
-
-   if (!palette_file.is_open())
-   {
-      // try again with the internal game name from the ROM header
-      custom_palette_path = system_directory + "/palettes/" + std::string(internal_game_name) + ".pal";
-      palette_file.open(custom_palette_path.c_str());
-   }
-
-   if (!palette_file.is_open() && !findGbcTitlePal(internal_game_name))
-   {
-      // try again with default.pal
-      //  only if no specific title palette from the GBC BIOS is found
-      custom_palette_path = system_directory + "/palettes/" + "default.pal";
-      palette_file.open(custom_palette_path.c_str());
-   }
-
-   if (!palette_file.is_open())
-   {
-      // unable to find any custom palette file
-      return true;
-   }
-
-   // fprintf(stderr, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
-   unsigned line_count = 0;
-   for (std::string line; getline(palette_file, line); ) // iterate over file lines
-   {
-      line_count++;
-
-      if (line[0]=='[') // skip ini sections
-         continue;
-
-      if (line[0]==';') // skip ini comments
-         continue;
-
-      if (line[0]=='\n') // skip empty lines
-         continue;
-
-      if (line.find("=") == std::string::npos)
-      {
-         fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
-         continue; // current line does not contain a palette color definition, so go to next line
-      }
-
-      // Supposed to be a typo here.
-      if (startswith(line, "slectedScheme="))
-         continue;
-
-      std::string line_value = line.substr(line.find("=") + 1); // extract the color value string
-      std::stringstream ss(line_value); // convert the color value to int
-      ss >> rgb32;
-      if (!ss)
-      {
-         fprintf(stderr, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
-         continue;
-      }
-
-      if (startswith(line, "Background0="))
-         gb.setDmgPaletteColor(0, 0, rgb32);
-      else if (startswith(line, "Background1="))
-         gb.setDmgPaletteColor(0, 1, rgb32);
-      else if (startswith(line, "Background2="))
-         gb.setDmgPaletteColor(0, 2, rgb32);      	
-      else if (startswith(line, "Background3="))
-         gb.setDmgPaletteColor(0, 3, rgb32);
-      else if (startswith(line, "Sprite%2010="))
-         gb.setDmgPaletteColor(1, 0, rgb32);
-      else if (startswith(line, "Sprite%2011="))
-         gb.setDmgPaletteColor(1, 1, rgb32);
-      else if (startswith(line, "Sprite%2012="))
-         gb.setDmgPaletteColor(1, 2, rgb32);
-      else if (startswith(line, "Sprite%2013="))
-         gb.setDmgPaletteColor(1, 3, rgb32);
-      else if (startswith(line, "Sprite%2020="))
-         gb.setDmgPaletteColor(2, 0, rgb32);
-      else if (startswith(line, "Sprite%2021="))
-         gb.setDmgPaletteColor(2, 1, rgb32);
-      else if (startswith(line, "Sprite%2022="))
-         gb.setDmgPaletteColor(2, 2, rgb32);  
-      else if (startswith(line, "Sprite%2023="))
-         gb.setDmgPaletteColor(2, 3, rgb32);
-      else
-         fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
-
-   } // endfor
-
-   palette_file.close();
    return true;
 }
 
@@ -386,6 +423,10 @@ void retro_run()
    video_cb(video_buf, 160, 144, 1024);
 
    frames_count++;
+
+   bool updated = false;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
+      check_variables();
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
