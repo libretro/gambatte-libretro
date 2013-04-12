@@ -340,7 +340,7 @@ bool retro_load_game(const struct retro_game_info *info)
    if (gb.load(info->data, info->size))
       return false;
 
-   snprintf(rom_name, sizeof(rom_name), "%s", info->data);
+   strcpy(rom_name, (const char*)info->data);
    
    return true;
 }
