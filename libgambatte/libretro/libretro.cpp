@@ -112,7 +112,24 @@ void retro_set_input_state(retro_input_state_t cb) { input_state_cb = cb; }
 
 void retro_set_controller_port_device(unsigned, unsigned) {}
 
-void retro_reset() { gb.reset(); }
+void retro_reset()
+{
+   // gambatte seems to clear out SRAM on reset.
+   uint8_t *sram = 0;
+   if (gb.savedata_size())
+   {
+      sram = new uint8_t[gb.savedata_size()];
+      memcpy(sram, gb.savedata_ptr(), gb.savedata_size());
+   }
+
+   gb.reset();
+
+   if (sram)
+   {
+      memcpy(gb.savedata_ptr(), sram, gb.savedata_size());
+      delete[] sram;
+   }
+}
 
 static size_t serialize_size = 0;
 size_t retro_serialize_size()
