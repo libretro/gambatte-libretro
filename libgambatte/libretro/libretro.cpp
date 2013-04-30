@@ -53,7 +53,7 @@ void retro_get_system_info(struct retro_system_info *info)
    info->library_version = "v0.5.0";
    info->need_fullpath = false;
    info->block_extract = false;
-   info->valid_extensions = "gb|gbc|dmg|zip|GB|GBC|DMG|ZIP";
+   info->valid_extensions = "gb|gbc|dmg";
 }
 
 static struct retro_system_timing g_timing;
