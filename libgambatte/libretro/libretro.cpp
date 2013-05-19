@@ -37,7 +37,6 @@ class SNESInput : public gambatte::InputGetter
    public:
       unsigned operator()()
       {
-         input_poll_cb();
          unsigned res = 0;
          for (unsigned i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
             res |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes) ? input::btn_map[i].gb : 0;
