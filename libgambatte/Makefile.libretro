@@ -1,5 +1,9 @@
 DEBUG = 0
 
+ifneq ($(EMSCRIPTEN),)
+   platform = emscripten
+endif
+
 ifeq ($(platform),)
 platform = unix
 ifeq ($(shell uname -a),)
@@ -121,6 +125,8 @@ else ifneq (,$(findstring hardfloat,$(platform)))
    PLATFORM_DEFINES += -mfloat-abi=hard
 endif
    PLATFORM_DEFINES += -DARM
+else ifeq ($(platform), emscripten)
+   TARGET := $(TARGET_NAME)_libretro_emscripten.bc
 else
    TARGET := $(TARGET_NAME)_libretro.dll
    CC = gcc
@@ -131,6 +137,9 @@ endif
 ifeq ($(DEBUG), 1)
 	CFLAGS += -O0 -g
 	CXXFLAGS += -O0 -g
+else ifeq ($(platform), emscripten)
+	CFLAGS += -O2
+	CXXFLAGS += -O2 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
 else
 	CFLAGS += -O3
 	CXXFLAGS += -O3 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
