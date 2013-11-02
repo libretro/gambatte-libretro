@@ -74,8 +74,8 @@ void retro_init()
    double fps = 4194304.0 / 70224.0;
    double sample_rate = fps * 35112;
 
-   resampler_l = blipper_new(64, 0.85, 8.0, 64, 1024);
-   resampler_r = blipper_new(64, 0.85, 8.0, 64, 1024);
+   resampler_l = blipper_new(32, 0.85, 6.5, 64, 1024);
+   resampler_r = blipper_new(32, 0.85, 6.5, 64, 1024);
 
    if (environ_cb)
    {
@@ -367,7 +367,8 @@ bool retro_load_game(const struct retro_game_info *info)
 
 bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t) { return false; }
 
-void retro_unload_game() {}
+void retro_unload_game()
+{}
 
 unsigned retro_get_region() { return RETRO_REGION_NTSC; }
 
@@ -427,6 +428,15 @@ void retro_run()
    while (gb.runFor(video_buf, param2, sound_buf.u32, samples) == -1)
    {
       render_audio(sound_buf.i16, samples);
+
+      unsigned read_avail = blipper_read_avail(resampler_l);
+      if (read_avail >= 512)
+      {
+         blipper_read(resampler_l, sound_buf.i16 + 0, read_avail, 2);
+         blipper_read(resampler_r, sound_buf.i16 + 1, read_avail, 2);
+         audio_batch_cb(sound_buf.i16, read_avail);
+      }
+
       samples_count += samples;
       samples = 2064;
    }
