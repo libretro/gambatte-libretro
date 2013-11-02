@@ -347,7 +347,7 @@ void blipper_push_delta(blipper_t *blip, blipper_fixed_t delta, unsigned clocks_
    {
       __m128i t, t0, t1, res0, res1;
       __m128i d = _mm_set1_epi16(delta);
-      for (i = 0; i < taps - 8; i += 8)
+      for (i = 0; i + 8 <= taps; i += 8)
       {
          t = _mm_loadu_si128((__m128i*)(response + i));
          t0 = _mm_unpacklo_epi16(t, _mm_setzero_si128());
