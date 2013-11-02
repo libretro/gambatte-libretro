@@ -27,6 +27,19 @@
 #ifndef BLIPPER_H__
 #define BLIPPER_H__
 
+/* Configurables. */
+#ifndef BLIPPER_LOG_PERFORMANCE
+#define BLIPPER_LOG_PERFORMANCE 0
+#endif
+
+#ifndef BLIPPER_LOG_CLIPPING
+#define BLIPPER_LOG_CLIPPING 1
+#endif
+
+#ifndef BLIPPER_SIMD
+#define BLIPPER_SIMD 1
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

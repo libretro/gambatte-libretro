@@ -31,6 +31,22 @@
 #include <string.h>
 #include <math.h>
 
+#if BLIPPER_SIMD
+#ifdef __SSE2__
+#include <emmintrin.h>
+#endif
+#endif
+
+#if BLIPPER_LOG_PERFORMANCE
+#include <time.h>
+static double get_time(void)
+{
+   struct timespec tv;
+   clock_gettime(CLOCK_MONOTONIC, &tv);
+   return tv.tv_sec + tv.tv_nsec / 1000000000.0;
+}
+#endif
+
 struct blipper
 {
    blipper_fixed_t *output_buffer;
@@ -46,12 +62,22 @@ struct blipper
 
    blipper_fixed_t integrator;
    blipper_sample_t last_sample;
+
+#if BLIPPER_LOG_PERFORMANCE
+   double total_time;
+   double integrator_time;
+   unsigned long total_samples;
+#endif
 };
 
 void blipper_free(blipper_t *blip)
 {
    if (blip)
    {
+#if BLIPPER_LOG_PERFORMANCE
+      fprintf(stderr, "[blipper]: Processed %lu samples, using %.6f seconds blipping and %.6f seconds integrating.\n", blip->total_samples, blip->total_time, blip->integrator_time);
+#endif
+
       free(blip->filter_bank);
       free(blip->output_buffer);
       free(blip);
@@ -225,6 +251,10 @@ static int blipper_create_filter_bank(blipper_t *blip, unsigned taps,
 {
    float *sinc_filter;
 
+   if (taps <= 1)
+      return 0;
+   taps--;
+
    sinc_filter = blipper_create_sinc(blip->phases, taps, cutoff, beta);
    if (!sinc_filter)
       return 0;
@@ -309,9 +339,31 @@ void blipper_push_delta(blipper_t *blip, blipper_fixed_t delta, unsigned clocks_
    target = blip->output_buffer + target_output;
    taps = blip->taps;
 
-   /* SIMD target */
+   /* Decent SIMD target */
+   /* This is extremely unlikely to ever saturate, so don't bother.
+    * The sinc is attenuated a bit, and positive deltas generally have to be alternating. */
+
+#if BLIPPER_SIMD && defined(__SSE2__)
+   {
+      __m128i t, t0, t1, res0, res1;
+      __m128i d = _mm_set1_epi16(delta);
+      for (i = 0; i < taps - 8; i += 8)
+      {
+         t = _mm_loadu_si128((__m128i*)(response + i));
+         t0 = _mm_unpacklo_epi16(t, _mm_setzero_si128());
+         t1 = _mm_unpackhi_epi16(t, _mm_setzero_si128());
+         res0 = _mm_add_epi32(_mm_madd_epi16(t0, d), _mm_loadu_si128((__m128i*)(target + i + 0)));
+         res1 = _mm_add_epi32(_mm_madd_epi16(t1, d), _mm_loadu_si128((__m128i*)(target + i + 4)));
+         _mm_storeu_si128((__m128i*)(target + i + 0), res0);
+         _mm_storeu_si128((__m128i*)(target + i + 4), res1);
+      }
+      for (; i < taps; i++)
+         target[i] += delta * response[i];
+   }
+#else
    for (i = 0; i < taps; i++)
       target[i] += delta * response[i];
+#endif
 
    blip->output_avail = target_output;
 }
@@ -322,6 +374,10 @@ void blipper_push_samples(blipper_t *blip, const blipper_sample_t *data,
    unsigned s;
    unsigned clocks_skip = 0;
    blipper_sample_t last = blip->last_sample;
+
+#if BLIPPER_LOG_PERFORMANCE
+   double t0 = get_time();
+#endif
 
    for (s = 0; s < samples; s++, data += stride)
    {
@@ -339,6 +395,11 @@ void blipper_push_samples(blipper_t *blip, const blipper_sample_t *data,
    blip->phase += clocks_skip;
    blip->output_avail = (blip->phase + blip->phases - 1) >> blip->phases_log2;
    blip->last_sample = last;
+
+#if BLIPPER_LOG_PERFORMANCE
+   blip->total_time += get_time() - t0;
+   blip->total_samples += samples;
+#endif
 }
 
 unsigned blipper_read_avail(blipper_t *blip)
@@ -354,10 +415,30 @@ void blipper_read(blipper_t *blip, blipper_sample_t *output, unsigned samples,
    blipper_fixed_t sum = blip->integrator;
    const blipper_fixed_t *out = blip->output_buffer;
 
+#if BLIPPER_LOG_PERFORMANCE
+   double t0 = get_time();
+#endif
+
    for (s = 0; s < samples; s++, output += stride)
    {
-      /* Should do a saturated add here. */
-      sum += out[s];
+      /* Cannot overflow */
+      sum += out[s] >> 1;
+
+      /* Clip sum. Really shoudn't happen though. */
+      if (sum > 0x3fff0000l)
+      {
+#if BLIPPER_LOG_CLIPPING
+         fprintf(stderr, "Positive clipping: 0x%lx -> 0x3fff0000.\n", (unsigned long)sum);
+#endif
+         sum = 0x3fff0000l;
+      }
+      else if (sum < -0x3fff0000l)
+      {
+#if BLIPPER_LOG_CLIPPING
+         fprintf(stderr, "Negative clipping: -0x%lx -> -0x3fff0000.\n", (unsigned long)-sum);
+#endif
+         sum = -0x3fff0000l;
+      }
 
       quant = (sum + 0x4000) >> 15;
       *output = quant;
@@ -372,5 +453,9 @@ void blipper_read(blipper_t *blip, blipper_sample_t *output, unsigned samples,
    blip->phase -= samples << blip->phases_log2;
 
    blip->integrator = sum;
+
+#if BLIPPER_LOG_PERFORMANCE
+   blip->integrator_time += get_time() - t0;
+#endif
 }
 
