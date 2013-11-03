@@ -31,12 +31,6 @@
 #include <string.h>
 #include <math.h>
 
-#if BLIPPER_SIMD
-#ifdef __SSE2__
-#include <emmintrin.h>
-#endif
-#endif
-
 #if BLIPPER_LOG_PERFORMANCE
 #include <time.h>
 static double get_time(void)
@@ -49,7 +43,7 @@ static double get_time(void)
 
 struct blipper
 {
-   blipper_fixed_t *output_buffer;
+   blipper_long_sample_t *output_buffer;
    unsigned output_avail;
    unsigned output_buffer_samples;
 
@@ -60,7 +54,7 @@ struct blipper
    unsigned phases_log2;
    unsigned taps;
 
-   blipper_fixed_t integrator;
+   blipper_long_sample_t integrator;
    blipper_sample_t last_sample;
 
 #if BLIPPER_LOG_PERFORMANCE
@@ -68,6 +62,8 @@ struct blipper
    double integrator_time;
    unsigned long total_samples;
 #endif
+
+   int owns_filter;
 };
 
 void blipper_free(blipper_t *blip)
@@ -78,7 +74,8 @@ void blipper_free(blipper_t *blip)
       fprintf(stderr, "[blipper]: Processed %lu samples, using %.6f seconds blipping and %.6f seconds integrating.\n", blip->total_samples, blip->total_time, blip->integrator_time);
 #endif
 
-      free(blip->filter_bank);
+      if (blip->owns_filter)
+         free(blip->filter_bank);
       free(blip->output_buffer);
       free(blip);
    }
@@ -128,14 +125,14 @@ static double kaiser_window(double index, double beta)
 #define M_PI 3.14159265358979323846
 #endif
 
-static float *blipper_create_sinc(unsigned phases, unsigned taps,
+static blipper_real_t *blipper_create_sinc(unsigned phases, unsigned taps,
       double cutoff, double beta)
 {
    unsigned i, filter_len;
    double sidelobes, window_mod, window_phase, sinc_phase;
-   float *filter;
+   blipper_real_t *filter;
 
-   filter = malloc(phases * taps * sizeof(*filter));
+   filter = (blipper_real_t*)malloc(phases * taps * sizeof(*filter));
    if (!filter)
       return NULL;
 
@@ -166,17 +163,17 @@ static float *blipper_create_sinc(unsigned phases, unsigned taps,
  * This filtering creates a finite length filter, albeit slightly longer.
  *
  * phases is the same as decimation rate. */
-static float *blipper_prefilter_sinc(float *filter, unsigned phases,
-      unsigned *out_taps)
+static blipper_real_t *blipper_prefilter_sinc(blipper_real_t *filter, unsigned phases,
+      unsigned taps)
 {
    unsigned i;
-   unsigned taps = *out_taps;
-   float *tmp_filter;
-   float *new_filter = malloc((phases * taps + phases) * sizeof(*filter));
+   float filter_amp = 0.75f / phases;
+   blipper_real_t *tmp_filter;
+   blipper_real_t *new_filter = (blipper_real_t*)malloc((phases * taps + phases) * sizeof(*filter));
    if (!new_filter)
       goto error;
 
-   tmp_filter = realloc(filter, (phases * taps + phases) * sizeof(*filter));
+   tmp_filter = (blipper_real_t*)realloc(filter, (phases * taps + phases) * sizeof(*filter));
    if (!tmp_filter)
       goto error;
    filter = tmp_filter;
@@ -188,12 +185,19 @@ static float *blipper_prefilter_sinc(float *filter, unsigned phases,
    for (i = phases * taps; i < phases * taps + phases; i++)
       new_filter[i] = new_filter[phases * taps - 1];
 
+   taps++;
+
    /* Differentiate with offset of D. */
    memcpy(filter, new_filter, phases * sizeof(*filter));
-   for (i = phases; i < phases * taps + phases; i++)
+   for (i = phases; i < phases * taps; i++)
       filter[i] = new_filter[i] - new_filter[i - phases];
 
-   *out_taps = taps + 1;
+   /* blipper_prefilter_sinc() boosts the gain of the sinc.
+    * Have to compensate for this. Attenuate a bit more to ensure
+    * we don't clip, especially in fixed point. */
+   for (i = 0; i < phases * taps; i++)
+      filter[i] *= filter_amp;
+
    free(new_filter);
    return filter;
 
@@ -206,11 +210,11 @@ error:
 /* Creates a polyphase filter bank.
  * Interleaves the filter for cache coherency and possibilities
  * for SIMD processing. */
-static float *blipper_interleave_sinc(float *filter, unsigned phases,
+static blipper_real_t *blipper_interleave_sinc(blipper_real_t *filter, unsigned phases,
       unsigned taps)
 {
    unsigned t, p;
-   float *new_filter = malloc(phases * taps * sizeof(*filter));
+   blipper_real_t *new_filter = (blipper_real_t*)malloc(phases * taps * sizeof(*filter));
    if (!new_filter)
       goto error;
 
@@ -227,15 +231,16 @@ error:
    return NULL;
 }
 
-static blipper_sample_t *blipper_quantize_sinc(float *filter, unsigned taps, float amp)
+#if BLIPPER_FIXED_POINT
+static blipper_sample_t *blipper_quantize_sinc(blipper_real_t *filter, unsigned taps)
 {
    unsigned t;
-   blipper_sample_t *filt = malloc(taps * sizeof(*filt));
+   blipper_sample_t *filt = (blipper_sample_t*)malloc(taps * sizeof(*filt));
    if (!filt)
       goto error;
 
    for (t = 0; t < taps; t++)
-      filt[t] = (blipper_sample_t)floor(filter[t] * 0x7fff * amp + 0.5);
+      filt[t] = (blipper_sample_t)floor(filter[t] * 0x7fff + 0.5);
 
    free(filter);
    return filt;
@@ -245,33 +250,38 @@ error:
    free(filt);
    return NULL;
 }
+#endif
 
-static int blipper_create_filter_bank(blipper_t *blip, unsigned taps,
+blipper_sample_t *blipper_create_filter_bank(unsigned phases, unsigned taps,
       double cutoff, double beta)
 {
-   float *sinc_filter;
+   blipper_real_t *sinc_filter;
 
+   /* blipper_prefilter_sinc() will add one tap.
+    * To keep number of taps as expected, compensate for it here
+    * to keep the interface more obvious. */
    if (taps <= 1)
       return 0;
    taps--;
 
-   sinc_filter = blipper_create_sinc(blip->phases, taps, cutoff, beta);
+   sinc_filter = blipper_create_sinc(phases, taps, cutoff, beta);
    if (!sinc_filter)
       return 0;
 
-   sinc_filter = blipper_prefilter_sinc(sinc_filter, blip->phases, &taps);
+   sinc_filter = blipper_prefilter_sinc(sinc_filter, phases, taps);
    if (!sinc_filter)
       return 0;
-   sinc_filter = blipper_interleave_sinc(sinc_filter, blip->phases, taps);
+   taps++;
+
+   sinc_filter = blipper_interleave_sinc(sinc_filter, phases, taps);
    if (!sinc_filter)
       return 0;
 
-   blip->filter_bank = blipper_quantize_sinc(sinc_filter, blip->phases * taps, 0.85f / blip->phases);
-   if (!blip->filter_bank)
-      return 0;
-
-   blip->taps = taps;
-   return 1;
+#if BLIPPER_FIXED_POINT
+   return blipper_quantize_sinc(sinc_filter, phases * taps);
+#else
+   return sinc_filter;
+#endif
 }
 
 static unsigned log2_int(unsigned v)
@@ -282,8 +292,19 @@ static unsigned log2_int(unsigned v)
    return ret;
 }
 
+void blipper_reset(blipper_t *blip)
+{
+   blip->phase = 0;
+   memset(blip->output_buffer, 0,
+         (blip->output_avail + blip->taps) * sizeof(*blip->output_buffer));
+   blip->output_avail = 0;
+   blip->last_sample = 0;
+   blip->integrator = 0;
+}
+
 blipper_t *blipper_new(unsigned taps, double cutoff, double beta,
-      unsigned decimation, unsigned buffer_samples)
+      unsigned decimation, unsigned buffer_samples,
+      const blipper_sample_t *filter_bank)
 {
    blipper_t *blip = NULL;
 
@@ -300,17 +321,26 @@ blipper_t *blipper_new(unsigned taps, double cutoff, double beta,
       return NULL;
    }
 
-   blip = calloc(1, sizeof(*blip));
+   blip = (blipper_t*)calloc(1, sizeof(*blip));
    if (!blip)
       return NULL;
 
    blip->phases = decimation;
    blip->phases_log2 = log2_int(decimation);
 
-   if (!blipper_create_filter_bank(blip, taps, cutoff, beta))
-      goto error;
+   blip->taps = taps;
 
-   blip->output_buffer = calloc(buffer_samples + blip->taps,
+   if (!filter_bank)
+   {
+      blip->filter_bank = blipper_create_filter_bank(blip->phases, taps, cutoff, beta);
+      if (!blip->filter_bank)
+         goto error;
+      blip->owns_filter = 1;
+   }
+   else
+      blip->filter_bank = (blipper_sample_t*)filter_bank;
+
+   blip->output_buffer = (blipper_long_sample_t*)calloc(buffer_samples + blip->taps,
          sizeof(*blip->output_buffer));
    if (!blip->output_buffer)
       goto error;
@@ -323,11 +353,11 @@ error:
    return NULL;
 }
 
-void blipper_push_delta(blipper_t *blip, blipper_fixed_t delta, unsigned clocks_step)
+void blipper_push_delta(blipper_t *blip, blipper_long_sample_t delta, unsigned clocks_step)
 {
    unsigned target_output, filter_phase, taps, i;
    const blipper_sample_t *response;
-   blipper_fixed_t *target;
+   blipper_long_sample_t *target;
 
    blip->phase += clocks_step;
 
@@ -339,31 +369,8 @@ void blipper_push_delta(blipper_t *blip, blipper_fixed_t delta, unsigned clocks_
    target = blip->output_buffer + target_output;
    taps = blip->taps;
 
-   /* Decent SIMD target */
-   /* This is extremely unlikely to ever saturate, so don't bother.
-    * The sinc is attenuated a bit, and positive deltas generally have to be alternating. */
-
-#if BLIPPER_SIMD && defined(__SSE2__)
-   {
-      __m128i t, t0, t1, res0, res1;
-      __m128i d = _mm_set1_epi16(delta);
-      for (i = 0; i + 8 <= taps; i += 8)
-      {
-         t = _mm_loadu_si128((__m128i*)(response + i));
-         t0 = _mm_unpacklo_epi16(t, _mm_setzero_si128());
-         t1 = _mm_unpackhi_epi16(t, _mm_setzero_si128());
-         res0 = _mm_add_epi32(_mm_madd_epi16(t0, d), _mm_loadu_si128((__m128i*)(target + i + 0)));
-         res1 = _mm_add_epi32(_mm_madd_epi16(t1, d), _mm_loadu_si128((__m128i*)(target + i + 4)));
-         _mm_storeu_si128((__m128i*)(target + i + 0), res0);
-         _mm_storeu_si128((__m128i*)(target + i + 4), res1);
-      }
-      for (; i < taps; i++)
-         target[i] += delta * response[i];
-   }
-#else
    for (i = 0; i < taps; i++)
       target[i] += delta * response[i];
-#endif
 
    blip->output_avail = target_output;
 }
@@ -384,7 +391,7 @@ void blipper_push_samples(blipper_t *blip, const blipper_sample_t *data,
       blipper_sample_t val = *data;
       if (val != last)
       {
-         blipper_push_delta(blip, (blipper_fixed_t)val - (blipper_fixed_t)last, clocks_skip + 1);
+         blipper_push_delta(blip, (blipper_long_sample_t)val - (blipper_long_sample_t)last, clocks_skip + 1);
          clocks_skip = 0;
          last = val;
       }
@@ -411,38 +418,44 @@ void blipper_read(blipper_t *blip, blipper_sample_t *output, unsigned samples,
       unsigned stride)
 {
    unsigned s;
-   blipper_sample_t quant;
-   blipper_fixed_t sum = blip->integrator;
-   const blipper_fixed_t *out = blip->output_buffer;
+   blipper_long_sample_t sum = blip->integrator;
+   const blipper_long_sample_t *out = blip->output_buffer;
 
 #if BLIPPER_LOG_PERFORMANCE
    double t0 = get_time();
 #endif
 
+#if BLIPPER_FIXED_POINT
    for (s = 0; s < samples; s++, output += stride)
    {
-      /* Cannot overflow */
-      sum += out[s] >> 1;
+      blipper_long_sample_t quant;
 
-      /* Clip sum. Really shoudn't happen though. */
-      if (sum > 0x3fff0000l)
-      {
-#if BLIPPER_LOG_CLIPPING
-         fprintf(stderr, "Positive clipping: 0x%lx -> 0x3fff0000.\n", (unsigned long)sum);
-#endif
-         sum = 0x3fff0000l;
-      }
-      else if (sum < -0x3fff0000l)
-      {
-#if BLIPPER_LOG_CLIPPING
-         fprintf(stderr, "Negative clipping: -0x%lx -> -0x3fff0000.\n", (unsigned long)-sum);
-#endif
-         sum = -0x3fff0000l;
-      }
+      /* Cannot overflow. Also add a leaky integrator.
+         Mitigates DC shift numerical instability which is
+         inherent for integrators. */
+      sum += (out[s] >> 1) - (sum >> 9);
 
+      /* Rounded. With leaky integrator, this cannot overflow. */
       quant = (sum + 0x4000) >> 15;
+
+      /* Clamp. quant can potentially have range [-0x10000, 0xffff] here.
+       * In both cases, top 16-bits will have a uniform bit pattern which can be exploited. */
+      if ((blipper_sample_t)quant != quant)
+      {
+         quant = (quant >> 16) ^ 0x7fff;
+         sum = quant << 15;
+      }
+
       *output = quant;
    }
+#else
+   for (s = 0; s < samples; s++, output += stride)
+   {
+      /* Leaky integrator, same as fixed point (1.0f / 512.0f) */
+      sum += out[s] - sum * 0.00195f;
+      *output = sum;
+   }
+#endif
 
    /* Don't bother with ring buffering.
     * The entire buffer should be read out ideally anyways. */

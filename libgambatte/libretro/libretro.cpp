@@ -74,8 +74,8 @@ void retro_init()
    double fps = 4194304.0 / 70224.0;
    double sample_rate = fps * 35112;
 
-   resampler_l = blipper_new(32, 0.85, 6.5, 64, 1024);
-   resampler_r = blipper_new(32, 0.85, 6.5, 64, 1024);
+   resampler_l = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
+   resampler_r = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
 
    if (environ_cb)
    {
