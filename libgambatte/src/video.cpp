@@ -31,13 +31,20 @@ void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const
 }
 
 static unsigned long gbcToRgb32(const unsigned bgr15) {
+#ifdef VIDEO_RGB565
+	const unsigned r = bgr15 & 0x1F;
+	const unsigned g = bgr15 >> 5 & 0x1F;
+	const unsigned b = bgr15 >> 10 & 0x1F;
+
+	return (((r * 13 + g * 2 + b + 8) << 7) & 0xF800) | ((g * 3 + b + 1) >> 1) << 5 | ((r * 3 + g * 2 + b * 11 + 8) >> 4);
+#else
 	const unsigned long r = bgr15       & 0x1F;
 	const unsigned long g = bgr15 >>  5 & 0x1F;
 	const unsigned long b = bgr15 >> 10 & 0x1F;
 
 	return ((r * 13 + g * 2 + b) >> 1) << 16 | (g * 3 + b) << 9 | (r * 3 + g * 2 + b * 11) >> 1;
+#endif
 }
-
 /*static unsigned long gbcToRgb16(const unsigned bgr15) {
 	const unsigned r = bgr15 & 0x1F;
 	const unsigned g = bgr15 >> 5 & 0x1F;
@@ -215,7 +222,11 @@ static void blitOsdElement(video_pixel_t *d,
 template<unsigned weight>
 struct Blend {
 	enum { SW = weight - 1 };
+#ifdef VIDEO_RGB565
+	enum { LOWMASK = SW * 0x0821ul };
+#else
 	enum { LOWMASK = SW * 0x010101ul };
+#endif
 	video_pixel_t operator()(const video_pixel_t s, const video_pixel_t d) const {
 		return (s * SW + d - (((s & LOWMASK) * SW + (d & LOWMASK)) & LOWMASK)) / weight;
 	}
