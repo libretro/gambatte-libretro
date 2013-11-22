@@ -416,7 +416,7 @@ void retro_run()
    uint64_t expected_frames = samples_count / 35112;
    if (frames_count < expected_frames) // Detect frame dupes.
    {
-      video_cb(0, 160, 144, 512);
+      video_cb(0, 160, 144, 1024);
       frames_count++;
       return;
    }
