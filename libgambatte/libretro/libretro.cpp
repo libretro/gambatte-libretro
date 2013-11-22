@@ -1,5 +1,5 @@
 #include "libretro.h"
-#include "resamplerinfo.h"
+#include "blipper.h"
 #include "gbcpalettes.h"
 
 #include <gambatte.h>
@@ -13,7 +13,7 @@
 static retro_video_refresh_t video_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
-static retro_audio_sample_t audio_cb;
+static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
 static gambatte::GB gb;
 
@@ -44,7 +44,8 @@ class SNESInput : public gambatte::InputGetter
       }
 } static gb_input;
 
-static Resampler *resampler;
+static blipper_t *resampler_l;
+static blipper_t *resampler_r;
 
 void retro_get_system_info(struct retro_system_info *info)
 {
@@ -73,22 +74,20 @@ void retro_init()
    double fps = 4194304.0 / 70224.0;
    double sample_rate = fps * 35112;
 
-   resampler = ResamplerInfo::get(ResamplerInfo::num() - 2).create(sample_rate, 32000.0, 2 * 2064);
+   resampler_l = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
+   resampler_r = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
 
    if (environ_cb)
    {
       g_timing.fps = fps;
-
-      unsigned long mul, div;
-      resampler->exactRatio(mul, div);
-
-      g_timing.sample_rate = sample_rate * mul / div;
+      g_timing.sample_rate = sample_rate / 64; // ~32k
    }
 }
 
 void retro_deinit()
 {
-   delete resampler;
+   blipper_free(resampler_l);;
+   blipper_free(resampler_r);;
 }
 
 void retro_set_environment(retro_environment_t cb)
@@ -104,8 +103,8 @@ void retro_set_environment(retro_environment_t cb)
 }
 
 void retro_set_video_refresh(retro_video_refresh_t cb) { video_cb = cb; }
-void retro_set_audio_sample(retro_audio_sample_t cb) { audio_cb = cb; }
-void retro_set_audio_sample_batch(retro_audio_sample_batch_t) {}
+void retro_set_audio_sample(retro_audio_sample_t) { }
+void retro_set_audio_sample_batch(retro_audio_sample_batch_t cb) { audio_batch_cb = cb; }
 void retro_set_input_poll(retro_input_poll_t cb) { input_poll_cb = cb; }
 void retro_set_input_state(retro_input_state_t cb) { input_state_cb = cb; }
 
@@ -377,7 +376,8 @@ bool retro_load_game(const struct retro_game_info *info)
 
 bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t) { return false; }
 
-void retro_unload_game() {}
+void retro_unload_game()
+{}
 
 unsigned retro_get_region() { return RETRO_REGION_NTSC; }
 
@@ -401,18 +401,13 @@ size_t retro_get_memory_size(unsigned id)
    return 0;
 }
 
-static void output_audio(const int16_t *samples, unsigned frames)
+static void render_audio(const int16_t *samples, unsigned frames)
 {
    if (!frames)
       return;
 
-   static int16_t output[2 * 2064];
-   std::size_t len = resampler->resample(output, samples, frames);
-
-   // Gambatte pushes so few samples here that we let frontend handle buffering.
-   len <<= 1;
-   for (std::size_t i = 0; i < len; i += 2)
-      audio_cb(output[i], output[i + 1]);
+   blipper_push_samples(resampler_l, samples + 0, frames, 2);
+   blipper_push_samples(resampler_r, samples + 1, frames, 2);
 }
 
 void retro_run()
@@ -445,19 +440,33 @@ void retro_run()
    gambatte::uint_least32_t video_pitch = 256;
    while (gb.runFor(video_buf, video_pitch, sound_buf.u32, samples) == -1)
    {
-      output_audio(sound_buf.i16, samples);
+      render_audio(sound_buf.i16, samples);
+
+      unsigned read_avail = blipper_read_avail(resampler_l);
+      if (read_avail >= 512)
+      {
+         blipper_read(resampler_l, sound_buf.i16 + 0, read_avail, 2);
+         blipper_read(resampler_r, sound_buf.i16 + 1, read_avail, 2);
+         audio_batch_cb(sound_buf.i16, read_avail);
+      }
+
       samples_count += samples;
       samples = 2064;
    }
 
    samples_count += samples;
-   output_audio(sound_buf.i16, samples);
+   render_audio(sound_buf.i16, samples);
 
 #ifdef VIDEO_RGB565
    video_cb(video_buf, 160, 144, 512);
 #else
    video_cb(video_buf, 160, 144, 1024);
 #endif
+
+   unsigned read_avail = blipper_read_avail(resampler_l);
+   blipper_read(resampler_l, sound_buf.i16 + 0, read_avail, 2);
+   blipper_read(resampler_r, sound_buf.i16 + 1, read_avail, 2);
+   audio_batch_cb(sound_buf.i16, read_avail);
 
    frames_count++;
 
