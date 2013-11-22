@@ -25,6 +25,11 @@
 #include <stddef.h>
 
 namespace gambatte {
+#ifdef VIDEO_RGB565
+typedef uint16_t video_pixel_t;
+#else
+typedef uint_least32_t video_pixel_t;
+#endif
 enum { BG_PALETTE = 0, SP1_PALETTE = 1, SP2_PALETTE = 2 };
 
 class GB {
@@ -60,7 +65,7 @@ public:
 	  * @param samples in: number of stereo samples to produce, out: actual number of samples produced
 	  * @return sample number at which the video frame was produced. -1 means no frame was produced.
 	  */
-	long runFor(gambatte::uint_least32_t *videoBuf, int pitch,
+	long runFor(gambatte::video_pixel_t *videoBuf, int pitch,
 			gambatte::uint_least32_t *soundBuf, unsigned &samples);
 	
 	/** Reset to initial state.

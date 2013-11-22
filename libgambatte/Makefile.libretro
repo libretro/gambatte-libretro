@@ -1,4 +1,4 @@
-DEBUG = 0
+DEBUG = 1
 
 ifeq ($(platform),)
 platform = unix
@@ -146,7 +146,7 @@ CXXOBJ := $(CXXSRCS:.cpp=.o)
 
 OBJS := $(CXXOBJ)
 
-DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DINLINE=inline
+DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DINLINE=inline -DVIDEO_RGB565
 
 ifeq ($(platform), sncps3)
 CODE_DEFINES =

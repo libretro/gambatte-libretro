@@ -16,6 +16,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "gambatte.h"
 #include "state_osd_elements.h"
 #include "bitmap_font.h"
 #include "statesaver.h"
@@ -34,7 +35,7 @@ static const unsigned stateSavedTxtWidth  = getWidth(stateSavedTxt);
 
 class ShadedTextOsdElment : public OsdElement {
 	struct ShadeFill {
-		void operator()(uint_least32_t *dest, const unsigned pitch) const {
+		void operator()(video_pixel_t *dest, const unsigned pitch) const {
 			dest[2] = dest[1] = dest[0] = 0x000000ul;
 			dest += pitch;
 			dest[2] = dest[0] = 0x000000ul;
@@ -43,7 +44,7 @@ class ShadedTextOsdElment : public OsdElement {
 		}
 	};
 	
-	uint_least32_t *const pixels;
+	video_pixel_t *const pixels;
 	unsigned life;
 	
 	ShadedTextOsdElment(const ShadedTextOsdElment&);
@@ -51,14 +52,14 @@ class ShadedTextOsdElment : public OsdElement {
 public:
 	ShadedTextOsdElment(unsigned w, const char *txt);
 	~ShadedTextOsdElment();
-	const uint_least32_t* update();
+	const gambatte::video_pixel_t* update();
 };
 
 ShadedTextOsdElment::ShadedTextOsdElment(unsigned width, const char *txt) :
 OsdElement(MAX_WIDTH, 144 - HEIGHT - HEIGHT, width + 2, HEIGHT + 2, THREE_FOURTHS),
-pixels(new uint_least32_t[w() * h()]),
+pixels(new video_pixel_t[w() * h()]),
 life(4 * 60) {
-	std::memset(pixels, 0xFF, w() * h() * sizeof(uint_least32_t));
+	std::memset(pixels, 0xFF, w() * h() * sizeof(video_pixel_t));
 	
 	/*print(pixels + 0 * w() + 0, w(), 0x000000ul, txt);
 	print(pixels + 0 * w() + 1, w(), 0x000000ul, txt);
@@ -78,7 +79,7 @@ ShadedTextOsdElment::~ShadedTextOsdElment() {
 	delete []pixels;
 }
 
-const uint_least32_t* ShadedTextOsdElment::update() {
+const video_pixel_t* ShadedTextOsdElment::update() {
 	if (life--)
 		return pixels;
 	
@@ -86,7 +87,7 @@ const uint_least32_t* ShadedTextOsdElment::update() {
 }
 
 /*class FramedTextOsdElment : public OsdElement {
-	uint_least32_t *const pixels;
+	video_pixel_t *const pixels;
 	unsigned life;
 	
 	FramedTextOsdElment(const FramedTextOsdElment&);
@@ -94,14 +95,14 @@ const uint_least32_t* ShadedTextOsdElment::update() {
 public:
 	FramedTextOsdElment(unsigned w, const char *txt);
 	~FramedTextOsdElment();
-	const uint_least32_t* update();
+	const video_pixel_t* update();
 };
 
 FramedTextOsdElment::FramedTextOsdElment(unsigned width, const char *txt) :
 OsdElement(NUMBER_WIDTH, 144 - HEIGHT * 2 - HEIGHT / 2, width + NUMBER_WIDTH * 2, HEIGHT * 2),
-pixels(new uint_least32_t[w() * h()]),
+pixels(new video_pixel_t[w() * h()]),
 life(4 * 60) {
-	std::memset(pixels, 0x00, w() * h() * sizeof(uint_least32_t));
+	std::memset(pixels, 0x00, w() * h() * sizeof(video_pixel_t));
 	print(pixels + (w() - width) / 2 + ((h() - HEIGHT) / 2) * w(), w(), 0xA0A0A0ul, txt);
 }
 
@@ -109,7 +110,7 @@ FramedTextOsdElment::~FramedTextOsdElment() {
 	delete []pixels;
 }
 
-const uint_least32_t* FramedTextOsdElment::update() {
+const video_pixel_t* FramedTextOsdElment::update() {
 	if (life--)
 		return pixels;
 	
@@ -117,12 +118,12 @@ const uint_least32_t* FramedTextOsdElment::update() {
 }*/
 
 class SaveStateOsdElement : public OsdElement {
-	uint_least32_t pixels[StateSaver::SS_WIDTH * StateSaver::SS_HEIGHT];
+	video_pixel_t pixels[StateSaver::SS_WIDTH * StateSaver::SS_HEIGHT];
 	unsigned life;
 	
 public:
 	SaveStateOsdElement(const std::string &fileName, unsigned stateNo);
-	const uint_least32_t* update();
+	const video_pixel_t* update();
 };
 
 SaveStateOsdElement::SaveStateOsdElement(const std::string &fileName, unsigned stateNo) :
@@ -147,7 +148,7 @@ life(4 * 60) {
 	}
 }
 
-const uint_least32_t* SaveStateOsdElement::update() {
+const video_pixel_t* SaveStateOsdElement::update() {
 	if (life--)
 		return pixels;
 	

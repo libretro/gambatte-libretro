@@ -56,7 +56,7 @@ public:
    void *rtcdata_ptr() { return memory.rtcdata_ptr(); }
    unsigned rtcdata_size() { return memory.rtcdata_size(); }
 	
-	void setVideoBuffer(uint_least32_t *const videoBuf, const int pitch) {
+	void setVideoBuffer(video_pixel_t *const videoBuf, const int pitch) {
 		memory.setVideoBuffer(videoBuf, pitch);
 	}
 	

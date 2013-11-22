@@ -41,7 +41,7 @@ GB::~GB() {
 	delete p_;
 }
 
-long GB::runFor(gambatte::uint_least32_t *const videoBuf, const int pitch,
+long GB::runFor(gambatte::video_pixel_t *const videoBuf, const int pitch,
 			gambatte::uint_least32_t *const soundBuf, unsigned &samples) {
 	
 	p_->cpu.setVideoBuffer(videoBuf, pitch);

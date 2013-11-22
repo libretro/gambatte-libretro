@@ -345,12 +345,21 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
 
+#ifdef VIDEO_RGB565
+   enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
+   if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
+   {
+      fprintf(stderr, "[Gambatte]: RGB565 is not supported.\n");
+      return false;
+   }
+#else
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
    {
       fprintf(stderr, "[Gambatte]: XRGB8888 is not supported.\n");
       return false;
    }
+#endif
 
    if (gb.load(info->data, info->size))
       return false;
@@ -416,7 +425,11 @@ void retro_run()
    uint64_t expected_frames = samples_count / 35112;
    if (frames_count < expected_frames) // Detect frame dupes.
    {
+#ifdef VIDEO_RGB565
+      video_cb(0, 160, 144, 512);
+#else
       video_cb(0, 160, 144, 1024);
+#endif
       frames_count++;
       return;
    }
@@ -428,7 +441,7 @@ void retro_run()
    } static sound_buf;
    unsigned samples = 2064;
 
-   static gambatte::uint_least32_t video_buf[256 * 144];
+   static gambatte::video_pixel_t video_buf[256 * 144];
    gambatte::uint_least32_t video_pitch = 256;
    while (gb.runFor(video_buf, video_pitch, sound_buf.u32, samples) == -1)
    {
@@ -440,7 +453,11 @@ void retro_run()
    samples_count += samples;
    output_audio(sound_buf.i16, samples);
 
+#ifdef VIDEO_RGB565
+   video_cb(video_buf, 160, 144, 512);
+#else
    video_cb(video_buf, 160, 144, 1024);
+#endif
 
    frames_count++;
 

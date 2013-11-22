@@ -23,7 +23,7 @@
 
 namespace gambatte {
 
-void LCD::setDmgPalette(unsigned long *const palette, const unsigned long *const dmgColors, const unsigned data) {
+void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const dmgColors, const unsigned data) {
 	palette[0] = dmgColors[data      & 3];
 	palette[1] = dmgColors[data >> 2 & 3];
 	palette[2] = dmgColors[data >> 4 & 3];
@@ -77,7 +77,17 @@ LCD::LCD(const unsigned char *const oamram, const unsigned char *const vram, con
 	std::memset(objpData, 0, sizeof objpData);
 
 	for (std::size_t i = 0; i < sizeof(dmgColorsRgb32) / sizeof(dmgColorsRgb32[0]); ++i)
+	{
+#ifdef VIDEO_RGB565
+		uint16_t dmgColors[4]={0xFFFF, //11111 111111 11111
+		                       0xAD55, //10101 101010 10101
+		                       0x52AA, //01010 010101 01010
+		                       0x0000};//00000 000000 00000
+		setDmgPaletteColor(i, dmgColors[i]);
+#else
 		setDmgPaletteColor(i, (3 - (i & 3)) * 85 * 0x010101);
+#endif
+	}
 
 	reset(oamram, false);
 	setVideoBuffer(0, 160);
@@ -186,8 +196,8 @@ void LCD::refreshPalettes() {
 namespace {
 
 template<class Blend>
-static void blitOsdElement(uint_least32_t *d,
-		const uint_least32_t *s, const unsigned width, unsigned h, const int dpitch, Blend blend)
+static void blitOsdElement(video_pixel_t *d,
+		const video_pixel_t *s, const unsigned width, unsigned h, const int dpitch, Blend blend)
 {
 	while (h--) {
 		for (unsigned w = width; w--;) {
@@ -206,7 +216,7 @@ template<unsigned weight>
 struct Blend {
 	enum { SW = weight - 1 };
 	enum { LOWMASK = SW * 0x010101ul };
-	uint_least32_t operator()(const uint_least32_t s, const uint_least32_t d) const {
+	video_pixel_t operator()(const video_pixel_t s, const video_pixel_t d) const {
 		return (s * SW + d - (((s & LOWMASK) * SW + (d & LOWMASK)) & LOWMASK)) / weight;
 	}
 };
@@ -227,13 +237,13 @@ void LCD::updateScreen(const bool blanklcd, const unsigned long cycleCounter) {
 	update(cycleCounter);
 	
 	if (blanklcd && ppu.frameBuf().fb()) {
-		const unsigned long color = ppu.cgb() ? gbcToRgb32(0xFFFF) : dmgColorsRgb32[0];
+		const video_pixel_t color = ppu.cgb() ? gbcToRgb32(0xFFFF) : dmgColorsRgb32[0];
 		clear(ppu.frameBuf().fb(), color, ppu.frameBuf().pitch());
 	}
 
 	if (ppu.frameBuf().fb() && osdElement.get()) {
-		if (const uint_least32_t *const s = osdElement->update()) {
-			uint_least32_t *const d = ppu.frameBuf().fb()
+		if (const video_pixel_t *const s = osdElement->update()) {
+			video_pixel_t *const d = ppu.frameBuf().fb()
 					+ static_cast<long>(osdElement->y()) * ppu.frameBuf().pitch() + osdElement->x();
 
 			switch (osdElement->opacity()) {
@@ -356,7 +366,7 @@ bool LCD::cgbpAccessible(const unsigned long cycleCounter) {
 }
 
 static void doCgbColorChange(unsigned char *const pdata,
-		unsigned long *const palette, unsigned index, const unsigned data) {
+		video_pixel_t *const palette, unsigned index, const unsigned data) {
 	pdata[index] = data;
 	index >>= 1;
 	palette[index] = gbcToRgb32(pdata[index << 1] | pdata[(index << 1) + 1] << 8);
@@ -762,15 +772,15 @@ void LCD::update(const unsigned long cycleCounter) {
 	ppu.update(cycleCounter);
 }
 
-void LCD::setVideoBuffer(uint_least32_t *const videoBuf, const int pitch) {
+void LCD::setVideoBuffer(video_pixel_t *const videoBuf, const int pitch) {
 	ppu.setFrameBuf(videoBuf, pitch);
 }
 
-void LCD::setDmgPaletteColor(const unsigned index, const unsigned long rgb32) {
+void LCD::setDmgPaletteColor(const unsigned index, const video_pixel_t rgb32) {
 	dmgColorsRgb32[index] = rgb32;
 }
 
-void LCD::setDmgPaletteColor(const unsigned palNum, const unsigned colorNum, const unsigned long rgb32) {
+void LCD::setDmgPaletteColor(const unsigned palNum, const unsigned colorNum, const video_pixel_t rgb32) {
 	if (palNum > 2 || colorNum > 3)
 		return;
 

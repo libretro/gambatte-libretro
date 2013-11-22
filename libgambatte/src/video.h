@@ -119,7 +119,7 @@ class LCD {
 	};
 	
 	PPU ppu;
-	unsigned long dmgColorsRgb32[3 * 4];
+	video_pixel_t dmgColorsRgb32[3 * 4];
 	unsigned char  bgpData[8 * 8];
 	unsigned char objpData[8 * 8];
 
@@ -134,8 +134,8 @@ class LCD {
 	unsigned char m2IrqStatReg_;
 	unsigned char m1IrqStatReg_;
 
-	static void setDmgPalette(unsigned long *palette, const unsigned long *dmgColors, unsigned data);
-	void setDmgPaletteColor(unsigned index, unsigned long rgb32);
+	static void setDmgPalette(video_pixel_t *palette, const video_pixel_t *dmgColors, unsigned data);
+	void setDmgPaletteColor(unsigned index, video_pixel_t rgb32);
 
 	void refreshPalettes();
 	void setDBuffer();
@@ -156,8 +156,8 @@ public:
 	void setStatePtrs(SaveState &state);
 	void saveState(SaveState &state) const;
 	void loadState(const SaveState &state, const unsigned char *oamram);
-	void setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned long rgb32);
-	void setVideoBuffer(uint_least32_t *videoBuf, int pitch);
+	void setDmgPaletteColor(unsigned palNum, unsigned colorNum, video_pixel_t rgb32);
+	void setVideoBuffer(video_pixel_t *videoBuf, int pitch);
 
 	void setOsdElement(std::auto_ptr<OsdElement> osdElement) { this->osdElement = osdElement; }
 
