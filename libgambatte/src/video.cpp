@@ -30,17 +30,18 @@ void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const
 	palette[3] = dmgColors[data >> 6 & 3];
 }
 
-static unsigned long gbcToRgb32(const unsigned bgr15) {
+static video_pixel_t gbcToRgb32(const unsigned bgr15) {
 #ifdef VIDEO_RGB565
+	//If (whatever made the Gambatte devs create this somewhat arcane configuration) is not a concern, it can be replaced with simply 'return bgr15'.
 	const unsigned r = bgr15 & 0x1F;
 	const unsigned g = bgr15 >> 5 & 0x1F;
 	const unsigned b = bgr15 >> 10 & 0x1F;
 
 	return (((r * 13 + g * 2 + b + 8) << 7) & 0xF800) | ((g * 3 + b + 1) >> 1) << 5 | ((r * 3 + g * 2 + b * 11 + 8) >> 4);
 #else
-	const unsigned long r = bgr15       & 0x1F;
-	const unsigned long g = bgr15 >>  5 & 0x1F;
-	const unsigned long b = bgr15 >> 10 & 0x1F;
+	const unsigned r = bgr15       & 0x1F;
+	const unsigned g = bgr15 >>  5 & 0x1F;
+	const unsigned b = bgr15 >> 10 & 0x1F;
 
 	return ((r * 13 + g * 2 + b) >> 1) << 16 | (g * 3 + b) << 9 | (r * 3 + g * 2 + b * 11) >> 1;
 #endif
@@ -90,7 +91,7 @@ LCD::LCD(const unsigned char *const oamram, const unsigned char *const vram, con
 		                       0xAD55, //10101 101010 10101
 		                       0x52AA, //01010 010101 01010
 		                       0x0000};//00000 000000 00000
-		setDmgPaletteColor(i, dmgColors[i]);
+		setDmgPaletteColor(i, dmgColors[i&3]);
 #else
 		setDmgPaletteColor(i, (3 - (i & 3)) * 85 * 0x010101);
 #endif
