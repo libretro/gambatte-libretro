@@ -60,7 +60,7 @@ public:
 	unsigned h() const { return h_; }
 	Opacity opacity() const { return opacity_; }
 	
-	virtual const uint_least32_t* update() = 0;
+	virtual const gambatte::video_pixel_t* update() = 0;
 };
 
 }

@@ -22,22 +22,23 @@
 #include "video/ly_counter.h"
 #include "video/sprite_mapper.h"
 #include "gbint.h"
+#include "gambatte.h"
 
 namespace gambatte {
 
 class PPUFrameBuf {
-	uint_least32_t *buf_;
-	uint_least32_t *fbline_;
+	video_pixel_t *buf_;
+	video_pixel_t *fbline_;
 	int pitch_;
 	
-	static uint_least32_t * nullfbline() { static uint_least32_t nullfbline_[160]; return nullfbline_; }
+	static video_pixel_t * nullfbline() { static video_pixel_t nullfbline_[160]; return nullfbline_; }
 	
 public:
 	PPUFrameBuf() : buf_(0), fbline_(nullfbline()), pitch_(0) {}
-	uint_least32_t * fb() const { return buf_; }
-	uint_least32_t * fbline() const { return fbline_; }
+	video_pixel_t * fb() const { return buf_; }
+	video_pixel_t * fbline() const { return fbline_; }
 	int pitch() const { return pitch_; }
-	void setBuf(uint_least32_t *const buf, const int pitch) { buf_ = buf; pitch_ = pitch; fbline_ = nullfbline(); }
+	void setBuf(video_pixel_t *const buf, const int pitch) { buf_ = buf; pitch_ = pitch; fbline_ = nullfbline(); }
 	void setFbline(const unsigned ly) { fbline_ = buf_ ? buf_ + static_cast<long>(ly) * static_cast<long>(pitch_) : nullfbline(); }
 };
 
@@ -49,8 +50,8 @@ struct PPUState {
 
 // The PPU loop accesses a lot of state at once, so it's difficult to split this up much beyond grouping stuff into smaller structs.
 struct PPUPriv {
-	unsigned long bgPalette[8 * 4];
-	unsigned long spPalette[8 * 4];
+	video_pixel_t bgPalette[8 * 4];
+	video_pixel_t spPalette[8 * 4];
 
 	const unsigned char *const vram;
 	const PPUState *nextCallPtr;
@@ -101,7 +102,7 @@ public:
 	{
 	}
 	
-	unsigned long * bgPalette() { return p_.bgPalette; }
+	video_pixel_t * bgPalette() { return p_.bgPalette; }
 	bool cgb() const { return p_.cgb; }
 	void doLyCountEvent() { p_.lyCounter.doEvent(); }
 	unsigned long doSpriteMapEvent(unsigned long time) { return p_.spriteMapper.doEvent(time); }
@@ -118,7 +119,7 @@ public:
 	void reset(const unsigned char *oamram, bool cgb);
 	void resetCc(unsigned long oldCc, unsigned long newCc);
 	void saveState(SaveState &ss) const;
-	void setFrameBuf(uint_least32_t *buf, unsigned pitch) { p_.framebuf.setBuf(buf, pitch); }
+	void setFrameBuf(video_pixel_t *buf, unsigned pitch) { p_.framebuf.setBuf(buf, pitch); }
 	void setLcdc(unsigned lcdc, unsigned long cc);
 	void setScx(const unsigned scx) { p_.scx = scx; }
 	void setScy(const unsigned scy) { p_.scy = scy; }
@@ -127,7 +128,7 @@ public:
 	void setWy(const unsigned wy) { p_.wy = wy; }
 	void updateWy2() { p_.wy2 = p_.wy; }
 	void speedChange(unsigned long cycleCounter);
-	unsigned long * spPalette() { return p_.spPalette; }
+	video_pixel_t * spPalette() { return p_.spPalette; }
 	void update(unsigned long cc);
 };
 

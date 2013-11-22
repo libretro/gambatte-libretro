@@ -140,7 +140,7 @@ public:
 	void setSoundBuffer(uint_least32_t *const buf) { sound.setBuffer(buf); }
 	unsigned fillSoundBuffer(unsigned long cc);
 	
-	void setVideoBuffer(uint_least32_t *const videoBuf, const int pitch) {
+	void setVideoBuffer(video_pixel_t *const videoBuf, const int pitch) {
 		display.setVideoBuffer(videoBuf, pitch);
 	}
 	

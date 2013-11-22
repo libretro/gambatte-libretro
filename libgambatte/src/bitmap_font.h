@@ -19,6 +19,7 @@
 #ifndef BITMAP_FONT_H
 #define BITMAP_FONT_H
 
+#include "gambatte.h"
 #include "gbint.h"
 
 namespace bitmapfont {
@@ -42,7 +43,7 @@ unsigned getWidth(const char *chars);
 template<class RandomAccessIterator, class Fill>
 void print(RandomAccessIterator dest, unsigned pitch, Fill fill, const char *chars);
 
-void print(gambatte::uint_least32_t *dest, unsigned pitch, unsigned long color, const char *chars);
+void print(gambatte::video_pixel_t *dest, unsigned pitch, unsigned long color, const char *chars);
 void utoa(unsigned u, char *a);
 
 // --- INTERFACE END ---
