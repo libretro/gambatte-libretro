@@ -429,8 +429,8 @@ void retro_run()
    unsigned samples = 2064;
 
    static gambatte::uint_least32_t video_buf[256 * 144];
-   gambatte::uint_least32_t param2 = 256;
-   while (gb.runFor(video_buf, param2, sound_buf.u32, samples) == -1)
+   gambatte::uint_least32_t video_pitch = 256;
+   while (gb.runFor(video_buf, video_pitch, sound_buf.u32, samples) == -1)
    {
       output_audio(sound_buf.i16, samples);
       samples_count += samples;
