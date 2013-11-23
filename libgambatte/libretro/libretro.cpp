@@ -1,8 +1,7 @@
 #include "libretro.h"
 #include "blipper.h"
-#include "gbcpalettes.h"
-
 #include <gambatte.h>
+#include "gbcpalettes.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -256,6 +255,11 @@ static void check_palette(void)
          fprintf(stderr, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
          continue;
       }
+#ifdef VIDEO_RGB565
+      rgb32=(rgb32&0x0000F8)>>3 |//red
+            (rgb32&0x00FC00)>>5 |//green
+            (rgb32&0xF80000)>>8;//blue
+#endif
 
       if (startswith(line, "Background0="))
          gb.setDmgPaletteColor(0, 0, rgb32);
@@ -328,7 +332,7 @@ static void check_variables(void)
    {
       for (unsigned colornum = 0; colornum < 4; ++colornum)
       {
-         rgb32 = gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
+         rgb32 = gambatte::gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
          gb.setDmgPaletteColor(palnum, colornum, rgb32);
       }
    }
