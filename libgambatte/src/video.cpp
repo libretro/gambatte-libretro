@@ -30,7 +30,7 @@ void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const
 	palette[3] = dmgColors[data >> 6 & 3];
 }
 
-static video_pixel_t gbcToRgb32(const unsigned bgr15) {
+video_pixel_t gbcToRgb32(const unsigned bgr15) {
 #ifdef VIDEO_RGB565
 	//If (whatever made the Gambatte devs create this somewhat arcane configuration) is not a concern, it can be replaced with simply 'return bgr15'.
 	const unsigned r = bgr15 & 0x1F;

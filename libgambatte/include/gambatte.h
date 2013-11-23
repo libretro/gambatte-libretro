@@ -107,6 +107,8 @@ private:
 	GB(const GB &);
 	GB & operator=(const GB &);
 };
+
+video_pixel_t gbcToRgb32(const unsigned bgr15);
 }
 
 #endif
