@@ -23,7 +23,7 @@
 namespace {
 
 #define TO5BIT(c8) (((c8) * 0x1F * 2 + 0xFF) / (0xFF*2))
-#define PACK15_1(rgb24) (TO5BIT((rgb24) >> 16 & 0xFF) << 10 | TO5BIT((rgb24) >> 8 & 0xFF) << 5 | TO5BIT((rgb24) & 0xFF))
+#define PACK15_1(rgb24) (TO5BIT((rgb24) & 0xFF) << 10 | TO5BIT((rgb24) >> 8 & 0xFF) << 5 | TO5BIT((rgb24) >> 16 & 0xFF))
 #define PACK15_4(c0, c1, c2, c3) \
 	PACK15_1(c0), PACK15_1(c1), PACK15_1(c2), PACK15_1(c3)
 
