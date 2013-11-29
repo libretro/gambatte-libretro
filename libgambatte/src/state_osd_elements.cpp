@@ -69,10 +69,11 @@ life(4 * 60) {
 	print(pixels + 2 * w() + 0, w(), 0x000000ul, txt);
 	print(pixels + 2 * w() + 1, w(), 0x000000ul, txt);
 	print(pixels + 2 * w() + 2, w(), 0x000000ul, txt);
-	print(pixels + 1 * w() + 1, w(), 0xE0E0E0ul, txt);*/
+	print(pixels + 1 * w() + 1, w(), 0xE0E0E0ul, txt);
 	
 	print(pixels, w(), ShadeFill(), txt);
 	print(pixels + 1 * w() + 1, w(), 0xE0E0E0ul, txt);
+*/
 }
 
 ShadedTextOsdElment::~ShadedTextOsdElment() {
@@ -138,6 +139,7 @@ life(4 * 60) {
 	} else {
 		std::memset(pixels, 0, sizeof pixels);
 		
+#if 0
 		{
 			using namespace bitmapfont;
 			
@@ -145,6 +147,7 @@ life(4 * 60) {
 			
 			print(pixels + 3 + (StateSaver::SS_HEIGHT / 2 - bitmapfont::HEIGHT / 2) * StateSaver::SS_WIDTH, StateSaver::SS_WIDTH, 0x808080ul, txt);
 		}
+#endif
 	}
 }
 
