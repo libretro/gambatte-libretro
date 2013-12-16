@@ -158,12 +158,6 @@ OBJS := $(CXXOBJ)
 
 DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DINLINE=inline -DVIDEO_RGB565
 
-ifeq ($(platform), sncps3)
-CODE_DEFINES =
-else
-CODE_DEFINES = -std=gnu99
-endif
-
 CFLAGS += $(CODE_DEFINES) $(fpic) $(DEFINES)
 CXXFLAGS += $(fpic) $(DEFINES)
 
