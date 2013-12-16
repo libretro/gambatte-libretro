@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string.h>
 
+static retro_log_printf_t log_cb;
 static retro_video_refresh_t video_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
@@ -66,6 +67,12 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 
 void retro_init()
 {
+   struct retro_log_callback log;
+
+   environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log);
+   if (log.log)
+      log_cb = log.log;
+
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
    gb.setInputGetter(&gb_input);
@@ -196,7 +203,8 @@ static void check_palette(void)
    environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
    if (!system_directory_c)
    {
-      fprintf(stderr, "[Gambatte]: no system directory defined, unable to look for custom palettes.\n");
+      if (log_cb)
+         log_cb(RETRO_LOG_WARN, "[Gambatte]: no system directory defined, unable to look for custom palettes.\n");
       return;
    }
 
@@ -222,7 +230,10 @@ static void check_palette(void)
    if (!palette_file.is_open())
       return;  // unable to find any custom palette file
 
-   // fprintf(stderr, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
+#if 0
+   if (log_cb)
+      fprintf(RETRO_LOG_INFO, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
+#endif
    unsigned line_count = 0;
    for (std::string line; getline(palette_file, line); ) // iterate over file lines
    {
@@ -239,7 +250,8 @@ static void check_palette(void)
 
       if (line.find("=") == std::string::npos)
       {
-         fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+         if (log_cb)
+            log_cb(RETRO_LOG_ERROR, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
          continue; // current line does not contain a palette color definition, so go to next line
       }
 
@@ -252,7 +264,9 @@ static void check_palette(void)
       ss >> rgb32;
       if (!ss)
       {
-         fprintf(stderr, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+         if (log_cb)
+            log_cb(RETRO_LOG_ERROR, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n",
+                  custom_palette_path.c_str(), line_count);
          continue;
       }
 #ifdef VIDEO_RGB565
@@ -285,8 +299,8 @@ static void check_palette(void)
          gb.setDmgPaletteColor(2, 2, rgb32);  
       else if (startswith(line, "Sprite%2023="))
          gb.setDmgPaletteColor(2, 3, rgb32);
-      else
-         fprintf(stderr, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+      else if (log_cb)
+         log_cb(RETRO_LOG_ERROR, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
    } // endfor
 }
 
@@ -344,7 +358,8 @@ bool retro_load_game(const struct retro_game_info *info)
    environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
    if (!can_dupe)
    {
-      fprintf(stderr, "[Gambatte]: Cannot dupe frames!\n");
+      if (log_cb)
+         log_cb(RETRO_LOG_INFO, "[Gambatte]: Cannot dupe frames!\n");
       return false;
    }
 
@@ -352,14 +367,16 @@ bool retro_load_game(const struct retro_game_info *info)
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
    {
-      fprintf(stderr, "[Gambatte]: RGB565 is not supported.\n");
+      if (log_cb)
+         log_cb(RETRO_LOG_INFO, "[Gambatte]: RGB565 is not supported.\n");
       return false;
    }
 #else
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
    {
-      fprintf(stderr, "[Gambatte]: XRGB8888 is not supported.\n");
+      if (log_cb)
+         log_cb(RETRO_LOG_INFO, "[Gambatte]: XRGB8888 is not supported.\n");
       return false;
    }
 #endif
@@ -370,7 +387,8 @@ bool retro_load_game(const struct retro_game_info *info)
    rom_path = info->path ? info->path : "";
    strncpy(internal_game_name, (const char*)info->data + 0x134, sizeof(internal_game_name) - 1);
 
-   fprintf(stderr, "[Gambatte]: Got internal game name: %s.\n", internal_game_name);
+   if (log_cb)
+      log_cb(RETRO_LOG_INFO, "[Gambatte]: Got internal game name: %s.\n", internal_game_name);
 
    check_variables();
    check_palette();
