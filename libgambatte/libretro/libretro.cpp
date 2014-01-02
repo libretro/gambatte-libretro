@@ -69,9 +69,10 @@ void retro_init()
 {
    struct retro_log_callback log;
 
-   environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log);
-   if (log.log)
+   if (environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log))
       log_cb = log.log;
+   else
+      log_cb = NULL;
 
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
