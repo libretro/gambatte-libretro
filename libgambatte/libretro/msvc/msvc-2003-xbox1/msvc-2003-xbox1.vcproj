@@ -197,6 +197,9 @@
 				Name="libretro"
 				Filter="">
 				<File
+					RelativePath="..\..\blipper.c">
+				</File>
+				<File
 					RelativePath="..\..\libretro.cpp">
 				</File>
 			</Filter>

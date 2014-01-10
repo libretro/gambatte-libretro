@@ -134,5 +134,8 @@
     <ClCompile Include="..\..\..\src\video\ppu.cpp">
       <Filter>Source Files\src\video</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\blipper.c">
+      <Filter>Source Files\libretro</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

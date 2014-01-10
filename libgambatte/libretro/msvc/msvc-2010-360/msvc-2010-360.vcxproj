@@ -60,6 +60,7 @@
     <ClCompile Include="..\..\..\src\video\next_m0_time.cpp" />
     <ClCompile Include="..\..\..\src\video\ppu.cpp" />
     <ClCompile Include="..\..\..\src\video\sprite_mapper.cpp" />
+    <ClCompile Include="..\..\blipper.c" />
     <ClCompile Include="..\..\libretro.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
