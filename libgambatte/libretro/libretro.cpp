@@ -17,6 +17,8 @@ static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
 static gambatte::GB gb;
 
+#include "cc_resampler.h"
+
 namespace input
 {
    struct map { unsigned snes; unsigned gb; };
@@ -44,10 +46,8 @@ class SNESInput : public gambatte::InputGetter
       }
 } static gb_input;
 
-#ifndef ALTERNATIVE_RESAMPLER
 static blipper_t *resampler_l;
 static blipper_t *resampler_r;
-#endif
 
 void retro_get_system_info(struct retro_system_info *info)
 {
@@ -82,7 +82,14 @@ void retro_init()
 
    double fps = 4194304.0 / 70224.0;
    double sample_rate = fps * 35112;
-#ifndef ALTERNATIVE_RESAMPLER
+
+#ifdef CC_RESAMPLER
+   if (environ_cb)
+   {
+      g_timing.fps = fps;
+      g_timing.sample_rate = sample_rate / CC_DECIMATION_RATE; // ~64k
+   }
+#else
    resampler_l = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
    resampler_r = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
 
@@ -91,18 +98,13 @@ void retro_init()
       g_timing.fps = fps;
       g_timing.sample_rate = sample_rate / 64; // ~32k
    }
-#else
-   if (environ_cb)
-   {
-      g_timing.fps = fps;
-      g_timing.sample_rate = sample_rate / 32; // ~64k
-   }
 #endif
+
 }
 
 void retro_deinit()
 {
-#ifndef ALTERNATIVE_RESAMPLER
+#ifndef CC_RESAMPLER
    blipper_free(resampler_l);;
    blipper_free(resampler_r);;
 #endif
@@ -435,7 +437,6 @@ size_t retro_get_memory_size(unsigned id)
    return 0;
 }
 
-#ifndef ALTERNATIVE_RESAMPLER
 static void render_audio(const int16_t *samples, unsigned frames)
 {
    if (!frames)
@@ -444,34 +445,11 @@ static void render_audio(const int16_t *samples, unsigned frames)
    blipper_push_samples(resampler_l, samples + 0, frames, 2);
    blipper_push_samples(resampler_r, samples + 1, frames, 2);
 }
-#endif
 
 void retro_run()
 {
    static uint64_t samples_count = 0;
    static uint64_t frames_count = 0;
-
-#ifdef ALTERNATIVE_RESAMPLER
-   static const int16_t CS_kernel[32]=
-   {
-      0x01FF, 0x01FE, 0x01FA, 0x01F4, 0x01EC, 0x01E1, 0x01D4, 0x01C5,
-      0x01B4, 0x01A2, 0x018E, 0x0178, 0x0161, 0x014A, 0x0131, 0x0119,
-      0x0100, 0x00E6, 0x00CE, 0x00B5, 0x009E, 0x0087, 0x0071, 0x005D,
-      0x004B, 0x003A, 0x002B, 0x001E, 0x0013, 0x000B, 0x0005, 0x0001
-   };
-   static int32_t l_sample_current = 0;
-   static int32_t r_sample_current = 0;
-   static int32_t l_sample_next = 0;
-   static int32_t r_sample_next = 0;
-   static int32_t capacitor = 0;
-   static unsigned int accumulated_samples = 0;
-   static unsigned int write_pos = 0;
-   union
-   {
-      gambatte::uint_least32_t u32[512];
-      int16_t i16[2 * 512];
-   } static out_buf;
-#endif
 
    input_poll_cb();
 
@@ -498,8 +476,9 @@ void retro_run()
    gambatte::uint_least32_t video_pitch = 256;
    while (gb.runFor(video_buf, video_pitch, sound_buf.u32, samples) == -1)
    {
-
-#ifndef ALTERNATIVE_RESAMPLER
+#ifdef CC_RESAMPLER
+      CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
+#else
       render_audio(sound_buf.i16, samples);
 
       unsigned read_avail = blipper_read_avail(resampler_l);
@@ -509,32 +488,7 @@ void retro_run()
          blipper_read(resampler_r, sound_buf.i16 + 1, read_avail, 2);
          audio_batch_cb(sound_buf.i16, read_avail);
       }
-#else
-      for (int i=0; i < (samples << 1); i+=2)
-      {
-         l_sample_current += sound_buf.i16[i] * CS_kernel[accumulated_samples];
-         l_sample_next    += sound_buf.i16[i] * CS_kernel[31 - accumulated_samples];
-         r_sample_current += sound_buf.i16[i + 1] * CS_kernel[accumulated_samples];
-         r_sample_next    += sound_buf.i16[i + 1] * CS_kernel[31 - accumulated_samples];
-         accumulated_samples++;
-         if (accumulated_samples == 32)
-         {
-            capacitor += ((l_sample_current ) - capacitor) >> 14;
-            out_buf.i16[write_pos++] = (l_sample_current>>14) - (capacitor >> 14);
-            out_buf.i16[write_pos++] = (r_sample_current>>14) - (capacitor >> 14);
 
-            accumulated_samples = 0;
-            l_sample_current = l_sample_next;
-            r_sample_current = r_sample_next;
-            l_sample_next = 0;
-            r_sample_next = 0;
-
-            if (write_pos == 1024){
-               audio_batch_cb(out_buf.i16, 512);
-               write_pos = 0;
-            }
-         }
-      }
 #endif
       samples_count += samples;
       samples = 2064;
@@ -542,7 +496,9 @@ void retro_run()
 
    samples_count += samples;
 
-#ifndef ALTERNATIVE_RESAMPLER
+#ifdef CC_RESAMPLER
+   CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
+#else
    render_audio(sound_buf.i16, samples);
 #endif
 
@@ -552,37 +508,12 @@ void retro_run()
    video_cb(video_buf, 160, 144, 1024);
 #endif
 
-#ifndef ALTERNATIVE_RESAMPLER
+
+#ifndef CC_RESAMPLER
    unsigned read_avail = blipper_read_avail(resampler_l);
    blipper_read(resampler_l, sound_buf.i16 + 0, read_avail, 2);
    blipper_read(resampler_r, sound_buf.i16 + 1, read_avail, 2);
    audio_batch_cb(sound_buf.i16, read_avail);
-#else
-   for (int i=0; i < (samples << 1); i+=2)
-   {
-      l_sample_current += sound_buf.i16[i] * CS_kernel[accumulated_samples];
-      l_sample_next    += sound_buf.i16[i] * CS_kernel[31 - accumulated_samples];
-      r_sample_current += sound_buf.i16[i + 1] * CS_kernel[accumulated_samples];
-      r_sample_next    += sound_buf.i16[i + 1] * CS_kernel[31 - accumulated_samples];
-      accumulated_samples++;
-      if (accumulated_samples == 32)
-      {
-         capacitor += ((l_sample_current ) - capacitor) >> 14;
-         out_buf.i16[write_pos++] = (l_sample_current>>14) - (capacitor >> 14);
-         out_buf.i16[write_pos++] = (r_sample_current>>14) - (capacitor >> 14);
-
-         accumulated_samples = 0;
-         l_sample_current = l_sample_next;
-         r_sample_current = r_sample_next;
-         l_sample_next = 0;
-         r_sample_next = 0;
-
-         if (write_pos == 1024){
-            audio_batch_cb(out_buf.i16, 512);
-            write_pos = 0;
-         }
-      }
-   }
 #endif
 
    frames_count++;
