@@ -84,6 +84,7 @@ void retro_init()
    double sample_rate = fps * 35112;
 
 #ifdef CC_RESAMPLER
+   CC_init();
    if (environ_cb)
    {
       g_timing.fps = fps;
