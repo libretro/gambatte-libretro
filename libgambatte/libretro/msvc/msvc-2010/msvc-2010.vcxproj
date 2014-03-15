@@ -91,7 +91,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;_XBOX;_XBOX360;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WIN32;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
       <AdditionalIncludeDirectories>..\..\..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
@@ -115,7 +115,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX;_XBOX360;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WIN32;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\include;..\..\..\src\;..\..\..\src\video;..\..\..\src\file;..\..\..\src\sound;..\..\..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
