@@ -79,7 +79,7 @@ void *GB::rtcdata_ptr() { return p_->cpu.rtcdata_ptr(); }
 unsigned GB::rtcdata_size() { return p_->cpu.rtcdata_size(); }
 
 bool GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
-	const bool failed = p_->cpu.load(romdata, romsize, flags & FORCE_DMG);
+	const bool failed = p_->cpu.load(romdata, romsize, flags & FORCE_DMG, flags & MULTICART_COMPAT);
 	
 	if (!failed)
 		p_->on_load_succeeded(flags);

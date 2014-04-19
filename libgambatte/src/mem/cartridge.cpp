@@ -29,7 +29,8 @@ Cartridge::Cartridge()
 : rombank(1),
   rambank(0),
   enableRam(false),
-  rambankMode(false)
+  rambankMode(false),
+  multi64rom(false)
 {
 }
 
@@ -96,19 +97,32 @@ static Cartridgetype cartridgeType(const unsigned headerByte0x147) {
 	return static_cast<Cartridgetype>(typeLut[headerByte0x147]);
 }
 
-void Cartridge::loadState(const SaveState &state) {
-	rtc.loadState(state, hasRtc() ? state.mem.enableRam : false);
+static unsigned toMulti64Rombank(const unsigned rombank) {
+	return (rombank >> 1 & 0x30) | (rombank & 0xF);
+}
 
-	rombank = state.mem.rombank & (rombanks() - 1);
-	rambank = state.mem.rambank & (rambanks() - 1);
+void Cartridge::loadState(const SaveState &state) {
+	//rtc.loadState(state, hasRtc() ? state.mem.enableRam : false);
+   rtc.loadState(state, hasRtc(memptrs.romdata()[0x147]) ? state.mem.enableRam : false);
+
+	rombank = state.mem.rombank;
+	rambank = state.mem.rambank;
 	enableRam = state.mem.enableRam;
 	rambankMode = state.mem.rambankMode;
 	memptrs.setRambank(enableRam, rtc.getActive(), rambank);
-	memptrs.setRombank(adjustedRombank(rombank, cartridgeType(memptrs.romdata(0)[0x147])));
+
+   if (rambankMode && multi64rom) {
+		const unsigned rb = toMulti64Rombank(rombank);
+		memptrs.setRombank0(rb & 0x30);
+		memptrs.setRombank(adjustedRombank(rb, cartridgeType(memptrs.romdata()[0x147])));
+	} else {
+		memptrs.setRombank0(0);
+		memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), cartridgeType(memptrs.romdata()[0x147])));
+	}
 }
 
 void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
-	const Cartridgetype romtype = cartridgeType(memptrs.romdata(0)[0x147]);
+   const Cartridgetype romtype = cartridgeType(memptrs.romdata()[0x147]);   
 
 	switch (P >> 12 & 0x7) {
 	case 0x0:
@@ -117,7 +131,8 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 
 		enableRam = (data & 0x0F) == 0xA;
 
-		if (hasRtc())
+		//if (hasRtc())
+      if (hasRtc(memptrs.romdata()[0x147]))
 			rtc.setEnabled(enableRam);
 
 		memptrs.setRambank(enableRam, rtc.getActive(), rambank);
@@ -132,8 +147,7 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 			return;
 		case MBC5:
 			rombank = (rombank & 0x100) | data;
-			rombank = rombank & (rombanks() - 1);
-			memptrs.setRombank(adjustedRombank(rombank, romtype));
+         memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
 			return;
 		default:
 			break; //Only supposed to break one level.
@@ -141,7 +155,12 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 	case 0x3:
 		switch (romtype) {
 		case MBC1:
-			rombank = rambankMode ? data & 0x1F : ((rombank & 0x60) | (data & 0x1F));
+         rombank = rambankMode && !multi64rom ? data & 0x1F : (rombank & 0x60) | (data & 0x1F);
+			
+			if (rambankMode && multi64rom) {
+				memptrs.setRombank(adjustedRombank(toMulti64Rombank(rombank), romtype));
+				return;
+			}
 			break;
 		case MBC2:
 			if (P & 0x0100) {
@@ -160,8 +179,7 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 			return;
 		}
 
-		rombank = rombank & (rombanks() - 1);
-		memptrs.setRombank(adjustedRombank(rombank, romtype));
+      memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
 		break;
 		//MBC1 writes ???? ??nn to area 0x4000-0x5FFF either to determine rambank to load, or upper 2 bits of the rombank number to load, depending on rom-mode.
 		//MBC3 writes ???? ??nn to area 0x4000-0x5FFF to determine rambank to load
@@ -171,16 +189,25 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 		switch (romtype) {
 		case MBC1:
 			if (rambankMode) {
+           	if (multi64rom) {
+					rombank = (data & 0x03) << 5 | (rombank & 0x1F);
+					
+					const unsigned rb = toMulti64Rombank(rombank);
+					memptrs.setRombank0(rb & 0x30);
+					memptrs.setRombank(adjustedRombank(rb, romtype));
+					return;
+				}
+
 				rambank = data & 0x03;
 				break;
 			}
 
 			rombank = (data & 0x03) << 5 | (rombank & 0x1F);
-			rombank = rombank & (rombanks() - 1);
-			memptrs.setRombank(adjustedRombank(rombank, romtype));
+         memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
 			return;
 		case MBC3:
-			if (hasRtc())
+			//if (hasRtc())
+         if (hasRtc(memptrs.romdata()[0x147]))
 				rtc.swapActive(data);
 
 			rambank = data & 0x03;
@@ -192,8 +219,7 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 			return;
 		}
 
-		rambank &= rambanks() - 1;
-		memptrs.setRambank(enableRam, rtc.getActive(), rambank);
+      memptrs.setRambank(enableRam, rtc.getActive(), rambank & (rambanks() - 1));
 		break;
 		//MBC1: If ???? ???1 is written to area 0x6000-0x7FFFF rom will be set to rambank mode.
 	case 0x6:
@@ -201,6 +227,17 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 		switch (romtype) {
 		case MBC1:
 			rambankMode = data & 0x01;
+
+         if (multi64rom) {
+				if (rambankMode) {
+					const unsigned rb = toMulti64Rombank(rombank);
+					memptrs.setRombank0(rb & 0x30);
+					memptrs.setRombank(adjustedRombank(rb, romtype));
+				} else {
+					memptrs.setRombank0(0);
+					memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
+				}
+			}
 			break;
 		case MBC3:
 			rtc.latch(data);
@@ -211,6 +248,13 @@ void Cartridge::mbcWrite(const unsigned P, const unsigned data) {
 
 		break;
 	}
+}
+
+static void enforce8bit(unsigned char *data, unsigned long sz)
+{
+   if (static_cast<unsigned char>(0x100))
+      while (sz--)
+         *data++ &= 0xFF;
 }
 
 static unsigned pow2ceil(unsigned n) {
@@ -224,12 +268,12 @@ static unsigned pow2ceil(unsigned n) {
 	return n;
 }
 
-bool Cartridge::loadROM(const void *romdata, unsigned romsize, const bool forceDmg) {
+bool Cartridge::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multiCartCompat) {
 	File rom(romdata, romsize);
-	return loadROM(rom, forceDmg);
+	return loadROM(rom, forceDmg, multiCartCompat);
 }
 
-bool Cartridge::loadROM(File &rom, const bool forceDmg) {
+bool Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartCompat) {
 	
 	unsigned rambanks = 1;
 	unsigned rombanks = 2;
@@ -322,9 +366,13 @@ bool Cartridge::loadROM(File &rom, const bool forceDmg) {
 	memptrs.reset(rombanks, rambanks, cgb ? 8 : 2);
 
 	rom.rewind();
-	rom.read(reinterpret_cast<char*>(memptrs.romdata(0)), (rom.size() / 0x4000) * 0x4000ul);
+   rom.read(reinterpret_cast<char*>(memptrs.romdata()), (rom.size() / 0x4000) * 0x4000ul);
 	// In case rombanks isn't a power of 2, allocate a disabled area for invalid rombank addresses.
-	std::memset(memptrs.romdata(0) + (rom.size() / 0x4000) * 0x4000ul, 0xFF, (rombanks - rom.size() / 0x4000) * 0x4000ul);
+   std::memset(memptrs.romdata() + (rom.size() / 0x4000) * 0x4000ul, 0xFF, (rombanks - rom.size() / 0x4000) * 0x4000ul);
+	enforce8bit(memptrs.romdata(), rombanks * 0x4000ul);
+
+   if ((multi64rom = !rambanks && rombanks == 64 && cartridgeType(memptrs.romdata()[0x147]) == MBC1 && multiCartCompat))
+		std::puts("Multi-ROM \"MBC1\" presumed");
 
 	if (rom.fail())
 		return 1;

@@ -36,11 +36,12 @@ class Cartridge {
 	unsigned char rambank;
 	bool enableRam;
 	bool rambankMode;
+   bool multi64rom;
 	
 	unsigned rambanks() const { return (memptrs.rambankdataend() - memptrs.rambankdata()) / 0x2000; }
-	unsigned rombanks() const { return (memptrs.romdataend()     - memptrs.romdata(0)   ) / 0x4000; }
+   unsigned rombanks() const { return (memptrs.romdataend()     - memptrs.romdata()    ) / 0x4000; }
 
-   bool loadROM(File &file, const bool forceDmg);
+   bool loadROM(File &file, const bool forceDmg, const bool multiCartCompat);
 
    bool hasBattery() const {
       switch (memptrs.romdata(0)[0x147]) {
@@ -56,8 +57,8 @@ class Cartridge {
       }
    }
 
-   bool hasRtc() const {
-      switch (memptrs.romdata(0)[0x147]) {
+   bool hasRtc(const unsigned headerByte0x147) const {
+      switch (headerByte0x147) {
          case 0x0F:
          case 0x10: return true;
          default: return false;
@@ -91,7 +92,7 @@ public:
 	
 	const std::string saveBasePath() const;
 	void setSaveDir(const std::string &dir);
-	bool loadROM(const void *romdata, unsigned romsize, bool forceDmg);
+	bool loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multicartCompat);
 
    void *savedata_ptr()
    {
@@ -113,7 +114,7 @@ public:
    // Not endian-safe at all, but hey.
    void *rtcdata_ptr()
    {
-      if (hasRtc())
+      if (hasRtc(memptrs.romdata()[0x147]))
          return &rtc.getBaseTime();
       else
          return 0;
@@ -121,7 +122,7 @@ public:
 
    unsigned rtcdata_size()
    { 
-      if (hasRtc())
+      if (hasRtc(memptrs.romdata()[0x147]))
          return sizeof(rtc.getBaseTime());
       else
          return 0;
