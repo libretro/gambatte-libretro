@@ -425,6 +425,11 @@ void *retro_get_memory_data(unsigned id)
    if (id == RETRO_MEMORY_RTC)
       return gb.rtcdata_ptr();
 
+   //Really ugly hack here, relies upon libgambatte/src/memory/memptrs.cpp MemPtrs::reset not
+   // realizing that that memchunk hack is ugly, or otherwise getting rearranged.
+   if (id == RETRO_MEMORY_SYSTEM_RAM)
+      return (char*)gb.savedata_ptr()+gb.savedata_size();
+
    return 0;
 }
 
@@ -434,6 +439,12 @@ size_t retro_get_memory_size(unsigned id)
       return gb.savedata_size();
    if (id == RETRO_MEMORY_RTC)
       return gb.rtcdata_size();
+
+   //This is rather hacky too... it relies upon libgambatte/src/memory/cartridge.cpp not changing
+   // the call to memptrs.reset, but this is probably mostly safe. GBC will probably not get a
+   // hardware upgrade anytime soon.
+   if (id == RETRO_MEMORY_SYSTEM_RAM)
+      return (gb.isCgb() ? 8 : 2) * 0x1000ul;
 
    return 0;
 }
