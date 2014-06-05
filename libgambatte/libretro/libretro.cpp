@@ -367,6 +367,17 @@ static void check_variables(void)
    }
 }
 
+static unsigned pow2ceil(unsigned n) {
+	--n;
+	n |= n >> 1;
+	n |= n >> 2;
+	n |= n >> 4;
+	n |= n >> 8;
+	++n;
+
+	return n;
+}
+
 bool retro_load_game(const struct retro_game_info *info)
 {
    bool can_dupe = false;
@@ -410,7 +421,7 @@ bool retro_load_game(const struct retro_game_info *info)
 
    //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
    unsigned sramsize = gb.savedata_size();
-   unsigned romsize = info->size;
+   unsigned romsize = pow2ceil(info->size) & ~0x4000;
    unsigned ramsize = (gb.isCgb() ? 8 : 2) * 0x1000ul;
    char * sramdata = (char*)gb.savedata_ptr();
    char * romdata = sramdata - romsize;
