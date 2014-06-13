@@ -150,6 +150,10 @@ class LCD {
 	void doCgbBgColorChange(unsigned index, unsigned data, unsigned long cycleCounter);
 	void doCgbSpColorChange(unsigned index, unsigned data, unsigned long cycleCounter);
 
+	video_pixel_t gbcToRgbLookup[0x8000];
+	void doCgbColorChange(unsigned char *const pdata,
+		video_pixel_t *const palette, unsigned index, const unsigned data);
+
 public:
 	LCD(const unsigned char *oamram, const unsigned char *vram_in, VideoInterruptRequester memEventRequester);
 	void reset(const unsigned char *oamram, bool cgb);
@@ -246,6 +250,9 @@ public:
 	
 	bool isCgb() const { return ppu.cgb(); }
 	bool isDoubleSpeed() const { return ppu.lyCounter().isDoubleSpeed(); }
+	
+	void createPaletteLookup(bool colorCorrection);
+	video_pixel_t gbcToRgb32(const unsigned bgr15);
 };
 
 }

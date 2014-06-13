@@ -21,6 +21,7 @@
 #include <cstring>
 #include <algorithm>
 
+#include<stdio.h>
 namespace gambatte {
 
 void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const dmgColors, const unsigned data) {
@@ -30,21 +31,46 @@ void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const
 	palette[3] = dmgColors[data >> 6 & 3];
 }
 
-video_pixel_t gbcToRgb32(const unsigned bgr15) {
+video_pixel_t LCD::gbcToRgb32(const unsigned bgr15) {
+	return gbcToRgbLookup[bgr15];
+}
+
+static video_pixel_t gbcToRgbCalc(const unsigned bgr15, bool colorCorrection) {
+	if (colorCorrection) {
 #ifdef VIDEO_RGB565
-	//If (whatever made the Gambatte devs create this somewhat arcane configuration) is not a concern, it can be replaced with simply 'return bgr15'.
-	const unsigned r = bgr15 & 0x1F;
-	const unsigned g = bgr15 >> 5 & 0x1F;
-	const unsigned b = bgr15 >> 10 & 0x1F;
+		//If (whatever made the Gambatte devs create this somewhat arcane configuration) is not a concern, it can be replaced with simply 'return bgr15'.
+		const unsigned r = bgr15 & 0x1F;
+		const unsigned g = bgr15 >> 5 & 0x1F;
+		const unsigned b = bgr15 >> 10 & 0x1F;
 
-	return (((r * 13 + g * 2 + b + 8) << 7) & 0xF800) | ((g * 3 + b + 1) >> 1) << 5 | ((r * 3 + g * 2 + b * 11 + 8) >> 4);
+		return (((r * 13 + g * 2 + b + 8) << 7) & 0xF800) | ((g * 3 + b + 1) >> 1) << 5 | ((r * 3 + g * 2 + b * 11 + 8) >> 4);
 #else
-	const unsigned r = bgr15       & 0x1F;
-	const unsigned g = bgr15 >>  5 & 0x1F;
-	const unsigned b = bgr15 >> 10 & 0x1F;
+		const unsigned r = bgr15       & 0x1F;
+		const unsigned g = bgr15 >>  5 & 0x1F;
+		const unsigned b = bgr15 >> 10 & 0x1F;
 
-	return ((r * 13 + g * 2 + b) >> 1) << 16 | (g * 3 + b) << 9 | (r * 3 + g * 2 + b * 11) >> 1;
+		return ((r * 13 + g * 2 + b) >> 1) << 16 | (g * 3 + b) << 9 | (r * 3 + g * 2 + b * 11) >> 1;
 #endif
+	} else {
+#ifdef VIDEO_RGB565
+		const unsigned r = bgr15       & 0x1F;
+		const unsigned g = bgr15 >>  5 & 0x1F;
+		const unsigned b = bgr15 >> 10 & 0x1F;
+
+		return r<<11 | g<<6 | b;
+#else
+		const unsigned r = bgr15       & 0x1F;
+		const unsigned g = bgr15 >>  5 & 0x1F;
+		const unsigned b = bgr15 >> 10 & 0x1F;
+
+		return r<<16 | g<<8 | b;
+#endif
+	}
+}
+
+void LCD::createPaletteLookup(bool colorCorrection) {
+	for (unsigned i=0;i<0x8000;i++) gbcToRgbLookup[i]=gbcToRgbCalc(i, colorCorrection);
+	refreshPalettes();
 }
 /*static unsigned long gbcToRgb16(const unsigned bgr15) {
 	const unsigned r = bgr15 & 0x1F;
@@ -99,6 +125,8 @@ LCD::LCD(const unsigned char *const oamram, const unsigned char *const vram, con
 
 	reset(oamram, false);
 	setVideoBuffer(0, 160);
+
+	createPaletteLookup(true);
 }
 
 void LCD::reset(const unsigned char *const oamram, const bool cgb) {
@@ -377,7 +405,7 @@ bool LCD::cgbpAccessible(const unsigned long cycleCounter) {
 			|| cycleCounter >= m0TimeOfCurrentLine(cycleCounter) + 3 - isDoubleSpeed();
 }
 
-static void doCgbColorChange(unsigned char *const pdata,
+void LCD::doCgbColorChange(unsigned char *const pdata,
 		video_pixel_t *const palette, unsigned index, const unsigned data) {
 	pdata[index] = data;
 	index >>= 1;

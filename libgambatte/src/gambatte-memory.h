@@ -145,6 +145,9 @@ public:
 	}
 	
 	void setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned long rgb32);
+	
+	void display_setColorCorrection(bool enable) { display.createPaletteLookup(enable); }
+	video_pixel_t display_gbcToRgb32(const unsigned bgr15) { return display.gbcToRgb32(bgr15); }
 };
 
 }
