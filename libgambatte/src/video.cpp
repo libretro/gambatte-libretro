@@ -38,7 +38,6 @@ video_pixel_t LCD::gbcToRgb32(const unsigned bgr15) {
 static video_pixel_t gbcToRgbCalc(const unsigned bgr15, bool colorCorrection) {
 	if (colorCorrection) {
 #ifdef VIDEO_RGB565
-		//If (whatever made the Gambatte devs create this somewhat arcane configuration) is not a concern, it can be replaced with simply 'return bgr15'.
 		const unsigned r = bgr15 & 0x1F;
 		const unsigned g = bgr15 >> 5 & 0x1F;
 		const unsigned b = bgr15 >> 10 & 0x1F;

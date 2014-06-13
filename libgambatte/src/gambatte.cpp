@@ -123,11 +123,11 @@ size_t GB::stateSize() const {
 }
 
 void GB::setColorCorrection(bool enable) {
-	p_->cpu.display_setColorCorrection(enable);
+   p_->cpu.display_setColorCorrection(enable);
 }
 
 video_pixel_t GB::gbcToRgb32(const unsigned bgr15) {
-	return p_->cpu.display_gbcToRgb32(bgr15);
+   return p_->cpu.display_gbcToRgb32(bgr15);
 }
 
 }
