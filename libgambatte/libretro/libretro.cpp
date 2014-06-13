@@ -118,6 +118,7 @@ void retro_set_environment(retro_environment_t cb)
    static const struct retro_variable vars[] = {
       { "gb_gbamode", "GBA mode; disabled|enabled" },
       { "gb_colorization", "GB Colorization; disabled|enabled" },
+      { "gbc_color_correction", "Color correction; enabled|disabled" },
       { NULL, NULL },
    };
 
@@ -322,7 +323,12 @@ static void check_palette(void)
 
 static void check_variables(void)
 {
+   bool colorCorrection=true;
    struct retro_variable var = {0};
+   var.key = "gbc_color_correction";
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "disabled")) colorCorrection=false;
+   gb.setColorCorrection(colorCorrection);
+
    var.key = "gb_colorization";
 
    if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
@@ -362,21 +368,21 @@ static void check_variables(void)
    {
       for (unsigned colornum = 0; colornum < 4; ++colornum)
       {
-         rgb32 = gambatte::gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
+         rgb32 = gb.gbcToRgb32(gbc_bios_palette[palnum * 4 + colornum]);
          gb.setDmgPaletteColor(palnum, colornum, rgb32);
       }
    }
 }
 
 static unsigned pow2ceil(unsigned n) {
-	--n;
-	n |= n >> 1;
-	n |= n >> 2;
-	n |= n >> 4;
-	n |= n >> 8;
-	++n;
+   --n;
+   n |= n >> 1;
+   n |= n >> 2;
+   n |= n >> 4;
+   n |= n >> 8;
+   ++n;
 
-	return n;
+   return n;
 }
 
 bool retro_load_game(const struct retro_game_info *info)

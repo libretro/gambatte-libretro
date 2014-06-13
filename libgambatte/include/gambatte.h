@@ -100,6 +100,9 @@ public:
    void loadState(const void *data);
    size_t stateSize() const;
 
+   void setColorCorrection(bool enable);
+   video_pixel_t gbcToRgb32(const unsigned bgr15);
+
 private:
 	struct Priv;
 	Priv *const p_;
@@ -108,8 +111,6 @@ private:
 	GB(const GB &);
 	GB & operator=(const GB &);
 };
-
-video_pixel_t gbcToRgb32(const unsigned bgr15);
 }
 
 #endif
