@@ -67,7 +67,13 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
    info->timing   = g_timing;
 }
 
-void retro_init()
+static void check_system_specs(void)
+{
+   unsigned level = 4;
+   environ_cb(RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL, &level);
+}
+
+void retro_init(void)
 {
    struct retro_log_callback log;
 
@@ -100,7 +106,7 @@ void retro_init()
       g_timing.sample_rate = sample_rate / 64; // ~32k
    }
 #endif
-
+   check_system_specs();
 }
 
 void retro_deinit()
