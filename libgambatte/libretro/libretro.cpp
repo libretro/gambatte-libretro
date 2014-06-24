@@ -159,15 +159,14 @@ void retro_reset()
 }
 
 static size_t serialize_size = 0;
-size_t retro_serialize_size()
+size_t retro_serialize_size(void)
 {
    return gb.stateSize();
 }
 
 bool retro_serialize(void *data, size_t size)
 {
-   if (serialize_size == 0)
-      serialize_size = retro_serialize_size();
+   serialize_size = retro_serialize_size();
 
    if (size != serialize_size)
       return false;
@@ -178,8 +177,7 @@ bool retro_serialize(void *data, size_t size)
 
 bool retro_unserialize(const void *data, size_t size)
 {
-   if (serialize_size == 0)
-      serialize_size = retro_serialize_size();
+   serialize_size = retro_serialize_size();
 
    if (size != serialize_size)
       return false;
