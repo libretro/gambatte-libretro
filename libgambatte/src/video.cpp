@@ -21,7 +21,6 @@
 #include <cstring>
 #include <algorithm>
 
-#include<stdio.h>
 namespace gambatte {
 
 void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const dmgColors, const unsigned data) {
@@ -32,7 +31,7 @@ void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const
 }
 
 video_pixel_t LCD::gbcToRgb32(const unsigned bgr15) {
-	return gbcToRgbLookup[bgr15];
+	return gbcToRgbLookup[bgr15&0x7FFF];
 }
 
 static video_pixel_t gbcToRgbCalc(const unsigned bgr15, bool colorCorrection) {
