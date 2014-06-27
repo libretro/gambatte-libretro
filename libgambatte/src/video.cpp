@@ -31,10 +31,6 @@ void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const
 }
 
 video_pixel_t LCD::gbcToRgb32(const unsigned bgr15) {
-	return gbcToRgbLookup[bgr15&0x7FFF];
-}
-
-static video_pixel_t gbcToRgbCalc(const unsigned bgr15, bool colorCorrection) {
 	if (colorCorrection) {
 #ifdef VIDEO_RGB565
 		const unsigned r = bgr15 & 0x1F;
@@ -66,37 +62,10 @@ static video_pixel_t gbcToRgbCalc(const unsigned bgr15, bool colorCorrection) {
 	}
 }
 
-void LCD::createPaletteLookup(bool colorCorrection) {
-	for (unsigned i=0;i<0x8000;i++) gbcToRgbLookup[i]=gbcToRgbCalc(i, colorCorrection);
+void LCD::setColorCorrection(bool colorCorrection_) {
+	colorCorrection=colorCorrection_;
 	refreshPalettes();
 }
-/*static unsigned long gbcToRgb16(const unsigned bgr15) {
-	const unsigned r = bgr15 & 0x1F;
-	const unsigned g = bgr15 >> 5 & 0x1F;
-	const unsigned b = bgr15 >> 10 & 0x1F;
-
-	return (((r * 13 + g * 2 + b + 8) << 7) & 0xF800) | ((g * 3 + b + 1) >> 1) << 5 | ((r * 3 + g * 2 + b * 11 + 8) >> 4);
-}
-
-static unsigned long gbcToUyvy(const unsigned bgr15) {
-	const unsigned r5 = bgr15 & 0x1F;
-	const unsigned g5 = bgr15 >> 5 & 0x1F;
-	const unsigned b5 = bgr15 >> 10 & 0x1F;
-
-	// y = (r5 * 926151 + g5 * 1723530 + b5 * 854319) / 510000 + 16;
-	// u = (b5 * 397544 - r5 * 68824 - g5 * 328720) / 225930 + 128;
-	// v = (r5 * 491176 - g5 * 328720 - b5 * 162456) / 178755 + 128;
-
-	const unsigned long y = (r5 * 116 + g5 * 216 + b5 * 107 + 16 * 64 + 32) >> 6;
-	const unsigned long u = (b5 * 225 - r5 * 39 - g5 * 186 + 128 * 128 + 64) >> 7;
-	const unsigned long v = (r5 * 176 - g5 * 118 - b5 * 58 + 128 * 64 + 32) >> 6;
-
-#ifdef WORDS_BIGENDIAN
-	return u << 24 | y << 16 | v << 8 | y;
-#else
-	return y << 24 | v << 16 | y << 8 | u;
-#endif
-}*/
 
 LCD::LCD(const unsigned char *const oamram, const unsigned char *const vram, const VideoInterruptRequester memEventRequester) :
 	ppu(nextM0Time_, oamram, vram),
@@ -124,7 +93,7 @@ LCD::LCD(const unsigned char *const oamram, const unsigned char *const vram, con
 	reset(oamram, false);
 	setVideoBuffer(0, 160);
 
-	createPaletteLookup(true);
+	setColorCorrection(false);
 }
 
 void LCD::reset(const unsigned char *const oamram, const bool cgb) {
