@@ -120,7 +120,7 @@ LCD::LCD(const unsigned char *const oamram, const unsigned char *const vram, con
 	reset(oamram, false);
 	setVideoBuffer(0, 160);
 
-	setColorCorrection(false);
+	setColorCorrection(true);
 }
 
 void LCD::reset(const unsigned char *const oamram, const bool cgb) {
