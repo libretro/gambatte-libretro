@@ -31,10 +31,6 @@ void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const
 }
 
 video_pixel_t LCD::gbcToRgb32(const unsigned bgr15) {
-	return gbcToRgbLookup[bgr15&0x7FFF];
-}
-
-static video_pixel_t gbcToRgbCalc(const unsigned bgr15, bool colorCorrection) {
 	if (colorCorrection) {
 #ifdef VIDEO_RGB565
 		const unsigned r = bgr15 & 0x1F;
@@ -66,8 +62,8 @@ static video_pixel_t gbcToRgbCalc(const unsigned bgr15, bool colorCorrection) {
 	}
 }
 
-void LCD::createPaletteLookup(bool colorCorrection) {
-	for (unsigned i=0;i<0x8000;i++) gbcToRgbLookup[i]=gbcToRgbCalc(i, colorCorrection);
+void LCD::setColorCorrection(bool colorCorrection_) {
+	colorCorrection=colorCorrection_;
 	refreshPalettes();
 }
 /*static unsigned long gbcToRgb16(const unsigned bgr15) {
@@ -124,7 +120,7 @@ LCD::LCD(const unsigned char *const oamram, const unsigned char *const vram, con
 	reset(oamram, false);
 	setVideoBuffer(0, 160);
 
-	createPaletteLookup(true);
+	setColorCorrection(true);
 }
 
 void LCD::reset(const unsigned char *const oamram, const bool cgb) {
