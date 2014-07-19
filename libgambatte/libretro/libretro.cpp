@@ -424,6 +424,7 @@ bool retro_load_game(const struct retro_game_info *info)
 
    rom_path = info->path ? info->path : "";
    strncpy(internal_game_name, (const char*)info->data + 0x134, sizeof(internal_game_name) - 1);
+   internal_game_name[sizeof(internal_game_name)-1]='\0';
 
    if (log_cb)
       log_cb(RETRO_LOG_INFO, "[Gambatte]: Got internal game name: %s.\n", internal_game_name);
