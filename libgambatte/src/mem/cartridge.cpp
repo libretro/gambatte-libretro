@@ -275,6 +275,8 @@ bool Cartridge::loadROM(const void *romdata, unsigned romsize, const bool forceD
 
 bool Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartCompat) {
 	
+	if (rom.size() < 0x4000) return 1;
+	
 	unsigned rambanks = 1;
 	unsigned rombanks = 2;
 	bool cgb = false;
