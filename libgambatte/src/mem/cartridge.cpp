@@ -281,6 +281,7 @@ bool Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartComp
 
 	{
 		unsigned char header[0x150];
+		if (rom.size() < sizeof(header)) return 1;
 		rom.read(reinterpret_cast<char*>(header), sizeof(header));
 
 		switch (header[0x0147]) {
