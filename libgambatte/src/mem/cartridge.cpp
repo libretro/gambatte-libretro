@@ -23,6 +23,13 @@
 #include <cstring>
 #include <fstream>
 
+#ifdef __LIBRETRO__
+#include "../../libretro/libretro.h"
+extern retro_log_printf_t log_cb;
+#else
+#define log_cb(x, ...) std::printf(__VA_ARGS__);
+#endif
+
 namespace gambatte {
 
 Cartridge::Cartridge()
@@ -286,36 +293,36 @@ bool Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartComp
 		rom.read(reinterpret_cast<char*>(header), sizeof(header));
 
 		switch (header[0x0147]) {
-		case 0x00: std::puts("Plain ROM loaded."); break;
-		case 0x01: std::puts("MBC1 ROM loaded."); break;
-		case 0x02: std::puts("MBC1 ROM+RAM loaded."); break;
-		case 0x03: std::puts("MBC1 ROM+RAM+BATTERY loaded."); break;
-		case 0x05: std::puts("MBC2 ROM loaded."); break;
-		case 0x06: std::puts("MBC2 ROM+BATTERY loaded."); break;
-		case 0x08: std::puts("Plain ROM with additional RAM loaded."); break;
-		case 0x09: std::puts("Plain ROM with additional RAM and Battery loaded."); break;
-		case 0x0B: std::puts("MM01 ROM not supported."); return 1;
-		case 0x0C: std::puts("MM01 ROM not supported."); return 1;
-		case 0x0D: std::puts("MM01 ROM not supported."); return 1;
-		case 0x0F: std::puts("MBC3 ROM+TIMER+BATTERY loaded."); break;
-		case 0x10: std::puts("MBC3 ROM+TIMER+RAM+BATTERY loaded."); break;
-		case 0x11: std::puts("MBC3 ROM loaded."); break;
-		case 0x12: std::puts("MBC3 ROM+RAM loaded."); break;
-		case 0x13: std::puts("MBC3 ROM+RAM+BATTERY loaded."); break;
-		case 0x15: std::puts("MBC4 ROM not supported."); return 1;
-		case 0x16: std::puts("MBC4 ROM not supported."); return 1;
-		case 0x17: std::puts("MBC4 ROM not supported."); return 1;
-		case 0x19: std::puts("MBC5 ROM loaded."); break;
-		case 0x1A: std::puts("MBC5 ROM+RAM loaded."); break;
-		case 0x1B: std::puts("MBC5 ROM+RAM+BATTERY loaded."); break;
-		case 0x1C: std::puts("MBC5+RUMLE ROM not supported."); break;
-		case 0x1D: std::puts("MBC5+RUMLE+RAM ROM not suported."); break;
-		case 0x1E: std::puts("MBC5+RUMLE+RAM+BATTERY ROM not supported."); break;
-		case 0xFC: std::puts("Pocket Camera ROM not supported."); return 1;
-		case 0xFD: std::puts("Bandai TAMA5 ROM not supported."); return 1;
-		case 0xFE: std::puts("HuC3 ROM not supported."); return 1;
-		case 0xFF: std::puts("HuC1 ROM not supported."); return 1;
-		default: std::puts("Wrong data-format, corrupt or unsupported ROM."); return 1;
+		case 0x00: log_cb(RETRO_LOG_INFO, "Plain ROM loaded."); break;
+		case 0x01: log_cb(RETRO_LOG_INFO, "MBC1 ROM loaded."); break;
+		case 0x02: log_cb(RETRO_LOG_INFO, "MBC1 ROM+RAM loaded."); break;
+		case 0x03: log_cb(RETRO_LOG_INFO, "MBC1 ROM+RAM+BATTERY loaded."); break;
+		case 0x05: log_cb(RETRO_LOG_INFO, "MBC2 ROM loaded."); break;
+		case 0x06: log_cb(RETRO_LOG_INFO, "MBC2 ROM+BATTERY loaded."); break;
+		case 0x08: log_cb(RETRO_LOG_INFO, "Plain ROM with additional RAM loaded."); break;
+		case 0x09: log_cb(RETRO_LOG_INFO, "Plain ROM with additional RAM and Battery loaded."); break;
+		case 0x0B: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported."); return 1;
+		case 0x0C: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported."); return 1;
+		case 0x0D: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported."); return 1;
+		case 0x0F: log_cb(RETRO_LOG_INFO, "MBC3 ROM+TIMER+BATTERY loaded."); break;
+		case 0x10: log_cb(RETRO_LOG_INFO, "MBC3 ROM+TIMER+RAM+BATTERY loaded."); break;
+		case 0x11: log_cb(RETRO_LOG_INFO, "MBC3 ROM loaded."); break;
+		case 0x12: log_cb(RETRO_LOG_INFO, "MBC3 ROM+RAM loaded."); break;
+		case 0x13: log_cb(RETRO_LOG_INFO, "MBC3 ROM+RAM+BATTERY loaded."); break;
+		case 0x15: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported."); return 1;
+		case 0x16: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported."); return 1;
+		case 0x17: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported."); return 1;
+		case 0x19: log_cb(RETRO_LOG_INFO, "MBC5 ROM loaded."); break;
+		case 0x1A: log_cb(RETRO_LOG_INFO, "MBC5 ROM+RAM loaded."); break;
+		case 0x1B: log_cb(RETRO_LOG_INFO, "MBC5 ROM+RAM+BATTERY loaded."); break;
+		case 0x1C: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE ROM not supported."); break;
+		case 0x1D: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE+RAM ROM not suported."); break;
+		case 0x1E: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE+RAM+BATTERY ROM not supported."); break;
+		case 0xFC: log_cb(RETRO_LOG_ERROR, "Pocket Camera ROM not supported."); return 1;
+		case 0xFD: log_cb(RETRO_LOG_ERROR, "Bandai TAMA5 ROM not supported."); return 1;
+		case 0xFE: log_cb(RETRO_LOG_ERROR, "HuC3 ROM not supported."); return 1;
+		case 0xFF: log_cb(RETRO_LOG_ERROR, "HuC1 ROM not supported."); return 1;
+		default: log_cb(RETRO_LOG_ERROR, "Wrong data-format, corrupt or unsupported ROM."); return 1;
 		}
 
 		/*switch (header[0x0148]) {
@@ -357,13 +364,13 @@ bool Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartComp
 		}
 		
 		cgb = header[0x0143] >> 7 & (1 ^ forceDmg);
-		std::printf("cgb: %d\n", cgb);
+		log_cb(RETRO_LOG_INFO, "cgb: %d\n", cgb);
 	}
 
-	std::printf("rambanks: %u\n", rambanks);
+	log_cb(RETRO_LOG_INFO, "rambanks: %u\n", rambanks);
 
 	rombanks = pow2ceil(rom.size() / 0x4000);
-	std::printf("rombanks: %u\n", static_cast<unsigned>(rom.size() / 0x4000));
+	log_cb(RETRO_LOG_INFO, "rombanks: %u\n", static_cast<unsigned>(rom.size() / 0x4000));
 	
 	memptrs.reset(rombanks, rambanks, cgb ? 8 : 2);
 
@@ -374,7 +381,7 @@ bool Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartComp
 	enforce8bit(memptrs.romdata(), rombanks * 0x4000ul);
 
    if ((multi64rom = !rambanks && rombanks == 64 && cartridgeType(memptrs.romdata()[0x147]) == MBC1 && multiCartCompat))
-		std::puts("Multi-ROM \"MBC1\" presumed");
+		log_cb(RETRO_LOG_INFO, "Multi-ROM \"MBC1\" presumed");
 
 	if (rom.fail())
 		return 1;

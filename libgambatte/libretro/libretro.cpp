@@ -9,7 +9,7 @@
 #include <sstream>
 #include <string.h>
 
-static retro_log_printf_t log_cb;
+retro_log_printf_t log_cb;
 static retro_video_refresh_t video_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
@@ -73,6 +73,8 @@ static void check_system_specs(void)
    environ_cb(RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL, &level);
 }
 
+static void log_null(enum retro_log_level level, const char *fmt, ...) {}
+
 void retro_init(void)
 {
    struct retro_log_callback log;
@@ -80,7 +82,7 @@ void retro_init(void)
    if (environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log))
       log_cb = log.log;
    else
-      log_cb = NULL;
+      log_cb = log_null;
 
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
