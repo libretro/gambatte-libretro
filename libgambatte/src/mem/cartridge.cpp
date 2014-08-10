@@ -19,7 +19,6 @@
 #include "cartridge.h"
 #include "../savestate.h"
 #include <cassert>
-#include <cstdio>
 #include <cstring>
 #include <fstream>
 
@@ -27,6 +26,7 @@
 #include "../../libretro/libretro.h"
 extern retro_log_printf_t log_cb;
 #else
+#include <cstdio>
 #define log_cb(x, ...) std::printf(__VA_ARGS__);
 #endif
 
