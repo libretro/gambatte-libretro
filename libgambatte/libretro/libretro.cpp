@@ -271,7 +271,7 @@ static void check_palette(void)
 
       if (line.find("=") == std::string::npos)
       {
-         log_cb(RETRO_LOG_ERROR, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+         log_cb(RETRO_LOG_WARN, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
          continue; // current line does not contain a palette color definition, so go to next line
       }
 
@@ -284,7 +284,7 @@ static void check_palette(void)
       ss >> rgb32;
       if (!ss)
       {
-         log_cb(RETRO_LOG_ERROR, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n",
+         log_cb(RETRO_LOG_WARN, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n",
                custom_palette_path.c_str(), line_count);
          continue;
       }
@@ -318,7 +318,7 @@ static void check_palette(void)
          gb.setDmgPaletteColor(2, 2, rgb32);  
       else if (startswith(line, "Sprite%2023="))
          gb.setDmgPaletteColor(2, 3, rgb32);
-      else log_cb(RETRO_LOG_ERROR, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
+      else log_cb(RETRO_LOG_WARN, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
    } // endfor
 }
 
@@ -404,7 +404,7 @@ bool retro_load_game(const struct retro_game_info *info)
    environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
    if (!can_dupe)
    {
-      log_cb(RETRO_LOG_INFO, "[Gambatte]: Cannot dupe frames!\n");
+      log_cb(RETRO_LOG_ERROR, "[Gambatte]: Cannot dupe frames!\n");
       return false;
    }
 
@@ -412,14 +412,14 @@ bool retro_load_game(const struct retro_game_info *info)
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
    {
-      log_cb(RETRO_LOG_INFO, "[Gambatte]: RGB565 is not supported.\n");
+      log_cb(RETRO_LOG_ERROR, "[Gambatte]: RGB565 is not supported.\n");
       return false;
    }
 #else
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
    {
-      log_cb(RETRO_LOG_INFO, "[Gambatte]: XRGB8888 is not supported.\n");
+      log_cb(RETRO_LOG_ERROR, "[Gambatte]: XRGB8888 is not supported.\n");
       return false;
    }
 #endif
