@@ -293,36 +293,36 @@ bool Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartComp
 		rom.read(reinterpret_cast<char*>(header), sizeof(header));
 
 		switch (header[0x0147]) {
-		case 0x00: log_cb(RETRO_LOG_INFO, "Plain ROM loaded."); break;
-		case 0x01: log_cb(RETRO_LOG_INFO, "MBC1 ROM loaded."); break;
-		case 0x02: log_cb(RETRO_LOG_INFO, "MBC1 ROM+RAM loaded."); break;
-		case 0x03: log_cb(RETRO_LOG_INFO, "MBC1 ROM+RAM+BATTERY loaded."); break;
-		case 0x05: log_cb(RETRO_LOG_INFO, "MBC2 ROM loaded."); break;
-		case 0x06: log_cb(RETRO_LOG_INFO, "MBC2 ROM+BATTERY loaded."); break;
-		case 0x08: log_cb(RETRO_LOG_INFO, "Plain ROM with additional RAM loaded."); break;
-		case 0x09: log_cb(RETRO_LOG_INFO, "Plain ROM with additional RAM and Battery loaded."); break;
-		case 0x0B: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported."); return 1;
-		case 0x0C: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported."); return 1;
-		case 0x0D: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported."); return 1;
-		case 0x0F: log_cb(RETRO_LOG_INFO, "MBC3 ROM+TIMER+BATTERY loaded."); break;
-		case 0x10: log_cb(RETRO_LOG_INFO, "MBC3 ROM+TIMER+RAM+BATTERY loaded."); break;
-		case 0x11: log_cb(RETRO_LOG_INFO, "MBC3 ROM loaded."); break;
-		case 0x12: log_cb(RETRO_LOG_INFO, "MBC3 ROM+RAM loaded."); break;
-		case 0x13: log_cb(RETRO_LOG_INFO, "MBC3 ROM+RAM+BATTERY loaded."); break;
-		case 0x15: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported."); return 1;
-		case 0x16: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported."); return 1;
-		case 0x17: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported."); return 1;
-		case 0x19: log_cb(RETRO_LOG_INFO, "MBC5 ROM loaded."); break;
-		case 0x1A: log_cb(RETRO_LOG_INFO, "MBC5 ROM+RAM loaded."); break;
-		case 0x1B: log_cb(RETRO_LOG_INFO, "MBC5 ROM+RAM+BATTERY loaded."); break;
-		case 0x1C: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE ROM not supported."); break;
-		case 0x1D: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE+RAM ROM not suported."); break;
-		case 0x1E: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE+RAM+BATTERY ROM not supported."); break;
-		case 0xFC: log_cb(RETRO_LOG_ERROR, "Pocket Camera ROM not supported."); return 1;
-		case 0xFD: log_cb(RETRO_LOG_ERROR, "Bandai TAMA5 ROM not supported."); return 1;
-		case 0xFE: log_cb(RETRO_LOG_ERROR, "HuC3 ROM not supported."); return 1;
-		case 0xFF: log_cb(RETRO_LOG_ERROR, "HuC1 ROM not supported."); return 1;
-		default: log_cb(RETRO_LOG_ERROR, "Wrong data-format, corrupt or unsupported ROM."); return 1;
+		case 0x00: log_cb(RETRO_LOG_INFO, "Plain ROM loaded.\n"); break;
+		case 0x01: log_cb(RETRO_LOG_INFO, "MBC1 ROM loaded.\n"); break;
+		case 0x02: log_cb(RETRO_LOG_INFO, "MBC1 ROM+RAM loaded.\n"); break;
+		case 0x03: log_cb(RETRO_LOG_INFO, "MBC1 ROM+RAM+BATTERY loaded.\n"); break;
+		case 0x05: log_cb(RETRO_LOG_INFO, "MBC2 ROM loaded.\n"); break;
+		case 0x06: log_cb(RETRO_LOG_INFO, "MBC2 ROM+BATTERY loaded.\n"); break;
+		case 0x08: log_cb(RETRO_LOG_INFO, "Plain ROM with additional RAM loaded.\n"); break;
+		case 0x09: log_cb(RETRO_LOG_INFO, "Plain ROM with additional RAM and Battery loaded.\n"); break;
+		case 0x0B: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported.\n"); return 1;
+		case 0x0C: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported.\n"); return 1;
+		case 0x0D: log_cb(RETRO_LOG_ERROR, "MM01 ROM not supported.\n"); return 1;
+		case 0x0F: log_cb(RETRO_LOG_INFO, "MBC3 ROM+TIMER+BATTERY loaded.\n"); break;
+		case 0x10: log_cb(RETRO_LOG_INFO, "MBC3 ROM+TIMER+RAM+BATTERY loaded.\n"); break;
+		case 0x11: log_cb(RETRO_LOG_INFO, "MBC3 ROM loaded.\n"); break;
+		case 0x12: log_cb(RETRO_LOG_INFO, "MBC3 ROM+RAM loaded.\n"); break;
+		case 0x13: log_cb(RETRO_LOG_INFO, "MBC3 ROM+RAM+BATTERY loaded.\n"); break;
+		case 0x15: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported.\n"); return 1;
+		case 0x16: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported.\n"); return 1;
+		case 0x17: log_cb(RETRO_LOG_ERROR, "MBC4 ROM not supported.\n"); return 1;
+		case 0x19: log_cb(RETRO_LOG_INFO, "MBC5 ROM loaded.\n"); break;
+		case 0x1A: log_cb(RETRO_LOG_INFO, "MBC5 ROM+RAM loaded.\n"); break;
+		case 0x1B: log_cb(RETRO_LOG_INFO, "MBC5 ROM+RAM+BATTERY loaded.\n"); break;
+		case 0x1C: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE ROM not supported.\n"); break;
+		case 0x1D: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE+RAM ROM not suported.\n"); break;
+		case 0x1E: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE+RAM+BATTERY ROM not supported.\n"); break;
+		case 0xFC: log_cb(RETRO_LOG_ERROR, "Pocket Camera ROM not supported.\n"); return 1;
+		case 0xFD: log_cb(RETRO_LOG_ERROR, "Bandai TAMA5 ROM not supported.\n"); return 1;
+		case 0xFE: log_cb(RETRO_LOG_ERROR, "HuC3 ROM not supported.\n"); return 1;
+		case 0xFF: log_cb(RETRO_LOG_ERROR, "HuC1 ROM not supported.\n"); return 1;
+		default: log_cb(RETRO_LOG_ERROR, "Wrong data-format, corrupt or unsupported ROM.\n"); return 1;
 		}
 
 		/*switch (header[0x0148]) {
