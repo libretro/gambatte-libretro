@@ -28,7 +28,6 @@ else ifneq ($(findstring MINGW,$(shell uname -a)),)
    system_platform = win
 endif
 
-LIBRETRO_DIR := libretro
 TARGET_NAME := gambatte
 
 ifeq ($(platform), unix)
@@ -163,21 +162,17 @@ else
 	CXXFLAGS += -O3 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
 endif
 
-EMU_DIR := src
-LIBRETRO_DIR := libretro
+CORE_DIR := src
 
-CXXSRCS := $(EMU_DIR)/bitmap_font.cpp $(EMU_DIR)/cpu.cpp $(EMU_DIR)/gambatte.cpp $(EMU_DIR)/initstate.cpp $(EMU_DIR)/interrupter.cpp $(EMU_DIR)/interruptrequester.cpp $(EMU_DIR)/memory.cpp $(EMU_DIR)/sound.cpp $(EMU_DIR)/state_osd_elements.cpp $(EMU_DIR)/statesaver.cpp $(EMU_DIR)/tima.cpp $(EMU_DIR)/video.cpp $(EMU_DIR)/file/file.cpp $(EMU_DIR)/mem/cartridge.cpp $(EMU_DIR)/mem/memptrs.cpp $(EMU_DIR)/mem/rtc.cpp $(EMU_DIR)/sound/channel1.cpp $(EMU_DIR)/sound/channel2.cpp $(EMU_DIR)/sound/channel3.cpp $(EMU_DIR)/sound/channel4.cpp $(EMU_DIR)/sound/duty_unit.cpp $(EMU_DIR)/sound/envelope_unit.cpp $(EMU_DIR)/sound/length_counter.cpp $(EMU_DIR)/video/ly_counter.cpp $(EMU_DIR)/video/lyc_irq.cpp $(EMU_DIR)/video/next_m0_time.cpp $(EMU_DIR)/video/ppu.cpp $(EMU_DIR)/video/sprite_mapper.cpp libretro/libretro.cpp
-CSRCS := libretro/blipper.c
-CXXOBJ := $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o)
+include Makefile.common
 
-OBJS := $(CXXOBJ)
+OBJS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
 
 DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DINLINE=inline -DVIDEO_RGB565
 
 CFLAGS += $(CODE_DEFINES) $(fpic) $(DEFINES)
 CXXFLAGS += $(fpic) $(DEFINES)
 
-INCDIRS := -I$(EMU_DIR) -Iinclude -I../common -I../common/resample -Ilibretro
 LIBS :=
 
 all: $(TARGET)
@@ -190,10 +185,10 @@ else
 endif
 
 %.o: %.cpp
-	$(CXX) -c -o $@ $< $(CXXFLAGS) $(INCDIRS)
+	$(CXX) -c -o $@ $< $(CXXFLAGS) $(INCFLAGS)
 
 %.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS) $(INCDIRS)
+	$(CC) -c -o $@ $< $(CFLAGS) $(INCFLAGS)
 
 clean-objs:
 	rm -f $(OBJS)

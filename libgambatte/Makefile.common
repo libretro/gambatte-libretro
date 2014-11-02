@@ -1,0 +1,5 @@
+INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro
+
+SOURCES_CXX := $(CORE_DIR)/bitmap_font.cpp $(CORE_DIR)/cpu.cpp $(CORE_DIR)/gambatte.cpp $(CORE_DIR)/initstate.cpp $(CORE_DIR)/interrupter.cpp $(CORE_DIR)/interruptrequester.cpp $(CORE_DIR)/memory.cpp $(CORE_DIR)/sound.cpp $(CORE_DIR)/state_osd_elements.cpp $(CORE_DIR)/statesaver.cpp $(CORE_DIR)/tima.cpp $(CORE_DIR)/video.cpp $(CORE_DIR)/file/file.cpp $(CORE_DIR)/mem/cartridge.cpp $(CORE_DIR)/mem/memptrs.cpp $(CORE_DIR)/mem/rtc.cpp $(CORE_DIR)/sound/channel1.cpp $(CORE_DIR)/sound/channel2.cpp $(CORE_DIR)/sound/channel3.cpp $(CORE_DIR)/sound/channel4.cpp $(CORE_DIR)/sound/duty_unit.cpp $(CORE_DIR)/sound/envelope_unit.cpp $(CORE_DIR)/sound/length_counter.cpp $(CORE_DIR)/video/ly_counter.cpp $(CORE_DIR)/video/lyc_irq.cpp $(CORE_DIR)/video/next_m0_time.cpp $(CORE_DIR)/video/ppu.cpp $(CORE_DIR)/video/sprite_mapper.cpp $(CORE_DIR)/../libretro/libretro.cpp
+
+SOURCES_C := $(CORE_DIR)/../libretro/blipper.c
