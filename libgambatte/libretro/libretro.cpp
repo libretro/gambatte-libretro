@@ -124,9 +124,9 @@ void retro_set_environment(retro_environment_t cb)
    environ_cb = cb;
 
    static const struct retro_variable vars[] = {
-      { "gb_gbamode", "GBA mode; disabled|enabled" },
-      { "gb_colorization", "GB Colorization; disabled|enabled|custom" },
-      { "gbc_color_correction", "Color correction; enabled|disabled" },
+      { "gambatte_gb_gbamode", "GBA mode; disabled|enabled" },
+      { "gambatte_gb_colorization", "GB Colorization; disabled|enabled|custom" },
+      { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
       { NULL, NULL },
    };
 
@@ -326,11 +326,11 @@ static void check_variables(void)
 {
    bool colorCorrection=true;
    struct retro_variable var = {0};
-   var.key = "gbc_color_correction";
+   var.key = "gambatte_gbc_color_correction";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "disabled")) colorCorrection=false;
    gb.setColorCorrection(colorCorrection);
 
-   var.key = "gb_colorization";
+   var.key = "gambatte_gb_colorization";
 
    if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
       return;
@@ -354,7 +354,8 @@ static void check_variables(void)
    // load a GBC BIOS builtin palette
    unsigned short* gbc_bios_palette = NULL;
 
-   switch (gb_colorization_enable){
+   switch (gb_colorization_enable)
+   {
       case 1:   
         gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
         if (!gbc_bios_palette)
@@ -441,7 +442,7 @@ bool retro_load_game(const struct retro_game_info *info)
 
    bool gbamode = false;
    struct retro_variable var = {0};
-   var.key = "gb_gbamode";
+   var.key = "gambatte_gb_gbamode";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "enabled")) gbamode=true;
 
    if (gb.load(info->data, info->size, gbamode ? gambatte::GB::GBA_CGB : 0))
