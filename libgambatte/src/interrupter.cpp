@@ -63,7 +63,7 @@ void Interrupter::setGameShark(const std::string &codes) {
 
 void Interrupter::applyVblankCheats(const unsigned long cycleCounter, Memory &memory) {
    for (std::size_t i = 0, size = gsCodes.size(); i < size; ++i) {
-      if (gsCodes[i].type == 0x01)
+      if (gsCodes[i].type == 0x01 || gsCodes[i].type == 0x91)
          memory.write(gsCodes[i].address, gsCodes[i].value, cycleCounter);
    }
 }
