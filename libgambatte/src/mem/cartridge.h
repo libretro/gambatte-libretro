@@ -29,6 +29,12 @@ namespace gambatte {
 struct SaveState;
 
 class Cartridge {
+	struct AddrData {
+ unsigned long addr;
+ unsigned char data;
+ AddrData(unsigned long addr, unsigned data) : addr(addr), data(data) {}
+ };
+
 	MemPtrs memptrs;
 	Rtc rtc;
 	
@@ -37,6 +43,8 @@ class Cartridge {
 	bool enableRam;
 	bool rambankMode;
    bool multi64rom;
+
+   std::vector<AddrData> ggUndoList;
 	
 	unsigned rambanks() const { return (memptrs.rambankdataend() - memptrs.rambankdata()) / 0x2000; }
    unsigned rombanks() const { return (memptrs.romdataend()     - memptrs.romdata()    ) / 0x4000; }
@@ -64,6 +72,7 @@ class Cartridge {
          default: return false;
       }
    }
+   void applyGameGenie(const std::string &code);
 	
 public:
 	Cartridge();
@@ -93,6 +102,7 @@ public:
 	const std::string saveBasePath() const;
 	void setSaveDir(const std::string &dir);
 	bool loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multicartCompat);
+   void setGameGenie(const std::string &codes);
 
    void *savedata_ptr()
    {

@@ -145,6 +145,8 @@ public:
 	}
 	
 	void setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned long rgb32);
+   void setGameGenie(const std::string &codes) { cart.setGameGenie(codes); }
+   void setGameShark(const std::string &codes) { interrupter.setGameShark(codes); }
 	
 	void display_setColorCorrection(bool enable) { display.setColorCorrection(enable); }
 	video_pixel_t display_gbcToRgb32(const unsigned bgr15) { return display.gbcToRgb32(bgr15); }

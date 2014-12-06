@@ -970,6 +970,7 @@ bool Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg,
 
 	sound.init(cart.isCgb());
 	display.reset(ioamhram, cart.isCgb());
+   interrupter.setGameShark(std::string());
 
 	return false;
 }

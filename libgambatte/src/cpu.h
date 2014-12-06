@@ -88,6 +88,9 @@ public:
 	void setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) {
 		memory.setDmgPaletteColor(palNum, colorNum, rgb32);
 	}
+
+   void setGameGenie(const std::string &codes) { memory.setGameGenie(codes); }
+   void setGameShark(const std::string &codes) { memory.setGameShark(codes); }
 	
 	void display_setColorCorrection(bool enable) { memory.display_setColorCorrection(enable); }
 	video_pixel_t display_gbcToRgb32(const unsigned bgr15) { return memory.display_gbcToRgb32(bgr15); }

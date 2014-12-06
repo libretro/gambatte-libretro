@@ -103,6 +103,16 @@ public:
    void setColorCorrection(bool enable);
    video_pixel_t gbcToRgb32(const unsigned bgr15);
 
+   /** Set Game Genie codes to apply to currently loaded ROM image. Cleared on ROM load.
+    * @param codes Game Genie codes in format HHH-HHH-HHH;HHH-HHH-HHH;... where H is [0-9]|[A-F]
+    */
+   void setGameGenie(const std::string &codes);
+
+   /** Set Game Shark codes to apply to currently loaded ROM image. Cleared on ROM load.
+    * @param codes Game Shark codes in format 01HHHHHH;01HHHHHH;... where H is [0-9]|[A-F]
+    */
+   void setGameShark(const std::string &codes);
+
 private:
 	struct Priv;
 	Priv *const p_;
