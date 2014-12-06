@@ -139,5 +139,9 @@ void GB::setGameShark(const std::string &codes) {
  p_->cpu.setGameShark(codes);
 }
 
+void GB::clearCheats() {
+ p_->cpu.clearCheats();
+}
+
 }
 

@@ -146,6 +146,7 @@ public:
 	
 	void setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned long rgb32);
    void setGameGenie(const std::string &codes) { cart.setGameGenie(codes); }
+   void clearCheats() { cart.clearCheats(); }
    void setGameShark(const std::string &codes) { interrupter.setGameShark(codes); }
 	
 	void display_setColorCorrection(bool enable) { display.setColorCorrection(enable); }

@@ -113,6 +113,8 @@ public:
     */
    void setGameShark(const std::string &codes);
 
+   void clearCheats();
+
 private:
 	struct Priv;
 	Priv *const p_;

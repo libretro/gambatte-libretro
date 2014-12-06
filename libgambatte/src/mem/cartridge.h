@@ -103,6 +103,7 @@ public:
 	void setSaveDir(const std::string &dir);
 	bool loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multicartCompat);
    void setGameGenie(const std::string &codes);
+   void clearCheats();
 
    void *savedata_ptr()
    {

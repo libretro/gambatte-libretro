@@ -188,8 +188,19 @@ bool retro_unserialize(const void *data, size_t size)
    return true;
 }
 
-void retro_cheat_reset() {}
-void retro_cheat_set(unsigned, bool, const char *) {}
+void retro_cheat_reset()
+{
+   gb.clearCheats();
+}
+
+void retro_cheat_set(unsigned index, bool enabled, const char *code)
+{
+   std::string s = code;
+   if (s.find("-") != std::string::npos)
+      gb.setGameGenie(code);
+   else
+      gb.setGameShark(code);
+}
 
    
 static std::string basename(std::string filename)

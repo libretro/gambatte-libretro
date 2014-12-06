@@ -418,6 +418,10 @@ void Cartridge::applyGameGenie(const std::string &code) {
  }
 }
 
+void Cartridge::clearCheats() {
+ ggUndoList.clear();
+}
+
 void Cartridge::setGameGenie(const std::string &codes) {
  //if (loaded()) {
  for (std::vector<AddrData>::reverse_iterator it = ggUndoList.rbegin(), end = ggUndoList.rend(); it != end; ++it) {
