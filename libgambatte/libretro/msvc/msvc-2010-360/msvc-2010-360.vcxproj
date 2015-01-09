@@ -148,7 +148,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>_DEBUG;_XBOX;_XBOX360;_LIB;%(PreprocessorDefinitions);HAVE_STDINT_H</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>..\..\..\include;..\src\;..\src\video;..\src\file;..\src\sound;..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\src\;..\..\..\src\video;..\..\..\src\file;..\..\..\src\sound;..\..\..\src\mem;..\..\..\..\common;..\libsnes;..\..\..\..\common\resample</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
