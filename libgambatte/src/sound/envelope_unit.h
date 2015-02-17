@@ -33,13 +33,6 @@ namespace gambatte
             virtual void operator()(unsigned long /*cc*/) {}
          };
 
-      private:
-         static VolOnOffEvent nullEvent;
-         VolOnOffEvent &volOnOffEvent;
-         unsigned char nr2;
-         unsigned char volume;
-
-      public:
          explicit EnvelopeUnit(VolOnOffEvent &volOnOffEvent = nullEvent);
          void event();
          bool dacIsOn() const { return nr2 & 0xF8; }
@@ -49,6 +42,12 @@ namespace gambatte
          void reset();
          void saveState(SaveState::SPU::Env &estate) const;
          void loadState(const SaveState::SPU::Env &estate, unsigned nr2, unsigned long cc);
+
+      private:
+         static VolOnOffEvent nullEvent;
+         VolOnOffEvent &volOnOffEvent;
+         unsigned char nr2;
+         unsigned char volume;
    };
 
 }
