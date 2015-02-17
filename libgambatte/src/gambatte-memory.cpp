@@ -36,6 +36,7 @@ namespace gambatte
       dmaSource(0),
       dmaDestination(0),
       oamDmaPos(0xFE),
+      serialCnt(0),
       blanklcd(false)
    {
       intreq.setEventTime<BLIT>(144*456ul);
@@ -76,6 +77,10 @@ namespace gambatte
       return cycleCounter;
    }
 
+   static inline int serialCntFrom(const unsigned long cyclesUntilDone, const bool cgbFast) {
+      return cgbFast ? (cyclesUntilDone + 0xF) >> 4 : (cyclesUntilDone + 0x1FF) >> 9;
+   }
+
    void Memory::loadState(const SaveState &state)
    {
       sound.loadState(state);
@@ -85,12 +90,15 @@ namespace gambatte
       intreq.loadState(state);
 
       divLastUpdate = state.mem.divLastUpdate;
-      intreq.setEventTime<SERIAL>(state.mem.nextSerialtime);
+      intreq.setEventTime<SERIAL>(state.mem.nextSerialtime > state.cpu.cycleCounter ? state.mem.nextSerialtime : state.cpu.cycleCounter);
       intreq.setEventTime<UNHALT>(state.mem.unhaltTime);
       lastOamDmaUpdate = state.mem.lastOamDmaUpdate;
       dmaSource = state.mem.dmaSource;
       dmaDestination = state.mem.dmaDestination;
       oamDmaPos = state.mem.oamDmaPos;
+      serialCnt = intreq.eventTime(SERIAL) != DISABLED_TIME
+         ? serialCntFrom(intreq.eventTime(SERIAL) - state.cpu.cycleCounter, ioamhram[0x102] & isCgb() * 2)
+         : 8;
 
       vrambank = vram + (ioamhram[0x14F] & isCgb()) * 0x2000;
 
@@ -106,8 +114,7 @@ namespace gambatte
          intreq.setEventTime<OAM>(lastOamDmaUpdate + (oamEventPos - oamDmaPos) * 4);
       }
 
-      const unsigned long cycleCounter = state.cpu.cycleCounter;
-      intreq.setEventTime<BLIT>((ioamhram[0x140] & 0x80) ? display.nextMode1IrqTime() : cycleCounter);
+      intreq.setEventTime<BLIT>((ioamhram[0x140] & 0x80) ? display.nextMode1IrqTime() : state.cpu.cycleCounter);
       blanklcd = false;
 
       if (!isCgb())
@@ -122,14 +129,23 @@ namespace gambatte
       intreq.setEventTime<END>(cycleCounter + (inc << isDoubleSpeed()));
    }
 
-   void Memory::updateSerialIrq(const unsigned long cc)
+   void Memory::updateSerial(const unsigned long cc)
    {
+      if (intreq.eventTime(SERIAL) == DISABLED_TIME)
+         return;
+
       if (intreq.eventTime(SERIAL) <= cc)
       {
-         intreq.setEventTime<SERIAL>(DISABLED_TIME);
-         ioamhram[0x101] = 0xFF;
+         ioamhram[0x101] = (((ioamhram[0x101] + 1) << serialCnt) - 1) & 0xFF;
          ioamhram[0x102] &= 0x7F;
+         intreq.setEventTime<SERIAL>(DISABLED_TIME);
          intreq.flagIrq(8);
+      }
+      else
+      {
+         const int targetCnt = serialCntFrom(intreq.eventTime(SERIAL) - cc, ioamhram[0x102] & isCgb() * 2);
+         ioamhram[0x101] = (((ioamhram[0x101] + 1) << (serialCnt - targetCnt)) - 1) & 0xFF;
+         serialCnt = targetCnt;
       }
    }
 
@@ -141,7 +157,7 @@ namespace gambatte
 
    void Memory::updateIrqs(const unsigned long cc)
    {
-      updateSerialIrq(cc);
+      updateSerial(cc);
       updateTimaIrq(cc);
       display.update(cc);
    }
@@ -188,7 +204,7 @@ namespace gambatte
             }
             break;
          case SERIAL:
-            updateSerialIrq(cycleCounter);
+            updateSerial(cycleCounter);
             break;
          case OAM:
             intreq.setEventTime<OAM>(lastOamDmaUpdate == DISABLED_TIME ?
@@ -455,9 +471,12 @@ namespace gambatte
             return vrambank + (ioamhram[0x146] << 8 & 0x1FFF);
          case OAM_DMA_SRC_WRAM:
             return cart.wramdata(ioamhram[0x146] >> 4 & 1) + (ioamhram[0x146] << 8 & 0xFFF);
-         default:
-            return ioamhram[0x146] == 0xFF && !isCgb() ? oamDmaSrcZero() : cart.rdisabledRam();
+         case OAM_DMA_SRC_INVALID:
+         case OAM_DMA_SRC_OFF:
+            break;
       }
+
+      return ioamhram[0x146] == 0xFF && !isCgb() ? oamDmaSrcZero() : cart.rdisabledRam();
    }
 
    void Memory::startOamDma(const unsigned long cycleCounter)
@@ -481,6 +500,10 @@ namespace gambatte
       {
          case 0x00:
             updateInput();
+            break;
+         case 0x01:
+         case 0x02:
+            updateSerial(cycleCounter);
             break;
          case 0x04:
             {
@@ -621,13 +644,15 @@ namespace gambatte
             data = (ioamhram[0x100] & 0xCF) | (data & 0xF0);
             break;
          case 0x01:
-            updateSerialIrq(cycleCounter);
+            updateSerial(cycleCounter);
             break;
          case 0x02:
-            updateSerialIrq(cycleCounter);
+            updateSerial(cycleCounter);
 
-            if ((data & 0x81) == 0x81)
-               intreq.setEventTime<SERIAL>(cycleCounter + (data & isCgb() * 2 ? 128 : 4096));
+            serialCnt = 8;
+            intreq.setEventTime<SERIAL>((data & 0x81) == 0x81
+                  ? (data & isCgb() * 2 ? (cycleCounter & ~0x7ul) + 0x10 * 8 : (cycleCounter & ~0xFFul) + 0x200 * 8)
+                  : static_cast<unsigned long>(DISABLED_TIME));
 
             data |= 0x7E - isCgb() * 2;
             break;
