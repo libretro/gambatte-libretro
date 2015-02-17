@@ -753,21 +753,6 @@ void CPU::process(const unsigned long cycles)
                //daa (4 cycles):
                //Adjust register A to correctly represent a BCD. Check ZF, HF and CF:
             case 0x27:
-               /*{
-                 unsigned correction = ((A > 0x99) || (CF & 0x100)) ? 0x60 : 0x00;
-
-                 calcHF(HF1, HF2);
-
-                 if ((A & 0x0F) > 0x09 || (HF2 & 0x200))
-                 correction |= 0x06;
-
-                 HF1 = A;
-                 HF2 = (HF2 & 0x400) | correction;
-                 CF = (correction & 0x40) << 2;
-                 A = (HF2 & 0x400) ? A - correction : (A + correction);
-                 ZF = A;
-                 }*/
-
                calcHF(HF1, HF2);
 
                {
