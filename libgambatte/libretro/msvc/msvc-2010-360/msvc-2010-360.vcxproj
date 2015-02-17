@@ -39,7 +39,7 @@
     <ClCompile Include="..\..\..\src\initstate.cpp" />
     <ClCompile Include="..\..\..\src\interrupter.cpp" />
     <ClCompile Include="..\..\..\src\interruptrequester.cpp" />
-    <ClCompile Include="..\..\..\src\memory.cpp" />
+    <ClCompile Include="..\..\..\src\gambatte-memory.cpp" />
     <ClCompile Include="..\..\..\src\mem\cartridge.cpp" />
     <ClCompile Include="..\..\..\src\mem\memptrs.cpp" />
     <ClCompile Include="..\..\..\src\mem\rtc.cpp" />

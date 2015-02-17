@@ -5,7 +5,7 @@ SOURCES_CXX := $(CORE_DIR)/cpu.cpp \
 					$(CORE_DIR)/initstate.cpp \
 					$(CORE_DIR)/interrupter.cpp \
 					$(CORE_DIR)/interruptrequester.cpp \
-					$(CORE_DIR)/memory.cpp \
+					$(CORE_DIR)/gambatte-memory.cpp \
 					$(CORE_DIR)/sound.cpp \
 					$(CORE_DIR)/statesaver.cpp \
 					$(CORE_DIR)/tima.cpp \

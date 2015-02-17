@@ -405,7 +405,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\src\memory.cpp">
+					RelativePath="..\..\..\src\gambatte-memory.cpp">
 					<FileConfiguration
 						Name="Debug|Xbox">
 						<Tool

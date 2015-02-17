@@ -68,7 +68,7 @@
     <ClCompile Include="..\..\..\src\sound.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\memory.cpp">
+    <ClCompile Include="..\..\..\src\gambatte-memory.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\interruptrequester.cpp">
