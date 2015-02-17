@@ -21,9 +21,7 @@
 
 static inline bool toOutState(const unsigned duty, const unsigned pos)
 {
-   static const unsigned char duties[4] = { 0x80, 0x81, 0xE1, 0x7E };
-
-   return duties[duty] >> pos & 1;
+   return 0x7EE18180 >> (duty * 8 + pos) & 1;
 }
 
 static inline unsigned toPeriod(const unsigned freq)
@@ -42,26 +40,30 @@ namespace gambatte
          nextPosUpdate += period * inc;
          pos += inc;
          pos &= 7;
+         high = toOutState(duty, pos);
       }
-   }
-
-   void DutyUnit::setDuty(const unsigned nr1)
-   {
-      duty = nr1 >> 6;
-      high = toOutState(duty, pos);
    }
 
    void DutyUnit::setCounter()
    {
-      static const unsigned char nextStateDistance[4 * 8] = {
-         6, 5, 4, 3, 2, 1, 0, 0,
-         0, 5, 4, 3, 2, 1, 0, 1,
-         0, 3, 2, 1, 0, 3, 2, 1,
-         0, 5, 4, 3, 2, 1, 0, 1
+      static unsigned char const nextStateDistance[4 * 8] = {
+         7, 6, 5, 4, 3, 2, 1, 1,
+         1, 6, 5, 4, 3, 2, 1, 2,
+         1, 4, 3, 2, 1, 4, 3, 2,
+         1, 6, 5, 4, 3, 2, 1, 2
       };
 
       if (enableEvents && nextPosUpdate != COUNTER_DISABLED)
-         counter = nextPosUpdate + period * nextStateDistance[(duty * 8) | pos];
+      {
+         unsigned const npos = (pos + 1) & 7;
+         counter = nextPosUpdate;
+         inc_ = nextStateDistance[duty * 8 + npos];
+         if (toOutState(duty, npos) == high)
+         {
+            counter += period * inc_;
+            inc_ = nextStateDistance[duty * 8 + ((npos + inc_) & 7)];
+         }
+      }
       else
          counter = COUNTER_DISABLED;
    }
@@ -75,21 +77,22 @@ namespace gambatte
 
    void DutyUnit::event()
    {
-      unsigned inc = period << duty;
+      static unsigned char const inc[] = {
+         1, 7,
+         2, 6,
+         4, 4,
+         6, 2,
+      };
 
-      if (duty == 3)
-         inc -= period * 2;
-
-      if (!(high ^= true))
-         inc = period * 8 - inc;
-
-      counter += inc;
+      high ^= true;
+      counter += inc_ * period;
+      inc_ = inc[duty * 2 + high];
    }
 
    void DutyUnit::nr1Change(const unsigned newNr1, const unsigned long cc)
    {
       updatePos(cc);
-      setDuty(newNr1);
+      duty = newNr1 >> 6;
       setCounter();
    }
 
@@ -104,24 +107,25 @@ namespace gambatte
 
       if (newNr4 & 0x80)
       {
-         nextPosUpdate = (cc & ~1) + period;
+         nextPosUpdate = (cc & ~1) + period + 4;
          setCounter();
       }
    }
 
    DutyUnit::DutyUnit() :
-      nextPosUpdate(COUNTER_DISABLED),
-      period(4096),
-      pos(0),
-      duty(0),
-      high(false),
-      enableEvents(true)
+      nextPosUpdate(COUNTER_DISABLED)
+      , period(4096)
+      , pos(0)
+      , duty(0)
+      , inc_(0)
+      , high(false)
+      , enableEvents(true)
    {}
 
    void DutyUnit::reset()
    {
       pos = 0;
-      high = toOutState(duty, pos);
+      high = false;
       nextPosUpdate = COUNTER_DISABLED;
       setCounter();
    }
@@ -129,16 +133,19 @@ namespace gambatte
    void DutyUnit::saveState(SaveState::SPU::Duty &dstate, const unsigned long cc)
    {
       updatePos(cc);
+      setCounter();
       dstate.nextPosUpdate = nextPosUpdate;
-      dstate.nr3 = getFreq() & 0xFF;
-      dstate.pos = pos;
+      dstate.nr3  = getFreq() & 0xFF;
+      dstate.pos  = pos;
+      dstate.high = high;
    }
 
    void DutyUnit::loadState(const SaveState::SPU::Duty &dstate, const unsigned nr1, const unsigned nr4, const unsigned long cc)
    {
       nextPosUpdate = std::max(dstate.nextPosUpdate, cc);
       pos = dstate.pos & 7;
-      setDuty(nr1);
+      high = dstate.high;
+      duty = nr1 >> 6;
       period = toPeriod((nr4 << 8 & 0x700) | dstate.nr3);
       enableEvents = true;
       setCounter();
@@ -163,7 +170,6 @@ namespace gambatte
    void DutyUnit::reviveCounter(const unsigned long cc)
    {
       updatePos(cc);
-      high = toOutState(duty, pos);
       enableEvents = true;
       setCounter();
    }

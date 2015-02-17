@@ -120,8 +120,6 @@ Channel1::Channel1() :
 }
 
 void Channel1::setEvent() {
-// 	nextEventUnit = &dutyUnit;
-// 	if (sweepUnit.getCounter() < nextEventUnit->getCounter())
 		nextEventUnit = &sweepUnit;
 	if (envelopeUnit.getCounter() < nextEventUnit->getCounter())
 		nextEventUnit = &envelopeUnit;
@@ -181,7 +179,6 @@ void Channel1::setSo(const unsigned long soMask) {
 void Channel1::reset() {
 	cycleCounter = 0x1000 | (cycleCounter & 0xFFF); // cycleCounter >> 12 & 7 represents the frame sequencer position.
 
-// 	lengthCounter.reset();
 	dutyUnit.reset();
 	envelopeUnit.reset();
 	sweepUnit.reset();

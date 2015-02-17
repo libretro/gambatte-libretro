@@ -36,8 +36,6 @@ Channel2::Channel2() :
 }
 
 void Channel2::setEvent() {
-// 	nextEventUnit = &dutyUnit;
-// 	if (envelopeUnit.getCounter() < nextEventUnit->getCounter())
 		nextEventUnit = &envelopeUnit;
 	if (lengthCounter.getCounter() < nextEventUnit->getCounter())
 		nextEventUnit = &lengthCounter;
@@ -86,10 +84,12 @@ void Channel2::setSo(const unsigned long soMask) {
 	setEvent();
 }
 
-void Channel2::reset() {
-	cycleCounter = 0x1000 | (cycleCounter & 0xFFF); // cycleCounter >> 12 & 7 represents the frame sequencer position.
+void Channel2::reset()
+{
+   // cycleCounter >> 12 & 7 represents the frame sequencer position.
+   cycleCounter &= 0xFFF;
+   cycleCounter += ~(cycleCounter + 2) << 1 & 0x1000;
 	
-// 	lengthCounter.reset();
 	dutyUnit.reset();
 	envelopeUnit.reset();
 	

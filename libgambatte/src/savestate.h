@@ -29,17 +29,18 @@ namespace gambatte
       template<typename T>
          class Ptr
          {
-            T *ptr;
-            unsigned long sz;
-
             public:
-            Ptr() : ptr(0), sz(0) {}
-            const T* get() const { return ptr; }
-            unsigned long getSz() const { return sz; }
-            void set(T *ptr, const unsigned long sz) { this->ptr = ptr; this->sz = sz; }
+               Ptr() : ptr(0), sz(0) {}
+               const T* get() const { return ptr; }
+               unsigned long getSz() const { return sz; }
+               void set(T *ptr, const unsigned long sz) { this->ptr = ptr; this->sz = sz; }
 
-            friend class SaverList;
-            friend void setInitState(SaveState &, bool, bool);
+               friend class SaverList;
+               friend void setInitState(SaveState &, bool, bool);
+
+            private:
+               T *ptr;
+               unsigned long sz;
          };
 
       struct CPU {
@@ -84,7 +85,6 @@ namespace gambatte
       struct PPU {
          Ptr<unsigned char> bgpData;
          Ptr<unsigned char> objpData;
-         //SpriteMapper::OamReader
          Ptr<unsigned char> oamReaderBuf;
          Ptr<bool> oamReaderSzbuf;
 
@@ -121,6 +121,7 @@ namespace gambatte
             unsigned long nextPosUpdate;
             unsigned char nr3;
             unsigned char pos;
+            bool high;
          };
 
          struct Env {

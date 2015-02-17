@@ -32,11 +32,11 @@ namespace gambatte
       unsigned short period;
       unsigned char pos;
       unsigned char duty;
+      unsigned char inc_;
       bool high;
       bool enableEvents;
 
       void setCounter();
-      void setDuty(unsigned nr1);
       void updatePos(unsigned long cc);
 
       public:
