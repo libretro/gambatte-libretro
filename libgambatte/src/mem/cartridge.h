@@ -30,124 +30,113 @@ namespace gambatte
 
    class Cartridge
    {
-      unsigned rambanks() const
-      {
-         return (memptrs.rambankdataend() - memptrs.rambankdata()) / 0x2000;
-      }
-
-      unsigned rombanks() const
-      {
-         return (memptrs.romdataend()     - memptrs.romdata()    ) / 0x4000;
-      }
-
-      bool loadROM(File &file, const bool forceDmg, const bool multiCartCompat);
-
       public:
-      Cartridge();
-      void setStatePtrs(SaveState &);
-      void saveState(SaveState &) const;
-      void loadState(const SaveState &);
+         Cartridge();
+         void setStatePtrs(SaveState &);
+         void saveState(SaveState &) const;
+         void loadState(const SaveState &);
 
-      const unsigned char * rmem(unsigned area) const
-      {
-         return memptrs.rmem(area);
-      }
+         const unsigned char * rmem(unsigned area) const
+         {
+            return memptrs.rmem(area);
+         }
 
-      unsigned char * wmem(unsigned area) const
-      {
-         return memptrs.wmem(area);
-      }
+         unsigned char * wmem(unsigned area) const
+         {
+            return memptrs.wmem(area);
+         }
 
-      unsigned char * romdata(unsigned area) const 
-      {
-         return memptrs.romdata(area);
-      }
+         unsigned char * romdata(unsigned area) const 
+         {
+            return memptrs.romdata(area);
+         }
 
-      unsigned char * wramdata(unsigned area) const
-      {
-         return memptrs.wramdata(area);
-      }
+         unsigned char * wramdata(unsigned area) const
+         {
+            return memptrs.wramdata(area);
+         }
 
-      const unsigned char * rdisabledRam() const
-      {
-         return memptrs.rdisabledRam();
-      }
+         const unsigned char * rdisabledRam() const
+         {
+            return memptrs.rdisabledRam();
+         }
 
-      const unsigned char * rsrambankptr() const
-      {
-         return memptrs.rsrambankptr();
-      }
+         const unsigned char * rsrambankptr() const
+         {
+            return memptrs.rsrambankptr();
+         }
 
-      unsigned char * wsrambankptr() const
-      {
-         return memptrs.wsrambankptr();
-      }
+         unsigned char * wsrambankptr() const
+         {
+            return memptrs.wsrambankptr();
+         }
 
-      OamDmaSrc oamDmaSrc() const
-      {
-         return memptrs.oamDmaSrc();
-      }
+         OamDmaSrc oamDmaSrc() const
+         {
+            return memptrs.oamDmaSrc();
+         }
 
-      void setWrambank(unsigned bank)
-      {
-         memptrs.setWrambank(bank);
-      }
-      void setOamDmaSrc(OamDmaSrc oamDmaSrc)
-      {
-         memptrs.setOamDmaSrc(oamDmaSrc);
-      }
+         void setWrambank(unsigned bank)
+         {
+            memptrs.setWrambank(bank);
+         }
+         void setOamDmaSrc(OamDmaSrc oamDmaSrc)
+         {
+            memptrs.setOamDmaSrc(oamDmaSrc);
+         }
 
-      void mbcWrite(unsigned addr, unsigned data);
+         void mbcWrite(unsigned addr, unsigned data);
 
-      bool isCgb() const
-      {
-         return gambatte::isCgb(memptrs);
-      }
+         bool isCgb() const
+         {
+            return gambatte::isCgb(memptrs);
+         }
 
-      void rtcWrite(unsigned data)
-      {
-         rtc.write(data);
-      }
+         void rtcWrite(unsigned data)
+         {
+            rtc.write(data);
+         }
 
-      unsigned char rtcRead() const 
-      {
-         return *rtc.getActive();
-      }
+         unsigned char rtcRead() const 
+         {
+            return *rtc.getActive();
+         }
 
-      const std::string saveBasePath() const;
-      void setSaveDir(const std::string &dir);
-      bool loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multicartCompat);
-      void setGameGenie(const std::string &codes);
-      void clearCheats();
+         const std::string saveBasePath() const;
+         void setSaveDir(const std::string &dir);
+         bool loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multicartCompat);
+         bool loadROM(File &file, const bool forceDmg, const bool multiCartCompat);
+         void setGameGenie(const std::string &codes);
+         void clearCheats();
 
-      void *savedata_ptr();
-      unsigned savedata_size();
+         void *savedata_ptr();
+         unsigned savedata_size();
 
-      // Not endian-safe at all, but hey.
-      void *rtcdata_ptr();
-      unsigned rtcdata_size();
+         // Not endian-safe at all, but hey.
+         void *rtcdata_ptr();
+         unsigned rtcdata_size();
 
       private:
-      struct AddrData
-      {
-         unsigned long addr;
-         unsigned char data;
-         AddrData(unsigned long addr, unsigned data) : addr(addr), data(data)
+         struct AddrData
          {
-         }
-      };
-      MemPtrs memptrs;
-      Rtc rtc;
+            unsigned long addr;
+            unsigned char data;
+            AddrData(unsigned long addr, unsigned data) : addr(addr), data(data)
+            {
+            }
+         };
+         MemPtrs memptrs;
+         Rtc rtc;
 
-      unsigned short rombank;
-      unsigned char rambank;
-      bool enableRam;
-      bool rambankMode;
-      bool multi64rom;
+         unsigned short rombank;
+         unsigned char rambank;
+         bool enableRam;
+         bool rambankMode;
+         bool multi64rom;
 
-      std::vector<AddrData> ggUndoList;
+         std::vector<AddrData> ggUndoList;
 
-      void applyGameGenie(const std::string &code);
+         void applyGameGenie(const std::string &code);
    };
 
 }

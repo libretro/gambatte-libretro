@@ -39,6 +39,16 @@ namespace gambatte
 
    enum Cartridgetype { PLAIN, MBC1, MBC2, MBC3, MBC5 };
 
+   static inline unsigned rambanks(MemPtrs const &memptrs)
+   {
+      return (memptrs.rambankdataend() - memptrs.rambankdata()) / 0x2000;
+   }
+
+   static inline unsigned rombanks(MemPtrs const &memptrs)
+   {
+      return (memptrs.romdataend()     - memptrs.romdata()    ) / 0x4000;
+   }
+
    static unsigned adjustedRombank(unsigned bank, const Cartridgetype romtype)
    {
       if ((romtype == MBC1 && !(bank & 0x1F)) || (romtype == MBC5 && !bank))
@@ -140,7 +150,7 @@ namespace gambatte
       else
       {
          memptrs.setRombank0(0);
-         memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), cartridgeType(memptrs.romdata()[0x147])));
+         memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), cartridgeType(memptrs.romdata()[0x147])));
       }
    }
 
@@ -173,7 +183,7 @@ namespace gambatte
                   return;
                case MBC5:
                   rombank = (rombank & 0x100) | data;
-                  memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
+                  memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), romtype));
                   return;
                default:
                   break; //Only supposed to break one level.
@@ -208,7 +218,7 @@ namespace gambatte
                   return;
             }
 
-            memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
+            memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), romtype));
             break;
             //MBC1 writes ???? ??nn to area 0x4000-0x5FFF either to determine rambank to load, or upper 2 bits of the rombank number to load, depending on rom-mode.
             //MBC3 writes ???? ??nn to area 0x4000-0x5FFF to determine rambank to load
@@ -235,7 +245,7 @@ namespace gambatte
                   }
 
                   rombank = (data & 0x03) << 5 | (rombank & 0x1F);
-                  memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
+                  memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), romtype));
                   return;
                case MBC3:
                   if (hasRtc(memptrs.romdata()[0x147]))
@@ -250,7 +260,7 @@ namespace gambatte
                   return;
             }
 
-            memptrs.setRambank(enableRam, rtc.getActive(), rambank & (rambanks() - 1));
+            memptrs.setRambank(enableRam, rtc.getActive(), rambank & (rambanks(memptrs) - 1));
             break;
             //MBC1: If ???? ???1 is written to area 0x6000-0x7FFFF rom will be set to rambank mode.
          case 0x6:
@@ -271,7 +281,7 @@ namespace gambatte
                      else
                      {
                         memptrs.setRombank0(0);
-                        memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
+                        memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), romtype));
                      }
                   }
                   break;
