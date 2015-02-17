@@ -62,14 +62,14 @@ void GB::setInputGetter(InputGetter *getInput) {
 	p_->cpu.setInputGetter(getInput);
 }
 
-void GB::Priv::on_load_succeeded(unsigned flags) {
+void GB::Priv::on_load_succeeded(unsigned flags)
+{
 	SaveState state;
 	cpu.setStatePtrs(state);
 	setInitState(state, cpu.isCgb(), gbaCgbMode = flags & GBA_CGB);
 	cpu.loadState(state);
 
 	stateNo = 1;
-	cpu.setOsdElement(std::auto_ptr<OsdElement>());
 }
 
 void *GB::savedata_ptr() { return p_->cpu.savedata_ptr(); }

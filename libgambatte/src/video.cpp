@@ -225,23 +225,6 @@ void LCD::refreshPalettes() {
 
 namespace {
 
-template<class Blend>
-static void blitOsdElement(video_pixel_t *d,
-		const video_pixel_t *s, const unsigned width, unsigned h, const int dpitch, Blend blend)
-{
-	while (h--) {
-		for (unsigned w = width; w--;) {
-			if (*s != 0xFFFFFFFF)
-				*d = blend(*s, *d);
-
-			++d;
-			++s;
-		}
-
-		d += dpitch - static_cast<int>(width);
-	}
-}
-
 template<unsigned weight>
 struct Blend {
 	enum { SW = weight - 1 };
@@ -273,21 +256,6 @@ void LCD::updateScreen(const bool blanklcd, const unsigned long cycleCounter) {
 	if (blanklcd && ppu.frameBuf().fb()) {
 		const video_pixel_t color = ppu.cgb() ? gbcToRgb32(0xFFFF) : dmgColorsRgb32[0];
 		clear(ppu.frameBuf().fb(), color, ppu.frameBuf().pitch());
-	}
-
-	if (ppu.frameBuf().fb() && osdElement.get()) {
-		if (const video_pixel_t *const s = osdElement->update()) {
-			video_pixel_t *const d = ppu.frameBuf().fb()
-					+ static_cast<long>(osdElement->y()) * ppu.frameBuf().pitch() + osdElement->x();
-
-			switch (osdElement->opacity()) {
-			case OsdElement::SEVEN_EIGHTHS:
-				blitOsdElement(d, s, osdElement->w(), osdElement->h(), ppu.frameBuf().pitch(), Blend<8>()); break;
-			case OsdElement::THREE_FOURTHS:
-				blitOsdElement(d, s, osdElement->w(), osdElement->h(), ppu.frameBuf().pitch(), Blend<4>()); break;
-			}
-		} else
-			osdElement.reset();
 	}
 }
 

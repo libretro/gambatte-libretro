@@ -81,10 +81,6 @@ public:
    void *rtcdata_ptr() { return cart.rtcdata_ptr(); }
    unsigned rtcdata_size() { return cart.rtcdata_size(); }
 	
-	void setOsdElement(std::auto_ptr<OsdElement> osdElement) {
-		display.setOsdElement(osdElement);
-	}
-
 	unsigned long stop(unsigned long cycleCounter);
 	bool isCgb() const { return display.isCgb(); }
 	bool ime() const { return intreq.ime(); }

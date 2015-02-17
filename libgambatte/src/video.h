@@ -23,7 +23,6 @@
 #include "video/lyc_irq.h"
 #include "video/next_m0_time.h"
 #include "interruptrequester.h"
-#include "osd_element.h"
 #include "minkeeper.h"
 #include <memory>
 
@@ -128,8 +127,6 @@ class LCD {
 	LycIrq lycIrq;
 	NextM0Time nextM0Time_;
 
-	std::auto_ptr<OsdElement> osdElement;
-
 	unsigned char statReg;
 	unsigned char m2IrqStatReg_;
 	unsigned char m1IrqStatReg_;
@@ -162,8 +159,6 @@ public:
 	void loadState(const SaveState &state, const unsigned char *oamram);
 	void setDmgPaletteColor(unsigned palNum, unsigned colorNum, video_pixel_t rgb32);
 	void setVideoBuffer(video_pixel_t *videoBuf, int pitch);
-
-	void setOsdElement(std::auto_ptr<OsdElement> osdElement) { this->osdElement = osdElement; }
 
 	void dmgBgPaletteChange(const unsigned data, const unsigned long cycleCounter) {
 		update(cycleCounter);

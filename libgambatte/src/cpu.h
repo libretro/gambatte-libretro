@@ -68,10 +68,6 @@ public:
 		memory.setSaveDir(sdir);
 	}
 	
-	void setOsdElement(std::auto_ptr<OsdElement> osdElement) {
-		memory.setOsdElement(osdElement);
-	}
-	
    bool load(const std::string &romfile, bool forceDmg, bool multicartCompat) {
       return memory.loadROM(romfile, forceDmg, multicartCompat);
    }
