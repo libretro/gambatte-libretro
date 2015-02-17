@@ -19,37 +19,43 @@
 #ifndef LY_COUNTER_H
 #define LY_COUNTER_H
 
-namespace gambatte {
+namespace gambatte
+{
 
-struct SaveState;
+   struct SaveState;
 
-class LyCounter {
-	unsigned long time_;
-	unsigned short lineTime_;
-	unsigned char ly_;
-	bool ds;
-	
-public:
-	LyCounter();
-	void doEvent();
-	bool isDoubleSpeed() const { return ds; }
-	
-	unsigned long frameCycles(const unsigned long cc) const {
-		return ly_ * 456ul + lineCycles(cc);
-	}
-	
-	unsigned lineCycles(const unsigned long cc) const {
-		return 456u - ((time_ - cc) >> isDoubleSpeed());
-	}
-	
-	unsigned lineTime() const { return lineTime_; }
-	unsigned ly() const { return ly_; }
-	unsigned long nextLineCycle(unsigned lineCycle, unsigned long cycleCounter) const;
-	unsigned long nextFrameCycle(unsigned long frameCycle, unsigned long cycleCounter) const;
-	void reset(unsigned long videoCycles, unsigned long lastUpdate);
-	void setDoubleSpeed(bool ds_in);
-	unsigned long time() const { return time_; }
-};
+   class LyCounter
+   {
+      public:
+         LyCounter();
+         void doEvent();
+         bool isDoubleSpeed() const { return ds; }
+
+         unsigned long frameCycles(const unsigned long cc) const
+         {
+            return ly_ * 456ul + lineCycles(cc);
+         }
+
+         unsigned lineCycles(const unsigned long cc) const
+         {
+            return 456u - ((time_ - cc) >> isDoubleSpeed());
+         }
+
+         unsigned lineTime() const { return lineTime_; }
+         unsigned ly() const { return ly_; }
+         unsigned long nextLineCycle(unsigned lineCycle, unsigned long cycleCounter) const;
+         unsigned long nextFrameCycle(unsigned long frameCycle, unsigned long cycleCounter) const;
+         void reset(unsigned long videoCycles, unsigned long lastUpdate);
+         void setDoubleSpeed(bool ds_in);
+         unsigned long time() const { return time_; }
+
+      private:
+         unsigned long time_;
+         unsigned short lineTime_;
+         unsigned char ly_;
+         bool ds;
+
+   };
 
 }
 

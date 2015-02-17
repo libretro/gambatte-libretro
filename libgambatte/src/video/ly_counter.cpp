@@ -19,50 +19,59 @@
 #include "ly_counter.h"
 #include "../savestate.h"
 
-namespace gambatte {
-
-LyCounter::LyCounter()
-: time_(0), lineTime_(0), ly_(0), ds(false)
+namespace gambatte
 {
-	setDoubleSpeed(false);
-	reset(0, 0);
-}
 
-void LyCounter::doEvent() {
-	++ly_;
-	
-	if (ly_ == 154)
-		ly_ = 0;
-	
-	time_ = time_ + lineTime_;
-}
+   LyCounter::LyCounter()
+      : time_(0)
+        , lineTime_(0)
+        , ly_(0)
+        , ds(false)
+   {
+      setDoubleSpeed(false);
+      reset(0, 0);
+   }
 
-unsigned long LyCounter::nextLineCycle(const unsigned lineCycle, const unsigned long cycleCounter) const {
-	unsigned long tmp = time_ + (lineCycle << ds);
-	
-	if (tmp - cycleCounter > lineTime_)
-		tmp -= lineTime_;
-	
-	return tmp;
-}
+   void LyCounter::doEvent()
+   {
+      ++ly_;
 
-unsigned long LyCounter::nextFrameCycle(const unsigned long frameCycle, const unsigned long cycleCounter) const {
-	unsigned long tmp = time_ + (((153U - ly()) * 456U + frameCycle) << ds);
-	
-	if (tmp - cycleCounter > 70224U << ds)
-		tmp -= 70224U << ds;
-	
-	return tmp;
-}
+      if (ly_ == 154)
+         ly_ = 0;
 
-void LyCounter::reset(const unsigned long videoCycles, const unsigned long lastUpdate) {
-	ly_ = videoCycles / 456;
-	time_ = lastUpdate + ((456 - (videoCycles - ly_ * 456ul)) << isDoubleSpeed());
-}
+      time_ = time_ + lineTime_;
+   }
 
-void LyCounter::setDoubleSpeed(const bool ds_in) {
-	ds = ds_in;
-	lineTime_ = 456U << ds_in;
-}
+   unsigned long LyCounter::nextLineCycle(const unsigned lineCycle, const unsigned long cc) const
+   {
+      unsigned long tmp = time_ + (lineCycle << ds);
+
+      if (tmp - cc > lineTime_)
+         tmp -= lineTime_;
+
+      return tmp;
+   }
+
+   unsigned long LyCounter::nextFrameCycle(const unsigned long frameCycle, const unsigned long cc) const
+   {
+      unsigned long tmp = time_ + (((153U - ly()) * 456U + frameCycle) << ds);
+
+      if (tmp - cc > 70224U << ds)
+         tmp -= 70224U << ds;
+
+      return tmp;
+   }
+
+   void LyCounter::reset(const unsigned long videoCycles, const unsigned long lastUpdate)
+   {
+      ly_ = videoCycles / 456;
+      time_ = lastUpdate + ((456 - (videoCycles - ly_ * 456ul)) << isDoubleSpeed());
+   }
+
+   void LyCounter::setDoubleSpeed(const bool ds_in)
+   {
+      ds = ds_in;
+      lineTime_ = 456U << ds_in;
+   }
 
 }
