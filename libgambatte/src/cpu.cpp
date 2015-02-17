@@ -2651,15 +2651,6 @@ void CPU::process(const unsigned long cycles)
                //add sp,n (16 cycles):
                //Add next (signed) byte in memory to SP, reset ZF and SF, check HCF and CF:
             case 0xE8:
-               /*{
-                 int8_t tmp = int8_t(memory.pc_read(PC++, cycleCounter));
-                 HF2 = (((SP & 0xFFF) + tmp) >> 3) & 0x200;
-                 CF = SP + tmp;
-                 SP = CF;
-                 CF >>= 8;
-                 ZF = 1;
-                 cycleCounter += 12;
-                 }*/
                sp_plus_n(SP);
                cycleCounter += 4;
                break;
@@ -2764,16 +2755,6 @@ void CPU::process(const unsigned long cycles)
                //ldhl sp,n (12 cycles):
                //Put (sp+next (signed) byte in memory) into hl (unsets ZF and SF, may enable HF and CF):
             case 0xF8:
-               /*{
-                 int8_t tmp = int8_t(memory.pc_read(PC++, cycleCounter));
-                 HF2 = (((SP & 0xFFF) + tmp) >> 3) & 0x200;
-                 CF = SP + tmp;
-                 L = CF;
-                 CF >>= 8;
-                 H = CF;
-                 ZF = 1;
-                 cycleCounter += 8;
-                 }*/
                {
                   unsigned sum;
                   sp_plus_n(sum);
