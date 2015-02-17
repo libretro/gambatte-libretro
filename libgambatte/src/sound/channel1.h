@@ -26,69 +26,71 @@
 #include "envelope_unit.h"
 #include "static_output_tester.h"
 
-namespace gambatte {
+namespace gambatte
+{
 
-struct SaveState;
+   struct SaveState;
 
-class Channel1 {
-	class SweepUnit : public SoundUnit {
-		MasterDisabler &disableMaster;
-		DutyUnit &dutyUnit;
-		unsigned short shadow;
-		unsigned char nr0;
-		bool negging;
-		
-		unsigned calcFreq();
-		
-	public:
-		SweepUnit(MasterDisabler &disabler, DutyUnit &dutyUnit);
-		void event();
-		void nr0Change(unsigned newNr0);
-		void nr4Init(unsigned long cycleCounter);
-		void reset();
-		void saveState(SaveState &state) const;
-		void loadState(const SaveState &state);
-	};
-	
-	friend class StaticOutputTester<Channel1,DutyUnit>;
-	
-	StaticOutputTester<Channel1,DutyUnit> staticOutputTest;
-	DutyMasterDisabler disableMaster;
-	LengthCounter lengthCounter;
-	DutyUnit dutyUnit;
-	EnvelopeUnit envelopeUnit;
-	SweepUnit sweepUnit;
-	
-	SoundUnit *nextEventUnit;
-	
-	unsigned long cycleCounter;
-	unsigned long soMask;
-	unsigned long prevOut;
-	
-	unsigned char nr4;
-	bool master;
-	
-	void setEvent();
-	
-public:
-	Channel1();
-	void setNr0(unsigned data);
-	void setNr1(unsigned data);
-	void setNr2(unsigned data);
-	void setNr3(unsigned data);
-	void setNr4(unsigned data);
-	
-	void setSo(unsigned long soMask);
-	bool isActive() const { return master; }
-	
-	void update(uint_least32_t *buf, unsigned long soBaseVol, unsigned long cycles);
-	
-	void reset();
-	void init(bool cgb);
-	void saveState(SaveState &state);
-	void loadState(const SaveState &state);
-};
+   class Channel1
+   {
+      class SweepUnit : public SoundUnit
+      {
+         MasterDisabler &disableMaster;
+         DutyUnit &dutyUnit;
+         unsigned short shadow;
+         unsigned char nr0;
+         bool negging;
 
+         unsigned calcFreq();
+
+         public:
+         SweepUnit(MasterDisabler &disabler, DutyUnit &dutyUnit);
+         void event();
+         void nr0Change(unsigned newNr0);
+         void nr4Init(unsigned long cycleCounter);
+         void reset();
+         void saveState(SaveState &state) const;
+         void loadState(const SaveState &state);
+      };
+
+      friend class StaticOutputTester<Channel1,DutyUnit>;
+
+      StaticOutputTester<Channel1,DutyUnit> staticOutputTest;
+      DutyMasterDisabler disableMaster;
+      LengthCounter lengthCounter;
+      DutyUnit dutyUnit;
+      EnvelopeUnit envelopeUnit;
+      SweepUnit sweepUnit;
+
+      SoundUnit *nextEventUnit;
+
+      unsigned long cycleCounter;
+      unsigned long soMask;
+      unsigned long prevOut;
+
+      unsigned char nr4;
+      bool master;
+
+      void setEvent();
+
+      public:
+      Channel1();
+      void setNr0(unsigned data);
+      void setNr1(unsigned data);
+      void setNr2(unsigned data);
+      void setNr3(unsigned data);
+      void setNr4(unsigned data);
+
+      void setSo(unsigned long soMask);
+      bool isActive() const { return master; }
+
+      void update(uint_least32_t *buf, unsigned long soBaseVol, unsigned long cycles);
+
+      void reset();
+      void init(bool cgb);
+      void saveState(SaveState &state);
+      void loadState(const SaveState &state);
+   };
 }
 
 #endif

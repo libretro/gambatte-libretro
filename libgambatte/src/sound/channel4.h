@@ -25,77 +25,81 @@
 #include "envelope_unit.h"
 #include "static_output_tester.h"
 
-namespace gambatte {
+namespace gambatte
+{
 
-struct SaveState;
+   struct SaveState;
 
-class Channel4 {
-	class Lfsr : public SoundUnit {
-		unsigned long backupCounter;
-		unsigned short reg;
-		unsigned char nr3;
-		bool master;
-		
-		void updateBackupCounter(unsigned long cc);
-		
-	public:
-		Lfsr();
-		void event();
-		bool isHighState() const { return ~reg & 1; }
-		void nr3Change(unsigned newNr3, unsigned long cc);
-		void nr4Init(unsigned long cc);
-		void reset(unsigned long cc);
-		void saveState(SaveState &state, const unsigned long cc);
-		void loadState(const SaveState &state);
-		void resetCounters(unsigned long oldCc);
-		void disableMaster() { killCounter(); master = false; reg = 0xFF; }
-		void killCounter() { counter = COUNTER_DISABLED; }
-		void reviveCounter(unsigned long cc);
-	};
-	
-	class Ch4MasterDisabler : public MasterDisabler {
-		Lfsr &lfsr;
-	public:
-		Ch4MasterDisabler(bool &m, Lfsr &lfsr) : MasterDisabler(m), lfsr(lfsr) {}
-		void operator()() { MasterDisabler::operator()(); lfsr.disableMaster(); }
-	};
-	
-	friend class StaticOutputTester<Channel4,Lfsr>;
-	
-	StaticOutputTester<Channel4,Lfsr> staticOutputTest;
-	Ch4MasterDisabler disableMaster;
-	LengthCounter lengthCounter;
-	EnvelopeUnit envelopeUnit;
-	Lfsr lfsr;
-	
-	SoundUnit *nextEventUnit;
-	
-	unsigned long cycleCounter;
-	unsigned long soMask;
-	unsigned long prevOut;
-	
-	unsigned char nr4;
-	bool master;
-	
-	void setEvent();
-	
-public:
-	Channel4();
-	void setNr1(unsigned data);
-	void setNr2(unsigned data);
-	void setNr3(unsigned data) { lfsr.nr3Change(data, cycleCounter); /*setEvent();*/ }
-	void setNr4(unsigned data);
-	
-	void setSo(unsigned long soMask);
-	bool isActive() const { return master; }
-	
-	void update(uint_least32_t *buf, unsigned long soBaseVol, unsigned long cycles);
-	
-	void reset();
-	void init(bool cgb);
-	void saveState(SaveState &state);
-	void loadState(const SaveState &state);
-};
+   class Channel4
+   {
+      class Lfsr : public SoundUnit
+      {
+         unsigned long backupCounter;
+         unsigned short reg;
+         unsigned char nr3;
+         bool master;
+
+         void updateBackupCounter(unsigned long cc);
+
+         public:
+         Lfsr();
+         void event();
+         bool isHighState() const { return ~reg & 1; }
+         void nr3Change(unsigned newNr3, unsigned long cc);
+         void nr4Init(unsigned long cc);
+         void reset(unsigned long cc);
+         void saveState(SaveState &state, const unsigned long cc);
+         void loadState(const SaveState &state);
+         void resetCounters(unsigned long oldCc);
+         void disableMaster() { killCounter(); master = false; reg = 0xFF; }
+         void killCounter() { counter = COUNTER_DISABLED; }
+         void reviveCounter(unsigned long cc);
+      };
+
+      class Ch4MasterDisabler : public MasterDisabler
+      {
+         Lfsr &lfsr;
+         public:
+         Ch4MasterDisabler(bool &m, Lfsr &lfsr) : MasterDisabler(m), lfsr(lfsr) {}
+         void operator()() { MasterDisabler::operator()(); lfsr.disableMaster(); }
+      };
+
+      friend class StaticOutputTester<Channel4,Lfsr>;
+
+      StaticOutputTester<Channel4,Lfsr> staticOutputTest;
+      Ch4MasterDisabler disableMaster;
+      LengthCounter lengthCounter;
+      EnvelopeUnit envelopeUnit;
+      Lfsr lfsr;
+
+      SoundUnit *nextEventUnit;
+
+      unsigned long cycleCounter;
+      unsigned long soMask;
+      unsigned long prevOut;
+
+      unsigned char nr4;
+      bool master;
+
+      void setEvent();
+
+      public:
+      Channel4();
+      void setNr1(unsigned data);
+      void setNr2(unsigned data);
+      void setNr3(unsigned data) { lfsr.nr3Change(data, cycleCounter); /*setEvent();*/ }
+      void setNr4(unsigned data);
+
+      void setSo(unsigned long soMask);
+      bool isActive() const { return master; }
+
+      void update(uint_least32_t *buf, unsigned long soBaseVol, unsigned long cycles);
+
+      void reset();
+      void init(bool cgb);
+      void saveState(SaveState &state);
+      void loadState(const SaveState &state);
+   };
 
 }
 

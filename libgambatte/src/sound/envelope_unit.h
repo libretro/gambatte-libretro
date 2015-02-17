@@ -22,32 +22,34 @@
 #include "sound_unit.h"
 #include "../savestate.h"
 
-namespace gambatte {
+namespace gambatte
+{
 
-class EnvelopeUnit : public SoundUnit {
-public:
-	struct VolOnOffEvent {
-		virtual ~VolOnOffEvent() {}
-		virtual void operator()(unsigned long /*cc*/) {}
-	};
-	
-private:
-	static VolOnOffEvent nullEvent;
-	VolOnOffEvent &volOnOffEvent;
-	unsigned char nr2;
-	unsigned char volume;
-	
-public:
-	explicit EnvelopeUnit(VolOnOffEvent &volOnOffEvent = nullEvent);
-	void event();
-	bool dacIsOn() const { return nr2 & 0xF8; }
-	unsigned getVolume() const { return volume; }
-	bool nr2Change(unsigned newNr2);
-	bool nr4Init(unsigned long cycleCounter);
-	void reset();
-	void saveState(SaveState::SPU::Env &estate) const;
-	void loadState(const SaveState::SPU::Env &estate, unsigned nr2, unsigned long cc);
-};
+   class EnvelopeUnit : public SoundUnit
+   {
+      public:
+         struct VolOnOffEvent {
+            virtual ~VolOnOffEvent() {}
+            virtual void operator()(unsigned long /*cc*/) {}
+         };
+
+      private:
+         static VolOnOffEvent nullEvent;
+         VolOnOffEvent &volOnOffEvent;
+         unsigned char nr2;
+         unsigned char volume;
+
+      public:
+         explicit EnvelopeUnit(VolOnOffEvent &volOnOffEvent = nullEvent);
+         void event();
+         bool dacIsOn() const { return nr2 & 0xF8; }
+         unsigned getVolume() const { return volume; }
+         bool nr2Change(unsigned newNr2);
+         bool nr4Init(unsigned long cycleCounter);
+         void reset();
+         void saveState(SaveState::SPU::Env &estate) const;
+         void loadState(const SaveState::SPU::Env &estate, unsigned nr2, unsigned long cc);
+   };
 
 }
 
