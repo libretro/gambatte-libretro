@@ -19,40 +19,46 @@
 #ifndef VIDEO_LYC_IRQ_H
 #define VIDEO_LYC_IRQ_H
 
-namespace gambatte {
+namespace gambatte
+{
 
-struct SaveState;
-class LyCounter;
+   struct SaveState;
+   class LyCounter;
 
-class LycIrq {
-	unsigned long time_;
- 	unsigned char lycRegSrc_;
- 	unsigned char statRegSrc_;
-	unsigned char lycReg_;
-	unsigned char statReg_;
-	bool cgb_;
-	
-	void regChange(unsigned statReg, unsigned lycReg, const LyCounter &lyCounter, unsigned long cc);
-	
-public:
-	LycIrq();
-	void doEvent(unsigned char *ifreg, const LyCounter &lyCounter);
-	unsigned lycReg() const { return lycRegSrc_; }
-	void loadState(const SaveState &state);
-	void saveState(SaveState &state) const;
-	unsigned long time() const { return time_; }
-	void setCgb(const bool cgb) { cgb_ = cgb; }
-	void lcdReset();
-	void reschedule(const LyCounter & lyCounter, unsigned long cc);
-	
-	void statRegChange(unsigned statReg, const LyCounter &lyCounter, unsigned long cc) {
-		regChange(statReg, lycRegSrc_, lyCounter, cc);
-	}
-	
-	void lycRegChange(unsigned lycReg, const LyCounter &lyCounter, unsigned long cc) {
-		regChange(statRegSrc_, lycReg, lyCounter, cc);
-	}
-};
+   class LycIrq
+   {
+      public:
+         LycIrq();
+         void doEvent(unsigned char *ifreg, const LyCounter &lyCounter);
+         unsigned lycReg() const { return lycRegSrc_; }
+         void loadState(const SaveState &state);
+         void saveState(SaveState &state) const;
+         unsigned long time() const { return time_; }
+         void setCgb(const bool cgb) { cgb_ = cgb; }
+         void lcdReset();
+         void reschedule(const LyCounter & lyCounter, unsigned long cc);
+
+         void statRegChange(unsigned statReg, const LyCounter &lyCounter, unsigned long cc)
+         {
+            regChange(statReg, lycRegSrc_, lyCounter, cc);
+         }
+
+         void lycRegChange(unsigned lycReg, const LyCounter &lyCounter, unsigned long cc)
+         {
+            regChange(statRegSrc_, lycReg, lyCounter, cc);
+         }
+
+      private:
+         unsigned long time_;
+         unsigned char lycRegSrc_;
+         unsigned char statRegSrc_;
+         unsigned char lycReg_;
+         unsigned char statReg_;
+         bool cgb_;
+
+         void regChange(unsigned statReg, unsigned lycReg, const LyCounter &lyCounter, unsigned long cc);
+
+   };
 
 }
 
