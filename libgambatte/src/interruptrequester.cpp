@@ -22,23 +22,31 @@
 namespace gambatte
 {
 
-   InterruptRequester::InterruptRequester() : minIntTime(0), ifreg_(0), iereg_(0) {}
+   InterruptRequester::InterruptRequester()
+      : eventTimes(DISABLED_TIME)
+      , minIntTime(0)
+      , ifreg_(0)
+      , iereg_(0)
+   {
+   }
 
    void InterruptRequester::saveState(SaveState &state) const
    {
       state.mem.minIntTime = minIntTime;
-      state.mem.IME = ime();
-      state.mem.halted = halted();
+      state.mem.IME        = ime();
+      state.mem.halted     = halted();
    }
 
    void InterruptRequester::loadState(const SaveState &state)
    {
       minIntTime = state.mem.minIntTime;
-      ifreg_ = state.mem.ioamhram.get()[0x10F];
-      iereg_ = state.mem.ioamhram.get()[0x1FF] & 0x1F;
+      ifreg_     = state.mem.ioamhram.get()[0x10F];
+      iereg_     = state.mem.ioamhram.get()[0x1FF] & 0x1F;
       intFlags.set(state.mem.IME, state.mem.halted);
 
-      eventTimes.setValue<INTERRUPTS>(intFlags.imeOrHalted() && pendingIrqs() ? minIntTime : static_cast<unsigned long>(DISABLED_TIME));
+      eventTimes.setValue<INTERRUPTS>(intFlags.imeOrHalted() && pendingIrqs()
+            ? minIntTime
+            : static_cast<unsigned long>(DISABLED_TIME));
    }
 
    void InterruptRequester::resetCc(const unsigned long oldCc, const unsigned long newCc)
@@ -101,7 +109,9 @@ namespace gambatte
       iereg_ = iereg & 0x1F;
 
       if (intFlags.imeOrHalted())
-         eventTimes.setValue<INTERRUPTS>(pendingIrqs() ? minIntTime : static_cast<unsigned long>(DISABLED_TIME));
+         eventTimes.setValue<INTERRUPTS>(pendingIrqs()
+               ? minIntTime
+               : static_cast<unsigned long>(DISABLED_TIME));
    }
 
    void InterruptRequester::setIfreg(const unsigned ifreg)
@@ -109,7 +119,9 @@ namespace gambatte
       ifreg_ = ifreg;
 
       if (intFlags.imeOrHalted())
-         eventTimes.setValue<INTERRUPTS>(pendingIrqs() ? minIntTime : static_cast<unsigned long>(DISABLED_TIME));
+         eventTimes.setValue<INTERRUPTS>(pendingIrqs()
+               ? minIntTime
+               : static_cast<unsigned long>(DISABLED_TIME));
    }
 
 }
