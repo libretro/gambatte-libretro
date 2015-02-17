@@ -40,143 +40,159 @@ S	1       -           Clock       -
 S) start step on sound power on.
 */
 
-namespace gambatte {
-
-PSG::PSG()
-: buffer(0),
-  lastUpdate(0),
-  soVol(0),
-  rsum(0x8000), // initialize to 0x8000 to prevent borrows from high word, xor away later
-  bufferPos(0),
-  enabled(false)
+namespace gambatte
 {
-}
 
-void PSG::init(const bool cgb) {
-	ch1.init(cgb);
-	ch2.init(cgb);
-	ch3.init(cgb);
-	ch4.init(cgb);
-}
+   PSG::PSG()
+      : buffer(0),
+      lastUpdate(0),
+      soVol(0),
+      rsum(0x8000), // initialize to 0x8000 to prevent borrows from high word, xor away later
+      bufferPos(0),
+      enabled(false)
+   {
+   }
 
-void PSG::reset() {
-	ch1.reset();
-	ch2.reset();
-	ch3.reset();
-	ch4.reset();
-}
+   void PSG::init(const bool cgb)
+   {
+      ch1.init(cgb);
+      ch2.init(cgb);
+      ch3.init(cgb);
+      ch4.init(cgb);
+   }
 
-void PSG::setStatePtrs(SaveState &state) {
-	ch3.setStatePtrs(state);
-}
+   void PSG::reset()
+   {
+      ch1.reset();
+      ch2.reset();
+      ch3.reset();
+      ch4.reset();
+   }
 
-void PSG::saveState(SaveState &state) {
-	ch1.saveState(state);
-	ch2.saveState(state);
-	ch3.saveState(state);
-	ch4.saveState(state);
-}
+   void PSG::setStatePtrs(SaveState &state)
+   {
+      ch3.setStatePtrs(state);
+   }
 
-void PSG::loadState(const SaveState &state) {
-	ch1.loadState(state);
-	ch2.loadState(state);
-	ch3.loadState(state);
-	ch4.loadState(state);
-	
-	lastUpdate = state.cpu.cycleCounter;
-	set_so_volume(state.mem.ioamhram.get()[0x124]);
-	map_so(state.mem.ioamhram.get()[0x125]);
-	enabled = state.mem.ioamhram.get()[0x126] >> 7 & 1;
-}
+   void PSG::saveState(SaveState &state)
+   {
+      ch1.saveState(state);
+      ch2.saveState(state);
+      ch3.saveState(state);
+      ch4.saveState(state);
+   }
 
-void PSG::accumulate_channels(const unsigned long cycles) {
-	uint_least32_t *const buf = buffer + bufferPos;
-	
-	std::memset(buf, 0, cycles * sizeof(uint_least32_t));
-	ch1.update(buf, soVol, cycles);
-	ch2.update(buf, soVol, cycles);
-	ch3.update(buf, soVol, cycles);
-	ch4.update(buf, soVol, cycles);
-}
+   void PSG::loadState(const SaveState &state)
+   {
+      ch1.loadState(state);
+      ch2.loadState(state);
+      ch3.loadState(state);
+      ch4.loadState(state);
 
-void PSG::generate_samples(const unsigned long cycleCounter, const unsigned doubleSpeed) {
-	const unsigned long cycles = (cycleCounter - lastUpdate) >> (1 + doubleSpeed);
-	lastUpdate += cycles << (1 + doubleSpeed);
+      lastUpdate = state.cpu.cycleCounter;
+      set_so_volume(state.mem.ioamhram.get()[0x124]);
+      map_so(state.mem.ioamhram.get()[0x125]);
+      enabled = state.mem.ioamhram.get()[0x126] >> 7 & 1;
+   }
 
-	if (cycles)
-		accumulate_channels(cycles);
-	
-	bufferPos += cycles;
-}
+   void PSG::accumulate_channels(const unsigned long cycles)
+   {
+      uint_least32_t *const buf = buffer + bufferPos;
 
-void PSG::resetCounter(const unsigned long newCc, const unsigned long oldCc, const unsigned doubleSpeed) {
-	generate_samples(oldCc, doubleSpeed);
-	lastUpdate = newCc - (oldCc - lastUpdate);
-}
+      std::memset(buf, 0, cycles * sizeof(uint_least32_t));
+      ch1.update(buf, soVol, cycles);
+      ch2.update(buf, soVol, cycles);
+      ch3.update(buf, soVol, cycles);
+      ch4.update(buf, soVol, cycles);
+   }
 
-unsigned PSG::fillBuffer() {
-	uint_least32_t sum = rsum;
-	uint_least32_t *b = buffer;
-	unsigned n = bufferPos;
-	
-	if (unsigned n2 = n >> 3) {
-		n -= n2 << 3;
-		
-		do {
-			sum += b[0];
-			b[0] = sum ^ 0x8000;
-			sum += b[1];
-			b[1] = sum ^ 0x8000;
-			sum += b[2];
-			b[2] = sum ^ 0x8000;
-			sum += b[3];
-			b[3] = sum ^ 0x8000;
-			sum += b[4];
-			b[4] = sum ^ 0x8000;
-			sum += b[5];
-			b[5] = sum ^ 0x8000;
-			sum += b[6];
-			b[6] = sum ^ 0x8000;
-			sum += b[7];
-			b[7] = sum ^ 0x8000;
-			
-			b += 8;
-		} while (--n2);
-	}
-	
-	while (n--) {
-		sum += *b;
-		*b++ = sum ^ 0x8000; // xor away the initial rsum value of 0x8000 (which prevents borrows from the high word) from the low word
-	}
-	
-	rsum = sum;
-	
-	return bufferPos;
-}
+   void PSG::generate_samples(const unsigned long cycleCounter, const unsigned doubleSpeed)
+   {
+      const unsigned long cycles = (cycleCounter - lastUpdate) >> (1 + doubleSpeed);
+      lastUpdate += cycles << (1 + doubleSpeed);
+
+      if (cycles)
+         accumulate_channels(cycles);
+
+      bufferPos += cycles;
+   }
+
+   void PSG::resetCounter(const unsigned long newCc, const unsigned long oldCc, const unsigned doubleSpeed)
+   {
+      generate_samples(oldCc, doubleSpeed);
+      lastUpdate = newCc - (oldCc - lastUpdate);
+   }
+
+   unsigned PSG::fillBuffer()
+   {
+      uint_least32_t sum = rsum;
+      uint_least32_t *b = buffer;
+      unsigned n = bufferPos;
+
+      if (unsigned n2 = n >> 3)
+      {
+         n -= n2 << 3;
+
+         do
+         {
+            sum += b[0];
+            b[0] = sum ^ 0x8000;
+            sum += b[1];
+            b[1] = sum ^ 0x8000;
+            sum += b[2];
+            b[2] = sum ^ 0x8000;
+            sum += b[3];
+            b[3] = sum ^ 0x8000;
+            sum += b[4];
+            b[4] = sum ^ 0x8000;
+            sum += b[5];
+            b[5] = sum ^ 0x8000;
+            sum += b[6];
+            b[6] = sum ^ 0x8000;
+            sum += b[7];
+            b[7] = sum ^ 0x8000;
+
+            b += 8;
+         } while (--n2);
+      }
+
+      while (n--)
+      {
+         sum += *b;
+         *b++ = sum ^ 0x8000; // xor away the initial rsum value of 0x8000 (which prevents borrows from the high word) from the low word
+      }
+
+      rsum = sum;
+
+      return bufferPos;
+   }
 
 #ifdef WORDS_BIGENDIAN
-static const unsigned long so1Mul = 0x00000001;
-static const unsigned long so2Mul = 0x00010000;
+   static const unsigned long so1Mul = 0x00000001;
+   static const unsigned long so2Mul = 0x00010000;
 #else
-static const unsigned long so1Mul = 0x00010000;
-static const unsigned long so2Mul = 0x00000001;
+   static const unsigned long so1Mul = 0x00010000;
+   static const unsigned long so2Mul = 0x00000001;
 #endif
 
-void PSG::set_so_volume(const unsigned nr50) {
-	soVol = (((nr50 & 0x7) + 1) * so1Mul + ((nr50 >> 4 & 0x7) + 1) * so2Mul) * 64;
-}
+   void PSG::set_so_volume(const unsigned nr50)
+   {
+      soVol = (((nr50 & 0x7) + 1) * so1Mul + ((nr50 >> 4 & 0x7) + 1) * so2Mul) * 64;
+   }
 
-void PSG::map_so(const unsigned nr51) {
-	const unsigned long tmp = nr51 * so1Mul + (nr51 >> 4) * so2Mul;
-	
-	ch1.setSo((tmp      & 0x00010001) * 0xFFFF);
-	ch2.setSo((tmp >> 1 & 0x00010001) * 0xFFFF);
-	ch3.setSo((tmp >> 2 & 0x00010001) * 0xFFFF);
-	ch4.setSo((tmp >> 3 & 0x00010001) * 0xFFFF);
-}
+   void PSG::map_so(const unsigned nr51)
+   {
+      const unsigned long tmp = nr51 * so1Mul + (nr51 >> 4) * so2Mul;
 
-unsigned PSG::getStatus() const {
-	return ch1.isActive() | ch2.isActive() << 1 | ch3.isActive() << 2 | ch4.isActive() << 3;
-}
+      ch1.setSo((tmp      & 0x00010001) * 0xFFFF);
+      ch2.setSo((tmp >> 1 & 0x00010001) * 0xFFFF);
+      ch3.setSo((tmp >> 2 & 0x00010001) * 0xFFFF);
+      ch4.setSo((tmp >> 3 & 0x00010001) * 0xFFFF);
+   }
+
+   unsigned PSG::getStatus() const
+   {
+      return ch1.isActive() | ch2.isActive() << 1 | ch3.isActive() << 2 | ch4.isActive() << 3;
+   }
 
 }
