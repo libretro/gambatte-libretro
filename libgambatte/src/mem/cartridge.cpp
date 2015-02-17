@@ -22,13 +22,8 @@
 #include <cstring>
 #include <fstream>
 
-#ifdef __LIBRETRO__
 #include "../../libretro/libretro.h"
 extern retro_log_printf_t log_cb;
-#else
-#include <cstdio>
-#define log_cb(x, ...) std::printf(__VA_ARGS__);
-#endif
 
 namespace gambatte {
 
