@@ -22,80 +22,89 @@
 #include <ctime>
 #include <stdint.h>
 
-namespace gambatte {
+namespace gambatte
+{
 
-struct SaveState;
+   struct SaveState;
 
-class Rtc {
-private:
-	unsigned char *activeData;
-	void (Rtc::*activeSet)(unsigned);
-   uint64_t baseTime;
-   uint64_t haltTime;
-	unsigned char index;
-	unsigned char dataDh;
-	unsigned char dataDl;
-	unsigned char dataH;
-	unsigned char dataM;
-	unsigned char dataS;
-	bool enabled;
-	bool lastLatchData;
-	
-	void doLatch();
-	void doSwapActive();
-	void setDh(unsigned new_dh);
-	void setDl(unsigned new_lowdays);
-	void setH(unsigned new_hours);
-	void setM(unsigned new_minutes);
-	void setS(unsigned new_seconds);
-	
-public:
-	Rtc();
-	
-	const unsigned char* getActive() const {
-		return activeData;
-	}
-	
-	uint64_t& getBaseTime() {
-		return baseTime;
-	}
+   class Rtc
+   {
+      private:
+         unsigned char *activeData;
+         void (Rtc::*activeSet)(unsigned);
+         uint64_t baseTime;
+         uint64_t haltTime;
+         unsigned char index;
+         unsigned char dataDh;
+         unsigned char dataDl;
+         unsigned char dataH;
+         unsigned char dataM;
+         unsigned char dataS;
+         bool enabled;
+         bool lastLatchData;
 
-	void setBaseTime(const uint64_t baseTime) {
-		this->baseTime = baseTime;
-// 		doLatch();
-	}
-	
-	void latch(const unsigned data) {
-		if (!lastLatchData && data == 1)
-			doLatch();
-		
-		lastLatchData = data;
-	}
-	
-	void saveState(SaveState &state) const;
-	void loadState(const SaveState &state, bool enabled);
-	
-	void setEnabled(const bool enabled) {
-		this->enabled = enabled;
-		
-		doSwapActive();
-	}
-	
-	void swapActive(unsigned index) {
-		index &= 0xF;
-		index -= 8;
-		
-		this->index = index;
-		
-		doSwapActive();
-	}
-	
-	void write(const unsigned data) {
-// 		if (activeSet)
-		(this->*activeSet)(data);
-		*activeData = data;
-	}
-};
+         void doLatch();
+         void doSwapActive();
+         void setDh(unsigned new_dh);
+         void setDl(unsigned new_lowdays);
+         void setH(unsigned new_hours);
+         void setM(unsigned new_minutes);
+         void setS(unsigned new_seconds);
+
+      public:
+         Rtc();
+
+         const unsigned char* getActive() const
+         {
+            return activeData;
+         }
+
+         uint64_t& getBaseTime()
+         {
+            return baseTime;
+         }
+
+         void setBaseTime(const uint64_t baseTime)
+         {
+            this->baseTime = baseTime;
+            // 		doLatch();
+         }
+
+         void latch(const unsigned data)
+         {
+            if (!lastLatchData && data == 1)
+               doLatch();
+
+            lastLatchData = data;
+         }
+
+         void saveState(SaveState &state) const;
+         void loadState(const SaveState &state, bool enabled);
+
+         void setEnabled(const bool enabled)
+         {
+            this->enabled = enabled;
+
+            doSwapActive();
+         }
+
+         void swapActive(unsigned index)
+         {
+            index &= 0xF;
+            index -= 8;
+
+            this->index = index;
+
+            doSwapActive();
+         }
+
+         void write(const unsigned data)
+         {
+            // 		if (activeSet)
+            (this->*activeSet)(data);
+            *activeData = data;
+         }
+   };
 
 }
 

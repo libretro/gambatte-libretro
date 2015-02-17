@@ -19,58 +19,119 @@
 #ifndef MEMPTRS_H
 #define MEMPTRS_H
 
-namespace gambatte {
+namespace gambatte
+{
 
-enum OamDmaSrc { OAM_DMA_SRC_ROM, OAM_DMA_SRC_SRAM, OAM_DMA_SRC_VRAM,
-                 OAM_DMA_SRC_WRAM, OAM_DMA_SRC_INVALID, OAM_DMA_SRC_OFF };
+   enum OamDmaSrc
+   {
+      OAM_DMA_SRC_ROM,
+      OAM_DMA_SRC_SRAM,
+      OAM_DMA_SRC_VRAM,
+      OAM_DMA_SRC_WRAM,
+      OAM_DMA_SRC_INVALID,
+      OAM_DMA_SRC_OFF
+   };
 
-class MemPtrs {
-	const unsigned char *rmem_[0x10];
-	      unsigned char *wmem_[0x10];
-	
-	unsigned char *memchunk_;
-	unsigned char *romdata_[2];
-	unsigned char *wramdata_[2];
-	unsigned char *rambankdata_;
-	unsigned char *rdisabledRam_;
-	unsigned char *wdisabledRam_;
-	unsigned char *rsrambankptr_;
-	unsigned char *wsrambankptr_;
-	
-	OamDmaSrc oamDmaSrc_;
-	
-	MemPtrs(const MemPtrs &);
-	MemPtrs & operator=(const MemPtrs &);
-	void disconnectOamDmaAreas();
-public:
-	MemPtrs();
-	~MemPtrs();
-	void reset(unsigned rombanks, unsigned rambanks, unsigned wrambanks);
-	
-	const unsigned char * rmem(unsigned area) const { return rmem_[area]; }
-	unsigned char * wmem(unsigned area) const { return wmem_[area]; }
-   unsigned char * romdata() const { return memchunk_ + 0x4000; }
-	unsigned char * romdata(unsigned area) const { return romdata_[area]; }
-	unsigned char * romdataend() const { return rambankdata_; }
-	unsigned char * wramdata(unsigned area) const { return wramdata_[area]; }
-	unsigned char * wramdataend() const { return rdisabledRam_; }
-	unsigned char * rambankdata() const { return rambankdata_; }
-	unsigned char * rambankdataend() const { return wramdata_[0]; }
-	const unsigned char * rdisabledRam() const { return rdisabledRam_; }
-	const unsigned char * rsrambankptr() const { return rsrambankptr_; }
-	unsigned char * wsrambankptr() const { return wsrambankptr_; }
-	OamDmaSrc oamDmaSrc() const { return oamDmaSrc_; }
-	
-   void setRombank0(unsigned bank);
-	void setRombank(unsigned bank);
-	void setRambank(bool enableRam, bool rtcActive, unsigned rambank);
-	void setWrambank(unsigned bank);
-	void setOamDmaSrc(OamDmaSrc oamDmaSrc);
-};
+   class MemPtrs
+   {
+      const unsigned char *rmem_[0x10];
+      unsigned char *wmem_[0x10];
 
-inline bool isCgb(const MemPtrs &memptrs) {
-	return memptrs.wramdataend() - memptrs.wramdata(0) == 0x8000;
-}
+      unsigned char *memchunk_;
+      unsigned char *romdata_[2];
+      unsigned char *wramdata_[2];
+      unsigned char *rambankdata_;
+      unsigned char *rdisabledRam_;
+      unsigned char *wdisabledRam_;
+      unsigned char *rsrambankptr_;
+      unsigned char *wsrambankptr_;
+
+      OamDmaSrc oamDmaSrc_;
+
+      MemPtrs(const MemPtrs &);
+      MemPtrs & operator=(const MemPtrs &);
+      void disconnectOamDmaAreas();
+      public:
+      MemPtrs();
+      ~MemPtrs();
+      void reset(unsigned rombanks, unsigned rambanks, unsigned wrambanks);
+
+      const unsigned char * rmem(unsigned area) const
+      {
+         return rmem_[area];
+      }
+
+      unsigned char * wmem(unsigned area) const
+      {
+         return wmem_[area];
+      }
+
+      unsigned char * romdata() const
+      {
+         return memchunk_ + 0x4000;
+      }
+
+      unsigned char * romdata(unsigned area) const 
+      {
+         return romdata_[area];
+      }
+
+      unsigned char * romdataend() const
+      {
+         return rambankdata_;
+      }
+
+      unsigned char * wramdata(unsigned area) const
+      {
+         return wramdata_[area];
+      }
+
+      unsigned char * wramdataend() const
+      {
+         return rdisabledRam_;
+      }
+
+      unsigned char * rambankdata() const
+      {
+         return rambankdata_;
+      }
+
+      unsigned char * rambankdataend() const
+      {
+         return wramdata_[0];
+      }
+
+      const unsigned char * rdisabledRam() const
+      {
+         return rdisabledRam_;
+      }
+
+      const unsigned char * rsrambankptr() const
+      {
+         return rsrambankptr_;
+      }
+
+      unsigned char * wsrambankptr() const
+      {
+         return wsrambankptr_;
+      }
+
+      OamDmaSrc oamDmaSrc() const 
+      {
+         return oamDmaSrc_;
+      }
+
+      void setRombank0(unsigned bank);
+      void setRombank(unsigned bank);
+      void setRambank(bool enableRam, bool rtcActive, unsigned rambank);
+      void setWrambank(unsigned bank);
+      void setOamDmaSrc(OamDmaSrc oamDmaSrc);
+   };
+
+   inline bool isCgb(const MemPtrs &memptrs)
+   {
+      return memptrs.wramdataend() - memptrs.wramdata(0) == 0x8000;
+   }
 
 }
 
