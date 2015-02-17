@@ -96,10 +96,6 @@ void Channel2::reset()
 	setEvent();
 }
 
-void Channel2::init(const bool cgb) {
-	lengthCounter.init(cgb);
-}
-
 void Channel2::saveState(SaveState &state) {
 	dutyUnit.saveState(state.spu.ch2.duty, cycleCounter);
 	envelopeUnit.saveState(state.spu.ch2.env);

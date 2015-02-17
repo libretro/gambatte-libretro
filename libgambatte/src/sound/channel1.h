@@ -56,6 +56,7 @@ namespace gambatte
                void nr0Change(unsigned newNr0);
                void nr4Init(unsigned long cycleCounter);
                void reset();
+               void init(bool cgb) { cgb_ = cgb; }
                void saveState(SaveState &state) const;
                void loadState(const SaveState &state);
 
@@ -65,6 +66,7 @@ namespace gambatte
                unsigned short shadow;
                unsigned char nr0;
                bool negging;
+               bool cgb_;
 
                unsigned calcFreq();
          };

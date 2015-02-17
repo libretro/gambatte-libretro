@@ -187,7 +187,7 @@ void Channel1::reset() {
 }
 
 void Channel1::init(const bool cgb) {
-	lengthCounter.init(cgb);
+   sweepUnit.init(cgb);
 }
 
 void Channel1::saveState(SaveState &state) {

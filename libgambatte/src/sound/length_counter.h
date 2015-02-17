@@ -29,20 +29,18 @@ namespace gambatte
 
    class LengthCounter : public SoundUnit
    {
-      MasterDisabler &disableMaster;
-      unsigned short lengthCounter;
-      const unsigned char lengthMask;
-      bool cgb;
-
       public:
-      LengthCounter(MasterDisabler &disabler, unsigned lengthMask);
-      void event();
-      void nr1Change(unsigned newNr1, unsigned nr4, unsigned long cc);
-      void nr4Change(unsigned oldNr4, unsigned newNr4, unsigned long cc);
-      // 	void reset();
-      void init(bool cgb);
-      void saveState(SaveState::SPU::LCounter &lstate) const;
-      void loadState(const SaveState::SPU::LCounter &lstate, unsigned long cc);
+         LengthCounter(MasterDisabler &disabler, unsigned lengthMask);
+         void event();
+         void nr1Change(unsigned newNr1, unsigned nr4, unsigned long cc);
+         void nr4Change(unsigned oldNr4, unsigned newNr4, unsigned long cc);
+         void saveState(SaveState::SPU::LCounter &lstate) const;
+         void loadState(const SaveState::SPU::LCounter &lstate, unsigned long cc);
+
+      private:
+         MasterDisabler &disableMaster;
+         unsigned short lengthCounter;
+         const unsigned char lengthMask;
    };
 
 }

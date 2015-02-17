@@ -100,9 +100,9 @@ namespace gambatte
       sampleBuf = 0;
    }
 
-   void Channel3::init(const bool cgb) {
+   void Channel3::init(const bool cgb)
+   {
       this->cgb = cgb;
-      lengthCounter.init(cgb);
    }
 
    void Channel3::setStatePtrs(SaveState &state) {

@@ -226,10 +226,6 @@ namespace gambatte
       setEvent();
    }
 
-   void Channel4::init(const bool cgb) {
-      lengthCounter.init(cgb);
-   }
-
    void Channel4::saveState(SaveState &state) {
       lfsr.saveState(state, cycleCounter);
       envelopeUnit.saveState(state.spu.ch4.env);

@@ -56,9 +56,7 @@ namespace gambatte
    void PSG::init(const bool cgb)
    {
       ch1.init(cgb);
-      ch2.init(cgb);
       ch3.init(cgb);
-      ch4.init(cgb);
    }
 
    void PSG::reset()
@@ -177,7 +175,8 @@ namespace gambatte
 
    void PSG::set_so_volume(const unsigned nr50)
    {
-      soVol = (((nr50 & 0x7) + 1) * so1Mul + ((nr50 >> 4 & 0x7) + 1) * so2Mul) * 64;
+      soVol = (((nr50      & 0x7) + 1) * so1Mul 
+            +  ((nr50 >> 4 & 0x7) + 1) * so2Mul) * 64;
    }
 
    void PSG::map_so(const unsigned nr51)
@@ -192,7 +191,10 @@ namespace gambatte
 
    unsigned PSG::getStatus() const
    {
-      return ch1.isActive() | ch2.isActive() << 1 | ch3.isActive() << 2 | ch4.isActive() << 3;
+      return ch1.isActive()
+         | ch2.isActive() << 1
+         | ch3.isActive() << 2
+         | ch4.isActive() << 3;
    }
 
 }

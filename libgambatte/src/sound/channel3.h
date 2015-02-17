@@ -30,6 +30,46 @@ namespace gambatte
 
    class Channel3
    {
+      public:
+         Channel3();
+         bool isActive() const { return master; }
+         void reset();
+         void init(bool cgb);
+         void setStatePtrs(SaveState &state);
+         void saveState(SaveState &state) const;
+         void loadState(const SaveState &state);
+         void setNr0(unsigned data);
+         void setNr1(unsigned data) { lengthCounter.nr1Change(data, nr4, cycleCounter); }
+         void setNr2(unsigned data);
+         void setNr3(unsigned data) { nr3 = data; }
+         void setNr4(unsigned data);
+         void setSo(unsigned long soMask);
+         void update(uint_least32_t *buf, unsigned long soBaseVol, unsigned long cycles);
+
+         unsigned waveRamRead(unsigned index) const
+         {
+            if (master) {
+               if (!cgb && cycleCounter != lastReadTime)
+                  return 0xFF;
+
+               index = wavePos >> 1;
+            }
+
+            return waveRam[index];
+         }
+
+         void waveRamWrite(unsigned index, unsigned data)
+         {
+            if (master) {
+               if (!cgb && cycleCounter != lastReadTime)
+                  return;
+
+               index = wavePos >> 1;
+            }
+
+            waveRam[index] = data;
+         }
+      private:
       class Ch3MasterDisabler : public MasterDisabler
       {
          unsigned long &waveCounter;
@@ -61,46 +101,6 @@ namespace gambatte
       bool cgb;
 
       void updateWaveCounter(unsigned long cc);
-
-      public:
-      Channel3();
-      bool isActive() const { return master; }
-      void reset();
-      void init(bool cgb);
-      void setStatePtrs(SaveState &state);
-      void saveState(SaveState &state) const;
-      void loadState(const SaveState &state);
-      void setNr0(unsigned data);
-      void setNr1(unsigned data) { lengthCounter.nr1Change(data, nr4, cycleCounter); }
-      void setNr2(unsigned data);
-      void setNr3(unsigned data) { nr3 = data; }
-      void setNr4(unsigned data);
-      void setSo(unsigned long soMask);
-      void update(uint_least32_t *buf, unsigned long soBaseVol, unsigned long cycles);
-
-      unsigned waveRamRead(unsigned index) const
-      {
-         if (master) {
-            if (!cgb && cycleCounter != lastReadTime)
-               return 0xFF;
-
-            index = wavePos >> 1;
-         }
-
-         return waveRam[index];
-      }
-
-      void waveRamWrite(unsigned index, unsigned data)
-      {
-         if (master) {
-            if (!cgb && cycleCounter != lastReadTime)
-               return;
-
-            index = wavePos >> 1;
-         }
-
-         waveRam[index] = data;
-      }
    };
 
 }
