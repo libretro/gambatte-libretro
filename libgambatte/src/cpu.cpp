@@ -505,8 +505,9 @@ void CPU::loadState(const SaveState &state)
 //call nn (24 cycles):
 //Push address of next instruction onto stack and then jump to address stored in next two bytes in memory:
 #define call_nn() do { \
-   PUSH(((PC + 2) >> 8) & 0xFF, (PC + 2) & 0xFF); \
+   unsigned const npc = (PC + 2) & 0xFFFF; \
    jp_nn(); \
+   PUSH(npc >> 8, npc & 0xFF); \
 } while (0)
 
 //rst n (16 Cycles):
