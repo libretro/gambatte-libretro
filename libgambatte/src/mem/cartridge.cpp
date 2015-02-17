@@ -18,7 +18,6 @@
  ***************************************************************************/
 #include "cartridge.h"
 #include "../savestate.h"
-#include <cassert>
 #include <cstring>
 #include <fstream>
 
@@ -88,6 +87,7 @@ namespace gambatte
    static Cartridgetype cartridgeType(const unsigned headerByte0x147)
    {
       static const unsigned char typeLut[] = {
+         /* [0xFF] = */ MBC1,
          /* [0x00] = */ PLAIN,
          /* [0x01] = */ MBC1,
          /* [0x02] = */ MBC1,
@@ -121,9 +121,7 @@ namespace gambatte
          /* [0x1E] = */ MBC5
       };
 
-      assert(headerByte0x147 < sizeof(typeLut));
-
-      return static_cast<Cartridgetype>(typeLut[headerByte0x147]);
+      return static_cast<Cartridgetype>(typeLut[(headerByte0x147 + 1) & 0x1F]);
    }
 
    static unsigned toMulti64Rombank(const unsigned rombank)
@@ -358,9 +356,9 @@ namespace gambatte
             case 0x19: log_cb(RETRO_LOG_INFO, "MBC5 ROM loaded.\n"); break;
             case 0x1A: log_cb(RETRO_LOG_INFO, "MBC5 ROM+RAM loaded.\n"); break;
             case 0x1B: log_cb(RETRO_LOG_INFO, "MBC5 ROM+RAM+BATTERY loaded.\n"); break;
-            case 0x1C: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE ROM not supported.\n"); break;
-            case 0x1D: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE+RAM ROM not suported.\n"); break;
-            case 0x1E: log_cb(RETRO_LOG_INFO, "MBC5+RUMLE+RAM+BATTERY ROM not supported.\n"); break;
+            case 0x1C: log_cb(RETRO_LOG_INFO, "MBC5+RUMBLE ROM not supported.\n"); break;
+            case 0x1D: log_cb(RETRO_LOG_INFO, "MBC5+RUMBLE+RAM ROM not suported.\n"); break;
+            case 0x1E: log_cb(RETRO_LOG_INFO, "MBC5+RUMBLE+RAM+BATTERY ROM not supported.\n"); break;
             case 0xFC: log_cb(RETRO_LOG_ERROR, "Pocket Camera ROM not supported.\n"); return 1;
             case 0xFD: log_cb(RETRO_LOG_ERROR, "Bandai TAMA5 ROM not supported.\n"); return 1;
             case 0xFE: log_cb(RETRO_LOG_ERROR, "HuC3 ROM not supported.\n"); return 1;
