@@ -1,8 +1,0 @@
-waits for vblank
-disables display
-enables display
-reads ly
-outputs value of ly in hex
-
-DMG-08 / CGB:
-should output 00

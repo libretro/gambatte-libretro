@@ -1,8 +1,0 @@
-waits for vblank
-disables display
-enables display
-reads lcdstat
-outputs value of lcdstat in hex
-
-DMG-08 / CGB:
-should output 84
