@@ -24,8 +24,13 @@ namespace gambatte
 {
 
    MemPtrs::MemPtrs() :
-      memchunk_(0), rambankdata_(0), rdisabledRam_(0), wdisabledRam_(0),
-      rsrambankptr_(0), wsrambankptr_(0), oamDmaSrc_(OAM_DMA_SRC_OFF)
+      memchunk_(0),
+      rambankdata_(0),
+      rdisabledRam_(0),
+      wdisabledRam_(0),
+      rsrambankptr_(0),
+      wsrambankptr_(0),
+      oamDmaSrc_(OAM_DMA_SRC_OFF)
    {
       std::fill(rmem_, rmem_ + 0x10, static_cast<unsigned char *>(0));
       std::fill(wmem_, wmem_ + 0x10, static_cast<unsigned char *>(0));
@@ -42,20 +47,26 @@ namespace gambatte
    void MemPtrs::reset(const unsigned rombanks, const unsigned rambanks, const unsigned wrambanks)
    {
       delete []memchunk_;
-      memchunk_ = new unsigned char[0x4000 + rombanks * 0x4000ul + rambanks * 0x2000ul + wrambanks * 0x1000ul + 0x4000];
+      memchunk_     = new unsigned char[
+         0x4000 
+         + rombanks * 0x4000ul 
+         + rambanks * 0x2000ul 
+         + wrambanks * 0x1000ul 
+         + 0x4000];
 
-      romdata_[0] = romdata();   
-      rambankdata_ = romdata_[0] + rombanks * 0x4000ul;
-      wramdata_[0] = rambankdata_ + rambanks * 0x2000ul;
+      romdata_[0]   = romdata();   
+      rambankdata_  = romdata_[0] + rombanks * 0x4000ul;
+      wramdata_[0]  = rambankdata_ + rambanks * 0x2000ul;
       rdisabledRam_ = wramdata_[0] + wrambanks * 0x1000ul;
       wdisabledRam_ = rdisabledRam_ + 0x2000;
 
       std::memset(rdisabledRam_, 0xFF, 0x2000);
 
-      oamDmaSrc_ = OAM_DMA_SRC_OFF;
-      rmem_[0x3] = rmem_[0x2] = rmem_[0x1] = rmem_[0x0] = romdata_[0];
-      rmem_[0xC] = wmem_[0xC] = wramdata_[0] - 0xC000;
-      rmem_[0xE] = wmem_[0xE] = wramdata_[0] - 0xE000;
+      oamDmaSrc_    = OAM_DMA_SRC_OFF;
+      rmem_[0x3]    = rmem_[0x2] = rmem_[0x1] = rmem_[0x0] = romdata_[0];
+      rmem_[0xC]    = wmem_[0xC] = wramdata_[0] - 0xC000;
+      rmem_[0xE]    = wmem_[0xE] = wramdata_[0] - 0xE000;
+
       setRombank(1);
       setRambank(false, false, 0);
       setWrambank(1);

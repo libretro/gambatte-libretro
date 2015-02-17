@@ -29,28 +29,6 @@ namespace gambatte
 
    class Rtc
    {
-      private:
-         unsigned char *activeData;
-         void (Rtc::*activeSet)(unsigned);
-         uint64_t baseTime;
-         uint64_t haltTime;
-         unsigned char index;
-         unsigned char dataDh;
-         unsigned char dataDl;
-         unsigned char dataH;
-         unsigned char dataM;
-         unsigned char dataS;
-         bool enabled;
-         bool lastLatchData;
-
-         void doLatch();
-         void doSwapActive();
-         void setDh(unsigned new_dh);
-         void setDl(unsigned new_lowdays);
-         void setH(unsigned new_hours);
-         void setM(unsigned new_minutes);
-         void setS(unsigned new_seconds);
-
       public:
          Rtc();
 
@@ -67,7 +45,6 @@ namespace gambatte
          void setBaseTime(const uint64_t baseTime)
          {
             this->baseTime = baseTime;
-            // 		doLatch();
          }
 
          void latch(const unsigned data)
@@ -100,10 +77,32 @@ namespace gambatte
 
          void write(const unsigned data)
          {
-            // 		if (activeSet)
             (this->*activeSet)(data);
             *activeData = data;
          }
+
+      private:
+         unsigned char *activeData;
+         void (Rtc::*activeSet)(unsigned);
+         uint64_t baseTime;
+         uint64_t haltTime;
+         unsigned char index;
+         unsigned char dataDh;
+         unsigned char dataDl;
+         unsigned char dataH;
+         unsigned char dataM;
+         unsigned char dataS;
+         bool enabled;
+         bool lastLatchData;
+
+         void doLatch();
+         void doSwapActive();
+         void setDh(unsigned new_dh);
+         void setDl(unsigned new_lowdays);
+         void setH(unsigned new_hours);
+         void setM(unsigned new_minutes);
+         void setS(unsigned new_seconds);
+
    };
 
 }
