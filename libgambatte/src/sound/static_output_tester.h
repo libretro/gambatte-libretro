@@ -21,24 +21,27 @@
 
 #include "envelope_unit.h"
 
-namespace gambatte {
+namespace gambatte
+{
 
-template<class Channel, class Unit>
-class StaticOutputTester : public EnvelopeUnit::VolOnOffEvent {
-	const Channel &ch;
-	Unit &unit;
-public:
-	StaticOutputTester(const Channel &ch, Unit &unit) : ch(ch), unit(unit) {}
-	void operator()(unsigned long cc);
-};
+   template<class Channel, class Unit>
+      class StaticOutputTester : public EnvelopeUnit::VolOnOffEvent
+   {
+      const Channel &ch;
+      Unit &unit;
+      public:
+      StaticOutputTester(const Channel &ch, Unit &unit) : ch(ch), unit(unit) {}
+      void operator()(unsigned long cc);
+   };
 
-template<class Channel, class Unit>
-void StaticOutputTester<Channel, Unit>::operator()(const unsigned long cc) {
-	if (ch.soMask && ch.master && ch.envelopeUnit.getVolume())
-		unit.reviveCounter(cc);
-	else
-		unit.killCounter();
-}
+   template<class Channel, class Unit>
+      void StaticOutputTester<Channel, Unit>::operator()(const unsigned long cc)
+      {
+         if (ch.soMask && ch.master && ch.envelopeUnit.getVolume())
+            unit.reviveCounter(cc);
+         else
+            unit.killCounter();
+      }
 
 }
 
