@@ -349,42 +349,55 @@ namespace gambatte
             default: log_cb(RETRO_LOG_ERROR, "Wrong data-format, corrupt or unsupported ROM.\n"); return 1;
          }
 
-         /*switch (header[0x0148]) {
-           case 0x00: rombanks = 2; break;
-           case 0x01: rombanks = 4; break;
-           case 0x02: rombanks = 8; break;
-           case 0x03: rombanks = 16; break;
-           case 0x04: rombanks = 32; break;
-           case 0x05: rombanks = 64; break;
-           case 0x06: rombanks = 128; break;
-           case 0x07: rombanks = 256; break;
-           case 0x08: rombanks = 512; break;
-           case 0x52: rombanks = 72; break;
-           case 0x53: rombanks = 80; break;
-           case 0x54: rombanks = 96; break;
-           default: return 1;
-           }
+#if 0
+         switch (header[0x0148])
+         {
+            case 0x00: rombanks = 2; break;
+            case 0x01: rombanks = 4; break;
+            case 0x02: rombanks = 8; break;
+            case 0x03: rombanks = 16; break;
+            case 0x04: rombanks = 32; break;
+            case 0x05: rombanks = 64; break;
+            case 0x06: rombanks = 128; break;
+            case 0x07: rombanks = 256; break;
+            case 0x08: rombanks = 512; break;
+            case 0x52: rombanks = 72; break;
+            case 0x53: rombanks = 80; break;
+            case 0x54: rombanks = 96; break;
+            default: return 1;
+         }
 
-           std::printf("rombanks: %u\n", rombanks);*/
+         std::printf("rombanks: %u\n", rombanks);*/
+#endif
 
-         switch (header[0x0149]) {
-            case 0x00: /*std::puts("No RAM");*/ rambanks = cartridgeType(header[0x0147]) == MBC2; break;
-            case 0x01: /*std::puts("2kB RAM");*/ /*rambankrom=1; break;*/
-            case 0x02: /*std::puts("8kB RAM");*/
-                                                rambanks = 1;
-                                                break;
-            case 0x03: /*std::puts("32kB RAM");*/
-                                                rambanks = 4;
-                                                break;
-            case 0x04: /*std::puts("128kB RAM");*/
-                                                rambanks = 16;
-                                                break;
-            case 0x05: /*std::puts("undocumented kB RAM");*/
-                                                rambanks = 16;
-                                                break;
-            default: /*std::puts("Wrong data-format, corrupt or unsupported ROM loaded.");*/
-                                                rambanks = 16;
-                                                break;
+         switch (header[0x0149])
+         {
+            case 0x00:
+               /*std::puts("No RAM");*/
+               rambanks = cartridgeType(header[0x0147]) == MBC2;
+               break;
+            case 0x01:
+               /*std::puts("2kB RAM");*/ /*rambankrom=1; break;*/
+            case 0x02:
+               /*std::puts("8kB RAM");*/
+               rambanks = 1;
+               break;
+            case 0x03:
+               /*std::puts("32kB RAM");*/
+               rambanks = 4;
+               break;
+            case 0x04:
+               /*std::puts("128kB RAM");*/
+               rambanks = 16;
+               break;
+            case 0x05:
+               /*std::puts("undocumented kB RAM");*/
+               rambanks = 16;
+               break;
+            default:
+               /*std::puts("Wrong data-format, corrupt or unsupported ROM loaded.");*/
+               rambanks = 16;
+               break;
          }
 
          cgb = header[0x0143] >> 7 & (1 ^ forceDmg);
@@ -411,6 +424,25 @@ namespace gambatte
          return 1;
 
       return 0;
+   }
+
+   static bool hasBattery(unsigned char headerByte0x147)
+   {
+      switch (headerByte0x147)
+      {
+         case 0x03:
+         case 0x06:
+         case 0x09:
+         case 0x0F:
+         case 0x10:
+         case 0x13:
+         case 0x1B:
+         case 0x1E:
+         case 0xFF:
+            return true;
+         default:
+            return false;
+      }
    }
 
    static int asHex(const char c)
