@@ -26,31 +26,10 @@
 
 namespace gambatte
 {
-
    struct SaveState;
 
    class Cartridge
    {
-      struct AddrData
-      {
-         unsigned long addr;
-         unsigned char data;
-         AddrData(unsigned long addr, unsigned data) : addr(addr), data(data)
-         {
-         }
-      };
-
-      MemPtrs memptrs;
-      Rtc rtc;
-
-      unsigned short rombank;
-      unsigned char rambank;
-      bool enableRam;
-      bool rambankMode;
-      bool multi64rom;
-
-      std::vector<AddrData> ggUndoList;
-
       unsigned rambanks() const
       {
          return (memptrs.rambankdataend() - memptrs.rambankdata()) / 0x2000;
@@ -62,37 +41,6 @@ namespace gambatte
       }
 
       bool loadROM(File &file, const bool forceDmg, const bool multiCartCompat);
-
-      bool hasBattery() const
-      {
-         switch (memptrs.romdata(0)[0x147])
-         {
-            case 0x03:
-            case 0x06:
-            case 0x09:
-            case 0x0F:
-            case 0x10:
-            case 0x13:
-            case 0x1B:
-            case 0x1E:
-               return true;
-            default:
-               return false;
-         }
-      }
-
-      bool hasRtc(const unsigned headerByte0x147) const
-      {
-         switch (headerByte0x147)
-         {
-            case 0x0F:
-            case 0x10:
-               return true;
-            default:
-               return false;
-         }
-      }
-      void applyGameGenie(const std::string &code);
 
       public:
       Cartridge();
@@ -172,35 +120,34 @@ namespace gambatte
       void setGameGenie(const std::string &codes);
       void clearCheats();
 
-      void *savedata_ptr()
-      {
-         // Check ROM header for battery.
-         if (hasBattery())
-            return memptrs.rambankdata();
-         return 0;
-      }
-
-      unsigned savedata_size()
-      {
-         if (hasBattery())
-            return memptrs.rambankdataend() - memptrs.rambankdata();
-         return 0;
-      }
+      void *savedata_ptr();
+      unsigned savedata_size();
 
       // Not endian-safe at all, but hey.
-      void *rtcdata_ptr()
-      {
-         if (hasRtc(memptrs.romdata()[0x147]))
-            return &rtc.getBaseTime();
-         return 0;
-      }
+      void *rtcdata_ptr();
+      unsigned rtcdata_size();
 
-      unsigned rtcdata_size()
-      { 
-         if (hasRtc(memptrs.romdata()[0x147]))
-            return sizeof(rtc.getBaseTime());
-         return 0;
-      }
+      private:
+      struct AddrData
+      {
+         unsigned long addr;
+         unsigned char data;
+         AddrData(unsigned long addr, unsigned data) : addr(addr), data(data)
+         {
+         }
+      };
+      MemPtrs memptrs;
+      Rtc rtc;
+
+      unsigned short rombank;
+      unsigned char rambank;
+      bool enableRam;
+      bool rambankMode;
+      bool multi64rom;
+
+      std::vector<AddrData> ggUndoList;
+
+      void applyGameGenie(const std::string &code);
    };
 
 }

@@ -47,6 +47,18 @@ namespace gambatte
       return bank;
    }
 
+   static bool hasRtc(unsigned headerByte0x147)
+   {
+      switch (headerByte0x147)
+      {
+         case 0x0F:
+         case 0x10:
+            return true;
+         default:
+            return false;
+      }
+   }
+
    void Cartridge::setStatePtrs(SaveState &state)
    {
       state.mem.sram.set(memptrs.rambankdata(), memptrs.rambankdataend() - memptrs.rambankdata());
@@ -111,7 +123,6 @@ namespace gambatte
 
    void Cartridge::loadState(const SaveState &state)
    {
-      //rtc.loadState(state, hasRtc() ? state.mem.enableRam : false);
       rtc.loadState(state, hasRtc(memptrs.romdata()[0x147]) ? state.mem.enableRam : false);
 
       rombank = state.mem.rombank;
@@ -146,7 +157,6 @@ namespace gambatte
 
             enableRam = (data & 0x0F) == 0xA;
 
-            //if (hasRtc())
             if (hasRtc(memptrs.romdata()[0x147]))
                rtc.setEnabled(enableRam);
 
@@ -228,7 +238,6 @@ namespace gambatte
                   memptrs.setRombank(adjustedRombank(rombank & (rombanks() - 1), romtype));
                   return;
                case MBC3:
-                  //if (hasRtc())
                   if (hasRtc(memptrs.romdata()[0x147]))
                      rtc.swapActive(data);
 
@@ -453,6 +462,35 @@ namespace gambatte
    static bool isAddressWithinAreaRombankCanBeMappedTo(unsigned addr, unsigned bank)
    {
       return (addr< 0x4000) == (bank == 0);
+   }
+
+   void *Cartridge::savedata_ptr()
+   {
+      // Check ROM header for battery.
+      if (hasBattery(memptrs.romdata()[0x147]))
+         return memptrs.rambankdata();
+      return 0;
+   }
+
+   unsigned Cartridge::savedata_size()
+   {
+      if (hasBattery(memptrs.romdata()[0x147]))
+         return memptrs.rambankdataend() - memptrs.rambankdata();
+      return 0;
+   }
+
+   void *Cartridge::rtcdata_ptr()
+   {
+      if (hasRtc(memptrs.romdata()[0x147]))
+         return &rtc.getBaseTime();
+      return 0;
+   }
+
+   unsigned Cartridge::rtcdata_size()
+   { 
+      if (hasRtc(memptrs.romdata()[0x147]))
+         return sizeof(rtc.getBaseTime());
+      return 0;
    }
 
    void Cartridge::applyGameGenie(const std::string &code)
