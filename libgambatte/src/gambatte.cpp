@@ -21,7 +21,6 @@
 #include "savestate.h"
 #include "statesaver.h"
 #include "initstate.h"
-#include "state_osd_elements.h"
 #include <sstream>
 
 namespace gambatte {
