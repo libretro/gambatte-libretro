@@ -640,7 +640,12 @@ namespace gambatte
       switch (P & 0xFF)
       {
          case 0x00:
-            data = (ioamhram_[0x100] & 0xCF) | (data & 0xF0);
+            if ((data ^ ioamhram_[0x100]) & 0x30) {
+               ioamhram_[0x100] = (ioamhram_[0x100] & ~0x30u) | (data & 0x30);
+               updateInput();
+            }
+
+            return;
             break;
          case 0x01:
             updateSerial(cycleCounter);

@@ -46,6 +46,7 @@ namespace gambatte
    long CPU::runFor(const unsigned long cycles)
    {
       process(cycles);
+      memory.updateInput();
 
       const long csb = memory.cyclesSinceBlit(cycleCounter_);
 
