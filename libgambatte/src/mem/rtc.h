@@ -56,21 +56,15 @@ namespace gambatte
          }
 
          void saveState(SaveState &state) const;
-         void loadState(const SaveState &state, bool enabled);
+         void loadState(const SaveState &state);
 
-         void setEnabled(const bool enabled)
-         {
-            enabled_ = enabled;
-
-            doSwapActive();
-         }
-
-         void swapActive(unsigned bank)
+         void set(const bool enabled, unsigned bank)
          {
             bank &= 0xF;
             bank -= 8;
 
-            index_ = bank;
+            this->enabled_ = enabled;
+            this->index_   = bank;
 
             doSwapActive();
          }

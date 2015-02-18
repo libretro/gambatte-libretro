@@ -99,7 +99,6 @@ namespace gambatte
    {
       state.rtc.baseTime      = baseTime_;
       state.rtc.haltTime      = haltTime_;
-      state.rtc.index         = index_;
       state.rtc.dataDh        = dataDh_;
       state.rtc.dataDl        = dataDl_;
       state.rtc.dataH         = dataH_;
@@ -108,13 +107,10 @@ namespace gambatte
       state.rtc.lastLatchData = lastLatchData_;
    }
 
-   void Rtc::loadState(const SaveState &state, const bool enabled)
+   void Rtc::loadState(const SaveState &state)
    {
-      enabled_ = enabled;
-
       baseTime_      = state.rtc.baseTime;
       haltTime_      = state.rtc.haltTime;
-      index_        = state.rtc.index;
       dataDh_        = state.rtc.dataDh;
       dataDl_        = state.rtc.dataDl;
       dataH_         = state.rtc.dataH;

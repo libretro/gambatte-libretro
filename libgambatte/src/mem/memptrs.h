@@ -125,7 +125,7 @@ namespace gambatte
 
          void setRombank0(unsigned bank);
          void setRombank(unsigned bank);
-         void setRambank(bool enableRam, bool rtcActive, unsigned rambank);
+         void setRambank(unsigned ramFlags, unsigned rambank);
          void setVrambank(unsigned bank) { vrambankptr_ = vramdata() + bank * 0x2000ul - 0x8000; }
          void setWrambank(unsigned bank);
          void setOamDmaSrc(OamDmaSrc oamDmaSrc);

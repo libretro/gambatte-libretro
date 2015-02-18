@@ -185,7 +185,6 @@ namespace gambatte
       struct RTC {
          unsigned long baseTime;
          unsigned long haltTime;
-         unsigned char index;
          unsigned char dataDh;
          unsigned char dataDl;
          unsigned char dataH;

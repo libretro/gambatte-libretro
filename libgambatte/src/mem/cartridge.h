@@ -21,12 +21,23 @@
 
 #include "memptrs.h"
 #include "rtc.h"
+#include "savestate.h"
+#include <memory>
 #include <string>
+#include <vector>
 #include "file/file.h"
 
 namespace gambatte
 {
-   struct SaveState;
+   class Mbc
+   {
+      public:
+         virtual ~Mbc() {}
+         virtual void romWrite(unsigned P, unsigned data) = 0;
+         virtual void saveState(SaveState::Mem &ss) const = 0;
+         virtual void loadState(const SaveState::Mem &ss) = 0;
+         virtual bool isAddressWithinAreaRombankCanBeMappedTo(unsigned address, unsigned rombank) const = 0;
+   };
 
    class Cartridge
    {
@@ -34,7 +45,8 @@ namespace gambatte
          void setStatePtrs(SaveState &);
          void saveState(SaveState &) const;
          void loadState(const SaveState &);
-         Cartridge();
+
+         bool loaded() const { return mbc.get(); }
 
          const unsigned char * rmem(unsigned area) const
          {
@@ -100,7 +112,7 @@ namespace gambatte
             memptrs_.setOamDmaSrc(oamDmaSrc);
          }
 
-         void mbcWrite(unsigned addr, unsigned data);
+         void mbcWrite(unsigned addr, unsigned data) { mbc->romWrite(addr, data); }
 
          bool isCgb() const
          {
@@ -143,11 +155,7 @@ namespace gambatte
          MemPtrs memptrs_;
          Rtc rtc_;
 
-         unsigned short rombank_;
-         unsigned char rambank_;
-         bool enableRam_;
-         bool rambankMode_;
-         bool multi64rom_;
+         std::auto_ptr<Mbc> mbc;
 
          std::vector<AddrData> ggUndoList_;
 
