@@ -28,29 +28,29 @@ namespace gambatte
 
    Memory::Memory(const Interrupter &interrupter_in)
       : vrambank(vram),
-      getInput(0),
-      divLastUpdate(0),
-      lastOamDmaUpdate(DISABLED_TIME),
-      display(ioamhram, vram, VideoInterruptRequester(&intreq)),
-      interrupter(interrupter_in),
-      dmaSource(0),
-      dmaDestination(0),
-      oamDmaPos(0xFE),
-      serialCnt(0),
-      blanklcd(false)
+      getInput_(0),
+      divLastUpdate_(0),
+      lastOamDmaUpdate_(DISABLED_TIME),
+      lcd_(ioamhram_, vram, VideoInterruptRequester(&intreq_)),
+      interrupter_(interrupter_in),
+      dmaSource_(0),
+      dmaDestination_(0),
+      oamDmaPos_(0xFE),
+      serialCnt_(0),
+      blanklcd_(false)
    {
-      intreq.setEventTime<BLIT>(144*456ul);
-      intreq.setEventTime<END>(0);
+      intreq_.setEventTime<BLIT>(144*456ul);
+      intreq_.setEventTime<END>(0);
    }
 
    void Memory::setStatePtrs(SaveState &state)
    {
       state.mem.vram.set(vram, sizeof vram);
-      state.mem.ioamhram.set(ioamhram, sizeof ioamhram);
+      state.mem.ioamhram.set(ioamhram_, sizeof ioamhram_);
 
-      cart.setStatePtrs(state);
-      display.setStatePtrs(state);
-      sound.setStatePtrs(state);
+      cart_.setStatePtrs(state);
+      lcd_.setStatePtrs(state);
+      psg_.setStatePtrs(state);
    }
 
    unsigned long Memory::saveState(SaveState &state, unsigned long cycleCounter)
@@ -60,19 +60,19 @@ namespace gambatte
       nontrivial_ff_read(0xFF0F, cycleCounter);
       nontrivial_ff_read(0xFF26, cycleCounter);
 
-      state.mem.divLastUpdate = divLastUpdate;
-      state.mem.nextSerialtime = intreq.eventTime(SERIAL);
-      state.mem.unhaltTime = intreq.eventTime(UNHALT);
-      state.mem.lastOamDmaUpdate = lastOamDmaUpdate;
-      state.mem.dmaSource = dmaSource;
-      state.mem.dmaDestination = dmaDestination;
-      state.mem.oamDmaPos = oamDmaPos;
+      state.mem.divLastUpdate = divLastUpdate_;
+      state.mem.nextSerialtime = intreq_.eventTime(SERIAL);
+      state.mem.unhaltTime = intreq_.eventTime(UNHALT);
+      state.mem.lastOamDmaUpdate = lastOamDmaUpdate_;
+      state.mem.dmaSource = dmaSource_;
+      state.mem.dmaDestination = dmaDestination_;
+      state.mem.oamDmaPos = oamDmaPos_;
 
-      intreq.saveState(state);
-      cart.saveState(state);
-      tima.saveState(state);
-      display.saveState(state);
-      sound.saveState(state);
+      intreq_.saveState(state);
+      cart_.saveState(state);
+      tima_.saveState(state);
+      lcd_.saveState(state);
+      psg_.saveState(state);
 
       return cycleCounter;
    }
@@ -83,39 +83,39 @@ namespace gambatte
 
    void Memory::loadState(const SaveState &state)
    {
-      sound.loadState(state);
-      display.loadState(state, state.mem.oamDmaPos < 0xA0 ? cart.rdisabledRam() : ioamhram);
-      tima.loadState(state, TimaInterruptRequester(intreq));
-      cart.loadState(state);
-      intreq.loadState(state);
+      psg_.loadState(state);
+      lcd_.loadState(state, state.mem.oamDmaPos < 0xA0 ? cart_.rdisabledRam() : ioamhram_);
+      tima_.loadState(state, TimaInterruptRequester(intreq_));
+      cart_.loadState(state);
+      intreq_.loadState(state);
 
-      divLastUpdate = state.mem.divLastUpdate;
-      intreq.setEventTime<SERIAL>(state.mem.nextSerialtime > state.cpu.cycleCounter ? state.mem.nextSerialtime : state.cpu.cycleCounter);
-      intreq.setEventTime<UNHALT>(state.mem.unhaltTime);
-      lastOamDmaUpdate = state.mem.lastOamDmaUpdate;
-      dmaSource = state.mem.dmaSource;
-      dmaDestination = state.mem.dmaDestination;
-      oamDmaPos = state.mem.oamDmaPos;
-      serialCnt = intreq.eventTime(SERIAL) != DISABLED_TIME
-         ? serialCntFrom(intreq.eventTime(SERIAL) - state.cpu.cycleCounter, ioamhram[0x102] & isCgb() * 2)
+      divLastUpdate_ = state.mem.divLastUpdate;
+      intreq_.setEventTime<SERIAL>(state.mem.nextSerialtime > state.cpu.cycleCounter ? state.mem.nextSerialtime : state.cpu.cycleCounter);
+      intreq_.setEventTime<UNHALT>(state.mem.unhaltTime);
+      lastOamDmaUpdate_ = state.mem.lastOamDmaUpdate;
+      dmaSource_ = state.mem.dmaSource;
+      dmaDestination_ = state.mem.dmaDestination;
+      oamDmaPos_ = state.mem.oamDmaPos;
+      serialCnt_ = intreq_.eventTime(SERIAL) != DISABLED_TIME
+         ? serialCntFrom(intreq_.eventTime(SERIAL) - state.cpu.cycleCounter, ioamhram_[0x102] & isCgb() * 2)
          : 8;
 
-      vrambank = vram + (ioamhram[0x14F] & isCgb()) * 0x2000;
+      vrambank = vram + (ioamhram_[0x14F] & isCgb()) * 0x2000;
 
-      cart.setOamDmaSrc(OAM_DMA_SRC_OFF);
-      cart.setWrambank(isCgb() && (ioamhram[0x170] & 0x07) ? ioamhram[0x170] & 0x07 : 1);
+      cart_.setOamDmaSrc(OAM_DMA_SRC_OFF);
+      cart_.setWrambank(isCgb() && (ioamhram_[0x170] & 0x07) ? ioamhram_[0x170] & 0x07 : 1);
 
-      if (lastOamDmaUpdate != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != DISABLED_TIME)
       {
          oamDmaInitSetup();
 
-         const unsigned oamEventPos = oamDmaPos < 0xA0 ? 0xA0 : 0x100;
+         const unsigned oamEventPos = oamDmaPos_ < 0xA0 ? 0xA0 : 0x100;
 
-         intreq.setEventTime<OAM>(lastOamDmaUpdate + (oamEventPos - oamDmaPos) * 4);
+         intreq_.setEventTime<OAM>(lastOamDmaUpdate_ + (oamEventPos - oamDmaPos_) * 4);
       }
 
-      intreq.setEventTime<BLIT>((ioamhram[0x140] & 0x80) ? display.nextMode1IrqTime() : state.cpu.cycleCounter);
-      blanklcd = false;
+      intreq_.setEventTime<BLIT>((ioamhram_[0x140] & 0x80) ? lcd_.nextMode1IrqTime() : state.cpu.cycleCounter);
+      blanklcd_ = false;
 
       if (!isCgb())
          std::memset(vram + 0x2000, 0, 0x2000);
@@ -123,117 +123,117 @@ namespace gambatte
 
    void Memory::setEndtime(const unsigned long cycleCounter, const unsigned long inc)
    {
-      if (intreq.eventTime(BLIT) <= cycleCounter)
-         intreq.setEventTime<BLIT>(intreq.eventTime(BLIT) + (70224 << isDoubleSpeed()));
+      if (intreq_.eventTime(BLIT) <= cycleCounter)
+         intreq_.setEventTime<BLIT>(intreq_.eventTime(BLIT) + (70224 << isDoubleSpeed()));
 
-      intreq.setEventTime<END>(cycleCounter + (inc << isDoubleSpeed()));
+      intreq_.setEventTime<END>(cycleCounter + (inc << isDoubleSpeed()));
    }
 
    void Memory::updateSerial(const unsigned long cc)
    {
-      if (intreq.eventTime(SERIAL) == DISABLED_TIME)
+      if (intreq_.eventTime(SERIAL) == DISABLED_TIME)
          return;
 
-      if (intreq.eventTime(SERIAL) <= cc)
+      if (intreq_.eventTime(SERIAL) <= cc)
       {
-         ioamhram[0x101] = (((ioamhram[0x101] + 1) << serialCnt) - 1) & 0xFF;
-         ioamhram[0x102] &= 0x7F;
-         intreq.setEventTime<SERIAL>(DISABLED_TIME);
-         intreq.flagIrq(8);
+         ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << serialCnt_) - 1) & 0xFF;
+         ioamhram_[0x102] &= 0x7F;
+         intreq_.setEventTime<SERIAL>(DISABLED_TIME);
+         intreq_.flagIrq(8);
       }
       else
       {
-         const int targetCnt = serialCntFrom(intreq.eventTime(SERIAL) - cc, ioamhram[0x102] & isCgb() * 2);
-         ioamhram[0x101] = (((ioamhram[0x101] + 1) << (serialCnt - targetCnt)) - 1) & 0xFF;
-         serialCnt = targetCnt;
+         const int targetCnt = serialCntFrom(intreq_.eventTime(SERIAL) - cc, ioamhram_[0x102] & isCgb() * 2);
+         ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << (serialCnt_ - targetCnt)) - 1) & 0xFF;
+         serialCnt_ = targetCnt;
       }
    }
 
    void Memory::updateTimaIrq(const unsigned long cc)
    {
-      while (intreq.eventTime(TIMA) <= cc)
-         tima.doIrqEvent(TimaInterruptRequester(intreq));
+      while (intreq_.eventTime(TIMA) <= cc)
+         tima_.doIrqEvent(TimaInterruptRequester(intreq_));
    }
 
    void Memory::updateIrqs(const unsigned long cc)
    {
       updateSerial(cc);
       updateTimaIrq(cc);
-      display.update(cc);
+      lcd_.update(cc);
    }
 
    unsigned long Memory::event(unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != DISABLED_TIME)
          updateOamDma(cycleCounter);
 
-      switch (intreq.minEventId())
+      switch (intreq_.minEventId())
       {
          case UNHALT:
-            intreq.unhalt();
-            intreq.setEventTime<UNHALT>(DISABLED_TIME);
+            intreq_.unhalt();
+            intreq_.setEventTime<UNHALT>(DISABLED_TIME);
             break;
          case END:
-            intreq.setEventTime<END>(DISABLED_TIME - 1);
+            intreq_.setEventTime<END>(DISABLED_TIME - 1);
 
-            while (cycleCounter >= intreq.minEventTime() && intreq.eventTime(END) != DISABLED_TIME)
+            while (cycleCounter >= intreq_.minEventTime() && intreq_.eventTime(END) != DISABLED_TIME)
                cycleCounter = event(cycleCounter);
 
-            intreq.setEventTime<END>(DISABLED_TIME);
+            intreq_.setEventTime<END>(DISABLED_TIME);
 
             break;
          case BLIT:
             {
-               const bool lcden = ioamhram[0x140] >> 7 & 1;
-               unsigned long blitTime = intreq.eventTime(BLIT);
+               const bool lcden = ioamhram_[0x140] >> 7 & 1;
+               unsigned long blitTime = intreq_.eventTime(BLIT);
 
-               if (lcden | blanklcd)
+               if (lcden | blanklcd_)
                {
-                  display.updateScreen(blanklcd, cycleCounter);
-                  intreq.setEventTime<BLIT>(DISABLED_TIME);
-                  intreq.setEventTime<END>(DISABLED_TIME);
+                  lcd_.updateScreen(blanklcd_, cycleCounter);
+                  intreq_.setEventTime<BLIT>(DISABLED_TIME);
+                  intreq_.setEventTime<END>(DISABLED_TIME);
 
-                  while (cycleCounter >= intreq.minEventTime())
+                  while (cycleCounter >= intreq_.minEventTime())
                      cycleCounter = event(cycleCounter);
                }
                else
                   blitTime += 70224 << isDoubleSpeed();
 
-               blanklcd = lcden ^ 1;
-               intreq.setEventTime<BLIT>(blitTime);
+               blanklcd_ = lcden ^ 1;
+               intreq_.setEventTime<BLIT>(blitTime);
             }
             break;
          case SERIAL:
             updateSerial(cycleCounter);
             break;
          case OAM:
-            intreq.setEventTime<OAM>(lastOamDmaUpdate == DISABLED_TIME ?
-                  static_cast<unsigned long>(DISABLED_TIME) : intreq.eventTime(OAM) + 0xA0 * 4);
+            intreq_.setEventTime<OAM>(lastOamDmaUpdate_ == DISABLED_TIME ?
+                  static_cast<unsigned long>(DISABLED_TIME) : intreq_.eventTime(OAM) + 0xA0 * 4);
             break;
          case DMA:
             {
                const bool doubleSpeed = isDoubleSpeed();
-               unsigned dmaSrc = dmaSource;
-               unsigned dmaDest = dmaDestination;
-               unsigned dmaLength = ((ioamhram[0x155] & 0x7F) + 0x1) * 0x10;
-               unsigned length = hdmaReqFlagged(intreq) ? 0x10 : dmaLength;
+               unsigned dmaSrc = dmaSource_;
+               unsigned dmaDest = dmaDestination_;
+               unsigned dmaLength = ((ioamhram_[0x155] & 0x7F) + 0x1) * 0x10;
+               unsigned length = hdmaReqFlagged(intreq_) ? 0x10 : dmaLength;
 
-               ackDmaReq(&intreq);
+               ackDmaReq(&intreq_);
 
                if ((static_cast<unsigned long>(dmaDest) + length) & 0x10000)
                {
                   length = 0x10000 - dmaDest;
-                  ioamhram[0x155] |= 0x80;
+                  ioamhram_[0x155] |= 0x80;
                }
 
                dmaLength -= length;
 
-               if (!(ioamhram[0x140] & 0x80))
+               if (!(ioamhram_[0x140] & 0x80))
                   dmaLength = 0;
 
                {
-                  unsigned long lOamDmaUpdate = lastOamDmaUpdate;
-                  lastOamDmaUpdate = DISABLED_TIME;
+                  unsigned long lOamDmaUpdate = lastOamDmaUpdate_;
+                  lastOamDmaUpdate_ = DISABLED_TIME;
 
                   while (length--)
                   {
@@ -244,17 +244,17 @@ namespace gambatte
 
                      if (cycleCounter - 3 > lOamDmaUpdate)
                      {
-                        oamDmaPos = (oamDmaPos + 1) & 0xFF;
+                        oamDmaPos_ = (oamDmaPos_ + 1) & 0xFF;
                         lOamDmaUpdate += 4;
 
-                        if (oamDmaPos < 0xA0)
+                        if (oamDmaPos_ < 0xA0)
                         {
-                           if (oamDmaPos == 0)
+                           if (oamDmaPos_ == 0)
                               startOamDma(lOamDmaUpdate - 1);
 
-                           ioamhram[src & 0xFF] = data;
+                           ioamhram_[src & 0xFF] = data;
                         }
-                        else if (oamDmaPos == 0xA0)
+                        else if (oamDmaPos_ == 0xA0)
                         {
                            endOamDma(lOamDmaUpdate - 1);
                            lOamDmaUpdate = DISABLED_TIME;
@@ -264,30 +264,30 @@ namespace gambatte
                      nontrivial_write(0x8000 | (dmaDest++ & 0x1FFF), data, cycleCounter);
                   }
 
-                  lastOamDmaUpdate = lOamDmaUpdate;
+                  lastOamDmaUpdate_ = lOamDmaUpdate;
                }
 
                cycleCounter += 4;
 
-               dmaSource = dmaSrc;
-               dmaDestination = dmaDest;
-               ioamhram[0x155] = ((dmaLength / 0x10 - 0x1) & 0xFF) | (ioamhram[0x155] & 0x80);
+               dmaSource_ = dmaSrc;
+               dmaDestination_ = dmaDest;
+               ioamhram_[0x155] = ((dmaLength / 0x10 - 0x1) & 0xFF) | (ioamhram_[0x155] & 0x80);
 
-               if ((ioamhram[0x155] & 0x80) && display.hdmaIsEnabled())
+               if ((ioamhram_[0x155] & 0x80) && lcd_.hdmaIsEnabled())
                {
-                  if (lastOamDmaUpdate != DISABLED_TIME)
+                  if (lastOamDmaUpdate_ != DISABLED_TIME)
                      updateOamDma(cycleCounter);
 
-                  display.disableHdma(cycleCounter);
+                  lcd_.disableHdma(cycleCounter);
                }
             }
 
             break;
          case TIMA:
-            tima.doIrqEvent(TimaInterruptRequester(intreq));
+            tima_.doIrqEvent(TimaInterruptRequester(intreq_));
             break;
          case VIDEO:
-            display.update(cycleCounter);
+            lcd_.update(cycleCounter);
             break;
          case INTERRUPTS:
             if (halted())
@@ -295,14 +295,14 @@ namespace gambatte
                if (isCgb())
                   cycleCounter += 4;
 
-               intreq.unhalt();
-               intreq.setEventTime<UNHALT>(DISABLED_TIME);
+               intreq_.unhalt();
+               intreq_.setEventTime<UNHALT>(DISABLED_TIME);
             }
 
             if (ime())
             {
                unsigned address;
-               const unsigned pendingIrqs = intreq.pendingIrqs();
+               const unsigned pendingIrqs = intreq_.pendingIrqs();
                const unsigned n = pendingIrqs & -pendingIrqs;
 
                if (n < 8)
@@ -313,8 +313,8 @@ namespace gambatte
                else
                   address = 0x50 + n;
 
-               intreq.ackIrq(n);
-               cycleCounter = interrupter.interrupt(address, cycleCounter, *this);
+               intreq_.ackIrq(n);
+               cycleCounter = interrupter_.interrupt(address, cycleCounter, *this);
             }
 
             break;
@@ -327,24 +327,24 @@ namespace gambatte
    {
       cycleCounter += 4 << isDoubleSpeed();
 
-      if (ioamhram[0x14D] & isCgb())
+      if (ioamhram_[0x14D] & isCgb())
       {
-         sound.generate_samples(cycleCounter, isDoubleSpeed());
+         psg_.generate_samples(cycleCounter, isDoubleSpeed());
 
-         display.speedChange(cycleCounter);
-         ioamhram[0x14D] = ~ioamhram[0x14D] & 0x80;
+         lcd_.speedChange(cycleCounter);
+         ioamhram_[0x14D] = ~ioamhram_[0x14D] & 0x80;
 
-         intreq.setEventTime<BLIT>((ioamhram[0x140] & 0x80) ? display.nextMode1IrqTime() : cycleCounter + (70224 << isDoubleSpeed()));
+         intreq_.setEventTime<BLIT>((ioamhram_[0x140] & 0x80) ? lcd_.nextMode1IrqTime() : cycleCounter + (70224 << isDoubleSpeed()));
 
-         if (intreq.eventTime(END) > cycleCounter)
+         if (intreq_.eventTime(END) > cycleCounter)
          {
-            intreq.setEventTime<END>(cycleCounter + (isDoubleSpeed() ?
-                     (intreq.eventTime(END) - cycleCounter) << 1 : (intreq.eventTime(END) - cycleCounter) >> 1));
+            intreq_.setEventTime<END>(cycleCounter + (isDoubleSpeed() ?
+                     (intreq_.eventTime(END) - cycleCounter) << 1 : (intreq_.eventTime(END) - cycleCounter) >> 1));
          }
       }
 
-      intreq.halt();
-      intreq.setEventTime<UNHALT>(cycleCounter + 0x20000 + isDoubleSpeed() * 8);
+      intreq_.halt();
+      intreq_.setEventTime<UNHALT>(cycleCounter + 0x20000 + isDoubleSpeed() * 8);
 
       return cycleCounter;
    }
@@ -357,13 +357,13 @@ namespace gambatte
 
    void Memory::decEventCycles(const MemEventId eventId, const unsigned long dec)
    {
-      if (intreq.eventTime(eventId) != DISABLED_TIME)
-         intreq.setEventTime(eventId, intreq.eventTime(eventId) - dec);
+      if (intreq_.eventTime(eventId) != DISABLED_TIME)
+         intreq_.setEventTime(eventId, intreq_.eventTime(eventId) - dec);
    }
 
    unsigned long Memory::resetCounters(unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != DISABLED_TIME)
          updateOamDma(cycleCounter);
 
       updateIrqs(cycleCounter);
@@ -371,15 +371,15 @@ namespace gambatte
       const unsigned long oldCC = cycleCounter;
 
       {
-         const unsigned long divinc = (cycleCounter - divLastUpdate) >> 8;
-         ioamhram[0x104] = (ioamhram[0x104] + divinc) & 0xFF;
-         divLastUpdate += divinc << 8;
+         const unsigned long divinc = (cycleCounter - divLastUpdate_) >> 8;
+         ioamhram_[0x104] = (ioamhram_[0x104] + divinc) & 0xFF;
+         divLastUpdate_ += divinc << 8;
       }
 
       const unsigned long dec = cycleCounter < 0x10000 ? 0 : (cycleCounter & ~0x7FFFul) - 0x8000;
 
-      decCycles(divLastUpdate, dec);
-      decCycles(lastOamDmaUpdate, dec);
+      decCycles(divLastUpdate_, dec);
+      decCycles(lastOamDmaUpdate_, dec);
       decEventCycles(SERIAL, dec);
       decEventCycles(OAM, dec);
       decEventCycles(BLIT, dec);
@@ -388,10 +388,10 @@ namespace gambatte
 
       cycleCounter -= dec;
 
-      intreq.resetCc(oldCC, cycleCounter);
-      tima.resetCc(oldCC, cycleCounter, TimaInterruptRequester(intreq));
-      display.resetCc(oldCC, cycleCounter);
-      sound.resetCounter(cycleCounter, oldCC, isDoubleSpeed());
+      intreq_.resetCc(oldCC, cycleCounter);
+      tima_.resetCc(oldCC, cycleCounter, TimaInterruptRequester(intreq_));
+      lcd_.resetCc(oldCC, cycleCounter);
+      psg_.resetCounter(cycleCounter, oldCC, isDoubleSpeed());
 
       return cycleCounter;
    }
@@ -401,43 +401,43 @@ namespace gambatte
       unsigned button = 0xFF;
       unsigned dpad = 0xFF;
 
-      if (getInput)
+      if (getInput_)
       {
-         const unsigned is = (*getInput)();
+         const unsigned is = (*getInput_)();
          button ^= is      & 0x0F;
          dpad   ^= is >> 4 & 0x0F;
       }
 
-      ioamhram[0x100] |= 0xF;
+      ioamhram_[0x100] |= 0xF;
 
-      if (!(ioamhram[0x100] & 0x10))
-         ioamhram[0x100] &= dpad;
+      if (!(ioamhram_[0x100] & 0x10))
+         ioamhram_[0x100] &= dpad;
 
-      if (!(ioamhram[0x100] & 0x20))
-         ioamhram[0x100] &= button;
+      if (!(ioamhram_[0x100] & 0x20))
+         ioamhram_[0x100] &= button;
    }
 
    void Memory::updateOamDma(const unsigned long cycleCounter)
    {
       const unsigned char *const oamDmaSrc = oamDmaSrcPtr();
-      unsigned cycles = (cycleCounter - lastOamDmaUpdate) >> 2;
+      unsigned cycles = (cycleCounter - lastOamDmaUpdate_) >> 2;
 
       while (cycles--)
       {
-         oamDmaPos = (oamDmaPos + 1) & 0xFF;
-         lastOamDmaUpdate += 4;
+         oamDmaPos_ = (oamDmaPos_ + 1) & 0xFF;
+         lastOamDmaUpdate_ += 4;
 
-         if (oamDmaPos < 0xA0)
+         if (oamDmaPos_ < 0xA0)
          {
-            if (oamDmaPos == 0)
-               startOamDma(lastOamDmaUpdate - 1);
+            if (oamDmaPos_ == 0)
+               startOamDma(lastOamDmaUpdate_ - 1);
 
-            ioamhram[oamDmaPos] = oamDmaSrc ? oamDmaSrc[oamDmaPos] : cart.rtcRead();
+            ioamhram_[oamDmaPos_] = oamDmaSrc ? oamDmaSrc[oamDmaPos_] : cart_.rtcRead();
          }
-         else if (oamDmaPos == 0xA0)
+         else if (oamDmaPos_ == 0xA0)
          {
-            endOamDma(lastOamDmaUpdate - 1);
-            lastOamDmaUpdate = DISABLED_TIME;
+            endOamDma(lastOamDmaUpdate_ - 1);
+            lastOamDmaUpdate_ = DISABLED_TIME;
             break;
          }
       }
@@ -445,12 +445,12 @@ namespace gambatte
 
    void Memory::oamDmaInitSetup()
    {
-      if (ioamhram[0x146] < 0xA0)
-         cart.setOamDmaSrc(ioamhram[0x146] < 0x80 ? OAM_DMA_SRC_ROM : OAM_DMA_SRC_VRAM);
-      else if (ioamhram[0x146] < 0xFE - isCgb() * 0x1E)
-         cart.setOamDmaSrc(ioamhram[0x146] < 0xC0 ? OAM_DMA_SRC_SRAM : OAM_DMA_SRC_WRAM);
+      if (ioamhram_[0x146] < 0xA0)
+         cart_.setOamDmaSrc(ioamhram_[0x146] < 0x80 ? OAM_DMA_SRC_ROM : OAM_DMA_SRC_VRAM);
+      else if (ioamhram_[0x146] < 0xFE - isCgb() * 0x1E)
+         cart_.setOamDmaSrc(ioamhram_[0x146] < 0xC0 ? OAM_DMA_SRC_SRAM : OAM_DMA_SRC_WRAM);
       else
-         cart.setOamDmaSrc(OAM_DMA_SRC_INVALID);
+         cart_.setOamDmaSrc(OAM_DMA_SRC_INVALID);
    }
 
    static const unsigned char * oamDmaSrcZero()
@@ -461,39 +461,39 @@ namespace gambatte
 
    const unsigned char * Memory::oamDmaSrcPtr() const
    {
-      switch (cart.oamDmaSrc())
+      switch (cart_.oamDmaSrc())
       {
          case OAM_DMA_SRC_ROM:
-            return cart.romdata(ioamhram[0x146] >> 6) + (ioamhram[0x146] << 8);
+            return cart_.romdata(ioamhram_[0x146] >> 6) + (ioamhram_[0x146] << 8);
          case OAM_DMA_SRC_SRAM:
-            return cart.rsrambankptr() ? cart.rsrambankptr() + (ioamhram[0x146] << 8) : 0;
+            return cart_.rsrambankptr() ? cart_.rsrambankptr() + (ioamhram_[0x146] << 8) : 0;
          case OAM_DMA_SRC_VRAM:
-            return vrambank + (ioamhram[0x146] << 8 & 0x1FFF);
+            return vrambank + (ioamhram_[0x146] << 8 & 0x1FFF);
          case OAM_DMA_SRC_WRAM:
-            return cart.wramdata(ioamhram[0x146] >> 4 & 1) + (ioamhram[0x146] << 8 & 0xFFF);
+            return cart_.wramdata(ioamhram_[0x146] >> 4 & 1) + (ioamhram_[0x146] << 8 & 0xFFF);
          case OAM_DMA_SRC_INVALID:
          case OAM_DMA_SRC_OFF:
             break;
       }
 
-      return ioamhram[0x146] == 0xFF && !isCgb() ? oamDmaSrcZero() : cart.rdisabledRam();
+      return ioamhram_[0x146] == 0xFF && !isCgb() ? oamDmaSrcZero() : cart_.rdisabledRam();
    }
 
    void Memory::startOamDma(const unsigned long cycleCounter)
    {
-      display.oamChange(cart.rdisabledRam(), cycleCounter);
+      lcd_.oamChange(cart_.rdisabledRam(), cycleCounter);
    }
 
    void Memory::endOamDma(const unsigned long cycleCounter)
    {
-      oamDmaPos = 0xFE;
-      cart.setOamDmaSrc(OAM_DMA_SRC_OFF);
-      display.oamChange(ioamhram, cycleCounter);
+      oamDmaPos_ = 0xFE;
+      cart_.setOamDmaSrc(OAM_DMA_SRC_OFF);
+      lcd_.oamChange(ioamhram_, cycleCounter);
    }
 
    unsigned Memory::nontrivial_ff_read(const unsigned P, const unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != DISABLED_TIME)
          updateOamDma(cycleCounter);
 
       switch (P & 0x7F)
@@ -507,27 +507,27 @@ namespace gambatte
             break;
          case 0x04:
             {
-               const unsigned long divcycles = (cycleCounter - divLastUpdate) >> 8;
-               ioamhram[0x104] = (ioamhram[0x104] + divcycles) & 0xFF;
-               divLastUpdate += divcycles << 8;
+               const unsigned long divcycles = (cycleCounter - divLastUpdate_) >> 8;
+               ioamhram_[0x104] = (ioamhram_[0x104] + divcycles) & 0xFF;
+               divLastUpdate_ += divcycles << 8;
             }
 
             break;
          case 0x05:
-            ioamhram[0x105] = tima.tima(cycleCounter);
+            ioamhram_[0x105] = tima_.tima(cycleCounter);
             break;
          case 0x0F:
             updateIrqs(cycleCounter);
-            ioamhram[0x10F] = intreq.ifreg();
+            ioamhram_[0x10F] = intreq_.ifreg();
             break;
          case 0x26:
-            if (ioamhram[0x126] & 0x80)
+            if (ioamhram_[0x126] & 0x80)
             {
-               sound.generate_samples(cycleCounter, isDoubleSpeed());
-               ioamhram[0x126] = 0xF0 | sound.getStatus();
+               psg_.generate_samples(cycleCounter, isDoubleSpeed());
+               ioamhram_[0x126] = 0xF0 | psg_.getStatus();
             }
             else
-               ioamhram[0x126] = 0x70;
+               ioamhram_[0x126] = 0x70;
 
             break;
          case 0x30:
@@ -546,20 +546,20 @@ namespace gambatte
          case 0x3D:
          case 0x3E:
          case 0x3F:
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            return sound.waveRamRead(P & 0xF);
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            return psg_.waveRamRead(P & 0xF);
          case 0x41:
-            return ioamhram[0x141] | display.getStat(ioamhram[0x145], cycleCounter);
+            return ioamhram_[0x141] | lcd_.getStat(ioamhram_[0x145], cycleCounter);
          case 0x44:
-            return display.getLyReg(cycleCounter/*+4*/);
+            return lcd_.getLyReg(cycleCounter/*+4*/);
          case 0x69:
-            return display.cgbBgColorRead(ioamhram[0x168] & 0x3F, cycleCounter);
+            return lcd_.cgbBgColorRead(ioamhram_[0x168] & 0x3F, cycleCounter);
          case 0x6B:
-            return display.cgbSpColorRead(ioamhram[0x16A] & 0x3F, cycleCounter);
+            return lcd_.cgbSpColorRead(ioamhram_[0x16A] & 0x3F, cycleCounter);
          default: break;
       }
 
-      return ioamhram[P - 0xFE00];
+      return ioamhram_[P - 0xFE00];
    }
 
    static bool isInOamDmaConflictArea(const OamDmaSrc oamDmaSrc, const unsigned addr, const bool cgb)
@@ -593,55 +593,55 @@ namespace gambatte
    {
       if (P < 0xFF80)
       {
-         if (lastOamDmaUpdate != DISABLED_TIME)
+         if (lastOamDmaUpdate_ != DISABLED_TIME)
          {
             updateOamDma(cycleCounter);
 
-            if (isInOamDmaConflictArea(cart.oamDmaSrc(), P, isCgb()) && oamDmaPos < 0xA0)
-               return ioamhram[oamDmaPos];
+            if (isInOamDmaConflictArea(cart_.oamDmaSrc(), P, isCgb()) && oamDmaPos_ < 0xA0)
+               return ioamhram_[oamDmaPos_];
          }
 
          if (P < 0xC000)
          {
             if (P < 0x8000)
-               return cart.romdata(P >> 14)[P];
+               return cart_.romdata(P >> 14)[P];
 
             if (P < 0xA000)
             {
-               if (!display.vramAccessible(cycleCounter))
+               if (!lcd_.vramAccessible(cycleCounter))
                   return 0xFF;
 
                return vrambank[P - 0x8000];
             }
 
-            if (cart.rsrambankptr())
-               return cart.rsrambankptr()[P];
+            if (cart_.rsrambankptr())
+               return cart_.rsrambankptr()[P];
 
-            return cart.rtcRead();
+            return cart_.rtcRead();
          }
 
          if (P < 0xFE00)
-            return cart.wramdata(P >> 12 & 1)[P & 0xFFF];
+            return cart_.wramdata(P >> 12 & 1)[P & 0xFFF];
 
          if (P >= 0xFF00)
             return nontrivial_ff_read(P, cycleCounter);
 
-         if (!display.oamReadable(cycleCounter) || oamDmaPos < 0xA0)
+         if (!lcd_.oamReadable(cycleCounter) || oamDmaPos_ < 0xA0)
             return 0xFF;
       }
 
-      return ioamhram[P - 0xFE00];
+      return ioamhram_[P - 0xFE00];
    }
 
    void Memory::nontrivial_ff_write(const unsigned P, unsigned data, const unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != DISABLED_TIME)
          updateOamDma(cycleCounter);
 
       switch (P & 0xFF)
       {
          case 0x00:
-            data = (ioamhram[0x100] & 0xCF) | (data & 0xF0);
+            data = (ioamhram_[0x100] & 0xCF) | (data & 0xF0);
             break;
          case 0x01:
             updateSerial(cycleCounter);
@@ -649,39 +649,39 @@ namespace gambatte
          case 0x02:
             updateSerial(cycleCounter);
 
-            serialCnt = 8;
-            intreq.setEventTime<SERIAL>((data & 0x81) == 0x81
+            serialCnt_ = 8;
+            intreq_.setEventTime<SERIAL>((data & 0x81) == 0x81
                   ? (data & isCgb() * 2 ? (cycleCounter & ~0x7ul) + 0x10 * 8 : (cycleCounter & ~0xFFul) + 0x200 * 8)
                   : static_cast<unsigned long>(DISABLED_TIME));
 
             data |= 0x7E - isCgb() * 2;
             break;
          case 0x04:
-            ioamhram[0x104] = 0;
-            divLastUpdate = cycleCounter;
+            ioamhram_[0x104] = 0;
+            divLastUpdate_ = cycleCounter;
             return;
          case 0x05:
-            tima.setTima(data, cycleCounter, TimaInterruptRequester(intreq));
+            tima_.setTima(data, cycleCounter, TimaInterruptRequester(intreq_));
             break;
          case 0x06:
-            tima.setTma(data, cycleCounter, TimaInterruptRequester(intreq));
+            tima_.setTma(data, cycleCounter, TimaInterruptRequester(intreq_));
             break;
          case 0x07:
             data |= 0xF8;
-            tima.setTac(data, cycleCounter, TimaInterruptRequester(intreq));
+            tima_.setTac(data, cycleCounter, TimaInterruptRequester(intreq_));
             break;
          case 0x0F:
             updateIrqs(cycleCounter);
-            intreq.setIfreg(0xE0 | data);
+            intreq_.setIfreg(0xE0 | data);
             return;
          case 0x10:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr10(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr10(data);
             data |= 0x80;
             break;
          case 0x11:
-            if (!sound.isEnabled())
+            if (!psg_.isEnabled())
             {
                if (isCgb())
                   return;
@@ -689,28 +689,28 @@ namespace gambatte
                data &= 0x3F;
             }
 
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr11(data);
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr11(data);
             data |= 0x3F;
             break;
          case 0x12:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr12(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr12(data);
             break;
          case 0x13:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr13(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr13(data);
             return;
          case 0x14:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr14(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr14(data);
             data |= 0xBF;
             break;
          case 0x16:
-            if (!sound.isEnabled())
+            if (!psg_.isEnabled())
             {
                if (isCgb())
                   return;
@@ -718,105 +718,105 @@ namespace gambatte
                data &= 0x3F;
             }
 
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr21(data);
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr21(data);
             data |= 0x3F;
             break;
          case 0x17:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr22(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr22(data);
             break;
          case 0x18:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr23(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr23(data);
             return;
          case 0x19:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr24(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr24(data);
             data |= 0xBF;
             break;
          case 0x1A:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr30(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr30(data);
             data |= 0x7F;
             break;
          case 0x1B:
-            if (!sound.isEnabled() && isCgb()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr31(data);
+            if (!psg_.isEnabled() && isCgb()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr31(data);
             return;
          case 0x1C:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr32(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr32(data);
             data |= 0x9F;
             break;
          case 0x1D:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr33(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr33(data);
             return;
          case 0x1E:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr34(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr34(data);
             data |= 0xBF;
             break;
          case 0x20:
-            if (!sound.isEnabled() && isCgb()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr41(data);
+            if (!psg_.isEnabled() && isCgb()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr41(data);
             return;
          case 0x21:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr42(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr42(data);
             break;
          case 0x22:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr43(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr43(data);
             break;
          case 0x23:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_nr44(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_nr44(data);
             data |= 0xBF;
             break;
          case 0x24:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.set_so_volume(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.set_so_volume(data);
             break;
          case 0x25:
-            if (!sound.isEnabled()) return;
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.map_so(data);
+            if (!psg_.isEnabled()) return;
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.map_so(data);
             break;
          case 0x26:
-            if ((ioamhram[0x126] ^ data) & 0x80)
+            if ((ioamhram_[0x126] ^ data) & 0x80)
             {
-               sound.generate_samples(cycleCounter, isDoubleSpeed());
+               psg_.generate_samples(cycleCounter, isDoubleSpeed());
 
                if (!(data & 0x80))
                {
                   for (unsigned i = 0xFF10; i < 0xFF26; ++i)
                      ff_write(i, 0, cycleCounter);
 
-                  sound.setEnabled(false);
+                  psg_.setEnabled(false);
                }
                else
                {
-                  sound.reset();
-                  sound.setEnabled(true);
+                  psg_.reset();
+                  psg_.setEnabled(true);
                }
             }
 
-            data = (data & 0x80) | (ioamhram[0x126] & 0x7F);
+            data = (data & 0x80) | (ioamhram_[0x126] & 0x7F);
             break;
          case 0x30:
          case 0x31:
@@ -834,179 +834,179 @@ namespace gambatte
          case 0x3D:
          case 0x3E:
          case 0x3F:
-            sound.generate_samples(cycleCounter, isDoubleSpeed());
-            sound.waveRamWrite(P & 0xF, data);
+            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.waveRamWrite(P & 0xF, data);
             break;
          case 0x40:
-            if (ioamhram[0x140] != data)
+            if (ioamhram_[0x140] != data)
             {
-               if ((ioamhram[0x140] ^ data) & 0x80)
+               if ((ioamhram_[0x140] ^ data) & 0x80)
                {
-                  const unsigned lyc = display.getStat(ioamhram[0x145], cycleCounter) & 4;
-                  const bool hdmaEnabled = display.hdmaIsEnabled();
+                  const unsigned lyc = lcd_.getStat(ioamhram_[0x145], cycleCounter) & 4;
+                  const bool hdmaEnabled = lcd_.hdmaIsEnabled();
 
-                  display.lcdcChange(data, cycleCounter);
-                  ioamhram[0x144] = 0;
-                  ioamhram[0x141] &= 0xF8;
+                  lcd_.lcdcChange(data, cycleCounter);
+                  ioamhram_[0x144] = 0;
+                  ioamhram_[0x141] &= 0xF8;
 
                   if (data & 0x80)
-                     intreq.setEventTime<BLIT>(display.nextMode1IrqTime() + (blanklcd ? 0 : 70224 << isDoubleSpeed()));
+                     intreq_.setEventTime<BLIT>(lcd_.nextMode1IrqTime() + (blanklcd_ ? 0 : 70224 << isDoubleSpeed()));
                   else
                   {
-                     ioamhram[0x141] |= lyc;
-                     intreq.setEventTime<BLIT>(cycleCounter + (456 * 4 << isDoubleSpeed()));
+                     ioamhram_[0x141] |= lyc;
+                     intreq_.setEventTime<BLIT>(cycleCounter + (456 * 4 << isDoubleSpeed()));
 
                      if (hdmaEnabled)
-                        flagHdmaReq(&intreq);
+                        flagHdmaReq(&intreq_);
                   }
                } else
-                  display.lcdcChange(data, cycleCounter);
+                  lcd_.lcdcChange(data, cycleCounter);
 
-               ioamhram[0x140] = data;
+               ioamhram_[0x140] = data;
             }
 
             return;
          case 0x41:
-            display.lcdstatChange(data, cycleCounter);
-            data = (ioamhram[0x141] & 0x87) | (data & 0x78);
+            lcd_.lcdstatChange(data, cycleCounter);
+            data = (ioamhram_[0x141] & 0x87) | (data & 0x78);
             break;
          case 0x42:
-            display.scyChange(data, cycleCounter);
+            lcd_.scyChange(data, cycleCounter);
             break;
          case 0x43:
-            display.scxChange(data, cycleCounter);
+            lcd_.scxChange(data, cycleCounter);
             break;
          case 0x45:
-            display.lycRegChange(data, cycleCounter);
+            lcd_.lycRegChange(data, cycleCounter);
             break;
          case 0x46:
-            if (lastOamDmaUpdate != DISABLED_TIME)
+            if (lastOamDmaUpdate_ != DISABLED_TIME)
                endOamDma(cycleCounter);
 
-            lastOamDmaUpdate = cycleCounter;
-            intreq.setEventTime<OAM>(cycleCounter + 8);
-            ioamhram[0x146] = data;
+            lastOamDmaUpdate_ = cycleCounter;
+            intreq_.setEventTime<OAM>(cycleCounter + 8);
+            ioamhram_[0x146] = data;
             oamDmaInitSetup();
             return;
          case 0x47:
             if (!isCgb())
-               display.dmgBgPaletteChange(data, cycleCounter);
+               lcd_.dmgBgPaletteChange(data, cycleCounter);
 
             break;
          case 0x48:
             if (!isCgb())
-               display.dmgSpPalette1Change(data, cycleCounter);
+               lcd_.dmgSpPalette1Change(data, cycleCounter);
 
             break;
          case 0x49:
             if (!isCgb())
-               display.dmgSpPalette2Change(data, cycleCounter);
+               lcd_.dmgSpPalette2Change(data, cycleCounter);
 
             break;
          case 0x4A:
-            display.wyChange(data, cycleCounter);
+            lcd_.wyChange(data, cycleCounter);
             break;
          case 0x4B:
-            display.wxChange(data, cycleCounter);
+            lcd_.wxChange(data, cycleCounter);
             break;
 
          case 0x4D:
-            ioamhram[0x14D] |= data & 0x01;
+            ioamhram_[0x14D] |= data & 0x01;
             return;
          case 0x4F:
             if (isCgb()) {
                vrambank = vram + (data & 0x01) * 0x2000;
-               ioamhram[0x14F] = 0xFE | data;
+               ioamhram_[0x14F] = 0xFE | data;
             }
 
             return;
          case 0x51:
-            dmaSource = data << 8 | (dmaSource & 0xFF);
+            dmaSource_ = data << 8 | (dmaSource_ & 0xFF);
             return;
          case 0x52:
-            dmaSource = (dmaSource & 0xFF00) | (data & 0xF0);
+            dmaSource_ = (dmaSource_ & 0xFF00) | (data & 0xF0);
             return;
          case 0x53:
-            dmaDestination = data << 8 | (dmaDestination & 0xFF);
+            dmaDestination_ = data << 8 | (dmaDestination_ & 0xFF);
             return;
          case 0x54:
-            dmaDestination = (dmaDestination & 0xFF00) | (data & 0xF0);
+            dmaDestination_ = (dmaDestination_ & 0xFF00) | (data & 0xF0);
             return;
          case 0x55:
             if (isCgb())
             {
-               ioamhram[0x155] = data & 0x7F;
+               ioamhram_[0x155] = data & 0x7F;
 
-               if (display.hdmaIsEnabled())
+               if (lcd_.hdmaIsEnabled())
                {
                   if (!(data & 0x80))
                   {
-                     ioamhram[0x155] |= 0x80;
-                     display.disableHdma(cycleCounter);
+                     ioamhram_[0x155] |= 0x80;
+                     lcd_.disableHdma(cycleCounter);
                   }
                }
                else
                {
                   if (data & 0x80)
                   {
-                     if (ioamhram[0x140] & 0x80)
-                        display.enableHdma(cycleCounter);
+                     if (ioamhram_[0x140] & 0x80)
+                        lcd_.enableHdma(cycleCounter);
                      else
-                        flagHdmaReq(&intreq);
+                        flagHdmaReq(&intreq_);
                   }
                   else
-                     flagGdmaReq(&intreq);
+                     flagGdmaReq(&intreq_);
                }
             }
 
             return;
          case 0x56:
             if (isCgb())
-               ioamhram[0x156] = data | 0x3E;
+               ioamhram_[0x156] = data | 0x3E;
 
             return;
          case 0x68:
             if (isCgb())
-               ioamhram[0x168] = data | 0x40;
+               ioamhram_[0x168] = data | 0x40;
 
             return;
          case 0x69:
             if (isCgb())
             {
-               const unsigned index = ioamhram[0x168] & 0x3F;
+               const unsigned index = ioamhram_[0x168] & 0x3F;
 
-               display.cgbBgColorChange(index, data, cycleCounter);
+               lcd_.cgbBgColorChange(index, data, cycleCounter);
 
-               ioamhram[0x168] = (ioamhram[0x168] & ~0x3F) | ((index + (ioamhram[0x168] >> 7)) & 0x3F);
+               ioamhram_[0x168] = (ioamhram_[0x168] & ~0x3F) | ((index + (ioamhram_[0x168] >> 7)) & 0x3F);
             }
 
             return;
          case 0x6A:
             if (isCgb())
-               ioamhram[0x16A] = data | 0x40;
+               ioamhram_[0x16A] = data | 0x40;
 
             return;
          case 0x6B:
             if (isCgb())
             {
-               const unsigned index = ioamhram[0x16A] & 0x3F;
+               const unsigned index = ioamhram_[0x16A] & 0x3F;
 
-               display.cgbSpColorChange(index, data, cycleCounter);
+               lcd_.cgbSpColorChange(index, data, cycleCounter);
 
-               ioamhram[0x16A] = (ioamhram[0x16A] & ~0x3F) | ((index + (ioamhram[0x16A] >> 7)) & 0x3F);
+               ioamhram_[0x16A] = (ioamhram_[0x16A] & ~0x3F) | ((index + (ioamhram_[0x16A] >> 7)) & 0x3F);
             }
 
             return;
          case 0x6C:
             if (isCgb())
-               ioamhram[0x16C] = data | 0xFE;
+               ioamhram_[0x16C] = data | 0xFE;
 
             return;
          case 0x70:
             if (isCgb())
             {
-               cart.setWrambank((data & 0x07) ? (data & 0x07) : 1);
-               ioamhram[0x170] = data | 0xF8;
+               cart_.setWrambank((data & 0x07) ? (data & 0x07) : 1);
+               ioamhram_[0x170] = data | 0xF8;
             }
             return;
          case 0x72:
@@ -1018,28 +1018,28 @@ namespace gambatte
             return;
          case 0x75:
             if (isCgb())
-               ioamhram[0x175] = data | 0x8F;
+               ioamhram_[0x175] = data | 0x8F;
 
             return;
          case 0xFF:
-            intreq.setIereg(data);
+            intreq_.setIereg(data);
             break;
          default:
             return;
       }
 
-      ioamhram[P - 0xFE00] = data;
+      ioamhram_[P - 0xFE00] = data;
    }
 
    void Memory::nontrivial_write(const unsigned P, const unsigned data, const unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != DISABLED_TIME)
       {
          updateOamDma(cycleCounter);
 
-         if (isInOamDmaConflictArea(cart.oamDmaSrc(), P, isCgb()) && oamDmaPos < 0xA0)
+         if (isInOamDmaConflictArea(cart_.oamDmaSrc(), P, isCgb()) && oamDmaPos_ < 0xA0)
          {
-            ioamhram[oamDmaPos] = data;
+            ioamhram_[oamDmaPos_] = data;
             return;
          }
       }
@@ -1049,61 +1049,61 @@ namespace gambatte
          if (P < 0xA000)
          {
             if (P < 0x8000)
-               cart.mbcWrite(P, data);
-            else if (display.vramAccessible(cycleCounter))
+               cart_.mbcWrite(P, data);
+            else if (lcd_.vramAccessible(cycleCounter))
             {
-               display.vramChange(cycleCounter);
+               lcd_.vramChange(cycleCounter);
                vrambank[P - 0x8000] = data;
             }
          }
          else if (P < 0xC000)
          {
-            if (cart.wsrambankptr())
-               cart.wsrambankptr()[P] = data;
+            if (cart_.wsrambankptr())
+               cart_.wsrambankptr()[P] = data;
             else
-               cart.rtcWrite(data);
+               cart_.rtcWrite(data);
          }
          else
-            cart.wramdata(P >> 12 & 1)[P & 0xFFF] = data;
+            cart_.wramdata(P >> 12 & 1)[P & 0xFFF] = data;
       }
       else if (P - 0xFF80u >= 0x7Fu)
       {
          if (P < 0xFF00)
          {
-            if (display.oamWritable(cycleCounter) && oamDmaPos >= 0xA0 && (P < 0xFEA0 || isCgb()))
+            if (lcd_.oamWritable(cycleCounter) && oamDmaPos_ >= 0xA0 && (P < 0xFEA0 || isCgb()))
             {
-               display.oamChange(cycleCounter);
-               ioamhram[P - 0xFE00] = data;
+               lcd_.oamChange(cycleCounter);
+               ioamhram_[P - 0xFE00] = data;
             }
          }
          else
             nontrivial_ff_write(P, data, cycleCounter);
       }
       else
-         ioamhram[P - 0xFE00] = data;
+         ioamhram_[P - 0xFE00] = data;
    }
 
    bool Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat)
    {
-      if (cart.loadROM(romdata, romsize, forceDmg, multicartCompat))
+      if (cart_.loadROM(romdata, romsize, forceDmg, multicartCompat))
          return true;
 
-      sound.init(cart.isCgb());
-      display.reset(ioamhram, cart.isCgb());
-      interrupter.setGameShark(std::string());
+      psg_.init(cart_.isCgb());
+      lcd_.reset(ioamhram_, cart_.isCgb());
+      interrupter_.setGameShark(std::string());
 
       return false;
    }
 
    unsigned Memory::fillSoundBuffer(const unsigned long cycleCounter)
    {
-      sound.generate_samples(cycleCounter, isDoubleSpeed());
-      return sound.fillBuffer();
+      psg_.generate_samples(cycleCounter, isDoubleSpeed());
+      return psg_.fillBuffer();
    }
 
    void Memory::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned long rgb32)
    {
-      display.setDmgPaletteColor(palNum, colorNum, rgb32);
+      lcd_.setDmgPaletteColor(palNum, colorNum, rgb32);
    }
 
 }
