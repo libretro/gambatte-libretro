@@ -20,7 +20,6 @@
 #define VIDEO_H
 
 #include "interruptrequester.h"
-#include "minkeeper.h"
 #include "video/lyc_irq.h"
 #include "video/m0_irq.h"
 #include "video/next_m0_time.h"
