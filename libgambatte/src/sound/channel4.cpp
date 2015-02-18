@@ -84,7 +84,7 @@ namespace gambatte
    void Channel4::Lfsr::reviveCounter(const unsigned long cc)
    {
       updateBackupCounter(cc);
-      counter = backupCounter;
+      counter_ = backupCounter;
    }
 
    inline void Channel4::Lfsr::event()
@@ -100,8 +100,8 @@ namespace gambatte
             reg = (reg & ~0x40) | xored << 6;
       }
 
-      counter += toPeriod(nr3);
-      backupCounter = counter;
+      counter_ += toPeriod(nr3);
+      backupCounter = counter_;
    }
 
    void Channel4::Lfsr::nr3Change(const unsigned newNr3, const unsigned long cc)
@@ -116,7 +116,7 @@ namespace gambatte
       updateBackupCounter(cc);
       master = true;
       backupCounter += 4;
-      counter = backupCounter;
+      counter_ = backupCounter;
    }
 
    void Channel4::Lfsr::reset(const unsigned long cc)
@@ -142,7 +142,7 @@ namespace gambatte
 
    void Channel4::Lfsr::loadState(const SaveState &state)
    {
-      counter = backupCounter = std::max(state.spu.ch4.lfsr.counter, state.spu.cycleCounter);
+      counter_ = backupCounter = std::max(state.spu.ch4.lfsr.counter, state.spu.cycleCounter);
       reg = state.spu.ch4.lfsr.reg;
       master = state.spu.ch4.master;
       nr3 = state.mem.ioamhram.get()[0x122];
@@ -165,7 +165,7 @@ namespace gambatte
    void Channel4::setEvent()
    {
       nextEventUnit = &envelopeUnit;
-      if (lengthCounter.getCounter() < nextEventUnit->getCounter())
+      if (lengthCounter.counter() < nextEventUnit->counter())
          nextEventUnit = &lengthCounter;
    }
 
@@ -252,14 +252,14 @@ namespace gambatte
 
       for (;;) {
          const unsigned long outHigh = outBase * (envelopeUnit.getVolume() * 2 - 15ul);
-         const unsigned long nextMajorEvent = nextEventUnit->getCounter() < endCycles ? nextEventUnit->getCounter() : endCycles;
+         const unsigned long nextMajorEvent = nextEventUnit->counter() < endCycles ? nextEventUnit->counter() : endCycles;
          unsigned long out = lfsr.isHighState() ? outHigh : outLow;
 
-         while (lfsr.getCounter() <= nextMajorEvent) {
+         while (lfsr.counter() <= nextMajorEvent) {
             *buf += out - prevOut;
             prevOut = out;
-            buf += lfsr.getCounter() - cycleCounter;
-            cycleCounter = lfsr.getCounter();
+            buf += lfsr.counter() - cycleCounter;
+            cycleCounter = lfsr.counter();
 
             lfsr.event();
             out = lfsr.isHighState() ? outHigh : outLow;
@@ -272,7 +272,7 @@ namespace gambatte
             cycleCounter = nextMajorEvent;
          }
 
-         if (nextEventUnit->getCounter() == nextMajorEvent) {
+         if (nextEventUnit->counter() == nextMajorEvent) {
             nextEventUnit->event();
             setEvent();
          } else

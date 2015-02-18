@@ -24,16 +24,25 @@ namespace gambatte
 
    class SoundUnit
    {
-      protected:
-         unsigned long counter;
       public:
          enum { COUNTER_MAX = 0x80000000u, COUNTER_DISABLED = 0xFFFFFFFFu };
 
-         SoundUnit() : counter(COUNTER_DISABLED) {}
          virtual ~SoundUnit() {}
          virtual void event() = 0;
-         unsigned long getCounter() const { return counter; }
-         virtual void resetCounters(unsigned long /*oldCc*/) { if (counter != COUNTER_DISABLED) counter -= COUNTER_MAX; }
+
+         virtual void resetCounters(unsigned long)
+         {
+            if (counter_ != COUNTER_DISABLED)
+               counter_ -= COUNTER_MAX;
+         }
+
+         unsigned long counter() const
+         {
+            return counter_;
+         }
+      protected:
+         SoundUnit() : counter_(COUNTER_DISABLED) {}
+         unsigned long counter_;
    };
 
 }

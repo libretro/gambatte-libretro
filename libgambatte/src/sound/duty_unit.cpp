@@ -56,16 +56,16 @@ namespace gambatte
       if (enableEvents && nextPosUpdate != COUNTER_DISABLED)
       {
          unsigned const npos = (pos + 1) & 7;
-         counter = nextPosUpdate;
+         counter_ = nextPosUpdate;
          inc_ = nextStateDistance[duty * 8 + npos];
          if (toOutState(duty, npos) == high)
          {
-            counter += period * inc_;
+            counter_ += period * inc_;
             inc_ = nextStateDistance[duty * 8 + ((npos + inc_) & 7)];
          }
       }
       else
-         counter = COUNTER_DISABLED;
+         counter_ = COUNTER_DISABLED;
    }
 
    void DutyUnit::setFreq(const unsigned newFreq, const unsigned long cc)
@@ -85,7 +85,7 @@ namespace gambatte
       };
 
       high ^= true;
-      counter += inc_ * period;
+      counter_ += inc_ * period;
       inc_ = inc[duty * 2 + high];
    }
 

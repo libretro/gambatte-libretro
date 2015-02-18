@@ -54,13 +54,13 @@ void Channel1::SweepUnit::event() {
 		
 		if (!(freq & 2048) && (nr0 & 0x07)) {
 			shadow = freq;
-			dutyUnit.setFreq(freq, counter);
+			dutyUnit.setFreq(freq, counter_);
 			calcFreq();
 		}
 		
-		counter += period << 14;
+		counter_ += period << 14;
 	} else
-		counter += 8ul << 14;
+		counter_ += 8ul << 14;
 }
 
 void Channel1::SweepUnit::nr0Change(const unsigned newNr0) {
@@ -78,27 +78,27 @@ void Channel1::SweepUnit::nr4Init(const unsigned long cc) {
 	const unsigned shift = nr0 & 0x07;
 	
 	if (period | shift)
-		counter = ((cc >> 14) + (period ? period : 8)) << 14;
+		counter_ = ((cc >> 14) + (period ? period : 8)) << 14;
 	else
-		counter = COUNTER_DISABLED;
+		counter_ = COUNTER_DISABLED;
 	
 	if (shift)
 		calcFreq();
 }
 
 void Channel1::SweepUnit::reset() {
-	counter = COUNTER_DISABLED;
+	counter_ = COUNTER_DISABLED;
 }
 
 void Channel1::SweepUnit::saveState(SaveState &state) const {
-	state.spu.ch1.sweep.counter = counter;
+	state.spu.ch1.sweep.counter = counter_;
 	state.spu.ch1.sweep.shadow = shadow;
 	state.spu.ch1.sweep.nr0 = nr0;
 	state.spu.ch1.sweep.negging = negging;
 }
 
 void Channel1::SweepUnit::loadState(const SaveState &state) {
-	counter = std::max(state.spu.ch1.sweep.counter, state.spu.cycleCounter);
+	counter_ = std::max(state.spu.ch1.sweep.counter, state.spu.cycleCounter);
 	shadow = state.spu.ch1.sweep.shadow;
 	nr0 = state.spu.ch1.sweep.nr0;
 	negging = state.spu.ch1.sweep.negging;
@@ -121,9 +121,9 @@ Channel1::Channel1() :
 
 void Channel1::setEvent() {
 		nextEventUnit = &sweepUnit;
-	if (envelopeUnit.getCounter() < nextEventUnit->getCounter())
+	if (envelopeUnit.counter() < nextEventUnit->counter())
 		nextEventUnit = &envelopeUnit;
-	if (lengthCounter.getCounter() < nextEventUnit->getCounter())
+	if (lengthCounter.counter() < nextEventUnit->counter())
 		nextEventUnit = &lengthCounter;
 }
 
@@ -219,14 +219,14 @@ void Channel1::update(uint_least32_t *buf, const unsigned long soBaseVol, unsign
 	
 	for (;;) {
 		const unsigned long outHigh = master ? outBase * (envelopeUnit.getVolume() * 2 - 15ul) : outLow;
-		const unsigned long nextMajorEvent = nextEventUnit->getCounter() < endCycles ? nextEventUnit->getCounter() : endCycles;
+		const unsigned long nextMajorEvent = nextEventUnit->counter() < endCycles ? nextEventUnit->counter() : endCycles;
 		unsigned long out = dutyUnit.isHighState() ? outHigh : outLow;
 		
-		while (dutyUnit.getCounter() <= nextMajorEvent) {
+		while (dutyUnit.counter() <= nextMajorEvent) {
 			*buf = out - prevOut;
 			prevOut = out;
-			buf += dutyUnit.getCounter() - cycleCounter;
-			cycleCounter = dutyUnit.getCounter();
+			buf += dutyUnit.counter() - cycleCounter;
+			cycleCounter = dutyUnit.counter();
 			
 			dutyUnit.event();
 			out = dutyUnit.isHighState() ? outHigh : outLow;
@@ -239,7 +239,7 @@ void Channel1::update(uint_least32_t *buf, const unsigned long soBaseVol, unsign
 			cycleCounter = nextMajorEvent;
 		}
 		
-		if (nextEventUnit->getCounter() == nextMajorEvent) {
+		if (nextEventUnit->counter() == nextMajorEvent) {
 			nextEventUnit->event();
 			setEvent();
 		} else

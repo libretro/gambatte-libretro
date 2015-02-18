@@ -62,7 +62,7 @@ namespace gambatte
             void loadState(const SaveState &state);
             void resetCounters(unsigned long oldCc);
             void disableMaster() { killCounter(); master = false; reg = 0xFF; }
-            void killCounter() { counter = COUNTER_DISABLED; }
+            void killCounter() { counter_ = COUNTER_DISABLED; }
             void reviveCounter(unsigned long cc);
 
          private:

@@ -33,7 +33,7 @@ namespace gambatte
 
    void LengthCounter::event()
    {
-      counter = COUNTER_DISABLED;
+      counter_ = COUNTER_DISABLED;
       lengthCounter = 0;
       disableMaster();
    }
@@ -41,7 +41,7 @@ namespace gambatte
    void LengthCounter::nr1Change(const unsigned newNr1, const unsigned nr4, const unsigned long cc)
    {
       lengthCounter = (~newNr1 & lengthMask) + 1;
-      counter = (nr4 & 0x40) 
+      counter_ = (nr4 & 0x40) 
          ?( (cc >> 13) + lengthCounter) << 13 
          : static_cast<unsigned long>(COUNTER_DISABLED);
    }
@@ -50,8 +50,8 @@ namespace gambatte
    {
       unsigned dec = 0;
 
-      if (counter != COUNTER_DISABLED)
-         lengthCounter = (counter >> 13) - (cc >> 13);
+      if (counter_ != COUNTER_DISABLED)
+         lengthCounter = (counter_ >> 13) - (cc >> 13);
 
       if (newNr4 & 0x40)
       {
@@ -68,20 +68,20 @@ namespace gambatte
          lengthCounter = lengthMask + 1 - dec;
 
       if ((newNr4 & 0x40) && lengthCounter)
-         counter = ((cc >> 13) + lengthCounter) << 13;
+         counter_ = ((cc >> 13) + lengthCounter) << 13;
       else
-         counter = COUNTER_DISABLED;
+         counter_ = COUNTER_DISABLED;
    }
 
    void LengthCounter::saveState(SaveState::SPU::LCounter &lstate) const
    {
-      lstate.counter = counter;
+      lstate.counter = counter_;
       lstate.lengthCounter = lengthCounter;
    }
 
    void LengthCounter::loadState(const SaveState::SPU::LCounter &lstate, const unsigned long cc)
    {
-      counter = std::max(lstate.counter, cc);
+      counter_ = std::max(lstate.counter, cc);
       lengthCounter = lstate.lengthCounter;
    }
 

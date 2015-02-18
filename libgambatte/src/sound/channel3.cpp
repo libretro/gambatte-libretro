@@ -159,7 +159,7 @@ namespace gambatte
          const unsigned long endCycles = cycleCounter + cycles;
 
          for (;;) {
-            const unsigned long nextMajorEvent = lengthCounter.getCounter() < endCycles ? lengthCounter.getCounter() : endCycles;
+            const unsigned long nextMajorEvent = lengthCounter.counter() < endCycles ? lengthCounter.counter() : endCycles;
             unsigned long out = outBase * (master ? ((sampleBuf >> (~wavePos << 2 & 4) & 0xF) >> rShift) * 2 - 15ul : 0 - 15ul);
 
             while (waveCounter <= nextMajorEvent) {
@@ -183,7 +183,7 @@ namespace gambatte
                cycleCounter = nextMajorEvent;
             }
 
-            if (lengthCounter.getCounter() == nextMajorEvent) {
+            if (lengthCounter.counter() == nextMajorEvent) {
                lengthCounter.event();
             } else
                break;
@@ -198,8 +198,8 @@ namespace gambatte
 
          cycleCounter += cycles;
 
-         while (lengthCounter.getCounter() <= cycleCounter) {
-            updateWaveCounter(lengthCounter.getCounter());
+         while (lengthCounter.counter() <= cycleCounter) {
+            updateWaveCounter(lengthCounter.counter());
             lengthCounter.event();
          }
 

@@ -33,18 +33,18 @@ namespace gambatte
 
    void EnvelopeUnit::reset()
    {
-      counter = COUNTER_DISABLED;
+      counter_ = COUNTER_DISABLED;
    }
 
    void EnvelopeUnit::saveState(SaveState::SPU::Env &estate) const
    {
-      estate.counter = counter;
+      estate.counter = counter_;
       estate.volume = volume;
    }
 
    void EnvelopeUnit::loadState(const SaveState::SPU::Env &estate, const unsigned nr2, const unsigned long cc)
    {
-      counter   = std::max(estate.counter, cc);
+      counter_   = std::max(estate.counter, cc);
       volume    = estate.volume;
       this->nr2 = nr2;
    }
@@ -67,20 +67,20 @@ namespace gambatte
             volume = newVol;
 
             if (volume < 2)
-               volOnOffEvent(counter);
+               volOnOffEvent(counter_);
 
-            counter += period << 15;
+            counter_ += period << 15;
          }
          else
-            counter = COUNTER_DISABLED;
+            counter_ = COUNTER_DISABLED;
       }
       else
-         counter += 8ul << 15;
+         counter_ += 8ul << 15;
    }
 
    bool EnvelopeUnit::nr2Change(const unsigned newNr2)
    {
-      if (!(nr2 & 7) && counter != COUNTER_DISABLED)
+      if (!(nr2 & 7) && counter_ != COUNTER_DISABLED)
          ++volume;
       else if (!(nr2 & 8))
          volume += 2;
@@ -102,7 +102,7 @@ namespace gambatte
       if (((cc + 2) & 0x7000) == 0x0000)
          ++period;
 
-      counter = cc - ((cc - 0x1000) & 0x7FFF) + period * 0x8000;
+      counter_ = cc - ((cc - 0x1000) & 0x7FFF) + period * 0x8000;
 
       volume = nr2 >> 4;
       return !(nr2 & 0xF8);

@@ -37,7 +37,7 @@ Channel2::Channel2() :
 
 void Channel2::setEvent() {
 		nextEventUnit = &envelopeUnit;
-	if (lengthCounter.getCounter() < nextEventUnit->getCounter())
+	if (lengthCounter.counter() < nextEventUnit->counter())
 		nextEventUnit = &lengthCounter;
 }
 
@@ -122,14 +122,14 @@ void Channel2::update(uint_least32_t *buf, const unsigned long soBaseVol, unsign
 	
 	for (;;) {
 		const unsigned long outHigh = master ? outBase * (envelopeUnit.getVolume() * 2 - 15ul) : outLow;
-		const unsigned long nextMajorEvent = nextEventUnit->getCounter() < endCycles ? nextEventUnit->getCounter() : endCycles;
+		const unsigned long nextMajorEvent = nextEventUnit->counter() < endCycles ? nextEventUnit->counter() : endCycles;
 		unsigned long out = dutyUnit.isHighState() ? outHigh : outLow;
 		
-		while (dutyUnit.getCounter() <= nextMajorEvent) {
+		while (dutyUnit.counter() <= nextMajorEvent) {
 			*buf += out - prevOut;
 			prevOut = out;
-			buf += dutyUnit.getCounter() - cycleCounter;
-			cycleCounter = dutyUnit.getCounter();
+			buf += dutyUnit.counter() - cycleCounter;
+			cycleCounter = dutyUnit.counter();
 			
 			dutyUnit.event();
 			out = dutyUnit.isHighState() ? outHigh : outLow;
@@ -142,7 +142,7 @@ void Channel2::update(uint_least32_t *buf, const unsigned long soBaseVol, unsign
 			cycleCounter = nextMajorEvent;
 		}
 		
-		if (nextEventUnit->getCounter() == nextMajorEvent) {
+		if (nextEventUnit->counter() == nextMajorEvent) {
 			nextEventUnit->event();
 			setEvent();
 		} else
