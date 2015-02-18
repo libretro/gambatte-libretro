@@ -1,4 +1,3 @@
-
 //
 //   Copyright (C) 2007 by sinamas <sinamas at users.sourceforge.net>
 //
@@ -36,7 +35,8 @@ public:
 	explicit Memory(Interrupter const &interrupter);
 	bool loaded() const { return cart_.loaded(); }
 	void setStatePtrs(SaveState &state);
-
+	unsigned long saveState(SaveState &state, unsigned long cc);
+	void loadState(SaveState const &state);
 #ifdef __LIBRETRO__
    void *savedata_ptr() { return cart_.savedata_ptr(); }
    unsigned savedata_size() { return cart_.savedata_size(); }
@@ -45,13 +45,9 @@ public:
    void display_setColorCorrection(bool enable) { lcd_.setColorCorrection(enable); }
    video_pixel_t display_gbcToRgb32(const unsigned bgr15) { return lcd_.gbcToRgb32(bgr15); }
    void clearCheats() { cart_.clearCheats(); }
-#endif
-
-	unsigned long saveState(SaveState &state, unsigned long cc);
-	void loadState(SaveState const &state);
-#if 0
-	void loadSavedata() { cart_.loadSavedata(); }
-	void saveSavedata() { cart_.saveSavedata(); }
+#else
+   void loadSavedata() { cart_.loadSavedata(); }
+   void saveSavedata() { cart_.saveSavedata(); }
 #endif
 	std::string const saveBasePath() const { return cart_.saveBasePath(); }
 
@@ -97,9 +93,6 @@ public:
 
 	unsigned long event(unsigned long cycleCounter);
 	unsigned long resetCounters(unsigned long cycleCounter);
-
-   int loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multiCartCompat);
-
 	void setSaveDir(std::string const &dir) { cart_.setSaveDir(dir); }
 	void setInputGetter(InputGetter *getInput) { getInput_ = getInput; }
 	void setEndtime(unsigned long cc, unsigned long inc);
@@ -117,6 +110,8 @@ public:
 	void setGameGenie(std::string const &codes) { cart_.setGameGenie(codes); }
 	void setGameShark(std::string const &codes) { interrupter_.setGameShark(codes); }
 	void updateInput();
+
+   int loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat);
 
 private:
 	Cartridge cart_;

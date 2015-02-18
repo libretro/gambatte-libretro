@@ -1050,6 +1050,11 @@ void Memory::nontrivial_write(unsigned const p, unsigned const data, unsigned lo
 		ioamhram_[p - 0xFE00] = data;
 }
 
+std::size_t Memory::fillSoundBuffer(unsigned long cc) {
+	psg_.generateSamples(cc, isDoubleSpeed());
+	return psg_.fillBuffer();
+}
+
 int Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat)
 {
    if (const int fail = cart_.loadROM(romdata, romsize, forceDmg, multicartCompat))
@@ -1058,11 +1063,6 @@ int Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, 
    lcd_.reset(ioamhram_, cart_.vramdata(), cart_.isCgb());
    interrupter_.setGameShark(std::string());
    return 0;
-}
-
-std::size_t Memory::fillSoundBuffer(unsigned long cc) {
-	psg_.generateSamples(cc, isDoubleSpeed());
-	return psg_.fillBuffer();
 }
 
 }
