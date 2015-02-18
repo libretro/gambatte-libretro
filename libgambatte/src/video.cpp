@@ -23,40 +23,6 @@
 
 namespace gambatte
 {
-   void LCD::setColorCorrection(bool colorCorrection_)
-   {
-      colorCorrection=colorCorrection_;
-      refreshPalettes();
-   }
-
-LCD::LCD(const unsigned char *const oamram, const unsigned char *const vram, const VideoInterruptRequester memEventRequester) :
-   ppu_(nextM0Time_, oamram, vram),
-   eventTimes_(memEventRequester),
-   statReg_(0),
-   m2IrqStatReg_(0),
-   m1IrqStatReg_(0)
-{
-   std::memset( bgpData_, 0, sizeof  bgpData_);
-   std::memset(objpData_, 0, sizeof objpData_);
-
-   for (std::size_t i = 0; i < sizeof(dmgColorsRgb32_) / sizeof(dmgColorsRgb32_[0]); ++i)
-   {
-#ifdef VIDEO_RGB565
-      uint16_t dmgColors[4]={0xFFFF, //11111 111111 11111
-         0xAD55, //10101 101010 10101
-         0x52AA, //01010 010101 01010
-         0x0000};//00000 000000 00000
-      setDmgPaletteColor(i, dmgColors[i&3]);
-#else
-      setDmgPaletteColor(i, (3 - (i & 3)) * 85 * 0x010101);
-#endif
-   }
-
-   reset(oamram, false);
-   setVideoBuffer(0, 160);
-
-   setColorCorrection(true);
-}
 
 void LCD::reset(const unsigned char *const oamram, const bool cgb)
 {
