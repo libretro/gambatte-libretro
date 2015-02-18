@@ -23,12 +23,12 @@ namespace gambatte
 {
    class MasterDisabler
    {
-      bool &master;
-
       public:
-      MasterDisabler(bool &m) : master(m) {}
-      virtual ~MasterDisabler() {}
-      virtual void operator()() { master = false; }
+         MasterDisabler(bool &m) : master_(m) {}
+         virtual ~MasterDisabler() {}
+         virtual void operator()() { master_ = false; }
+      private:
+         bool &master_;
    };
 }
 
