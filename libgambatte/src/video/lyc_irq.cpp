@@ -68,20 +68,20 @@ namespace gambatte
          if (time_ - cc > 4 || lycReg_ != 0)
             statReg_ = statReg;
 
-         statReg_ = (statReg_ & LCDSTAT_LYCIRQEN) | (statReg & ~LCDSTAT_LYCIRQEN);
+         statReg_ = (statReg_ & lcdstat_lycirqen) | (statReg & ~lcdstat_lycirqen);
       }
    }
 
    static bool lycIrqBlockedByM2OrM1StatIrq(unsigned ly, unsigned statreg)
    {
       return ly - 1u < 144u - 1u
-         ? statreg & LCDSTAT_M2IRQEN
-         : statreg & LCDSTAT_M1IRQEN;
+         ? statreg & lcdstat_m2irqen
+         : statreg & lcdstat_m1irqen;
    }
 
    void LycIrq::doEvent(unsigned char *const ifreg, const LyCounter &lyCounter)
    {
-      if ((statReg_ | statRegSrc_) & LCDSTAT_LYCIRQEN)
+      if ((statReg_ | statRegSrc_) & lcdstat_lycirqen)
       {
          const unsigned cmpLy = lyCounter.time() - time_ < lyCounter.lineTime() ? 0 : lyCounter.ly();
          if (lycReg_ == cmpLy && !lycIrqBlockedByM2OrM1StatIrq(lycReg_, statReg_))

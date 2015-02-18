@@ -1,27 +1,20 @@
 #ifndef LCDDEF_H
 #define LCDDEF_H
 
-namespace gambatte
-{
+namespace gambatte {
 
-   enum
-   {
-      LCDC_BGEN = 0x01,
-      LCDC_OBJEN = 0x02,
-      LCDC_OBJ2X = 0x04,
-      LCDC_TDSEL = 0x10,
-      LCDC_WE = 0x20,
-      LCDC_EN = 0x80
-   };
+enum { lcdc_bgen = 0x01,
+       lcdc_objen = 0x02,
+       lcdc_obj2x = 0x04,
+       lcdc_tdsel = 0x10,
+       lcdc_we = 0x20,
+       lcdc_en = 0x80 };
 
-   enum
-   {
-      LCDSTAT_LYCFLAG = 0x04,
-      LCDSTAT_M0IRQEN = 0x08,
-      LCDSTAT_M1IRQEN = 0x10,
-      LCDSTAT_M2IRQEN = 0x20,
-      LCDSTAT_LYCIRQEN = 0x40
-   };
+enum { lcdstat_lycflag = 0x04,
+       lcdstat_m0irqen = 0x08,
+       lcdstat_m1irqen = 0x10,
+       lcdstat_m2irqen = 0x20,
+       lcdstat_lycirqen = 0x40 };
 
 }
 
