@@ -443,11 +443,11 @@ namespace gambatte
       return n;
    }
 
-
-   int Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartCompat)
+   int Cartridge::loadROM(const void *data, unsigned romsize, const bool forceDmg, const bool multiCartCompat)
    {
-
-      if (rom.size() < 0x4000) return -1;
+      uint8_t *romdata = (uint8_t*)data;
+      if (romsize < 0x4000 || !romdata)
+         return -1;
 
       unsigned rambanks = 1;
       unsigned rombanks = 2;
@@ -455,8 +455,10 @@ namespace gambatte
       enum Cartridgetype { PLAIN, MBC1, MBC2, MBC3, MBC5, HUC1 } type = PLAIN;
 
       {
+         unsigned i;
          unsigned char header[0x150];
-         rom.read(reinterpret_cast<char*>(header), sizeof(header));
+         for (i = 0; i < 0x150; i++)
+            header[i] = romdata[i];
 
          switch (header[0x0147])
          {
@@ -521,21 +523,17 @@ namespace gambatte
 
       printf("rambanks: %u\n", rambanks);
 
-      rombanks = pow2ceil(rom.size() / 0x4000);
-      printf("rombanks: %u\n", static_cast<unsigned>(rom.size() / 0x4000));
+      rombanks = pow2ceil(romsize / 0x4000);
+      printf("rombanks: %u\n", static_cast<unsigned>(romsize / 0x4000));
 
       ggUndoList_.clear();
       mbc.reset();
       memptrs_.reset(rombanks, rambanks, cgb ? 8 : 2);
       rtc_.set(false, 0);
 
-      rom.rewind();
-      rom.read(reinterpret_cast<char*>(memptrs_.romdata()), (rom.size() / 0x4000) * 0x4000ul);
-      std::memset(memptrs_.romdata() + (rom.size() / 0x4000) * 0x4000ul, 0xFF, (rombanks - rom.size() / 0x4000) * 0x4000ul);
+      memcpy(memptrs_.romdata(), romdata, ((romsize / 0x4000) * 0x4000ul) * sizeof(unsigned char));
+      std::memset(memptrs_.romdata() + (romsize / 0x4000) * 0x4000ul, 0xFF, (rombanks - romsize / 0x4000) * 0x4000ul);
       enforce8bit(memptrs_.romdata(), rombanks * 0x4000ul);
-
-      if (rom.fail())
-         return -1;
 
       switch (type)
       {

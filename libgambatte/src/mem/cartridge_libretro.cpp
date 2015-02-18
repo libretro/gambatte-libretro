@@ -39,12 +39,6 @@ namespace gambatte
       }
    }
 
-   int Cartridge::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multiCartCompat)
-   {
-      File rom(romdata, romsize);
-      return loadROM(rom, forceDmg, multiCartCompat);
-   }
-
    void *Cartridge::savedata_ptr()
    {
       // Check ROM header for battery.
