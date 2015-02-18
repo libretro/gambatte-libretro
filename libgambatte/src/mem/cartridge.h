@@ -31,10 +31,10 @@ namespace gambatte
    class Cartridge
    {
       public:
-         Cartridge();
          void setStatePtrs(SaveState &);
          void saveState(SaveState &) const;
          void loadState(const SaveState &);
+         Cartridge();
 
          const unsigned char * rmem(unsigned area) const
          {
@@ -44,6 +44,11 @@ namespace gambatte
          unsigned char * wmem(unsigned area) const
          {
             return memptrs.wmem(area);
+         }
+
+         unsigned char * vramdata() const
+         {
+            return memptrs.vramdata();
          }
 
          unsigned char * romdata(unsigned area) const 
@@ -71,9 +76,19 @@ namespace gambatte
             return memptrs.wsrambankptr();
          }
 
+         unsigned char * vrambankptr() const
+         {
+            return memptrs.vrambankptr();
+         }
+
          OamDmaSrc oamDmaSrc() const
          {
             return memptrs.oamDmaSrc();
+         }
+
+         void setVrambank(unsigned bank)
+         {
+            memptrs.setVrambank(bank);
          }
 
          void setWrambank(unsigned bank)

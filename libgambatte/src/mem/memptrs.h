@@ -56,6 +56,16 @@ namespace gambatte
             return wmem_[area];
          }
 
+         unsigned char * vramdata() const
+         {
+            return rambankdata_ - 0x4000;
+         }
+
+         unsigned char * vramdataend() const
+         {
+            return rambankdata_;
+         }
+
          unsigned char * romdata() const
          {
             return memchunk_ + 0x4000;
@@ -106,6 +116,11 @@ namespace gambatte
             return wsrambankptr_;
          }
 
+         unsigned char * vrambankptr() const
+         {
+            return vrambankptr_;
+         }
+
          OamDmaSrc oamDmaSrc() const 
          {
             return oamDmaSrc_;
@@ -114,6 +129,7 @@ namespace gambatte
          void setRombank0(unsigned bank);
          void setRombank(unsigned bank);
          void setRambank(bool enableRam, bool rtcActive, unsigned rambank);
+         void setVrambank(unsigned bank) { vrambankptr_ = vramdata() + bank * 0x2000ul - 0x8000; }
          void setWrambank(unsigned bank);
          void setOamDmaSrc(OamDmaSrc oamDmaSrc);
 
@@ -122,16 +138,20 @@ namespace gambatte
          unsigned char *wmem_[0x10];
          unsigned char *romdata_[2];
          unsigned char *wramdata_[2];
+         unsigned char *vrambankptr_;
          unsigned char *rsrambankptr_;
          unsigned char *wsrambankptr_;
          unsigned char *memchunk_;
          unsigned char *rambankdata_;
          unsigned char *rdisabledRam_;
          unsigned char *wdisabledRam_;
+         unsigned char *wramdataend_;
          OamDmaSrc oamDmaSrc_;
          MemPtrs(const MemPtrs &);
          MemPtrs & operator=(const MemPtrs &);
          void disconnectOamDmaAreas();
+         unsigned char * rdisabledRamw() const { return wramdataend_ ; }
+         unsigned char * wdisabledRam() const { return wramdataend_ + 0x2000; }
    };
 
    inline bool isCgb(const MemPtrs &memptrs)
