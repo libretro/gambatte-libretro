@@ -38,83 +38,83 @@ namespace gambatte
 
          const unsigned char * rmem(unsigned area) const
          {
-            return memptrs.rmem(area);
+            return memptrs_.rmem(area);
          }
 
          unsigned char * wmem(unsigned area) const
          {
-            return memptrs.wmem(area);
+            return memptrs_.wmem(area);
          }
 
          unsigned char * vramdata() const
          {
-            return memptrs.vramdata();
+            return memptrs_.vramdata();
          }
 
          unsigned char * romdata(unsigned area) const 
          {
-            return memptrs.romdata(area);
+            return memptrs_.romdata(area);
          }
 
          unsigned char * wramdata(unsigned area) const
          {
-            return memptrs.wramdata(area);
+            return memptrs_.wramdata(area);
          }
 
          const unsigned char * rdisabledRam() const
          {
-            return memptrs.rdisabledRam();
+            return memptrs_.rdisabledRam();
          }
 
          const unsigned char * rsrambankptr() const
          {
-            return memptrs.rsrambankptr();
+            return memptrs_.rsrambankptr();
          }
 
          unsigned char * wsrambankptr() const
          {
-            return memptrs.wsrambankptr();
+            return memptrs_.wsrambankptr();
          }
 
          unsigned char * vrambankptr() const
          {
-            return memptrs.vrambankptr();
+            return memptrs_.vrambankptr();
          }
 
          OamDmaSrc oamDmaSrc() const
          {
-            return memptrs.oamDmaSrc();
+            return memptrs_.oamDmaSrc();
          }
 
          void setVrambank(unsigned bank)
          {
-            memptrs.setVrambank(bank);
+            memptrs_.setVrambank(bank);
          }
 
          void setWrambank(unsigned bank)
          {
-            memptrs.setWrambank(bank);
+            memptrs_.setWrambank(bank);
          }
          void setOamDmaSrc(OamDmaSrc oamDmaSrc)
          {
-            memptrs.setOamDmaSrc(oamDmaSrc);
+            memptrs_.setOamDmaSrc(oamDmaSrc);
          }
 
          void mbcWrite(unsigned addr, unsigned data);
 
          bool isCgb() const
          {
-            return gambatte::isCgb(memptrs);
+            return gambatte::isCgb(memptrs_);
          }
 
          void rtcWrite(unsigned data)
          {
-            rtc.write(data);
+            rtc_.write(data);
          }
 
          unsigned char rtcRead() const 
          {
-            return *rtc.getActive();
+            return *rtc_.getActive();
          }
 
          const std::string saveBasePath() const;
@@ -140,16 +140,16 @@ namespace gambatte
             {
             }
          };
-         MemPtrs memptrs;
-         Rtc rtc;
+         MemPtrs memptrs_;
+         Rtc rtc_;
 
-         unsigned short rombank;
-         unsigned char rambank;
-         bool enableRam;
-         bool rambankMode;
-         bool multi64rom;
+         unsigned short rombank_;
+         unsigned char rambank_;
+         bool enableRam_;
+         bool rambankMode_;
+         bool multi64rom_;
 
-         std::vector<AddrData> ggUndoList;
+         std::vector<AddrData> ggUndoList_;
 
          void applyGameGenie(const std::string &code);
    };

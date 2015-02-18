@@ -28,11 +28,11 @@ namespace gambatte
 {
 
    Cartridge::Cartridge()
-      : rombank(1),
-      rambank(0),
-      enableRam(false),
-      rambankMode(false),
-      multi64rom(false)
+      : rombank_(1),
+      rambank_(0),
+      enableRam_(false),
+      rambankMode_(false),
+      multi64rom_(false)
    {
    }
 
@@ -70,18 +70,18 @@ namespace gambatte
 
    void Cartridge::setStatePtrs(SaveState &state)
    {
-      state.mem.sram.set(memptrs.rambankdata(), memptrs.rambankdataend() - memptrs.rambankdata());
-      state.mem.wram.set(memptrs.wramdata(0), memptrs.wramdataend() - memptrs.wramdata(0));
+      state.mem.sram.set(memptrs_.rambankdata(), memptrs_.rambankdataend() - memptrs_.rambankdata());
+      state.mem.wram.set(memptrs_.wramdata(0), memptrs_.wramdataend() - memptrs_.wramdata(0));
    }
 
    void Cartridge::saveState(SaveState &state) const
    {
-      state.mem.rombank = rombank;
-      state.mem.rambank = rambank;
-      state.mem.enableRam = enableRam;
-      state.mem.rambankMode = rambankMode;
+      state.mem.rombank = rombank_;
+      state.mem.rambank = rambank_;
+      state.mem.enableRam = enableRam_;
+      state.mem.rambankMode = rambankMode_;
 
-      rtc.saveState(state);
+      rtc_.saveState(state);
    }
 
    static Cartridgetype cartridgeType(const unsigned headerByte0x147)
@@ -131,30 +131,30 @@ namespace gambatte
 
    void Cartridge::loadState(const SaveState &state)
    {
-      rtc.loadState(state, hasRtc(memptrs.romdata()[0x147]) ? state.mem.enableRam : false);
+      rtc_.loadState(state, hasRtc(memptrs_.romdata()[0x147]) ? state.mem.enableRam : false);
 
-      rombank = state.mem.rombank;
-      rambank = state.mem.rambank;
-      enableRam = state.mem.enableRam;
-      rambankMode = state.mem.rambankMode;
-      memptrs.setRambank(enableRam, rtc.getActive(), rambank);
+      rombank_ = state.mem.rombank;
+      rambank_ = state.mem.rambank;
+      enableRam_ = state.mem.enableRam;
+      rambankMode_ = state.mem.rambankMode;
+      memptrs_.setRambank(enableRam_, rtc_.getActive(), rambank_);
 
-      if (rambankMode && multi64rom)
+      if (rambankMode_ && multi64rom_)
       {
-         const unsigned rb = toMulti64Rombank(rombank);
-         memptrs.setRombank0(rb & 0x30);
-         memptrs.setRombank(adjustedRombank(rb, cartridgeType(memptrs.romdata()[0x147])));
+         const unsigned rb = toMulti64Rombank(rombank_);
+         memptrs_.setRombank0(rb & 0x30);
+         memptrs_.setRombank(adjustedRombank(rb, cartridgeType(memptrs_.romdata()[0x147])));
       }
       else
       {
-         memptrs.setRombank0(0);
-         memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), cartridgeType(memptrs.romdata()[0x147])));
+         memptrs_.setRombank0(0);
+         memptrs_.setRombank(adjustedRombank(rombank_ & (rombanks(memptrs_) - 1), cartridgeType(memptrs_.romdata()[0x147])));
       }
    }
 
    void Cartridge::mbcWrite(const unsigned P, const unsigned data)
    {
-      const Cartridgetype romtype = cartridgeType(memptrs.romdata()[0x147]);   
+      const Cartridgetype romtype = cartridgeType(memptrs_.romdata()[0x147]);   
 
       switch (P >> 12 & 0x7)
       {
@@ -163,12 +163,12 @@ namespace gambatte
             if (romtype == MBC2 && (P & 0x0100))
                break;
 
-            enableRam = (data & 0x0F) == 0xA;
+            enableRam_ = (data & 0x0F) == 0xA;
 
-            if (hasRtc(memptrs.romdata()[0x147]))
-               rtc.setEnabled(enableRam);
+            if (hasRtc(memptrs_.romdata()[0x147]))
+               rtc_.setEnabled(enableRam_);
 
-            memptrs.setRambank(enableRam, rtc.getActive(), rambank);
+            memptrs_.setRambank(enableRam_, rtc_.getActive(), rambank_);
             break;
             //MBC1 writes ???n nnnn to address area 0x2000-0x3FFF, ???n nnnn makes up the lower digits to determine which rombank to load.
             //MBC3 writes ?nnn nnnn to address area 0x2000-0x3FFF, ?nnn nnnn makes up the lower digits to determine which rombank to load.
@@ -180,8 +180,8 @@ namespace gambatte
                case PLAIN:
                   return;
                case MBC5:
-                  rombank = (rombank & 0x100) | data;
-                  memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), romtype));
+                  rombank_ = (rombank_ & 0x100) | data;
+                  memptrs_.setRombank(adjustedRombank(rombank_ & (rombanks(memptrs_) - 1), romtype));
                   return;
                default:
                   break; //Only supposed to break one level.
@@ -190,33 +190,33 @@ namespace gambatte
             switch (romtype)
             {
                case MBC1:
-                  rombank = rambankMode && !multi64rom ? data & 0x1F : (rombank & 0x60) | (data & 0x1F);
+                  rombank_ = rambankMode_ && !multi64rom_ ? data & 0x1F : (rombank_ & 0x60) | (data & 0x1F);
 
-                  if (rambankMode && multi64rom)
+                  if (rambankMode_ && multi64rom_)
                   {
-                     memptrs.setRombank(adjustedRombank(toMulti64Rombank(rombank), romtype));
+                     memptrs_.setRombank(adjustedRombank(toMulti64Rombank(rombank_), romtype));
                      return;
                   }
                   break;
                case MBC2:
                   if (P & 0x0100)
                   {
-                     rombank = data & 0x0F;
+                     rombank_ = data & 0x0F;
                      break;
                   }
 
                   return;
                case MBC3:
-                  rombank = data & 0x7F;
+                  rombank_ = data & 0x7F;
                   break;
                case MBC5:
-                  rombank = (data & 0x1) << 8 | (rombank & 0xFF);
+                  rombank_ = (data & 0x1) << 8 | (rombank_ & 0xFF);
                   break;
                default:
                   return;
             }
 
-            memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), romtype));
+            memptrs_.setRombank(adjustedRombank(rombank_ & (rombanks(memptrs_) - 1), romtype));
             break;
             //MBC1 writes ???? ??nn to area 0x4000-0x5FFF either to determine rambank to load, or upper 2 bits of the rombank number to load, depending on rom-mode.
             //MBC3 writes ???? ??nn to area 0x4000-0x5FFF to determine rambank to load
@@ -226,39 +226,39 @@ namespace gambatte
             switch (romtype)
             {
                case MBC1:
-                  if (rambankMode)
+                  if (rambankMode_)
                   {
-                     if (multi64rom)
+                     if (multi64rom_)
                      {
-                        rombank = (data & 0x03) << 5 | (rombank & 0x1F);
+                        rombank_ = (data & 0x03) << 5 | (rombank_ & 0x1F);
 
-                        const unsigned rb = toMulti64Rombank(rombank);
-                        memptrs.setRombank0(rb & 0x30);
-                        memptrs.setRombank(adjustedRombank(rb, romtype));
+                        const unsigned rb = toMulti64Rombank(rombank_);
+                        memptrs_.setRombank0(rb & 0x30);
+                        memptrs_.setRombank(adjustedRombank(rb, romtype));
                         return;
                      }
 
-                     rambank = data & 0x03;
+                     rambank_ = data & 0x03;
                      break;
                   }
 
-                  rombank = (data & 0x03) << 5 | (rombank & 0x1F);
-                  memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), romtype));
+                  rombank_ = (data & 0x03) << 5 | (rombank_ & 0x1F);
+                  memptrs_.setRombank(adjustedRombank(rombank_ & (rombanks(memptrs_) - 1), romtype));
                   return;
                case MBC3:
-                  if (hasRtc(memptrs.romdata()[0x147]))
-                     rtc.swapActive(data);
+                  if (hasRtc(memptrs_.romdata()[0x147]))
+                     rtc_.swapActive(data);
 
-                  rambank = data & 0x03;
+                  rambank_ = data & 0x03;
                   break;
                case MBC5:
-                  rambank = data & 0x0F;
+                  rambank_ = data & 0x0F;
                   break;
                default:
                   return;
             }
 
-            memptrs.setRambank(enableRam, rtc.getActive(), rambank & (rambanks(memptrs) - 1));
+            memptrs_.setRambank(enableRam_, rtc_.getActive(), rambank_ & (rambanks(memptrs_) - 1));
             break;
             //MBC1: If ???? ???1 is written to area 0x6000-0x7FFFF rom will be set to rambank mode.
          case 0x6:
@@ -266,25 +266,25 @@ namespace gambatte
             switch (romtype)
             {
                case MBC1:
-                  rambankMode = data & 0x01;
+                  rambankMode_ = data & 0x01;
 
-                  if (multi64rom)
+                  if (multi64rom_)
                   {
-                     if (rambankMode)
+                     if (rambankMode_)
                      {
-                        const unsigned rb = toMulti64Rombank(rombank);
-                        memptrs.setRombank0(rb & 0x30);
-                        memptrs.setRombank(adjustedRombank(rb, romtype));
+                        const unsigned rb = toMulti64Rombank(rombank_);
+                        memptrs_.setRombank0(rb & 0x30);
+                        memptrs_.setRombank(adjustedRombank(rb, romtype));
                      }
                      else
                      {
-                        memptrs.setRombank0(0);
-                        memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1), romtype));
+                        memptrs_.setRombank0(0);
+                        memptrs_.setRombank(adjustedRombank(rombank_ & (rombanks(memptrs_) - 1), romtype));
                      }
                   }
                   break;
                case MBC3:
-                  rtc.latch(data);
+                  rtc_.latch(data);
                   break;
                default:
                   break;
@@ -426,15 +426,15 @@ namespace gambatte
       rombanks = pow2ceil(rom.size() / 0x4000);
       log_cb(RETRO_LOG_INFO, "rombanks: %u\n", static_cast<unsigned>(rom.size() / 0x4000));
 
-      memptrs.reset(rombanks, rambanks, cgb ? 8 : 2);
+      memptrs_.reset(rombanks, rambanks, cgb ? 8 : 2);
 
       rom.rewind();
-      rom.read(reinterpret_cast<char*>(memptrs.romdata()), (rom.size() / 0x4000) * 0x4000ul);
+      rom.read(reinterpret_cast<char*>(memptrs_.romdata()), (rom.size() / 0x4000) * 0x4000ul);
       // In case rombanks isn't a power of 2, allocate a disabled area for invalid rombank addresses.
-      std::memset(memptrs.romdata() + (rom.size() / 0x4000) * 0x4000ul, 0xFF, (rombanks - rom.size() / 0x4000) * 0x4000ul);
-      enforce8bit(memptrs.romdata(), rombanks * 0x4000ul);
+      std::memset(memptrs_.romdata() + (rom.size() / 0x4000) * 0x4000ul, 0xFF, (rombanks - rom.size() / 0x4000) * 0x4000ul);
+      enforce8bit(memptrs_.romdata(), rombanks * 0x4000ul);
 
-      if ((multi64rom = !rambanks && rombanks == 64 && cartridgeType(memptrs.romdata()[0x147]) == MBC1 && multiCartCompat))
+      if ((multi64rom_ = !rambanks && rombanks == 64 && cartridgeType(memptrs_.romdata()[0x147]) == MBC1 && multiCartCompat))
          log_cb(RETRO_LOG_INFO, "Multi-ROM \"MBC1\" presumed");
 
       if (rom.fail())
@@ -475,29 +475,29 @@ namespace gambatte
    void *Cartridge::savedata_ptr()
    {
       // Check ROM header for battery.
-      if (hasBattery(memptrs.romdata()[0x147]))
-         return memptrs.rambankdata();
+      if (hasBattery(memptrs_.romdata()[0x147]))
+         return memptrs_.rambankdata();
       return 0;
    }
 
    unsigned Cartridge::savedata_size()
    {
-      if (hasBattery(memptrs.romdata()[0x147]))
-         return memptrs.rambankdataend() - memptrs.rambankdata();
+      if (hasBattery(memptrs_.romdata()[0x147]))
+         return memptrs_.rambankdataend() - memptrs_.rambankdata();
       return 0;
    }
 
    void *Cartridge::rtcdata_ptr()
    {
-      if (hasRtc(memptrs.romdata()[0x147]))
-         return &rtc.getBaseTime();
+      if (hasRtc(memptrs_.romdata()[0x147]))
+         return &rtc_.getBaseTime();
       return 0;
    }
 
    unsigned Cartridge::rtcdata_size()
    { 
-      if (hasRtc(memptrs.romdata()[0x147]))
-         return sizeof(rtc.getBaseTime());
+      if (hasRtc(memptrs_.romdata()[0x147]))
+         return sizeof(rtc_.getBaseTime());
       return 0;
    }
 
@@ -515,13 +515,13 @@ namespace gambatte
             cmp = ((cmp >> 2 | cmp << 6) ^ 0x45) & 0xFF;
          }
 
-         for (unsigned bank = 0; bank < static_cast<std::size_t>(memptrs.romdataend() - memptrs.romdata()) / 0x4000; ++bank)
+         for (unsigned bank = 0; bank < static_cast<std::size_t>(memptrs_.romdataend() - memptrs_.romdata()) / 0x4000; ++bank)
          {
             if (isAddressWithinAreaRombankCanBeMappedTo(addr, bank)
-                  && (cmp > 0xFF || memptrs.romdata()[bank * 0x4000ul + (addr & 0x3FFF)] == cmp))
+                  && (cmp > 0xFF || memptrs_.romdata()[bank * 0x4000ul + (addr & 0x3FFF)] == cmp))
             {
-               ggUndoList.push_back(AddrData(bank * 0x4000ul + (addr & 0x3FFF), memptrs.romdata()[bank * 0x4000ul + (addr & 0x3FFF)]));
-               memptrs.romdata()[bank * 0x4000ul + (addr & 0x3FFF)] = val;
+               ggUndoList_.push_back(AddrData(bank * 0x4000ul + (addr & 0x3FFF), memptrs_.romdata()[bank * 0x4000ul + (addr & 0x3FFF)]));
+               memptrs_.romdata()[bank * 0x4000ul + (addr & 0x3FFF)] = val;
             }
          }
       }
@@ -529,19 +529,19 @@ namespace gambatte
 
    void Cartridge::clearCheats()
    {
-      ggUndoList.clear();
+      ggUndoList_.clear();
    }
 
    void Cartridge::setGameGenie(const std::string &codes)
    {
       //if (loaded()) {
-      for (std::vector<AddrData>::reverse_iterator it = ggUndoList.rbegin(), end = ggUndoList.rend(); it != end; ++it)
+      for (std::vector<AddrData>::reverse_iterator it = ggUndoList_.rbegin(), end = ggUndoList_.rend(); it != end; ++it)
       {
-         if (memptrs.romdata() + it->addr < memptrs.romdataend())
-            memptrs.romdata()[it->addr] = it->data;
+         if (memptrs_.romdata() + it->addr < memptrs_.romdataend())
+            memptrs_.romdata()[it->addr] = it->data;
       }
 
-      ggUndoList.clear();
+      ggUndoList_.clear();
 
       std::string code;
       for (std::size_t pos = 0; pos < codes.length()
