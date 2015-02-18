@@ -19,6 +19,9 @@
 #ifndef SAVESTATE_H
 #define SAVESTATE_H
 
+#include <stddef.h>
+#include <cstddef>
+
 namespace gambatte
 {
 
@@ -30,17 +33,17 @@ namespace gambatte
          class Ptr
          {
             public:
-               Ptr() : ptr(0), sz(0) {}
+               Ptr() : ptr(0), size_(0) {}
                const T* get() const { return ptr; }
-               unsigned long getSz() const { return sz; }
-               void set(T *ptr, const unsigned long sz) { this->ptr = ptr; this->sz = sz; }
+               std::size_t size() const { return size_; }
+               void set(T *p, const unsigned long size) { ptr = p; size_ = size; }
 
                friend class SaverList;
                friend void setInitState(SaveState &, bool, bool);
 
             private:
                T *ptr;
-               unsigned long sz;
+               unsigned long size_;
          };
 
       struct CPU {

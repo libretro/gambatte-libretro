@@ -290,8 +290,8 @@ SaverList::SaverList() {
 
 #define ADDPTR(arg) do { \
 	struct Func { \
-		static void save(omemstream &file, const SaveState &state) { write(file, state.arg.get(), state.arg.getSz()); } \
-		static void load(imemstream &file, SaveState &state) { read(file, state.arg.ptr, state.arg.getSz()); } \
+		static void save(omemstream &file, const SaveState &state) { write(file, state.arg.get(), state.arg.size()); } \
+		static void load(imemstream &file, SaveState &state) { read(file, state.arg.ptr, state.arg.size()); } \
 	}; \
 	\
 	pushSaver(list, label, Func::save, Func::load, sizeof label); \
