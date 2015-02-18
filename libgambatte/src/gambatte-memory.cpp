@@ -330,9 +330,8 @@ namespace gambatte
       if (ioamhram_[0x14D] & isCgb())
       {
          psg_.generate_samples(cycleCounter, isDoubleSpeed());
-
          lcd_.speedChange(cycleCounter);
-         ioamhram_[0x14D] = ~ioamhram_[0x14D] & 0x80;
+         ioamhram_[0x14D] ^= 0x81;
 
          intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & 0x80) ? lcd_.nextMode1IrqTime() : cycleCounter + (70224 << isDoubleSpeed()));
 
@@ -398,23 +397,23 @@ namespace gambatte
 
    void Memory::updateInput()
    {
-      unsigned button = 0xFF;
-      unsigned dpad = 0xFF;
+      unsigned state = 0xF;
 
-      if (getInput_)
+      if ((ioamhram_[0x100] & 0x30) != 0x30 && getInput_)
       {
-         const unsigned is = (*getInput_)();
-         button ^= is      & 0x0F;
-         dpad   ^= is >> 4 & 0x0F;
+         unsigned input = (*getInput_)();
+         unsigned dpad_state = ~input >> 4;
+         unsigned button_state = ~input;
+         if (!(ioamhram_[0x100] & 0x10))
+            state &= dpad_state;
+         if (!(ioamhram_[0x100] & 0x20))
+            state &= button_state;
       }
 
-      ioamhram_[0x100] |= 0xF;
+      if (state != 0xF && (ioamhram_[0x100] & 0xF) == 0xF)
+         intreq_.flagIrq(0x10);
 
-      if (!(ioamhram_[0x100] & 0x10))
-         ioamhram_[0x100] &= dpad;
-
-      if (!(ioamhram_[0x100] & 0x20))
-         ioamhram_[0x100] &= button;
+      ioamhram_[0x100] = (ioamhram_[0x100] & -0x10u) | state;
    }
 
    void Memory::updateOamDma(const unsigned long cycleCounter)
@@ -911,7 +910,8 @@ namespace gambatte
             break;
 
          case 0x4D:
-            ioamhram_[0x14D] |= data & 0x01;
+            if (isCgb())
+               ioamhram_[0x14D] = (ioamhram_[0x14D] & ~1u) | (data & 1);
             return;
          case 0x4F:
             if (isCgb()) {
