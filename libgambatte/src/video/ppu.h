@@ -1,60 +1,68 @@
-/***************************************************************************
- *   Copyright (C) 2010 by Sindre Aamås                                    *
- *   aamas@stud.ntnu.no                                                    *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License version 2 as     *
- *   published by the Free Software Foundation.                            *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License version 2 for more details.                *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   version 2 along with this program; if not, write to the               *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+//
+//   Copyright (C) 2010 by sinamas <sinamas at users.sourceforge.net>
+//
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License version 2 as
+//   published by the Free Software Foundation.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License version 2 for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   version 2 along with this program; if not, write to the
+//   Free Software Foundation, Inc.,
+//   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
 #ifndef PPU_H
 #define PPU_H
 
-#include "video/ly_counter.h"
-#include "video/sprite_mapper.h"
+#include "lcddef.h"
+#include "ly_counter.h"
+#include "sprite_mapper.h"
 #include "gbint.h"
 #include "gambatte.h"
+#include <cstddef>
 
 namespace gambatte {
 
 class PPUFrameBuf {
-	video_pixel_t *buf_;
-	video_pixel_t *fbline_;
-	int pitch_;
-	
-	static video_pixel_t * nullfbline() { static video_pixel_t nullfbline_[160]; return nullfbline_; }
-	
 public:
 	PPUFrameBuf() : buf_(0), fbline_(nullfbline()), pitch_(0) {}
 	video_pixel_t * fb() const { return buf_; }
 	video_pixel_t * fbline() const { return fbline_; }
-	int pitch() const { return pitch_; }
-	void setBuf(video_pixel_t *const buf, const int pitch) { buf_ = buf; pitch_ = pitch; fbline_ = nullfbline(); }
-	void setFbline(const unsigned ly) { fbline_ = buf_ ? buf_ + static_cast<long>(ly) * static_cast<long>(pitch_) : nullfbline(); }
+	std::ptrdiff_t pitch() const { return pitch_; }
+	void setBuf(video_pixel_t *buf, std::ptrdiff_t pitch) { buf_ = buf; pitch_ = pitch; fbline_ = nullfbline(); }
+	void setFbline(unsigned ly) { fbline_ = buf_ ? buf_ + std::ptrdiff_t(ly) * pitch_ : nullfbline(); }
+
+private:
+	video_pixel_t *buf_;
+	video_pixel_t *fbline_;
+	std::ptrdiff_t pitch_;
+
+	static video_pixel_t * nullfbline() { static video_pixel_t nullfbline_[160]; return nullfbline_; }
 };
 
+struct PPUPriv;
+
 struct PPUState {
-	void (*f)(struct PPUPriv &v);
-	unsigned (*predictCyclesUntilXpos_f)(const struct PPUPriv &v, int targetxpos, unsigned cycles);
+	void (*f)(PPUPriv &v);
+	unsigned (*predictCyclesUntilXpos_f)(PPUPriv const &v, int targetxpos, unsigned cycles);
 	unsigned char id;
 };
 
-// The PPU loop accesses a lot of state at once, so it's difficult to split this up much beyond grouping stuff into smaller structs.
 struct PPUPriv {
 	video_pixel_t bgPalette[8 * 4];
 	video_pixel_t spPalette[8 * 4];
+	struct Sprite { unsigned char spx, oampos, line, attrib; } spriteList[11];
+	unsigned short spwordList[11];
+	unsigned char nextSprite;
+	unsigned char currentSprite;
 
-	const unsigned char *const vram;
-	const PPUState *nextCallPtr;
+	unsigned char const *vram;
+	PPUState const *nextCallPtr;
 
 	unsigned long now;
 	unsigned long lastM0Time;
@@ -63,12 +71,9 @@ struct PPUPriv {
 	unsigned tileword;
 	unsigned ntileword;
 
-	LyCounter lyCounter;
 	SpriteMapper spriteMapper;
+	LyCounter lyCounter;
 	PPUFrameBuf framebuf;
-	
-	struct Sprite { unsigned char spx, oampos, line, attrib; } spriteList[11];
-	unsigned short spwordList[11];
 
 	unsigned char lcdc;
 	unsigned char scy;
@@ -83,53 +88,57 @@ struct PPUPriv {
 	unsigned char reg1;
 	unsigned char attrib;
 	unsigned char nattrib;
-	unsigned char nextSprite;
-	unsigned char currentSprite;
 	unsigned char xpos;
 	unsigned char endx;
 
 	bool cgb;
 	bool weMaster;
-	
-	PPUPriv(NextM0Time &nextM0Time, const unsigned char *oamram, const unsigned char *vram);
+
+	PPUPriv(NextM0Time &nextM0Time, unsigned char const *oamram, unsigned char const *vram);
 };
 
 class PPU {
-	PPUPriv p_;
 public:
-	PPU(NextM0Time &nextM0Time, const unsigned char *oamram, const unsigned char *vram)
+	PPU(NextM0Time &nextM0Time, unsigned char const *oamram, unsigned char const *vram)
 	: p_(nextM0Time, oamram, vram)
 	{
 	}
-	
+
 	video_pixel_t * bgPalette() { return p_.bgPalette; }
 	bool cgb() const { return p_.cgb; }
 	void doLyCountEvent() { p_.lyCounter.doEvent(); }
 	unsigned long doSpriteMapEvent(unsigned long time) { return p_.spriteMapper.doEvent(time); }
-	const PPUFrameBuf & frameBuf() const { return p_.framebuf; }
-	bool inactivePeriodAfterDisplayEnable(unsigned long cc) const { return p_.spriteMapper.inactivePeriodAfterDisplayEnable(cc); }
+	PPUFrameBuf const & frameBuf() const { return p_.framebuf; }
+
+	bool inactivePeriodAfterDisplayEnable(unsigned long cc) const {
+		return p_.spriteMapper.inactivePeriodAfterDisplayEnable(cc);
+	}
+
 	unsigned long lastM0Time() const { return p_.lastM0Time; }
 	unsigned lcdc() const { return p_.lcdc; }
-	void loadState(const SaveState &state, const unsigned char *oamram);
-	const LyCounter & lyCounter() const { return p_.lyCounter; }
+	void loadState(SaveState const &state, unsigned char const *oamram);
+	LyCounter const & lyCounter() const { return p_.lyCounter; }
 	unsigned long now() const { return p_.now; }
 	void oamChange(unsigned long cc) { p_.spriteMapper.oamChange(cc); }
-	void oamChange(const unsigned char *oamram, unsigned long cc) { p_.spriteMapper.oamChange(oamram, cc); }
+	void oamChange(unsigned char const *oamram, unsigned long cc) { p_.spriteMapper.oamChange(oamram, cc); }
 	unsigned long predictedNextXposTime(unsigned xpos) const;
-	void reset(const unsigned char *oamram, bool cgb);
+	void reset(unsigned char const *oamram, unsigned char const *vram, bool cgb);
 	void resetCc(unsigned long oldCc, unsigned long newCc);
 	void saveState(SaveState &ss) const;
-	void setFrameBuf(video_pixel_t *buf, unsigned pitch) { p_.framebuf.setBuf(buf, pitch); }
+	void setFrameBuf(video_pixel_t *buf, std::ptrdiff_t pitch) { p_.framebuf.setBuf(buf, pitch); }
 	void setLcdc(unsigned lcdc, unsigned long cc);
-	void setScx(const unsigned scx) { p_.scx = scx; }
-	void setScy(const unsigned scy) { p_.scy = scy; }
+	void setScx(unsigned scx) { p_.scx = scx; }
+	void setScy(unsigned scy) { p_.scy = scy; }
 	void setStatePtrs(SaveState &ss) { p_.spriteMapper.setStatePtrs(ss); }
-	void setWx(const unsigned wx) { p_.wx = wx; }
-	void setWy(const unsigned wy) { p_.wy = wy; }
+	void setWx(unsigned wx) { p_.wx = wx; }
+	void setWy(unsigned wy) { p_.wy = wy; }
 	void updateWy2() { p_.wy2 = p_.wy; }
 	void speedChange(unsigned long cycleCounter);
 	video_pixel_t * spPalette() { return p_.spPalette; }
 	void update(unsigned long cc);
+
+private:
+	PPUPriv p_;
 };
 
 }

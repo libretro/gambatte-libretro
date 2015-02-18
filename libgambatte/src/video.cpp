@@ -24,9 +24,9 @@
 namespace gambatte
 {
 
-void LCD::reset(const unsigned char *const oamram, const bool cgb)
+void LCD::reset(const unsigned char *const oamram, unsigned char const *vram, const bool cgb)
 {
-   ppu_.reset(oamram, cgb);
+   ppu_.reset(oamram, vram, cgb);
    lycIrq_.setCgb(cgb);
    refreshPalettes();
 }

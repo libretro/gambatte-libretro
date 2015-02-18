@@ -65,7 +65,7 @@ namespace gambatte
 #endif
       }
 
-      reset(oamram, false);
+      reset(oamram, vram, false);
       setVideoBuffer(0, 160);
 
       setColorCorrection(true);

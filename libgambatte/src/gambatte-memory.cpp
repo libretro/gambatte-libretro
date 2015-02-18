@@ -1089,7 +1089,7 @@ namespace gambatte
          return true;
 
       psg_.init(cart_.isCgb());
-      lcd_.reset(ioamhram_, cart_.isCgb());
+      lcd_.reset(ioamhram_, vram, cart_.isCgb());
       interrupter_.setGameShark(std::string());
 
       return false;
