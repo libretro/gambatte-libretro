@@ -789,11 +789,6 @@ void LCD::setVideoBuffer(video_pixel_t *const videoBuf, const int pitch)
    ppu_.setFrameBuf(videoBuf, pitch);
 }
 
-void LCD::setDmgPaletteColor(const unsigned index, const video_pixel_t rgb32)
-{
-   dmgColorsRgb32_[index] = rgb32;
-}
-
 void LCD::setDmgPaletteColor(const unsigned palNum, const unsigned colorNum, const video_pixel_t rgb32)
 {
    if (palNum > 2 || colorNum > 3)

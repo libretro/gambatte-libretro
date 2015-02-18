@@ -23,6 +23,10 @@
 
 namespace gambatte
 {
+   void LCD::setDmgPaletteColor(const unsigned index, const video_pixel_t rgb32)
+   {
+      dmgColorsRgb32_[index] = rgb32;
+   }
 
    video_pixel_t LCD::gbcToRgb32(const unsigned bgr15)
    {
