@@ -1,190 +1,169 @@
-/***************************************************************************
- *   Copyright (C) 2007 by Sindre Aamås                                    *
- *   aamas@stud.ntnu.no                                                    *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License version 2 as     *
- *   published by the Free Software Foundation.                            *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License version 2 for more details.                *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   version 2 along with this program; if not, write to the               *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+//
+//   Copyright (C) 2007 by sinamas <sinamas at users.sourceforge.net>
+//
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License version 2 as
+//   published by the Free Software Foundation.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License version 2 for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   version 2 along with this program; if not, write to the
+//   Free Software Foundation, Inc.,
+//   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
 #include "tima.h"
 #include "savestate.h"
 
-static const unsigned char timaClock[4] = { 10, 4, 6, 8 };
+static unsigned char const timaClock[4] = { 10, 4, 6, 8 };
 
-namespace gambatte
+namespace gambatte {
+
+Tima::Tima()
+: lastUpdate_(0)
+, tmatime_(disabled_time)
+, tima_(0)
+, tma_(0)
+, tac_(0)
 {
+}
 
-   Tima::Tima() :
-      lastUpdate_(0),
-      tmatime_(disabled_time),
-      tima_(0),
-      tma_(0),
-      tac_(0)
-   {}
+void Tima::saveState(SaveState &state) const {
+	state.mem.timaLastUpdate = lastUpdate_;
+	state.mem.tmatime = tmatime_;
+}
 
-   void Tima::saveState(SaveState &state) const
-   {
-      state.mem.timaLastUpdate = lastUpdate_;
-      state.mem.tmatime = tmatime_;
-   }
+void Tima::loadState(SaveState const &state, TimaInterruptRequester timaIrq) {
+	lastUpdate_ = state.mem.timaLastUpdate;
+	tmatime_ = state.mem.tmatime;
+	tima_ = state.mem.ioamhram.get()[0x105];
+	tma_  = state.mem.ioamhram.get()[0x106];
+	tac_  = state.mem.ioamhram.get()[0x107];
 
-   void Tima::loadState(const SaveState &state, const TimaInterruptRequester timaIrq)
-   {
-      lastUpdate_ = state.mem.timaLastUpdate;
-      tmatime_ = state.mem.tmatime;
+	unsigned long nextIrqEventTime = disabled_time;
+	if (tac_ & 4) {
+		nextIrqEventTime = tmatime_ != disabled_time && tmatime_ > state.cpu.cycleCounter
+		                 ? tmatime_
+		                 : lastUpdate_ + ((256u - tima_) << timaClock[tac_ & 3]) + 3;
+	}
 
-      tima_ = state.mem.ioamhram.get()[0x105];
-      tma_  = state.mem.ioamhram.get()[0x106];
-      tac_  = state.mem.ioamhram.get()[0x107];
+	timaIrq.setNextIrqEventTime(nextIrqEventTime);
+}
 
-      timaIrq.setNextIrqEventTime((tac_ & 4)
-            ?
-            (tmatime_ != disabled_time && tmatime_ > state.cpu.cycleCounter
-             ? tmatime_
-             : lastUpdate_ + ((256u - tima_) << timaClock[tac_ & 3]) + 3)
-            :
-            static_cast<unsigned long>(disabled_time)
-            );
-   }
+void Tima::resetCc(unsigned long const oldCc, unsigned long const newCc, TimaInterruptRequester timaIrq) {
+	if (tac_ & 0x04) {
+		updateIrq(oldCc, timaIrq);
+		updateTima(oldCc);
 
-   void Tima::resetCc(const unsigned long oldCc, const unsigned long newCc, const TimaInterruptRequester timaIrq)
-   {
-      const unsigned long dec = oldCc - newCc;
+		unsigned long const dec = oldCc - newCc;
+		lastUpdate_ -= dec;
+		timaIrq.setNextIrqEventTime(timaIrq.nextIrqEventTime() - dec);
 
-      if (tac_ & 0x04)
-      {
-         updateIrq(oldCc, timaIrq);
-         updateTima(oldCc);
+		if (tmatime_ != disabled_time)
+			tmatime_ -= dec;
+	}
+}
 
-         lastUpdate_ -= dec;
-         timaIrq.setNextIrqEventTime(timaIrq.nextIrqEventTime() - dec);
+void Tima::updateTima(unsigned long const cc) {
+	unsigned long const ticks = (cc - lastUpdate_) >> timaClock[tac_ & 3];
+	lastUpdate_ += ticks << timaClock[tac_ & 3];
 
-         if (tmatime_ != disabled_time)
-            tmatime_ -= dec;
-      }
-   }
+	if (cc >= tmatime_) {
+		if (cc >= tmatime_ + 4)
+			tmatime_ = disabled_time;
 
-   void Tima::updateTima(const unsigned long cycleCounter)
-   {
-      const unsigned long ticks = (cycleCounter - lastUpdate_) >> timaClock[tac_ & 3];
+		tima_ = tma_;
+	}
 
-      lastUpdate_ += ticks << timaClock[tac_ & 3];
+	unsigned long tmp = tima_ + ticks;
+	while (tmp > 0x100)
+		tmp -= 0x100 - tma_;
 
-      if (cycleCounter >= tmatime_)
-      {
-         if (cycleCounter >= tmatime_ + 4)
-            tmatime_ = disabled_time;
+	if (tmp == 0x100) {
+		tmp = 0;
+		tmatime_ = lastUpdate_ + 3;
 
-         tima_ = tma_;
-      }
+		if (cc >= tmatime_) {
+			if (cc >= tmatime_ + 4)
+				tmatime_ = disabled_time;
 
-      unsigned long tmp = tima_ + ticks;
+			tmp = tma_;
+		}
+	}
 
-      while (tmp > 0x100)
-         tmp -= 0x100 - tma_;
+	tima_ = tmp;
+}
 
-      if (tmp == 0x100)
-      {
-         tmp = 0;
-         tmatime_ = lastUpdate_ + 3;
+void Tima::setTima(unsigned const data, unsigned long const cc, TimaInterruptRequester timaIrq) {
+	if (tac_ & 0x04) {
+		updateIrq(cc, timaIrq);
+		updateTima(cc);
 
-         if (cycleCounter >= tmatime_)
-         {
-            if (cycleCounter >= tmatime_ + 4)
-               tmatime_ = disabled_time;
+		if (tmatime_ - cc < 4)
+			tmatime_ = disabled_time;
 
-            tmp = tma_;
-         }
-      }
+		timaIrq.setNextIrqEventTime(lastUpdate_ + ((256u - data) << timaClock[tac_ & 3]) + 3);
+	}
 
-      tima_ = tmp;
-   }
+	tima_ = data;
+}
 
-   void Tima::setTima(const unsigned data, const unsigned long cycleCounter, const TimaInterruptRequester timaIrq)
-   {
-      if (tac_ & 0x04)
-      {
-         updateIrq(cycleCounter, timaIrq);
-         updateTima(cycleCounter);
+void Tima::setTma(unsigned const data, unsigned long const cc, TimaInterruptRequester timaIrq) {
+	if (tac_ & 0x04) {
+		updateIrq(cc, timaIrq);
+		updateTima(cc);
+	}
 
-         if (tmatime_ - cycleCounter < 4)
-            tmatime_ = disabled_time;
+	tma_ = data;
+}
 
-         timaIrq.setNextIrqEventTime(lastUpdate_ + ((256u - data) << timaClock[tac_ & 3]) + 3);
-      }
+void Tima::setTac(unsigned const data, unsigned long const cc, TimaInterruptRequester timaIrq) {
+	if (tac_ ^ data) {
+		unsigned long nextIrqEventTime = timaIrq.nextIrqEventTime();
 
-      tima_ = data;
-   }
+		if (tac_ & 0x04) {
+			updateIrq(cc, timaIrq);
+			updateTima(cc);
 
-   void Tima::setTma(const unsigned data, const unsigned long cycleCounter, const TimaInterruptRequester timaIrq)
-   {
-      if (tac_ & 0x04)
-      {
-         updateIrq(cycleCounter, timaIrq);
-         updateTima(cycleCounter);
-      }
+			lastUpdate_ -= (1u << (timaClock[tac_ & 3] - 1)) + 3;
+			tmatime_ -= (1u << (timaClock[tac_ & 3] - 1)) + 3;
+			nextIrqEventTime -= (1u << (timaClock[tac_ & 3] - 1)) + 3;
 
-      tma_ = data;
-   }
+			if (cc >= nextIrqEventTime)
+				timaIrq.flagIrq();
 
-   void Tima::setTac(const unsigned data, const unsigned long cycleCounter, const TimaInterruptRequester timaIrq)
-   {
-      if (tac_ ^ data)
-      {
-         unsigned long nextIrqEventTime = timaIrq.nextIrqEventTime();
+			updateTima(cc);
 
-         if (tac_ & 0x04)
-         {
-            updateIrq(cycleCounter, timaIrq);
-            updateTima(cycleCounter);
+			tmatime_ = disabled_time;
+			nextIrqEventTime = disabled_time;
+		}
 
-            lastUpdate_ -= (1u << (timaClock[tac_ & 3] - 1)) + 3;
-            tmatime_ -= (1u << (timaClock[tac_ & 3] - 1)) + 3;
-            nextIrqEventTime -= (1u << (timaClock[tac_ & 3] - 1)) + 3;
+		if (data & 4) {
+			lastUpdate_ = (cc >> timaClock[data & 3]) << timaClock[data & 3];
+			nextIrqEventTime = lastUpdate_ + ((256u - tima_) << timaClock[data & 3]) + 3;
+		}
 
-            if (cycleCounter >= nextIrqEventTime)
-               timaIrq.flagIrq();
+		timaIrq.setNextIrqEventTime(nextIrqEventTime);
+	}
 
-            updateTima(cycleCounter);
+	tac_ = data;
+}
 
-            tmatime_ = disabled_time;
-            nextIrqEventTime = disabled_time;
-         }
+unsigned Tima::tima(unsigned long cc) {
+	if (tac_ & 0x04)
+		updateTima(cc);
 
-         if (data & 4)
-         {
-            lastUpdate_ = (cycleCounter >> timaClock[data & 3]) << timaClock[data & 3];
-            nextIrqEventTime = lastUpdate_ + ((256u - tima_) << timaClock[data & 3]) + 3;
-         }
+	return tima_;
+}
 
-         timaIrq.setNextIrqEventTime(nextIrqEventTime);
-      }
-
-      tac_ = data;
-   }
-
-   unsigned Tima::tima(unsigned long cycleCounter)
-   {
-      if (tac_ & 0x04)
-         updateTima(cycleCounter);
-
-      return tima_;
-   }
-
-   void Tima::doIrqEvent(const TimaInterruptRequester timaIrq)
-   {
-      timaIrq.flagIrq();
-      timaIrq.setNextIrqEventTime(timaIrq.nextIrqEventTime() + ((256u - tma_) << timaClock[tac_ & 3]));
-   }
+void Tima::doIrqEvent(TimaInterruptRequester timaIrq) {
+	timaIrq.flagIrq();
+	timaIrq.setNextIrqEventTime(timaIrq.nextIrqEventTime()
+	                          + ((256u - tma_) << timaClock[tac_ & 3]));
+}
 
 }
