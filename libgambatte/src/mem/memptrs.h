@@ -75,7 +75,7 @@ namespace gambatte
 
          unsigned char * romdataend() const
          {
-            return rambankdata_;
+            return rambankdata_ - 0x4000;
          }
 
          unsigned char * wramdata(unsigned area) const
@@ -85,7 +85,7 @@ namespace gambatte
 
          unsigned char * wramdataend() const
          {
-            return rdisabledRam_;
+            return wramdataend_;
          }
 
          unsigned char * rambankdata() const
@@ -100,7 +100,7 @@ namespace gambatte
 
          const unsigned char * rdisabledRam() const
          {
-            return rdisabledRam_;
+            return rdisabledRamw();
          }
 
          const unsigned char * rsrambankptr() const
@@ -131,17 +131,15 @@ namespace gambatte
          void setOamDmaSrc(OamDmaSrc oamDmaSrc);
 
       private:
-         const unsigned char *rmem_[0x10];
-         unsigned char *wmem_[0x10];
          unsigned char *romdata_[2];
          unsigned char *wramdata_[2];
+         const unsigned char *rmem_[0x10];
+         unsigned char *wmem_[0x10];
          unsigned char *vrambankptr_;
          unsigned char *rsrambankptr_;
          unsigned char *wsrambankptr_;
          unsigned char *memchunk_;
          unsigned char *rambankdata_;
-         unsigned char *rdisabledRam_;
-         unsigned char *wdisabledRam_;
          unsigned char *wramdataend_;
          OamDmaSrc oamDmaSrc_;
          MemPtrs(const MemPtrs &);

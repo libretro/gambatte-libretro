@@ -33,8 +33,6 @@ namespace gambatte
       , wsrambankptr_(0)
       ,memchunk_(0)
       , rambankdata_(0)
-      , rdisabledRam_(0)
-      , wdisabledRam_(0)
       , wramdataend_(0)
       , oamDmaSrc_(oam_dma_src_off)
    {
@@ -50,21 +48,16 @@ namespace gambatte
       delete []memchunk_;
       memchunk_     = new unsigned char[
          0x4000 
-         + rombanks * 0x4000ul 
+         + rombanks * 0x4000ul + 0x4000
          + rambanks * 0x2000ul 
          + wrambanks * 0x1000ul 
          + 0x4000];
 
       romdata_[0]   = romdata();   
-      rambankdata_  = romdata_[0] + rombanks * 0x4000ul;
+      rambankdata_  = romdata_[0] + rombanks * 0x4000ul + 0x4000;
       wramdata_[0]  = rambankdata_ + rambanks * 0x2000ul;
       wramdataend_ = wramdata_[0] + wrambanks * 0x1000ul;
 
-      rdisabledRam_ = wramdata_[0] + wrambanks * 0x1000ul;
-      wdisabledRam_ = rdisabledRam_ + 0x2000;
-
-      /* TODO - get rid of rdisabledRam_ */
-      std::memset(rdisabledRam_, 0xFF, 0x2000);
       std::memset(rdisabledRamw(), 0xFF, 0x2000);
 
       oamDmaSrc_    = oam_dma_src_off;
@@ -97,10 +90,10 @@ namespace gambatte
       unsigned char *const srambankptr = flags & RTC_EN
          ? 0
          : (rambankdata() != rambankdataend()
-               ? rambankdata_ + rambank * 0x2000ul - 0xA000 : wdisabledRam_ - 0xA000);
+               ? rambankdata_ + rambank * 0x2000ul - 0xA000 : wdisabledRam() - 0xA000);
 
-      rsrambankptr_ = (flags & READ_EN) && srambankptr != wdisabledRam_ - 0xA000 ? srambankptr : rdisabledRam_ - 0xA000;
-      wsrambankptr_ = flags & WRITE_EN ? srambankptr : wdisabledRam_ - 0xA000;
+      rsrambankptr_ = (flags & READ_EN) && srambankptr != wdisabledRam() - 0xA000 ? srambankptr : rdisabledRamw() - 0xA000;
+      wsrambankptr_ = flags & WRITE_EN ? srambankptr : wdisabledRam() - 0xA000;
       rmem_[0xB] = rmem_[0xA] = rsrambankptr_;
       wmem_[0xB] = wmem_[0xA] = wsrambankptr_;
       disconnectOamDmaAreas();
