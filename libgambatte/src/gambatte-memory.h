@@ -28,7 +28,6 @@
 namespace gambatte {
 
 class InputGetter;
-class FilterInfo;
 
 class Memory {
 public:
