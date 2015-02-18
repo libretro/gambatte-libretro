@@ -494,29 +494,8 @@ namespace gambatte
             default: printf("Wrong data-format, corrupt or unsupported ROM.\n"); return -1;
          }
 
-#if 0
-         switch (header[0x0148])
+         switch (header[0x0149])
          {
-            case 0x00: rombanks = 2; break;
-            case 0x01: rombanks = 4; break;
-            case 0x02: rombanks = 8; break;
-            case 0x03: rombanks = 16; break;
-            case 0x04: rombanks = 32; break;
-            case 0x05: rombanks = 64; break;
-            case 0x06: rombanks = 128; break;
-            case 0x07: rombanks = 256; break;
-            case 0x08: rombanks = 512; break;
-            case 0x52: rombanks = 72; break;
-            case 0x53: rombanks = 80; break;
-            case 0x54: rombanks = 96; break;
-            default: return -1;
-         }
-
-         std::printf("rombanks: %u\n", rombanks);*/
-#endif
-
-            switch (header[0x0149])
-            {
                case 0x00: /*std::puts("No RAM");*/ rambanks = type == MBC2; break;
                case 0x01: /*std::puts("2kB RAM");*/ /*rambankrom=1; break;*/
                case 0x02: /*std::puts("8kB RAM");*/
@@ -534,7 +513,7 @@ namespace gambatte
                default: /*std::puts("Wrong data-format, corrupt or unsupported ROM loaded.");*/
                   rambanks = 16;
                   break;
-            }
+         }
 
          cgb = header[0x0143] >> 7 & (1 ^ forceDmg);
          printf("cgb: %d\n", cgb);
