@@ -19,11 +19,12 @@
 #ifndef VIDEO_H
 #define VIDEO_H
 
-#include "video/ppu.h"
-#include "video/lyc_irq.h"
-#include "video/next_m0_time.h"
 #include "interruptrequester.h"
 #include "minkeeper.h"
+#include "video/lyc_irq.h"
+#include "video/m0_irq.h"
+#include "video/next_m0_time.h"
+#include "video/ppu.h"
 #include <memory>
 
 namespace gambatte {
@@ -38,53 +39,6 @@ class VideoInterruptRequester
 
    private:
       InterruptRequester * intreq_;
-};
-
-class M0Irq
-{
-   public:
-      M0Irq() : statReg_(0), lycReg_(0) {}
-
-      void lcdReset(const unsigned statReg, const unsigned lycReg)
-      {
-         statReg_ = statReg;
-         lycReg_ =  lycReg;
-      }
-
-      void statRegChange(const unsigned statReg,
-            const unsigned long nextM0IrqTime, const unsigned long cc, const bool cgb) {
-         if (nextM0IrqTime - cc > cgb * 2U)
-            statReg_ = statReg;
-      }
-
-      void lycRegChange(const unsigned lycReg,
-            const unsigned long nextM0IrqTime, const unsigned long cc, const bool ds, const bool cgb) {
-         if (nextM0IrqTime - cc > cgb * 5 + 1U - ds)
-            lycReg_ = lycReg;
-      }
-
-      void doEvent(unsigned char *const ifreg, const unsigned ly, const unsigned statReg, const unsigned lycReg) {
-         if (((statReg_ | statReg) & 0x08) && (!(statReg_ & 0x40) || ly != lycReg_))
-            *ifreg |= 2;
-
-         statReg_ = statReg;
-         lycReg_ =  lycReg;
-      }
-
-      void saveState(SaveState &state) const {
-         state.ppu.m0lyc = lycReg_;
-      }
-
-      void loadState(const SaveState &state) {
-         lycReg_ = state.ppu.m0lyc;
-         statReg_ = state.mem.ioamhram.get()[0x141];
-      }
-
-      unsigned statReg() const { return statReg_; }
-
-   private:
-      unsigned char statReg_;
-      unsigned char lycReg_;
 };
 
 class LCD
