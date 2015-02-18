@@ -38,9 +38,9 @@ namespace gambatte
          void loadState(const SaveState::SPU::LCounter &lstate, unsigned long cc);
 
       private:
-         MasterDisabler &disableMaster;
-         unsigned short lengthCounter;
-         const unsigned char lengthMask;
+         MasterDisabler &disableMaster_;
+         unsigned short lengthCounter_;
+         const unsigned char lengthMask_;
    };
 
 }

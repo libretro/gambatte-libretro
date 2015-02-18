@@ -24,9 +24,9 @@ namespace gambatte
 {
 
    LengthCounter::LengthCounter(MasterDisabler &disabler, const unsigned mask)
-      : disableMaster(disabler)
-      , lengthCounter(0)
-      , lengthMask(mask)
+      : disableMaster_(disabler)
+      , lengthCounter_(0)
+      , lengthMask_(mask)
    {
       nr1Change(0, 0, 0);
    }
@@ -34,15 +34,15 @@ namespace gambatte
    void LengthCounter::event()
    {
       counter_ = COUNTER_DISABLED;
-      lengthCounter = 0;
-      disableMaster();
+      lengthCounter_ = 0;
+      disableMaster_();
    }
 
    void LengthCounter::nr1Change(const unsigned newNr1, const unsigned nr4, const unsigned long cc)
    {
-      lengthCounter = (~newNr1 & lengthMask) + 1;
+      lengthCounter_ = (~newNr1 & lengthMask_) + 1;
       counter_ = (nr4 & 0x40) 
-         ?( (cc >> 13) + lengthCounter) << 13 
+         ?( (cc >> 13) + lengthCounter_) << 13 
          : static_cast<unsigned long>(COUNTER_DISABLED);
    }
 
@@ -51,24 +51,24 @@ namespace gambatte
       unsigned dec = 0;
 
       if (counter_ != COUNTER_DISABLED)
-         lengthCounter = (counter_ >> 13) - (cc >> 13);
+         lengthCounter_ = (counter_ >> 13) - (cc >> 13);
 
       if (newNr4 & 0x40)
       {
          dec = ~cc >> 12 & 1;
 
-         if (!(oldNr4 & 0x40) && lengthCounter)
+         if (!(oldNr4 & 0x40) && lengthCounter_)
          {
-            if (!(lengthCounter -= dec))
-               disableMaster();
+            if (!(lengthCounter_ -= dec))
+               disableMaster_();
          }
       }
 
-      if ((newNr4 & 0x80) && !lengthCounter)
-         lengthCounter = lengthMask + 1 - dec;
+      if ((newNr4 & 0x80) && !lengthCounter_)
+         lengthCounter_ = lengthMask_ + 1 - dec;
 
-      if ((newNr4 & 0x40) && lengthCounter)
-         counter_ = ((cc >> 13) + lengthCounter) << 13;
+      if ((newNr4 & 0x40) && lengthCounter_)
+         counter_ = ((cc >> 13) + lengthCounter_) << 13;
       else
          counter_ = COUNTER_DISABLED;
    }
@@ -76,13 +76,13 @@ namespace gambatte
    void LengthCounter::saveState(SaveState::SPU::LCounter &lstate) const
    {
       lstate.counter = counter_;
-      lstate.lengthCounter = lengthCounter;
+      lstate.lengthCounter = lengthCounter_;
    }
 
    void LengthCounter::loadState(const SaveState::SPU::LCounter &lstate, const unsigned long cc)
    {
       counter_ = std::max(lstate.counter, cc);
-      lengthCounter = lstate.lengthCounter;
+      lengthCounter_ = lstate.lengthCounter;
    }
 
 }
