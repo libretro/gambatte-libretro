@@ -1,221 +1,211 @@
-/***************************************************************************
- *   Copyright (C) 2007 by Sindre Aamås                                    *
- *   aamas@stud.ntnu.no                                                    *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License version 2 as     *
- *   published by the Free Software Foundation.                            *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License version 2 for more details.                *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   version 2 along with this program; if not, write to the               *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+//
+//   Copyright (C) 2007 by sinamas <sinamas at users.sourceforge.net>
+//
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License version 2 as
+//   published by the Free Software Foundation.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License version 2 for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   version 2 along with this program; if not, write to the
+//   Free Software Foundation, Inc.,
+//   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+
 #include "channel3.h"
 #include "../savestate.h"
-#include <cstring>
 #include <algorithm>
+#include <cstring>
 
-static inline unsigned toPeriod(const unsigned nr3, const unsigned nr4)
-{
-   return 0x800 - ((nr4 << 8 & 0x700) | nr3);
+static inline unsigned toPeriod(unsigned nr3, unsigned nr4) {
+	return 0x800 - ((nr4 << 8 & 0x700) | nr3);
 }
 
-namespace gambatte
+namespace gambatte {
+
+Channel3::Channel3()
+: disableMaster_(master_, waveCounter_)
+, lengthCounter_(disableMaster_, 0xFF)
+, cycleCounter_(0)
+, soMask_(0)
+, prevOut_(0)
+, waveCounter_(SoundUnit::counter_disabled)
+, lastReadTime_(0)
+, nr0_(0)
+, nr3_(0)
+, nr4_(0)
+, wavePos_(0)
+, rshift_(4)
+, sampleBuf_(0)
+, master_(false)
+, cgb_(false)
 {
+}
 
-   Channel3::Channel3() :
-      disableMaster(master, waveCounter),
-      lengthCounter(disableMaster, 0xFF),
-      cycleCounter(0),
-      soMask(0),
-      prevOut(0),
-      waveCounter(SoundUnit::COUNTER_DISABLED),
-      lastReadTime(0),
-      nr0(0),
-      nr3(0),
-      nr4(0),
-      wavePos(0),
-      rShift(4),
-      sampleBuf(0),
-      master(false),
-      cgb(false)
-   {}
+void Channel3::setNr0(unsigned data) {
+	nr0_ = data & 0x80;
 
-   void Channel3::setNr0(const unsigned data)
-   {
-      nr0 = data & 0x80;
+	if (!(data & 0x80))
+		disableMaster_();
+}
 
-      if (!(data & 0x80))
-         disableMaster();
-   }
+void Channel3::setNr2(unsigned data) {
+	rshift_ = (data >> 5 & 3U) - 1;
+	if (rshift_ > 3)
+		rshift_ = 4;
+}
 
-   void Channel3::setNr2(const unsigned data)
-   {
-      rShift = (data >> 5 & 3U) - 1;
+void Channel3::setNr4(unsigned const data) {
+	lengthCounter_.nr4Change(nr4_, data, cycleCounter_);
+	nr4_ = data & 0x7F;
 
-      if (rShift > 3)
-         rShift = 4;
-   }
+	if (data & nr0_/* & 0x80*/) {
+		if (!cgb_ && waveCounter_ == cycleCounter_ + 1) {
+			unsigned const pos = ((wavePos_ + 1) & 0x1F) >> 1;
 
-   void Channel3::setNr4(const unsigned data)
-   {
-      lengthCounter.nr4Change(nr4, data, cycleCounter);
+			if (pos < 4)
+				waveRam_[0] = waveRam_[pos];
+			else
+				std::memcpy(waveRam_, waveRam_ + (pos & ~3), 4);
+		}
 
-      nr4 = data & 0x7F;
+		master_ = true;
+		wavePos_ = 0;
+		lastReadTime_ = waveCounter_ = cycleCounter_ + toPeriod(nr3_, data) + 3;
+	}
+}
 
-      if (data & nr0/* & 0x80*/)
-      {
-         if (!cgb && waveCounter == cycleCounter + 1) {
-            const unsigned pos = ((wavePos + 1) & 0x1F) >> 1;
+void Channel3::setSo(unsigned long soMask) {
+	soMask_ = soMask;
+}
 
-            if (pos < 4)
-               waveRam[0] = waveRam[pos];
-            else
-               std::memcpy(waveRam, waveRam + (pos & ~3), 4);
-         }
+void Channel3::reset() {
+	// cycleCounter >> 12 & 7 represents the frame sequencer position.
+	cycleCounter_ &= 0xFFF;
+	cycleCounter_ += ~(cycleCounter_ + 2) << 1 & 0x1000;
 
-         master = true;
-         wavePos = 0;
-         lastReadTime = waveCounter = cycleCounter + toPeriod(nr3, data) + 3;
-      }
-   }
+	sampleBuf_ = 0;
+}
 
-   void Channel3::setSo(const unsigned long soMask)
-   {
-      this->soMask = soMask;
-   }
+void Channel3::init(bool cgb) {
+	cgb_ = cgb;
+}
 
-   void Channel3::reset()
-   {
-      // cycleCounter >> 12 & 7 represents the frame sequencer position.
-      cycleCounter &= 0xFFF;
-      cycleCounter += ~(cycleCounter + 2) << 1 & 0x1000;
+void Channel3::setStatePtrs(SaveState &state) {
+	state.spu.ch3.waveRam.set(waveRam_, sizeof waveRam_);
+}
 
-      sampleBuf = 0;
-   }
+void Channel3::saveState(SaveState &state) const {
+	lengthCounter_.saveState(state.spu.ch3.lcounter);
 
-   void Channel3::init(const bool cgb)
-   {
-      this->cgb = cgb;
-   }
+	state.spu.ch3.waveCounter = waveCounter_;
+	state.spu.ch3.lastReadTime = lastReadTime_;
+	state.spu.ch3.nr3 = nr3_;
+	state.spu.ch3.nr4 = nr4_;
+	state.spu.ch3.wavePos = wavePos_;
+	state.spu.ch3.sampleBuf = sampleBuf_;
+	state.spu.ch3.master = master_;
+}
 
-   void Channel3::setStatePtrs(SaveState &state) {
-      state.spu.ch3.waveRam.set(waveRam, sizeof waveRam);
-   }
+void Channel3::loadState(SaveState const &state) {
+	lengthCounter_.loadState(state.spu.ch3.lcounter, state.spu.cycleCounter);
 
-   void Channel3::saveState(SaveState &state) const {
-      lengthCounter.saveState(state.spu.ch3.lcounter);
+	cycleCounter_ = state.spu.cycleCounter;
+	waveCounter_ = std::max(state.spu.ch3.waveCounter, state.spu.cycleCounter);
+	lastReadTime_ = state.spu.ch3.lastReadTime;
+	nr3_ = state.spu.ch3.nr3;
+	nr4_ = state.spu.ch3.nr4;
+	wavePos_ = state.spu.ch3.wavePos & 0x1F;
+	sampleBuf_ = state.spu.ch3.sampleBuf;
+	master_ = state.spu.ch3.master;
 
-      state.spu.ch3.waveCounter = waveCounter;
-      state.spu.ch3.lastReadTime = lastReadTime;
-      state.spu.ch3.nr3 = nr3;
-      state.spu.ch3.nr4 = nr4;
-      state.spu.ch3.wavePos = wavePos;
-      state.spu.ch3.sampleBuf = sampleBuf;
-      state.spu.ch3.master = master;
-   }
+	nr0_ = state.mem.ioamhram.get()[0x11A] & 0x80;
+	setNr2(state.mem.ioamhram.get()[0x11C]);
+}
 
-   void Channel3::loadState(const SaveState &state) {
-      lengthCounter.loadState(state.spu.ch3.lcounter, state.spu.cycleCounter);
+void Channel3::updateWaveCounter(unsigned long const cc) {
+	if (cc >= waveCounter_) {
+		unsigned const period = toPeriod(nr3_, nr4_);
+		unsigned long const periods = (cc - waveCounter_) / period;
 
-      cycleCounter = state.spu.cycleCounter;
-      waveCounter = std::max(state.spu.ch3.waveCounter, state.spu.cycleCounter);
-      lastReadTime = state.spu.ch3.lastReadTime;
-      nr3 = state.spu.ch3.nr3;
-      nr4 = state.spu.ch3.nr4;
-      wavePos = state.spu.ch3.wavePos & 0x1F;
-      sampleBuf = state.spu.ch3.sampleBuf;
-      master = state.spu.ch3.master;
+		lastReadTime_ = waveCounter_ + periods * period;
+		waveCounter_ = lastReadTime_ + period;
 
-      nr0 = state.mem.ioamhram.get()[0x11A] & 0x80;
-      setNr2(state.mem.ioamhram.get()[0x11C]);
-   }
+		wavePos_ += periods + 1;
+		wavePos_ &= 0x1F;
 
-   void Channel3::updateWaveCounter(const unsigned long cc) {
-      if (cc >= waveCounter) {
-         const unsigned period = toPeriod(nr3, nr4);
-         const unsigned long periods = (cc - waveCounter) / period;
+		sampleBuf_ = waveRam_[wavePos_ >> 1];
+	}
+}
 
-         lastReadTime = waveCounter + periods * period;
-         waveCounter = lastReadTime + period;
+void Channel3::update(uint_least32_t *buf, unsigned long const soBaseVol, unsigned long cycles) {
+	unsigned long const outBase = nr0_/* & 0x80*/ ? soBaseVol & soMask_ : 0;
 
-         wavePos += periods + 1;
-         wavePos &= 0x1F;
+	if (outBase && rshift_ != 4) {
+		unsigned long const endCycles = cycleCounter_ + cycles;
 
-         sampleBuf = waveRam[wavePos >> 1];
-      }
-   }
+		for (;;) {
+			unsigned long const nextMajorEvent =
+				std::min(lengthCounter_.counter(), endCycles);
+			unsigned long out = master_
+				? ((sampleBuf_ >> (~wavePos_ << 2 & 4) & 0xF) >> rshift_) * 2 - 15ul
+				: 0 - 15ul;
+			out *= outBase;
 
-   void Channel3::update(uint_least32_t *buf, const unsigned long soBaseVol, unsigned long cycles) {
-      const unsigned long outBase = (nr0/* & 0x80*/) ? soBaseVol & soMask : 0;
+			while (waveCounter_ <= nextMajorEvent) {
+				*buf += out - prevOut_;
+				prevOut_ = out;
+				buf += waveCounter_ - cycleCounter_;
+				cycleCounter_ = waveCounter_;
 
-      if (outBase && rShift != 4) {
-         const unsigned long endCycles = cycleCounter + cycles;
+				lastReadTime_ = waveCounter_;
+				waveCounter_ += toPeriod(nr3_, nr4_);
+				++wavePos_;
+				wavePos_ &= 0x1F;
+				sampleBuf_ = waveRam_[wavePos_ >> 1];
+				out = ((sampleBuf_ >> (~wavePos_ << 2 & 4) & 0xF) >> rshift_) * 2 - 15ul;
+				out *= outBase;
+			}
 
-         for (;;) {
-            const unsigned long nextMajorEvent = lengthCounter.counter() < endCycles ? lengthCounter.counter() : endCycles;
-            unsigned long out = outBase * (master ? ((sampleBuf >> (~wavePos << 2 & 4) & 0xF) >> rShift) * 2 - 15ul : 0 - 15ul);
+			if (cycleCounter_ < nextMajorEvent) {
+				*buf += out - prevOut_;
+				prevOut_ = out;
+				buf += nextMajorEvent - cycleCounter_;
+				cycleCounter_ = nextMajorEvent;
+			}
 
-            while (waveCounter <= nextMajorEvent) {
-               *buf += out - prevOut;
-               prevOut = out;
-               buf += waveCounter - cycleCounter;
-               cycleCounter = waveCounter;
+			if (lengthCounter_.counter() == nextMajorEvent) {
+				lengthCounter_.event();
+			} else
+				break;
+		}
+	} else {
+		unsigned long const out = outBase * (0 - 15ul);
+		*buf += out - prevOut_;
+		prevOut_ = out;
+		cycleCounter_ += cycles;
 
-               lastReadTime = waveCounter;
-               waveCounter += toPeriod(nr3, nr4);
-               ++wavePos;
-               wavePos &= 0x1F;
-               sampleBuf = waveRam[wavePos >> 1];
-               out = outBase * (/*master ? */((sampleBuf >> (~wavePos << 2 & 4) & 0xF) >> rShift) * 2 - 15ul/* : 0 - 15ul*/);
-            }
+		while (lengthCounter_.counter() <= cycleCounter_) {
+			updateWaveCounter(lengthCounter_.counter());
+			lengthCounter_.event();
+		}
 
-            if (cycleCounter < nextMajorEvent) {
-               *buf += out - prevOut;
-               prevOut = out;
-               buf += nextMajorEvent - cycleCounter;
-               cycleCounter = nextMajorEvent;
-            }
+		updateWaveCounter(cycleCounter_);
+	}
 
-            if (lengthCounter.counter() == nextMajorEvent) {
-               lengthCounter.event();
-            } else
-               break;
-         }
-      } else {
-         if (outBase) {
-            const unsigned long out = outBase * (0 - 15ul);
+	if (cycleCounter_ >= SoundUnit::counter_max) {
+		lengthCounter_.resetCounters(cycleCounter_);
 
-            *buf += out - prevOut;
-            prevOut = out;
-         }
+		if (waveCounter_ != SoundUnit::counter_disabled)
+			waveCounter_ -= SoundUnit::counter_max;
 
-         cycleCounter += cycles;
-
-         while (lengthCounter.counter() <= cycleCounter) {
-            updateWaveCounter(lengthCounter.counter());
-            lengthCounter.event();
-         }
-
-         updateWaveCounter(cycleCounter);
-      }
-
-      if (cycleCounter & SoundUnit::COUNTER_MAX)
-      {
-         lengthCounter.resetCounters(cycleCounter);
-
-         if (waveCounter != SoundUnit::COUNTER_DISABLED)
-            waveCounter -= SoundUnit::COUNTER_MAX;
-
-         lastReadTime -= SoundUnit::COUNTER_MAX;
-         cycleCounter -= SoundUnit::COUNTER_MAX;
-      }
-   }
+		lastReadTime_ -= SoundUnit::counter_max;
+		cycleCounter_ -= SoundUnit::counter_max;
+	}
+}
 
 }
