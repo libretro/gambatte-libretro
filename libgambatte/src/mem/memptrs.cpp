@@ -23,20 +23,21 @@
 namespace gambatte
 {
 
-   MemPtrs::MemPtrs() :
-      memchunk_(0),
-      rambankdata_(0),
-      rdisabledRam_(0),
-      wdisabledRam_(0),
-      rsrambankptr_(0),
-      wsrambankptr_(0),
-      oamDmaSrc_(OAM_DMA_SRC_OFF)
+   MemPtrs::MemPtrs()
+      : rmem_()
+      , wmem_()
+      , romdata_()
+      , wramdata_()
+      , vrambankptr_(0)
+      , rsrambankptr_(0)
+      , wsrambankptr_(0)
+      ,memchunk_(0)
+      , rambankdata_(0)
+      , rdisabledRam_(0)
+      , wdisabledRam_(0)
+      , wramdataend_(0)
+      , oamDmaSrc_(OAM_DMA_SRC_OFF)
    {
-      std::fill(rmem_, rmem_ + 0x10, static_cast<unsigned char *>(0));
-      std::fill(wmem_, wmem_ + 0x10, static_cast<unsigned char *>(0));
-
-      romdata_[1] = romdata_[0] = 0;
-      wramdata_[1] = wramdata_[0] = 0;
    }
 
    MemPtrs::~MemPtrs()
@@ -57,10 +58,14 @@ namespace gambatte
       romdata_[0]   = romdata();   
       rambankdata_  = romdata_[0] + rombanks * 0x4000ul;
       wramdata_[0]  = rambankdata_ + rambanks * 0x2000ul;
+      wramdataend_ = wramdata_[0] + wrambanks * 0x1000ul;
+
       rdisabledRam_ = wramdata_[0] + wrambanks * 0x1000ul;
       wdisabledRam_ = rdisabledRam_ + 0x2000;
 
+      /* TODO - get rid of rdisabledRam_ */
       std::memset(rdisabledRam_, 0xFF, 0x2000);
+      std::memset(rdisabledRamw(), 0xFF, 0x2000);
 
       oamDmaSrc_    = OAM_DMA_SRC_OFF;
       rmem_[0x3]    = rmem_[0x2] = rmem_[0x1] = rmem_[0x0] = romdata_[0];
@@ -69,6 +74,7 @@ namespace gambatte
 
       setRombank(1);
       setRambank(false, false, 0);
+      setVrambank(0);
       setWrambank(1);
    }
 
