@@ -28,6 +28,58 @@ namespace gambatte
       dmgColorsRgb32_[index] = rgb32;
    }
 
+   void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const dmgColors, const unsigned data)
+   {
+      palette[0] = dmgColors[data      & 3];
+      palette[1] = dmgColors[data >> 2 & 3];
+      palette[2] = dmgColors[data >> 4 & 3];
+      palette[3] = dmgColors[data >> 6 & 3];
+   }
+
+   void LCD::doCgbColorChange(unsigned char *const pdata,
+         video_pixel_t *const palette, unsigned index, const unsigned data)
+   {
+      pdata[index] = data;
+      index >>= 1;
+      palette[index] = gbcToRgb32(pdata[index << 1] | pdata[(index << 1) + 1] << 8);
+   }
+
+   void LCD::setVideoBuffer(video_pixel_t *const videoBuf, const int pitch)
+   {
+      ppu_.setFrameBuf(videoBuf, pitch);
+   }
+
+   static void clear(video_pixel_t *buf, const unsigned long color, const int dpitch)
+   {
+      unsigned lines = 144;
+
+      while (lines--)
+      {
+         std::fill_n(buf, 160, color);
+         buf += dpitch;
+      }
+   }
+
+   void LCD::setDmgPaletteColor(const unsigned palNum, const unsigned colorNum, const video_pixel_t rgb32)
+   {
+      if (palNum > 2 || colorNum > 3)
+         return;
+
+      setDmgPaletteColor(palNum * 4 | colorNum, rgb32);
+      refreshPalettes();
+   }
+
+   void LCD::updateScreen(const bool blanklcd, const unsigned long cycleCounter)
+   {
+      update(cycleCounter);
+
+      if (blanklcd && ppu_.frameBuf().fb())
+      {
+         const video_pixel_t color = ppu_.cgb() ? gbcToRgb32(0xFFFF) : dmgColorsRgb32_[0];
+         clear(ppu_.frameBuf().fb(), color, ppu_.frameBuf().pitch());
+      }
+   }
+
    video_pixel_t LCD::gbcToRgb32(const unsigned bgr15)
    {
       if (colorCorrection)

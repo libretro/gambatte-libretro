@@ -23,15 +23,6 @@
 
 namespace gambatte
 {
-   void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const dmgColors, const unsigned data)
-   {
-      palette[0] = dmgColors[data      & 3];
-      palette[1] = dmgColors[data >> 2 & 3];
-      palette[2] = dmgColors[data >> 4 & 3];
-      palette[3] = dmgColors[data >> 6 & 3];
-   }
-
-
    void LCD::setColorCorrection(bool colorCorrection_)
    {
       colorCorrection=colorCorrection_;
@@ -188,32 +179,6 @@ void LCD::refreshPalettes()
    }
 }
 
-namespace {
-   template<typename T>
-      static void clear(T *buf, const unsigned long color, const int dpitch)
-      {
-         unsigned lines = 144;
-
-         while (lines--)
-         {
-            std::fill_n(buf, 160, color);
-            buf += dpitch;
-         }
-      }
-
-}
-
-void LCD::updateScreen(const bool blanklcd, const unsigned long cycleCounter)
-{
-   update(cycleCounter);
-
-   if (blanklcd && ppu_.frameBuf().fb())
-   {
-      const video_pixel_t color = ppu_.cgb() ? gbcToRgb32(0xFFFF) : dmgColorsRgb32_[0];
-      clear(ppu_.frameBuf().fb(), color, ppu_.frameBuf().pitch());
-   }
-}
-
 void LCD::resetCc(const unsigned long oldCc, const unsigned long newCc)
 {
    update(oldCc);
@@ -333,14 +298,6 @@ bool LCD::cgbpAccessible(const unsigned long cc)
    return !(ppu_.lcdc() & 0x80) || ppu_.lyCounter().ly() >= 144
       || ppu_.lyCounter().lineCycles(cc) < 80U + isDoubleSpeed()
       || cc >= m0TimeOfCurrentLine(cc) + 3 - isDoubleSpeed();
-}
-
-void LCD::doCgbColorChange(unsigned char *const pdata,
-      video_pixel_t *const palette, unsigned index, const unsigned data)
-{
-   pdata[index] = data;
-   index >>= 1;
-   palette[index] = gbcToRgb32(pdata[index << 1] | pdata[(index << 1) + 1] << 8);
 }
 
 void LCD::doCgbBgColorChange(unsigned index, const unsigned data, const unsigned long cc)
@@ -782,20 +739,6 @@ void LCD::update(const unsigned long cycleCounter)
    }
 
    ppu_.update(cycleCounter);
-}
-
-void LCD::setVideoBuffer(video_pixel_t *const videoBuf, const int pitch)
-{
-   ppu_.setFrameBuf(videoBuf, pitch);
-}
-
-void LCD::setDmgPaletteColor(const unsigned palNum, const unsigned colorNum, const video_pixel_t rgb32)
-{
-   if (palNum > 2 || colorNum > 3)
-      return;
-
-   setDmgPaletteColor(palNum * 4 | colorNum, rgb32);
-   refreshPalettes();
 }
 
 }
