@@ -329,7 +329,7 @@ namespace gambatte
 
       if (ioamhram_[0x14D] & isCgb())
       {
-         psg_.generate_samples(cycleCounter, isDoubleSpeed());
+         psg_.generateSamples(cycleCounter, isDoubleSpeed());
          lcd_.speedChange(cycleCounter);
          ioamhram_[0x14D] ^= 0x81;
 
@@ -522,7 +522,7 @@ namespace gambatte
          case 0x26:
             if (ioamhram_[0x126] & 0x80)
             {
-               psg_.generate_samples(cycleCounter, isDoubleSpeed());
+               psg_.generateSamples(cycleCounter, isDoubleSpeed());
                ioamhram_[0x126] = 0xF0 | psg_.getStatus();
             }
             else
@@ -545,7 +545,7 @@ namespace gambatte
          case 0x3D:
          case 0x3E:
          case 0x3F:
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
             return psg_.waveRamRead(P & 0xF);
          case 0x41:
             return ioamhram_[0x141] | lcd_.getStat(ioamhram_[0x145], cycleCounter);
@@ -680,8 +680,8 @@ namespace gambatte
             return;
          case 0x10:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr10(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr10(data);
             data |= 0x80;
             break;
          case 0x11:
@@ -693,24 +693,24 @@ namespace gambatte
                data &= 0x3F;
             }
 
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr11(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr11(data);
             data |= 0x3F;
             break;
          case 0x12:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr12(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr12(data);
             break;
          case 0x13:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr13(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr13(data);
             return;
          case 0x14:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr14(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr14(data);
             data |= 0xBF;
             break;
          case 0x16:
@@ -722,89 +722,89 @@ namespace gambatte
                data &= 0x3F;
             }
 
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr21(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr21(data);
             data |= 0x3F;
             break;
          case 0x17:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr22(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr22(data);
             break;
          case 0x18:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr23(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr23(data);
             return;
          case 0x19:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr24(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr24(data);
             data |= 0xBF;
             break;
          case 0x1A:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr30(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr30(data);
             data |= 0x7F;
             break;
          case 0x1B:
             if (!psg_.isEnabled() && isCgb()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr31(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr31(data);
             return;
          case 0x1C:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr32(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr32(data);
             data |= 0x9F;
             break;
          case 0x1D:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr33(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr33(data);
             return;
          case 0x1E:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr34(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr34(data);
             data |= 0xBF;
             break;
          case 0x20:
             if (!psg_.isEnabled() && isCgb()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr41(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr41(data);
             return;
          case 0x21:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr42(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr42(data);
             break;
          case 0x22:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr43(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr43(data);
             break;
          case 0x23:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_nr44(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setNr44(data);
             data |= 0xBF;
             break;
          case 0x24:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.set_so_volume(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.setSoVolume(data);
             break;
          case 0x25:
             if (!psg_.isEnabled()) return;
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
-            psg_.map_so(data);
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
+            psg_.mapSo(data);
             break;
          case 0x26:
             if ((ioamhram_[0x126] ^ data) & 0x80)
             {
-               psg_.generate_samples(cycleCounter, isDoubleSpeed());
+               psg_.generateSamples(cycleCounter, isDoubleSpeed());
 
                if (!(data & 0x80))
                {
@@ -838,7 +838,7 @@ namespace gambatte
          case 0x3D:
          case 0x3E:
          case 0x3F:
-            psg_.generate_samples(cycleCounter, isDoubleSpeed());
+            psg_.generateSamples(cycleCounter, isDoubleSpeed());
             psg_.waveRamWrite(P & 0xF, data);
             break;
          case 0x40:
@@ -1102,7 +1102,7 @@ namespace gambatte
 
    unsigned Memory::fillSoundBuffer(const unsigned long cycleCounter)
    {
-      psg_.generate_samples(cycleCounter, isDoubleSpeed());
+      psg_.generateSamples(cycleCounter, isDoubleSpeed());
       return psg_.fillBuffer();
    }
 
