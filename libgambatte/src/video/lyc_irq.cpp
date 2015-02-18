@@ -27,7 +27,7 @@ namespace gambatte
 {
 
    LycIrq::LycIrq()
-      : time_(DISABLED_TIME)
+      : time_(disabled_time)
         , lycRegSrc_(0)
         , statRegSrc_(0)
         , lycReg_(0)
@@ -41,7 +41,7 @@ namespace gambatte
    {
       return (statReg & 0x40) && lycReg < 154
          ? lyCounter.nextFrameCycle(lycReg ? lycReg * 456 : 153 * 456 + 8, cc)
-         : static_cast<unsigned long>(DISABLED_TIME);
+         : static_cast<unsigned long>(disabled_time);
    }
 
    void LycIrq::regChange(const unsigned statReg,

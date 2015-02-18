@@ -26,7 +26,7 @@ namespace gambatte
 
    Tima::Tima() :
       lastUpdate_(0),
-      tmatime_(DISABLED_TIME),
+      tmatime_(disabled_time),
       tima_(0),
       tma_(0),
       tac_(0)
@@ -49,11 +49,11 @@ namespace gambatte
 
       timaIrq.setNextIrqEventTime((tac_ & 4)
             ?
-            (tmatime_ != DISABLED_TIME && tmatime_ > state.cpu.cycleCounter
+            (tmatime_ != disabled_time && tmatime_ > state.cpu.cycleCounter
              ? tmatime_
              : lastUpdate_ + ((256u - tima_) << timaClock[tac_ & 3]) + 3)
             :
-            static_cast<unsigned long>(DISABLED_TIME)
+            static_cast<unsigned long>(disabled_time)
             );
    }
 
@@ -69,7 +69,7 @@ namespace gambatte
          lastUpdate_ -= dec;
          timaIrq.setNextIrqEventTime(timaIrq.nextIrqEventTime() - dec);
 
-         if (tmatime_ != DISABLED_TIME)
+         if (tmatime_ != disabled_time)
             tmatime_ -= dec;
       }
    }
@@ -83,7 +83,7 @@ namespace gambatte
       if (cycleCounter >= tmatime_)
       {
          if (cycleCounter >= tmatime_ + 4)
-            tmatime_ = DISABLED_TIME;
+            tmatime_ = disabled_time;
 
          tima_ = tma_;
       }
@@ -101,7 +101,7 @@ namespace gambatte
          if (cycleCounter >= tmatime_)
          {
             if (cycleCounter >= tmatime_ + 4)
-               tmatime_ = DISABLED_TIME;
+               tmatime_ = disabled_time;
 
             tmp = tma_;
          }
@@ -118,7 +118,7 @@ namespace gambatte
          updateTima(cycleCounter);
 
          if (tmatime_ - cycleCounter < 4)
-            tmatime_ = DISABLED_TIME;
+            tmatime_ = disabled_time;
 
          timaIrq.setNextIrqEventTime(lastUpdate_ + ((256u - data) << timaClock[tac_ & 3]) + 3);
       }
@@ -157,8 +157,8 @@ namespace gambatte
 
             updateTima(cycleCounter);
 
-            tmatime_ = DISABLED_TIME;
-            nextIrqEventTime = DISABLED_TIME;
+            tmatime_ = disabled_time;
+            nextIrqEventTime = disabled_time;
          }
 
          if (data & 4)

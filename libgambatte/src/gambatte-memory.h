@@ -60,7 +60,7 @@ namespace gambatte
 
       unsigned long nextEventTime() const { return intreq_.minEventTime(); }
 
-      bool isActive() const { return intreq_.eventTime(END) != DISABLED_TIME; }
+      bool isActive() const { return intreq_.eventTime(END) != disabled_time; }
 
       long cyclesSinceBlit(const unsigned long cc) const
       {

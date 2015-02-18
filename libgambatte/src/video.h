@@ -177,7 +177,7 @@ class LCD
 
       void enableHdma(unsigned long cycleCounter);
       void disableHdma(unsigned long cycleCounter);
-      bool hdmaIsEnabled() const { return eventTimes_(HDMA_REQ) != DISABLED_TIME; }
+      bool hdmaIsEnabled() const { return eventTimes_(HDMA_REQ) != disabled_time; }
 
       void update(unsigned long cycleCounter);
 

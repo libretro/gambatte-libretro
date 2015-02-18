@@ -183,7 +183,7 @@ void SpriteMapper::sortLine(const unsigned ly) const {
 unsigned long SpriteMapper::doEvent(const unsigned long time) {
 	oamReader.update(time);
 	mapSprites();
-	return oamReader.changed() ? time + oamReader.lyCounter.lineTime() : static_cast<unsigned long>(DISABLED_TIME);
+	return oamReader.changed() ? time + oamReader.lyCounter.lineTime() : static_cast<unsigned long>(disabled_time);
 }
 
 }

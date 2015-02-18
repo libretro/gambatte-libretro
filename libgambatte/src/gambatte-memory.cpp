@@ -30,7 +30,7 @@ namespace gambatte
       : vrambank(vram),
       getInput_(0),
       divLastUpdate_(0),
-      lastOamDmaUpdate_(DISABLED_TIME),
+      lastOamDmaUpdate_(disabled_time),
       lcd_(ioamhram_, vram, VideoInterruptRequester(&intreq_)),
       interrupter_(interrupter_in),
       dmaSource_(0),
@@ -96,7 +96,7 @@ namespace gambatte
       dmaSource_ = state.mem.dmaSource;
       dmaDestination_ = state.mem.dmaDestination;
       oamDmaPos_ = state.mem.oamDmaPos;
-      serialCnt_ = intreq_.eventTime(SERIAL) != DISABLED_TIME
+      serialCnt_ = intreq_.eventTime(SERIAL) != disabled_time
          ? serialCntFrom(intreq_.eventTime(SERIAL) - state.cpu.cycleCounter, ioamhram_[0x102] & isCgb() * 2)
          : 8;
 
@@ -105,7 +105,7 @@ namespace gambatte
       cart_.setOamDmaSrc(OAM_DMA_SRC_OFF);
       cart_.setWrambank(isCgb() && (ioamhram_[0x170] & 0x07) ? ioamhram_[0x170] & 0x07 : 1);
 
-      if (lastOamDmaUpdate_ != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != disabled_time)
       {
          oamDmaInitSetup();
 
@@ -131,14 +131,14 @@ namespace gambatte
 
    void Memory::updateSerial(const unsigned long cc)
    {
-      if (intreq_.eventTime(SERIAL) == DISABLED_TIME)
+      if (intreq_.eventTime(SERIAL) == disabled_time)
          return;
 
       if (intreq_.eventTime(SERIAL) <= cc)
       {
          ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << serialCnt_) - 1) & 0xFF;
          ioamhram_[0x102] &= 0x7F;
-         intreq_.setEventTime<SERIAL>(DISABLED_TIME);
+         intreq_.setEventTime<SERIAL>(disabled_time);
          intreq_.flagIrq(8);
       }
       else
@@ -164,22 +164,22 @@ namespace gambatte
 
    unsigned long Memory::event(unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate_ != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != disabled_time)
          updateOamDma(cycleCounter);
 
       switch (intreq_.minEventId())
       {
          case UNHALT:
             intreq_.unhalt();
-            intreq_.setEventTime<UNHALT>(DISABLED_TIME);
+            intreq_.setEventTime<UNHALT>(disabled_time);
             break;
          case END:
-            intreq_.setEventTime<END>(DISABLED_TIME - 1);
+            intreq_.setEventTime<END>(disabled_time - 1);
 
-            while (cycleCounter >= intreq_.minEventTime() && intreq_.eventTime(END) != DISABLED_TIME)
+            while (cycleCounter >= intreq_.minEventTime() && intreq_.eventTime(END) != disabled_time)
                cycleCounter = event(cycleCounter);
 
-            intreq_.setEventTime<END>(DISABLED_TIME);
+            intreq_.setEventTime<END>(disabled_time);
 
             break;
          case BLIT:
@@ -190,8 +190,8 @@ namespace gambatte
                if (lcden | blanklcd_)
                {
                   lcd_.updateScreen(blanklcd_, cycleCounter);
-                  intreq_.setEventTime<BLIT>(DISABLED_TIME);
-                  intreq_.setEventTime<END>(DISABLED_TIME);
+                  intreq_.setEventTime<BLIT>(disabled_time);
+                  intreq_.setEventTime<END>(disabled_time);
 
                   while (cycleCounter >= intreq_.minEventTime())
                      cycleCounter = event(cycleCounter);
@@ -207,8 +207,8 @@ namespace gambatte
             updateSerial(cycleCounter);
             break;
          case OAM:
-            intreq_.setEventTime<OAM>(lastOamDmaUpdate_ == DISABLED_TIME ?
-                  static_cast<unsigned long>(DISABLED_TIME) : intreq_.eventTime(OAM) + 0xA0 * 4);
+            intreq_.setEventTime<OAM>(lastOamDmaUpdate_ == disabled_time ?
+                  static_cast<unsigned long>(disabled_time) : intreq_.eventTime(OAM) + 0xA0 * 4);
             break;
          case DMA:
             {
@@ -233,7 +233,7 @@ namespace gambatte
 
                {
                   unsigned long lOamDmaUpdate = lastOamDmaUpdate_;
-                  lastOamDmaUpdate_ = DISABLED_TIME;
+                  lastOamDmaUpdate_ = disabled_time;
 
                   while (length--)
                   {
@@ -257,7 +257,7 @@ namespace gambatte
                         else if (oamDmaPos_ == 0xA0)
                         {
                            endOamDma(lOamDmaUpdate - 1);
-                           lOamDmaUpdate = DISABLED_TIME;
+                           lOamDmaUpdate = disabled_time;
                         }
                      }
 
@@ -275,7 +275,7 @@ namespace gambatte
 
                if ((ioamhram_[0x155] & 0x80) && lcd_.hdmaIsEnabled())
                {
-                  if (lastOamDmaUpdate_ != DISABLED_TIME)
+                  if (lastOamDmaUpdate_ != disabled_time)
                      updateOamDma(cycleCounter);
 
                   lcd_.disableHdma(cycleCounter);
@@ -296,7 +296,7 @@ namespace gambatte
                   cycleCounter += 4;
 
                intreq_.unhalt();
-               intreq_.setEventTime<UNHALT>(DISABLED_TIME);
+               intreq_.setEventTime<UNHALT>(disabled_time);
             }
 
             if (ime())
@@ -351,19 +351,19 @@ namespace gambatte
 
    static void decCycles(unsigned long &counter, const unsigned long dec)
    {
-      if (counter != DISABLED_TIME)
+      if (counter != disabled_time)
          counter -= dec;
    }
 
    void Memory::decEventCycles(const MemEventId eventId, const unsigned long dec)
    {
-      if (intreq_.eventTime(eventId) != DISABLED_TIME)
+      if (intreq_.eventTime(eventId) != disabled_time)
          intreq_.setEventTime(eventId, intreq_.eventTime(eventId) - dec);
    }
 
    unsigned long Memory::resetCounters(unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate_ != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != disabled_time)
          updateOamDma(cycleCounter);
 
       updateIrqs(cycleCounter);
@@ -437,7 +437,7 @@ namespace gambatte
          else if (oamDmaPos_ == 0xA0)
          {
             endOamDma(lastOamDmaUpdate_ - 1);
-            lastOamDmaUpdate_ = DISABLED_TIME;
+            lastOamDmaUpdate_ = disabled_time;
             break;
          }
       }
@@ -493,7 +493,7 @@ namespace gambatte
 
    unsigned Memory::nontrivial_ff_read(const unsigned P, const unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate_ != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != disabled_time)
          updateOamDma(cycleCounter);
 
       switch (P & 0x7F)
@@ -593,7 +593,7 @@ namespace gambatte
    {
       if (P < 0xFF80)
       {
-         if (lastOamDmaUpdate_ != DISABLED_TIME)
+         if (lastOamDmaUpdate_ != disabled_time)
          {
             updateOamDma(cycleCounter);
 
@@ -635,7 +635,7 @@ namespace gambatte
 
    void Memory::nontrivial_ff_write(const unsigned P, unsigned data, const unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate_ != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != disabled_time)
          updateOamDma(cycleCounter);
 
       switch (P & 0xFF)
@@ -652,7 +652,7 @@ namespace gambatte
             serialCnt_ = 8;
             intreq_.setEventTime<SERIAL>((data & 0x81) == 0x81
                   ? (data & isCgb() * 2 ? (cycleCounter & ~0x7ul) + 0x10 * 8 : (cycleCounter & ~0xFFul) + 0x200 * 8)
-                  : static_cast<unsigned long>(DISABLED_TIME));
+                  : static_cast<unsigned long>(disabled_time));
 
             data |= 0x7E - isCgb() * 2;
             break;
@@ -880,7 +880,7 @@ namespace gambatte
             lcd_.lycRegChange(data, cycleCounter);
             break;
          case 0x46:
-            if (lastOamDmaUpdate_ != DISABLED_TIME)
+            if (lastOamDmaUpdate_ != disabled_time)
                endOamDma(cycleCounter);
 
             lastOamDmaUpdate_ = cycleCounter;
@@ -1033,7 +1033,7 @@ namespace gambatte
 
    void Memory::nontrivial_write(const unsigned P, const unsigned data, const unsigned long cycleCounter)
    {
-      if (lastOamDmaUpdate_ != DISABLED_TIME)
+      if (lastOamDmaUpdate_ != disabled_time)
       {
          updateOamDma(cycleCounter);
 

@@ -23,7 +23,7 @@ namespace gambatte
 {
 
    InterruptRequester::InterruptRequester()
-      : eventTimes(DISABLED_TIME)
+      : eventTimes(disabled_time)
       , minIntTime(0)
       , ifreg_(0)
       , iereg_(0)
@@ -46,14 +46,14 @@ namespace gambatte
 
       eventTimes.setValue<INTERRUPTS>(intFlags.imeOrHalted() && pendingIrqs()
             ? minIntTime
-            : static_cast<unsigned long>(DISABLED_TIME));
+            : static_cast<unsigned long>(disabled_time));
    }
 
    void InterruptRequester::resetCc(const unsigned long oldCc, const unsigned long newCc)
    {
       minIntTime = minIntTime < oldCc ? 0 : minIntTime - (oldCc - newCc);
 
-      if (eventTimes.value(INTERRUPTS) != DISABLED_TIME)
+      if (eventTimes.value(INTERRUPTS) != disabled_time)
          eventTimes.setValue<INTERRUPTS>(minIntTime);
    }
 
@@ -71,7 +71,7 @@ namespace gambatte
       intFlags.unsetIme();
 
       if (!intFlags.imeOrHalted())
-         eventTimes.setValue<INTERRUPTS>(DISABLED_TIME);
+         eventTimes.setValue<INTERRUPTS>(disabled_time);
    }
 
    void InterruptRequester::halt()
@@ -87,7 +87,7 @@ namespace gambatte
       intFlags.unsetHalted();
 
       if (!intFlags.imeOrHalted())
-         eventTimes.setValue<INTERRUPTS>(DISABLED_TIME);
+         eventTimes.setValue<INTERRUPTS>(disabled_time);
    }
 
    void InterruptRequester::flagIrq(const unsigned bit)
@@ -111,7 +111,7 @@ namespace gambatte
       if (intFlags.imeOrHalted())
          eventTimes.setValue<INTERRUPTS>(pendingIrqs()
                ? minIntTime
-               : static_cast<unsigned long>(DISABLED_TIME));
+               : static_cast<unsigned long>(disabled_time));
    }
 
    void InterruptRequester::setIfreg(const unsigned ifreg)
@@ -121,7 +121,7 @@ namespace gambatte
       if (intFlags.imeOrHalted())
          eventTimes.setValue<INTERRUPTS>(pendingIrqs()
                ? minIntTime
-               : static_cast<unsigned long>(DISABLED_TIME));
+               : static_cast<unsigned long>(disabled_time));
    }
 
 }
