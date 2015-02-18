@@ -34,25 +34,25 @@ namespace gambatte
 
          const unsigned char* getActive() const
          {
-            return activeData;
+            return activeData_;
          }
 
          uint64_t& getBaseTime()
          {
-            return baseTime;
+            return baseTime_;
          }
 
          void setBaseTime(const uint64_t baseTime)
          {
-            this->baseTime = baseTime;
+            baseTime_ = baseTime;
          }
 
          void latch(const unsigned data)
          {
-            if (!lastLatchData && data == 1)
+            if (!lastLatchData_ && data == 1)
                doLatch();
 
-            lastLatchData = data;
+            lastLatchData_ = data;
          }
 
          void saveState(SaveState &state) const;
@@ -60,40 +60,40 @@ namespace gambatte
 
          void setEnabled(const bool enabled)
          {
-            this->enabled = enabled;
+            enabled_ = enabled;
 
             doSwapActive();
          }
 
-         void swapActive(unsigned index)
+         void swapActive(unsigned bank)
          {
-            index &= 0xF;
-            index -= 8;
+            bank &= 0xF;
+            bank -= 8;
 
-            this->index = index;
+            index_ = bank;
 
             doSwapActive();
          }
 
          void write(const unsigned data)
          {
-            (this->*activeSet)(data);
-            *activeData = data;
+            (this->*activeSet_)(data);
+            *activeData_ = data;
          }
 
       private:
-         unsigned char *activeData;
-         void (Rtc::*activeSet)(unsigned);
-         uint64_t baseTime;
-         uint64_t haltTime;
-         unsigned char index;
-         unsigned char dataDh;
-         unsigned char dataDl;
-         unsigned char dataH;
-         unsigned char dataM;
-         unsigned char dataS;
-         bool enabled;
-         bool lastLatchData;
+         unsigned char *activeData_;
+         void (Rtc::*activeSet_)(unsigned);
+         uint64_t baseTime_;
+         uint64_t haltTime_;
+         unsigned char index_;
+         unsigned char dataDh_;
+         unsigned char dataDl_;
+         unsigned char dataH_;
+         unsigned char dataM_;
+         unsigned char dataS_;
+         bool enabled_;
+         bool lastLatchData_;
 
          void doLatch();
          void doSwapActive();
