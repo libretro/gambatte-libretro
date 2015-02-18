@@ -481,6 +481,8 @@ namespace gambatte
             case 0x1C: printf("MBC5+RUMBLE ROM not supported.\n"); type = MBC5; break;
             case 0x1D: printf("MBC5+RUMBLE+RAM ROM not suported.\n"); type = MBC5; break;
             case 0x1E: printf("MBC5+RUMBLE+RAM+BATTERY ROM not supported.\n"); type = MBC5; break;
+            case 0x20: printf("MBC6 ROM not supported.\n"); return -1;
+            case 0x22: printf("MBC7 ROM not supported.\n"); return -1;
             case 0xFC: printf("Pocket Camera ROM not supported.\n"); return -1;
             case 0xFD: printf("Bandai TAMA5 ROM not supported.\n"); return -1;
             case 0xFE: printf("HuC3 ROM+RAM+BATTERY loaded.\n"); return -1;
