@@ -256,7 +256,7 @@ namespace gambatte
                break;
             case 1:
                rombank = data & 0x7F;
-               memptrs.setRombank(rombank & (rombanks(memptrs) - 1));
+               setRombank();
                break;
             case 2:
                rambank = data;
@@ -278,7 +278,11 @@ namespace gambatte
          rambank = ss.rambank;
          enableRam = ss.enableRam;
          setRambank();
-         memptrs.setRombank(rombank & (rombanks(memptrs) - 1));
+         setRombank();
+      }
+
+      void setRombank() const {
+         memptrs.setRombank(std::max(rombank & (rombanks(memptrs) - 1), 1u));
       }
    };
    class HuC1 : public DefaultMbc {
