@@ -10,6 +10,7 @@ SOURCES_CXX := $(CORE_DIR)/cpu.cpp \
 					$(CORE_DIR)/statesaver.cpp \
 					$(CORE_DIR)/tima.cpp \
 					$(CORE_DIR)/video.cpp \
+					$(CORE_DIR)/video_libretro.cpp \
 					$(CORE_DIR)/file/file.cpp \
 					$(CORE_DIR)/mem/cartridge.cpp \
 					$(CORE_DIR)/mem/cartridge_libretro.cpp \

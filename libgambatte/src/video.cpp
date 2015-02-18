@@ -23,7 +23,6 @@
 
 namespace gambatte
 {
-
    void LCD::setDmgPalette(video_pixel_t *const palette, const video_pixel_t *const dmgColors, const unsigned data)
    {
       palette[0] = dmgColors[data      & 3];
@@ -32,41 +31,6 @@ namespace gambatte
       palette[3] = dmgColors[data >> 6 & 3];
    }
 
-   video_pixel_t LCD::gbcToRgb32(const unsigned bgr15)
-   {
-      if (colorCorrection)
-      {
-#ifdef VIDEO_RGB565
-         const unsigned r = bgr15 & 0x1F;
-         const unsigned g = bgr15 >> 5 & 0x1F;
-         const unsigned b = bgr15 >> 10 & 0x1F;
-
-         return (((r * 13 + g * 2 + b + 8) << 7) & 0xF800) | ((g * 3 + b + 1) >> 1) << 5 | ((r * 3 + g * 2 + b * 11 + 8) >> 4);
-#else
-         const unsigned r = bgr15       & 0x1F;
-         const unsigned g = bgr15 >>  5 & 0x1F;
-         const unsigned b = bgr15 >> 10 & 0x1F;
-
-         return ((r * 13 + g * 2 + b) >> 1) << 16 | (g * 3 + b) << 9 | (r * 3 + g * 2 + b * 11) >> 1;
-#endif
-      }
-      else
-      {
-#ifdef VIDEO_RGB565
-         const unsigned r = bgr15       & 0x1F;
-         const unsigned g = bgr15 >>  5 & 0x1F;
-         const unsigned b = bgr15 >> 10 & 0x1F;
-
-         return r<<11 | g<<6 | b;
-#else
-         const unsigned r = bgr15       & 0x1F;
-         const unsigned g = bgr15 >>  5 & 0x1F;
-         const unsigned b = bgr15 >> 10 & 0x1F;
-
-         return r<<16 | g<<8 | b;
-#endif
-      }
-   }
 
    void LCD::setColorCorrection(bool colorCorrection_)
    {
