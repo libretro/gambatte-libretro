@@ -22,15 +22,12 @@
 namespace gambatte
 {
 
-   enum OamDmaSrc
-   {
-      OAM_DMA_SRC_ROM,
-      OAM_DMA_SRC_SRAM,
-      OAM_DMA_SRC_VRAM,
-      OAM_DMA_SRC_WRAM,
-      OAM_DMA_SRC_INVALID,
-      OAM_DMA_SRC_OFF
-   };
+   enum OamDmaSrc { oam_dma_src_rom,
+                 oam_dma_src_sram,
+                 oam_dma_src_vram,
+                 oam_dma_src_wram,
+                 oam_dma_src_invalid,
+                 oam_dma_src_off, };
 
    class MemPtrs
    {

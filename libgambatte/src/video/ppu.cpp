@@ -144,63 +144,6 @@ namespace M2_LyNon0 {
 	}
 }
 
-/*
-namespace M2 {
-	struct SpriteLess {
-		bool operator()(Sprite lhs, Sprite rhs) const {
-			return lhs.spx < rhs.spx;
-		}
-	};
-
-	static void f0(PPUPriv &p) {
-		std::memset(&p.spLut, 0, sizeof p.spLut);
-		p.reg0 = 0;
-		p.nextSprite = 0;
-		p.nextCallPtr = &f1_;
-		f1(p);
-	}
-
-	static void f1(PPUPriv &p) {
-		int cycles = p.cycles;
-		unsigned oampos = p.reg0;
-		unsigned nextSprite = p.nextSprite;
-		unsigned const nly = (p.lyCounter.ly() + 1 == 154 ? 0 : p.lyCounter.ly() + 1)
-		                   + ((p.lyCounter.time()-(p.now-p.cycles)) <= 4);
-		bool const ls = p.spriteMapper.largeSpritesSource();
-
-		do {
-			unsigned const spy = p.spriteMapper.oamram()[oampos  ];
-			unsigned const spx = p.spriteMapper.oamram()[oampos+1];
-			unsigned const ydiff = spy - nly;
-
-			if (ls ? ydiff < 16u : ydiff - 8u < 8u) {
-				p.spriteList[nextSprite].spx = spx;
-				p.spriteList[nextSprite].line = 15u - ydiff;
-				p.spriteList[nextSprite].oampos = oampos;
-
-				if (++nextSprite == 10) {
-					cycles -= (0xA0 - 4 - oampos) >> 1;
-					oampos = 0xA0 - 4;
-				}
-			}
-
-			oampos += 4;
-		} while ((cycles-=2) >= 0 && oampos != 0xA0);
-
-		p.reg0 = oampos;
-		p.nextSprite = nextSprite;
-		p.cycles = cycles;
-
-		if (oampos == 0xA0) {
-			insertionSort(p.spriteList, p.spriteList + nextSprite, SpriteLess());
-			p.spriteList[nextSprite].spx = 0xFF;
-			p.nextSprite = 0;
-			nextCall(0, M3Start::f0_, p);
-		}
-	}
-}
-*/
-
 static int loadTileDataByte0(PPUPriv const &p) {
 	unsigned const yoffset = p.winDrawState & win_draw_started
 	                       ? p.winYPos

@@ -60,13 +60,13 @@ namespace gambatte
 
       unsigned long nextEventTime() const { return intreq_.minEventTime(); }
 
-      bool isActive() const { return intreq_.eventTime(END) != disabled_time; }
+      bool isActive() const { return intreq_.eventTime(intevent_end) != disabled_time; }
 
       long cyclesSinceBlit(const unsigned long cc) const
       {
-         if (cc < intreq_.eventTime(BLIT))
+         if (cc < intreq_.eventTime(intevent_blit))
             return -1;
-         return (cc - intreq_.eventTime(BLIT)) >> isDoubleSpeed();
+         return (cc - intreq_.eventTime(intevent_blit)) >> isDoubleSpeed();
       }
 
       void halt() { intreq_.halt(); }
@@ -150,7 +150,7 @@ namespace gambatte
       unsigned char vram[0x2000 * 2];
       unsigned char *vrambank;
 
-      void decEventCycles(MemEventId eventId, unsigned long dec);
+      void decEventCycles(IntEventId eventId, unsigned long dec);
       void oamDmaInitSetup();
       void updateOamDma(unsigned long cycleCounter);
       void startOamDma(unsigned long cycleCounter);

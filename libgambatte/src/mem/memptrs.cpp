@@ -36,7 +36,7 @@ namespace gambatte
       , rdisabledRam_(0)
       , wdisabledRam_(0)
       , wramdataend_(0)
-      , oamDmaSrc_(OAM_DMA_SRC_OFF)
+      , oamDmaSrc_(oam_dma_src_off)
    {
    }
 
@@ -67,7 +67,7 @@ namespace gambatte
       std::memset(rdisabledRam_, 0xFF, 0x2000);
       std::memset(rdisabledRamw(), 0xFF, 0x2000);
 
-      oamDmaSrc_    = OAM_DMA_SRC_OFF;
+      oamDmaSrc_    = oam_dma_src_off;
       rmem_[0x3]    = rmem_[0x2] = rmem_[0x1] = rmem_[0x0] = romdata_[0];
       rmem_[0xC]    = wmem_[0xC] = wramdata_[0] - 0xC000;
       rmem_[0xE]    = wmem_[0xE] = wramdata_[0] - 0xE000;
@@ -137,20 +137,20 @@ namespace gambatte
       {
          switch (oamDmaSrc_)
          {
-            case OAM_DMA_SRC_ROM:  // fall through
-            case OAM_DMA_SRC_SRAM:
-            case OAM_DMA_SRC_INVALID:
+            case oam_dma_src_rom:  // fall through
+            case oam_dma_src_sram:
+            case oam_dma_src_invalid:
                std::fill(rmem_, rmem_ + 8, static_cast<unsigned char *>(0));
                rmem_[0xB] = rmem_[0xA] = 0;
                wmem_[0xB] = wmem_[0xA] = 0;
                break;
-            case OAM_DMA_SRC_VRAM:
+            case oam_dma_src_vram:
                break;
-            case OAM_DMA_SRC_WRAM:
+            case oam_dma_src_wram:
                rmem_[0xE] = rmem_[0xD] = rmem_[0xC] = 0;
                wmem_[0xE] = wmem_[0xD] = wmem_[0xC] = 0;
                break;
-            case OAM_DMA_SRC_OFF:
+            case oam_dma_src_off:
                break;
          }
       }
@@ -158,19 +158,19 @@ namespace gambatte
       {
          switch (oamDmaSrc_)
          {
-            case OAM_DMA_SRC_ROM:  // fall through
-            case OAM_DMA_SRC_SRAM:
-            case OAM_DMA_SRC_WRAM:
-            case OAM_DMA_SRC_INVALID:
+            case oam_dma_src_rom:  // fall through
+            case oam_dma_src_sram:
+            case oam_dma_src_wram:
+            case oam_dma_src_invalid:
                std::fill(rmem_, rmem_ + 8, static_cast<unsigned char *>(0));
                rmem_[0xB] = rmem_[0xA] = 0;
                wmem_[0xB] = wmem_[0xA] = 0;
                rmem_[0xE] = rmem_[0xD] = rmem_[0xC] = 0;
                wmem_[0xE] = wmem_[0xD] = wmem_[0xC] = 0;
                break;
-            case OAM_DMA_SRC_VRAM:
+            case oam_dma_src_vram:
                break;
-            case OAM_DMA_SRC_OFF:
+            case oam_dma_src_off:
                break;
          }
       }
