@@ -131,8 +131,8 @@ namespace gambatte
 
          const std::string saveBasePath() const;
          void setSaveDir(const std::string &dir);
-         bool loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multicartCompat);
-         bool loadROM(File &file, const bool forceDmg, const bool multiCartCompat);
+         int loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multicartCompat);
+         int loadROM(File &file, const bool forceDmg, const bool multiCartCompat);
          void setGameGenie(const std::string &codes);
          void clearCheats();
 

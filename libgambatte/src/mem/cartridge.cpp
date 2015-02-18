@@ -340,7 +340,7 @@ namespace gambatte
       unsigned short rombank;
       unsigned char rambank;
       bool enableRam;
-      static unsigned adjustedRombank(const unsigned bank) { return bank ? bank : bank | 1; }
+      static unsigned adjustedRombank(const unsigned bank) { return bank ? bank : 1; }
       void setRambank() const { memptrs.setRambank(enableRam ? MemPtrs::READ_EN | MemPtrs::WRITE_EN : 0, rambank & (rambanks(memptrs) - 1)); }
       void setRombank() const { memptrs.setRombank(adjustedRombank(rombank & (rombanks(memptrs) - 1))); }
       public:
@@ -434,10 +434,10 @@ namespace gambatte
    }
 
 
-   bool Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartCompat)
+   int Cartridge::loadROM(File &rom, const bool forceDmg, const bool multiCartCompat)
    {
 
-      if (rom.size() < 0x4000) return 1;
+      if (rom.size() < 0x4000) return -1;
 
       unsigned rambanks = 1;
       unsigned rombanks = 2;
@@ -458,28 +458,28 @@ namespace gambatte
             case 0x06: printf("MBC2 ROM+BATTERY loaded.\n"); type = MBC2; break;
             case 0x08: printf("Plain ROM with additional RAM loaded.\n"); type = MBC2; break;
             case 0x09: printf("Plain ROM with additional RAM and Battery loaded.\n"); type = MBC2;break;
-            case 0x0B: printf("MM01 ROM not supported.\n"); return 1;
-            case 0x0C: printf("MM01 ROM not supported.\n"); return 1;
-            case 0x0D: printf("MM01 ROM not supported.\n"); return 1;
+            case 0x0B: printf("MM01 ROM not supported.\n"); return -1;
+            case 0x0C: printf("MM01 ROM not supported.\n"); return -1;
+            case 0x0D: printf("MM01 ROM not supported.\n"); return -1;
             case 0x0F: printf("MBC3 ROM+TIMER+BATTERY loaded.\n"); type = MBC3; break;
             case 0x10: printf("MBC3 ROM+TIMER+RAM+BATTERY loaded.\n"); type = MBC3; break;
             case 0x11: printf("MBC3 ROM loaded.\n"); type = MBC3; break;
             case 0x12: printf("MBC3 ROM+RAM loaded.\n"); type = MBC3; break;
             case 0x13: printf("MBC3 ROM+RAM+BATTERY loaded.\n"); type = MBC3; break;
-            case 0x15: printf("MBC4 ROM not supported.\n"); return 1;
-            case 0x16: printf("MBC4 ROM not supported.\n"); return 1;
-            case 0x17: printf("MBC4 ROM not supported.\n"); return 1;
+            case 0x15: printf("MBC4 ROM not supported.\n"); return -1;
+            case 0x16: printf("MBC4 ROM not supported.\n"); return -1;
+            case 0x17: printf("MBC4 ROM not supported.\n"); return -1;
             case 0x19: printf("MBC5 ROM loaded.\n"); type = MBC5; break;
             case 0x1A: printf("MBC5 ROM+RAM loaded.\n"); type = MBC5; break;
             case 0x1B: printf("MBC5 ROM+RAM+BATTERY loaded.\n"); type = MBC5; break;
             case 0x1C: printf("MBC5+RUMBLE ROM not supported.\n"); type = MBC5; break;
             case 0x1D: printf("MBC5+RUMBLE+RAM ROM not suported.\n"); type = MBC5; break;
             case 0x1E: printf("MBC5+RUMBLE+RAM+BATTERY ROM not supported.\n"); type = MBC5; break;
-            case 0xFC: printf("Pocket Camera ROM not supported.\n"); return 1;
-            case 0xFD: printf("Bandai TAMA5 ROM not supported.\n"); return 1;
-            case 0xFE: printf("HuC3 ROM+RAM+BATTERY loaded.\n"); return 1;
+            case 0xFC: printf("Pocket Camera ROM not supported.\n"); return -1;
+            case 0xFD: printf("Bandai TAMA5 ROM not supported.\n"); return -1;
+            case 0xFE: printf("HuC3 ROM+RAM+BATTERY loaded.\n"); return -1;
             case 0xFF: printf("HuC1 ROM+BATTERY loaded.\n"); type = HUC1; break;
-            default: printf("Wrong data-format, corrupt or unsupported ROM.\n"); return 1;
+            default: printf("Wrong data-format, corrupt or unsupported ROM.\n"); return -1;
          }
 
 #if 0
@@ -497,7 +497,7 @@ namespace gambatte
             case 0x52: rombanks = 72; break;
             case 0x53: rombanks = 80; break;
             case 0x54: rombanks = 96; break;
-            default: return 1;
+            default: return -1;
          }
 
          std::printf("rombanks: %u\n", rombanks);*/
@@ -544,7 +544,7 @@ namespace gambatte
       enforce8bit(memptrs_.romdata(), rombanks * 0x4000ul);
 
       if (rom.fail())
-         return 1;
+         return -1;
 
       switch (type)
       {

@@ -1083,16 +1083,16 @@ namespace gambatte
          ioamhram_[P - 0xFE00] = data;
    }
 
-   bool Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat)
+   int Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat)
    {
-      if (cart_.loadROM(romdata, romsize, forceDmg, multicartCompat))
-         return true;
+      if (const int fail = cart_.loadROM(romdata, romsize, forceDmg, multicartCompat))
+         return fail;
 
       psg_.init(cart_.isCgb());
       lcd_.reset(ioamhram_, vram, cart_.isCgb());
       interrupter_.setGameShark(std::string());
 
-      return false;
+      return 0;
    }
 
    unsigned Memory::fillSoundBuffer(const unsigned long cycleCounter)

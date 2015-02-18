@@ -39,7 +39,7 @@ namespace gambatte
       }
    }
 
-   bool Cartridge::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multiCartCompat)
+   int Cartridge::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multiCartCompat)
    {
       File rom(romdata, romsize);
       return loadROM(rom, forceDmg, multiCartCompat);

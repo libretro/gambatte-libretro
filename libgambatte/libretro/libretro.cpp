@@ -456,7 +456,7 @@ bool retro_load_game(const struct retro_game_info *info)
    var.key = "gambatte_gb_gbamode";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "enabled")) gbamode=true;
 
-   if (gb.load(info->data, info->size, gbamode ? gambatte::GB::GBA_CGB : 0))
+   if (gb.load(info->data, info->size, gbamode ? gambatte::GB::GBA_CGB : 0) != 0)
       return false;
 
    rom_path = info->path ? info->path : "";

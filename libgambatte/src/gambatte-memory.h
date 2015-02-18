@@ -102,8 +102,8 @@ namespace gambatte
       unsigned long event(unsigned long cycleCounter);
       unsigned long resetCounters(unsigned long cycleCounter);
 
-      bool loadROM(const std::string &romfile, bool forceDmg, bool multiCartCompat);
-      bool loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multiCartCompat);
+      int loadROM(const std::string &romfile, bool forceDmg, bool multiCartCompat);
+      int loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multiCartCompat);
 
       void setSaveDir(const std::string &dir)
       {

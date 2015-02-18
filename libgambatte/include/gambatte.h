@@ -43,7 +43,7 @@ public:
       MULTICART_COMPAT = 4  /**< Use heuristics to detect and support some multicart MBCs disguised as MBC1. */
 	};
 	
-   bool load(const void *romdata, unsigned size, unsigned flags = 0);
+   int load(const void *romdata, unsigned size, unsigned flags = 0);
 	
 	/** Emulates until at least 'samples' stereo sound samples are produced in the supplied buffer,
 	  * or until a video frame has been drawn.
