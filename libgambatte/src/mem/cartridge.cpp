@@ -20,6 +20,7 @@
 #include "../savestate.h"
 #include <cstring>
 #include <fstream>
+#include <stdio.h>
 
 namespace gambatte
 {
