@@ -9,12 +9,19 @@
 #include <sstream>
 #include <string.h>
 
+#ifdef _3DS
+extern "C" void* linearMemAlign(size_t size, size_t alignment);
+extern "C" void linearFree(void* mem);
+#endif
+
 retro_log_printf_t log_cb;
 static retro_video_refresh_t video_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
+static gambatte::video_pixel_t* video_buf;
+static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
 
 #include "cc_resampler.h"
@@ -108,6 +115,16 @@ void retro_init(void)
       g_timing.sample_rate = sample_rate / 64; // ~32k
    }
 #endif
+
+#ifdef _3DS
+   video_buf = (gambatte::video_pixel_t*)
+               linearMemAlign(256 * 144 * sizeof(gambatte::video_pixel_t), 128);
+#else
+   video_buf = (gambatte::video_pixel_t*)
+               malloc(256 * 144 * sizeof(gambatte::video_pixel_t));
+#endif
+   video_pitch = 256;
+
    check_system_specs();
 }
 
@@ -116,6 +133,11 @@ void retro_deinit()
 #ifndef CC_RESAMPLER
    blipper_free(resampler_l);;
    blipper_free(resampler_r);;
+#endif
+#ifdef _3DS
+   linearFree(video_buf);
+#else
+   free(video_buf);
 #endif
 }
 
@@ -577,8 +599,6 @@ void retro_run()
    } static sound_buf;
    unsigned samples = 2064;
 
-   static gambatte::video_pixel_t video_buf[256 * 144];
-   gambatte::uint_least32_t video_pitch = 256;
    while (gb.runFor(video_buf, video_pitch, sound_buf.u32, samples) == -1)
    {
 #ifdef CC_RESAMPLER
