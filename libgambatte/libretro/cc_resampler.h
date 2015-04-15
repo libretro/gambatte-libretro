@@ -131,10 +131,22 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
    static int32_t CC_capacitor = 0;
 #endif
 
+static int32_t CC_current_l = 0;
+static int32_t CC_current_r = 0;
+static int32_t CC_next_l    = 0;
+static int32_t CC_next_r    = 0;
+
 static void CC_init(void)
 {
+#ifndef CC_RESAMPLER_NO_HIGHPASS
+   CC_capacitor = 0;
+#endif
    CC_accumulated_samples = 0;
    CC_write_pos = 0;
+   CC_current_l = 0;
+   CC_current_r = 0;
+   CC_next_l    = 0;
+   CC_next_r    = 0;
 }
 
 static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
@@ -155,48 +167,60 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
       0x01B4, 0x01C5, 0x01D4, 0x01E1, 0x01EC, 0x01F4, 0x01FA, 0x01FE
    };
 
-   static int32_t current_l = 0;
-   static int32_t current_r = 0;
-   static int32_t next_l    = 0;
-   static int32_t next_r    = 0;
-   static unsigned int CC_accumulated_samples = 0;
-   static unsigned int CC_write_pos = 0;
-
-   static int16_t out_buf[1024];
+   static int16_t out_buf[1024];   
    unsigned i;
+#ifndef CC_RESAMPLER_NO_HIGHPASS
+   int32_t capacitor = CC_capacitor;
+#endif
+   unsigned int accumulated_samples = CC_accumulated_samples;
+   unsigned int write_pos = CC_write_pos;
+   int32_t current_l = CC_current_l;
+   int32_t current_r = CC_current_r;
+   int32_t next_l    = CC_next_l;
+   int32_t next_r    = CC_next_r;
+
 
    for (i=0; i!=samples; i++)
    {
-      current_l += sound_buf[i].l * CC_kernel[CC_accumulated_samples];
-      current_r += sound_buf[i].r * CC_kernel[CC_accumulated_samples];
-      next_l    += sound_buf[i].l * CC_kernel_r[CC_accumulated_samples];
-      next_r    += sound_buf[i].r * CC_kernel_r[CC_accumulated_samples];
+      current_l += sound_buf[i].l * CC_kernel[accumulated_samples];
+      current_r += sound_buf[i].r * CC_kernel[accumulated_samples];
+      next_l    += sound_buf[i].l * CC_kernel_r[accumulated_samples];
+      next_r    += sound_buf[i].r * CC_kernel_r[accumulated_samples];
 
-      CC_accumulated_samples++;
-      if (CC_accumulated_samples == 32)
+      accumulated_samples++;
+      if (accumulated_samples == 32)
       {
 #ifdef CC_RESAMPLER_NO_HIGHPASS
-         out_buf[CC_write_pos++] = (current_l>>14);
-         out_buf[CC_write_pos++] = (current_r>>14);
+         out_buf[write_pos++] = (current_l>>14);
+         out_buf[write_pos++] = (current_r>>14);
 #else
-         CC_capacitor += ((current_l ) - CC_capacitor) >> 14;
-         out_buf[CC_write_pos++] = (current_l>>14) - (CC_capacitor >> 14);
-         out_buf[CC_write_pos++] = (current_r>>14) - (CC_capacitor >> 14);
+         capacitor += ((current_l ) - capacitor) >> 14;
+         out_buf[write_pos++] = (current_l>>14) - (capacitor >> 14);
+         out_buf[write_pos++] = (current_r>>14) - (capacitor >> 14);
 #endif
 
-         CC_accumulated_samples = 0;
+         accumulated_samples = 0;
          current_l = next_l;
          current_r = next_r;
          next_l = 0;
          next_r = 0;
 
-         if (CC_write_pos == 1024)
+         if (write_pos == 1024)
          {
             audio_batch_cb(out_buf, 512);
-            CC_write_pos = 0;
+            write_pos = 0;
          }
       }
    }
+#ifndef CC_RESAMPLER_NO_HIGHPASS
+   CC_capacitor = capacitor;
+#endif
+   CC_accumulated_samples = accumulated_samples;
+   CC_write_pos = write_pos;
+   CC_current_l = current_l;
+   CC_current_r = current_r;
+   CC_next_l    = next_l;
+   CC_next_r    = next_r;
 }
 #endif // _MIPS_ARCH_ALLEGREX
 
