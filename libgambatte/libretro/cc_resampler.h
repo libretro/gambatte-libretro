@@ -167,7 +167,7 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
       0x01B4, 0x01C5, 0x01D4, 0x01E1, 0x01EC, 0x01F4, 0x01FA, 0x01FE
    };
 
-   static int16_t out_buf[1024];   
+   static int16_t out_buf[2048];
    unsigned i;
 #ifndef CC_RESAMPLER_NO_HIGHPASS
    int32_t capacitor = CC_capacitor;
@@ -205,9 +205,9 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
          next_l = 0;
          next_r = 0;
 
-         if (write_pos == 1024)
+         if (write_pos == 2048)
          {
-            audio_batch_cb(out_buf, 512);
+            audio_batch_cb(out_buf, 1024);
             write_pos = 0;
          }
       }
