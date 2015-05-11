@@ -58,7 +58,7 @@ static blipper_t *resampler_r;
 
 void retro_get_system_info(struct retro_system_info *info)
 {
-   info->library_name = "gambatte";
+   info->library_name = "Gambatte";
    info->library_version = "v0.5.0";
    info->need_fullpath = false;
    info->block_extract = false;
