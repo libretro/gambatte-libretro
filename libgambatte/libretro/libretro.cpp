@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <string.h>
+#include <stdlib.h>
 
 #ifdef _3DS
 extern "C" void* linearMemAlign(size_t size, size_t alignment);
