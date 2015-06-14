@@ -150,6 +150,7 @@ void retro_set_environment(retro_environment_t cb)
       { "gambatte_gb_gbamode", "GBA mode; disabled|enabled" },
       { "gambatte_gb_colorization", "GB Colorization; disabled|enabled|custom" },
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
+      { "gambatte_gb_force_dmg", "Force DMG Mode; disabled|enabled" },
       { NULL, NULL },
    };
 
@@ -480,6 +481,13 @@ bool retro_load_game(const struct retro_game_info *info)
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "enabled")) gbamode=true;
 
    if (gb.load(info->data, info->size, gbamode ? gambatte::GB::GBA_CGB : 0) != 0)
+      return false;
+
+   bool force_dmg = false;
+   var.key = "gambatte_gb_force_dmg";
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "enabled")) force_dmg=true;
+
+   if (gb.load(info->data, info->size, force_dmg ? gambatte::GB::FORCE_DMG : 0) != 0)
       return false;
 
    rom_path = info->path ? info->path : "";
