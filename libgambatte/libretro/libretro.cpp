@@ -147,9 +147,9 @@ void retro_set_environment(retro_environment_t cb)
    environ_cb = cb;
 
    static const struct retro_variable vars[] = {
-      { "gambatte_gb_gbamode", "GBA mode; disabled|enabled" },
       { "gambatte_gb_colorization", "GB Colorization; disabled|enabled|custom" },
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
+      { "gambatte_gb_hwmode", "Emulated hardware; Auto|GB|GBA" }, // unfortunately, libgambatte does not have a 'force GBC' flag
       { NULL, NULL },
    };
 
@@ -474,12 +474,16 @@ bool retro_load_game(const struct retro_game_info *info)
    }
 #endif
 
-   bool gbamode = false;
+   unsigned flags = 0;
    struct retro_variable var = {0};
-   var.key = "gambatte_gb_gbamode";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "enabled")) gbamode=true;
+   var.key = "gambatte_gb_hwmode";
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "GB")) flags |= gambatte::GB::FORCE_DMG;
+      if (!strcmp(var.value, "GBA")) flags |= gambatte::GB::GBA_CGB;
+   }
 
-   if (gb.load(info->data, info->size, gbamode ? gambatte::GB::GBA_CGB : 0) != 0)
+   if (gb.load(info->data, info->size, flags) != 0)
       return false;
 
    rom_path = info->path ? info->path : "";
