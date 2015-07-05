@@ -147,7 +147,8 @@ void retro_set_environment(retro_environment_t cb)
    environ_cb = cb;
 
    static const struct retro_variable vars[] = {
-      { "gambatte_gb_colorization", "GB Colorization; disabled|enabled|custom" },
+      { "gambatte_gb_colorization", "GB Colorization; disabled|auto|internal|custom" },
+      { "gambatte_gb_internal_palette", "Internal Palette; GBC - Blue|GBC - Brown|GBC - Dark Blue|GBC - Dark Brown|GBC - Dark Green|GBC - Grayscale|GBC - Green|GBC - Inverted|GBC - Orange|GBC - Pastel Mix|GBC - Red|GBC - Yellow|Special 1|Special 2|Special 3" },
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
       { "gambatte_gb_hwmode", "Emulated hardware; Auto|GB|GBA" }, // unfortunately, libgambatte does not have a 'force GBC' flag
       { NULL, NULL },
@@ -252,7 +253,7 @@ static int gb_colorization_enable = 0;
 static std::string rom_path;
 char internal_game_name[17];
 
-static void check_palette(void)
+static void load_custom_palette(void)
 {
    unsigned rgb32 = 0;
 
@@ -377,10 +378,12 @@ static void check_variables(void)
 
    if (strcmp(var.value, "disabled") == 0)
       gb_colorization_enable = 0;
-   else if (strcmp(var.value, "enabled") == 0)
+   else if (strcmp(var.value, "auto") == 0)
       gb_colorization_enable = 1;
    else if (strcmp(var.value, "custom") == 0)
       gb_colorization_enable = 2;
+   else if (strcmp(var.value, "internal") == 0)
+      gb_colorization_enable = 3;
 
    //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
    //std::string internal_game_name = reinterpret_cast<const char *>(info->data + 0x134); // buggy with some games ("YOSSY NO COOKIE", "YOSSY NO PANEPON, etc.)
@@ -400,16 +403,26 @@ static void check_variables(void)
       break;
         
       case 2:
-	    check_palette();
+	    load_custom_palette();
       break;
 	  
+      case 3:
+	    var.key = "gambatte_gb_internal_palette";
+	    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+		{
+			// Load the selected internal palette
+			gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
+		}
+      break;
+
       default:
 	    gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Grayscale"));
 	  break;
    }
    //gambatte is using custom colorization then we have a previously palette loaded, 
    //skip this loop then
-   if (gb_colorization_enable != 2){
+   if (gb_colorization_enable != 2)
+   {
      unsigned rgb32 = 0;
      for (unsigned palnum = 0; palnum < 3; ++palnum)
      {
@@ -493,7 +506,6 @@ bool retro_load_game(const struct retro_game_info *info)
    log_cb(RETRO_LOG_INFO, "[Gambatte]: Got internal game name: %s.\n", internal_game_name);
 
    check_variables();
-   //check_palette();
 
    //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
    unsigned sramsize = gb.savedata_size();
