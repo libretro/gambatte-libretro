@@ -333,6 +333,25 @@ static const unsigned short p51C[] = {
 	PACK15_4(0xFFFFFF, 0x63A5FF, 0x0000FF, 0x000000)
 };
 
+// Extra palettes
+static const unsigned short pExt1[] = {
+	PACK15_4(0xE5EA93, 0xC4C641, 0x5E7C39, 0x21442A),
+	PACK15_4(0xE5EA93, 0xC4C641, 0x5E7C39, 0x21442A),
+	PACK15_4(0xE5EA93, 0xC4C641, 0x5E7C39, 0x21442A)
+};
+
+static const unsigned short pExt2[] = {
+	PACK15_4(0xF8F8F8, 0x83C656, 0x187890, 0x000000),
+	PACK15_4(0xF8F8F8, 0xE18096, 0x7F3848, 0x000000),
+	PACK15_4(0xF8F8F8, 0xFFDA03, 0x958401, 0x000000)
+};
+
+static const unsigned short pExt3[] = {
+	PACK15_4(0xF8F8F8, 0xA59E8C, 0x49726C, 0x000000),
+	PACK15_4(0xF8F8F8, 0xE49685, 0x6E241E, 0x000000),
+	PACK15_4(0xF8F8F8, 0xD7543C, 0x7D3023, 0x000000)
+};
+
 #undef PACK15_4
 #undef PACK15_1
 #undef TO5BIT
@@ -352,6 +371,9 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "GBC - Pastel Mix", p017 },
 	{ "GBC - Red", p510 },
 	{ "GBC - Yellow", p51A },
+	{ "Special 1", pExt1 },
+	{ "Special 2", pExt2 },
+	{ "Special 3", pExt3 },
 };
 
 static const GbcPaletteEntry gbcTitlePalettes[] = {
