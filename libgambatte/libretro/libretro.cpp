@@ -509,25 +509,28 @@ bool retro_load_game(const struct retro_game_info *info)
 
    //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
    unsigned sramsize = gb.savedata_size();
-   unsigned romsize = pow2ceil(info->size) & ~0x4000;
-   unsigned ramsize = (gb.isCgb() ? 8 : 2) * 0x1000ul;
-   char * sramdata = (char*)gb.savedata_ptr();
-   char * romdata = sramdata - romsize;
-   char * ramdata = sramdata + sramsize;
-   struct retro_memory_descriptor descs[3];
-   memset(descs, 0, sizeof(descs));
-   descs[0].ptr=ramdata;
-   descs[0].len=ramsize;
-   descs[0].addrspace="";
-   descs[1].ptr=sramdata;
-   descs[1].len=sramsize;
-   descs[1].addrspace="S";
-   descs[2].ptr=romdata;
-   descs[2].len=romsize;
-   descs[2].addrspace="R";
-   descs[2].flags=RETRO_MEMDESC_CONST;
-   struct retro_memory_map maps={descs, 3};
-   environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &maps);
+   if (sramsize)
+   {
+      unsigned romsize = pow2ceil(info->size) & ~0x4000;
+      unsigned ramsize = (gb.isCgb() ? 8 : 2) * 0x1000ul;
+      char * sramdata = (char*)gb.savedata_ptr();
+      char * romdata = sramdata - romsize;
+      char * ramdata = sramdata + sramsize;
+      struct retro_memory_descriptor descs[3];
+      memset(descs, 0, sizeof(descs));
+      descs[0].ptr=ramdata;
+      descs[0].len=ramsize;
+      descs[0].addrspace="";
+      descs[1].ptr=sramdata;
+      descs[1].len=sramsize;
+      descs[1].addrspace="S";
+      descs[2].ptr=romdata;
+      descs[2].len=romsize;
+      descs[2].addrspace="R";
+      descs[2].flags=RETRO_MEMDESC_CONST;
+      struct retro_memory_map maps={descs, 3};
+      environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &maps);
+   }
 
    return true;
 }
