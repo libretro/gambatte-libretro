@@ -21,6 +21,7 @@
 #include <cstring>
 #include <fstream>
 #include <stdio.h>
+#include <string.h>
 
 namespace gambatte
 {
