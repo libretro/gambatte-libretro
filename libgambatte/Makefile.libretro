@@ -205,9 +205,6 @@ endif
 ifeq ($(DEBUG), 1)
 	CFLAGS += -O0 -g
 	CXXFLAGS += -O0 -g
-else ifeq ($(platform), emscripten)
-	CFLAGS += -O2
-	CXXFLAGS += -O2 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
 else
 	CFLAGS += -O3
 	CXXFLAGS += -O3 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
