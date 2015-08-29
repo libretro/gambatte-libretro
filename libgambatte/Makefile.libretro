@@ -1,9 +1,5 @@
 DEBUG = 0
 
-ifneq ($(EMSCRIPTEN),)
-	platform = emscripten
-endif
-
 ifeq ($(platform),)
 	platform = unix
 	ifeq ($(shell uname -a),)
