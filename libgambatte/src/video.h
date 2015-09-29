@@ -80,11 +80,11 @@ class LCD
       }
 
       unsigned cgbBgColorRead(const unsigned index, const unsigned long cycleCounter) {
-         return ppu_.cgb() & cgbpAccessible(cycleCounter) ? bgpData_[index] : 0xFF;
+         return (ppu_.cgb() & cgbpAccessible(cycleCounter)) ? bgpData_[index] : 0xFF;
       }
 
       unsigned cgbSpColorRead(const unsigned index, const unsigned long cycleCounter) {
-         return ppu_.cgb() & cgbpAccessible(cycleCounter) ? objpData_[index] : 0xFF;
+         return (ppu_.cgb() & cgbpAccessible(cycleCounter)) ? objpData_[index] : 0xFF;
       }
 
       void updateScreen(bool blanklcd, unsigned long cc);

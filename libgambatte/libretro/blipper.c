@@ -129,7 +129,7 @@ static blipper_real_t *blipper_create_sinc(unsigned phases, unsigned taps,
       double cutoff, double beta)
 {
    unsigned i, filter_len;
-   double sidelobes, window_mod, window_phase, sinc_phase;
+   double sidelobes, window_mod;
    blipper_real_t *filter;
 
    filter = (blipper_real_t*)malloc(phases * taps * sizeof(*filter));
@@ -141,7 +141,8 @@ static blipper_real_t *blipper_create_sinc(unsigned phases, unsigned taps,
    filter_len = phases * taps;
    for (i = 0; i < filter_len; i++)
    {
-      window_phase = (double)i / filter_len; /* [0, 1) */
+      double sinc_phase;
+      double window_phase = (double)i / filter_len; /* [0, 1) */
       window_phase = 2.0 * window_phase - 1.0; /* [-1, 1) */
       sinc_phase = window_phase * sidelobes; /* [-taps / 2, taps / 2) */
 

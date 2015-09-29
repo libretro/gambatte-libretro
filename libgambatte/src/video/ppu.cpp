@@ -145,7 +145,7 @@ namespace M2_LyNon0 {
 }
 
 static int loadTileDataByte0(PPUPriv const &p) {
-	unsigned const yoffset = p.winDrawState & win_draw_started
+	unsigned const yoffset = (p.winDrawState & win_draw_started)
 	                       ? p.winYPos
 	                       : p.scy + p.lyCounter.ly();
 
@@ -156,7 +156,7 @@ static int loadTileDataByte0(PPUPriv const &p) {
 }
 
 static int loadTileDataByte1(PPUPriv const &p) {
-	unsigned const yoffset = p.winDrawState & win_draw_started
+	unsigned const yoffset = (p.winDrawState & win_draw_started)
 	                       ? p.winYPos
 	                       : p.scy + p.lyCounter.ly();
 
@@ -287,7 +287,7 @@ static void doFullTilesUnrolledDmg(PPUPriv &p, int const xend, video_pixel_t *co
 					unsigned char const *const oam = p.spriteMapper.oamram();
 					unsigned reg0, reg1   = oam[p.spriteList[nextSprite].oampos + 2] * 16;
 					unsigned const attrib = oam[p.spriteList[nextSprite].oampos + 3];
-					unsigned const spline = (  attrib & attr_yflip
+					unsigned const spline = (  (attrib & attr_yflip)
 					                         ? p.spriteList[nextSprite].line ^ 15
 					                         : p.spriteList[nextSprite].line     ) * 2;
 
@@ -421,9 +421,11 @@ static void doFullTilesUnrolledDmg(PPUPriv &p, int const xend, video_pixel_t *co
 						d += n;
 						n = -n;
 
-						do {
-							if (spword & 3) {
-								d[n] = tw & 3
+						do
+                  {
+							if (spword & 3)
+                     {
+								d[n] = (tw & 3)
 								     ? p.bgPalette[    tw & 3]
 								     :   spPalette[spword & 3];
 							}
@@ -475,7 +477,7 @@ static void doFullTilesUnrolledCgb(PPUPriv &p, int const xend, video_pixel_t *co
 				unsigned char const *const oam = p.spriteMapper.oamram();
 				unsigned reg0, reg1   = oam[p.spriteList[nextSprite].oampos + 2] * 16;
 				unsigned const attrib = oam[p.spriteList[nextSprite].oampos + 3];
-				unsigned const spline = (  attrib & attr_yflip
+				unsigned const spline = (  (attrib & attr_yflip)
 				                         ? p.spriteList[nextSprite].line ^ 15
 				                         : p.spriteList[nextSprite].line     ) * 2;
 
@@ -522,9 +524,9 @@ static void doFullTilesUnrolledCgb(PPUPriv &p, int const xend, video_pixel_t *co
 				nattrib            = tileMapLine[(tileMapXpos & 0x1F) + 0x2000];
 				tileMapXpos = (tileMapXpos & 0x1F) + 1;
 
-				unsigned const tdo = tdoffset & ~(tno << 5);
+				unsigned const tdo = (tdoffset & ~(tno << 5));
 				unsigned char const *const td = vram + tno * 16
-				                                     + (nattrib & attr_yflip ? tdo ^ 14 : tdo)
+				                                     + ((nattrib & attr_yflip) ? tdo ^ 14 : tdo)
 				                                     + (nattrib << 10 & 0x2000);
 				unsigned short const *const explut = expand_lut + (nattrib << 3 & 0x100);
 				ntileword = explut[td[0]] + explut[td[1]] * 2;
@@ -640,7 +642,7 @@ static void doFullTilesUnrolledCgb(PPUPriv &p, int const xend, video_pixel_t *co
 						do {
 							if ((spword & 3) && id < idtab[pos]) {
 								idtab[pos] = id;
-								  dst[pos] = tw & 3
+								  dst[pos] = (tw & 3)
 								           ? bgPalette[    tw & 3]
 								           : spPalette[spword & 3];
 							}
@@ -664,7 +666,7 @@ static void doFullTilesUnrolledCgb(PPUPriv &p, int const xend, video_pixel_t *co
 
 			unsigned const tdo = tdoffset & ~(tno << 5);
 			unsigned char const *const td = vram + tno * 16
-			                                     + (nattrib & attr_yflip ? tdo ^ 14 : tdo)
+			                                     + ((nattrib & attr_yflip) ? tdo ^ 14 : tdo)
 			                                     + (nattrib << 10 & 0x2000);
 			unsigned short const *const explut = expand_lut + (nattrib << 3 & 0x100);
 			p.ntileword = explut[td[0]] + explut[td[1]] * 2;
@@ -945,7 +947,7 @@ namespace LoadSprites {
 			return StartWindowDraw::f0(p);
 
 		unsigned const spline =
-			(  p.spriteList[p.currentSprite].attrib & attr_yflip
+			(  (p.spriteList[p.currentSprite].attrib & attr_yflip)
 			 ? p.spriteList[p.currentSprite].line ^ 15
 			 : p.spriteList[p.currentSprite].line         ) * 2;
 		p.reg0 = p.vram[(p.spriteList[p.currentSprite].attrib << 10 & p.cgb * 0x2000)
@@ -965,7 +967,7 @@ namespace LoadSprites {
 			return StartWindowDraw::f0(p);
 
 		unsigned const spline =
-			(  p.spriteList[p.currentSprite].attrib & attr_yflip
+			(  (p.spriteList[p.currentSprite].attrib & attr_yflip)
 			 ? p.spriteList[p.currentSprite].line ^ 15
 			 : p.spriteList[p.currentSprite].line         ) * 2;
 		p.reg1 = p.vram[(p.spriteList[p.currentSprite].attrib << 10 & p.cgb * 0x2000)

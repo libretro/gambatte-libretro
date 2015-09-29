@@ -87,13 +87,13 @@ namespace gambatte
 
    void MemPtrs::setRambank(const unsigned flags, const unsigned rambank)
    {
-      unsigned char *const srambankptr = flags & RTC_EN
+      unsigned char *const srambankptr = (flags & RTC_EN)
          ? 0
          : (rambankdata() != rambankdataend()
                ? rambankdata_ + rambank * 0x2000ul - 0xA000 : wdisabledRam() - 0xA000);
 
       rsrambankptr_ = (flags & READ_EN) && srambankptr != wdisabledRam() - 0xA000 ? srambankptr : rdisabledRamw() - 0xA000;
-      wsrambankptr_ = flags & WRITE_EN ? srambankptr : wdisabledRam() - 0xA000;
+      wsrambankptr_ = (flags & WRITE_EN) ? srambankptr : wdisabledRam() - 0xA000;
       rmem_[0xB] = rmem_[0xA] = rsrambankptr_;
       wmem_[0xB] = wmem_[0xA] = wsrambankptr_;
       disconnectOamDmaAreas();

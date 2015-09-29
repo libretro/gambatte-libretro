@@ -109,7 +109,7 @@ void Memory::loadState(SaveState const &state) {
 			lastOamDmaUpdate_ + (oamEventPos - oamDmaPos_) * 4);
 	}
 
-	intreq_.setEventTime<intevent_blit>(ioamhram_[0x140] & lcdc_en
+	intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
 	                                 ? lcd_.nextMode1IrqTime()
 	                                 : state.cpu.cycleCounter);
 	blanklcd_ = false;
@@ -311,7 +311,7 @@ unsigned long Memory::stop(unsigned long cc) {
 		psg_.generateSamples(cc, isDoubleSpeed());
 		lcd_.speedChange(cc);
 		ioamhram_[0x14D] ^= 0x81;
-		intreq_.setEventTime<intevent_blit>(ioamhram_[0x140] & lcdc_en
+		intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
 			? lcd_.nextMode1IrqTime()
 			: cc + (70224 << isDoubleSpeed()));
 
@@ -606,7 +606,7 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		serialCnt_ = 8;
 
 		if ((data & 0x81) == 0x81) {
-			intreq_.setEventTime<intevent_serial>(data & isCgb() * 2
+			intreq_.setEventTime<intevent_serial>((data & isCgb() * 2)
 				? (cc & ~0x07ul) + 0x010 * 8
 				: (cc & ~0xFFul) + 0x200 * 8);
 		} else
@@ -985,7 +985,7 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		return;
 	case 0x70:
 		if (isCgb()) {
-			cart_.setWrambank(data & 0x07 ? data & 0x07 : 1);
+			cart_.setWrambank((data & 0x07) ? data & 0x07 : 1);
 			ioamhram_[0x170] = data | 0xF8;
 		}
 

@@ -38,7 +38,7 @@ void LengthCounter::event() {
 
 void LengthCounter::nr1Change(unsigned const newNr1, unsigned const nr4, unsigned long const cc) {
 	lengthCounter_ = (~newNr1 & lengthMask_) + 1;
-	counter_ = nr4 & 0x40
+	counter_ = (nr4 & 0x40)
 	         ? ((cc >> 13) + lengthCounter_) << 13
 	         : static_cast<unsigned long>(counter_disabled);
 }

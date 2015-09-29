@@ -77,7 +77,7 @@ namespace gambatte
       unsigned char rambank;
       bool enableRam;
       bool rambankMode;
-      static unsigned adjustedRombank(unsigned bank) { return bank & 0x1F ? bank : bank | 1; }
+      static unsigned adjustedRombank(unsigned bank) { return (bank & 0x1F) ? bank : bank | 1; }
       void setRambank() const { memptrs.setRambank(enableRam ? MemPtrs::READ_EN | MemPtrs::WRITE_EN : 0, rambank & (rambanks(memptrs) - 1)); }
       void setRombank() const { memptrs.setRombank(adjustedRombank(rombank) & (rombanks(memptrs) - 1)); }
       public:
@@ -135,7 +135,7 @@ namespace gambatte
       unsigned char rombank;
       bool enableRam;
       bool rombank0Mode;
-      static unsigned adjustedRombank(unsigned bank) { return bank & 0x1F ? bank : bank | 1; }
+      static unsigned adjustedRombank(unsigned bank) { return (bank & 0x1F) ? bank : bank | 1; }
       void setRombank() const {
          if (rombank0Mode) {
             const unsigned rb = toMulti64Rombank(rombank);

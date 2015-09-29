@@ -63,7 +63,7 @@ static unsigned updateHf2FromHf1(unsigned const hf1, unsigned hf2) {
 		rhs = 1;
 	}
 
-	unsigned res = hf2 & hf2_subf
+	unsigned res = (hf2 & hf2_subf)
 	             ?  lhs - rhs
 	             : (lhs + rhs) << 5;
 
@@ -73,7 +73,7 @@ static unsigned updateHf2FromHf1(unsigned const hf1, unsigned hf2) {
 
 static inline unsigned toF(unsigned hf2, unsigned cf, unsigned zf) {
 	return ((hf2 & (hf2_subf | hf2_hcf)) | (cf & 0x100)) >> 4
-	     | (zf & 0xFF ? 0 : 0x80);
+	     | ((zf & 0xFF) ? 0 : 0x80);
 }
 
 static inline unsigned  zfFromF(unsigned f) { return ~f & 0x80; }
@@ -714,7 +714,7 @@ void CPU::process(unsigned long const cycles) {
 				hf2 = updateHf2FromHf1(hf1, hf2);
 
 				{
-					unsigned correction = cf & 0x100 ? 0x60 : 0x00;
+					unsigned correction = (cf & 0x100) ? 0x60 : 0x00;
 
 					if (hf2 & hf2_hcf)
 						correction |= 0x06;
