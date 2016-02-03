@@ -128,7 +128,10 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
 #else
 
 #ifndef CC_RESAMPLER_NO_HIGHPASS
-   static int32_t CC_capacitor = 0;
+static int16_t CC_prevsmpl_l = 0;
+static int16_t CC_prevsmpl_r = 0;
+static int32_t CC_highpass_l = 0;
+static int32_t CC_highpass_r = 0;
 #endif
 
 static int32_t CC_current_l = 0;
@@ -139,7 +142,10 @@ static int32_t CC_next_r    = 0;
 static void CC_init(void)
 {
 #ifndef CC_RESAMPLER_NO_HIGHPASS
-   CC_capacitor = 0;
+   CC_prevsmpl_l = 0;
+   CC_prevsmpl_r = 0;
+   CC_highpass_l = 0;
+   CC_highpass_r = 0;
 #endif
    CC_accumulated_samples = 0;
    CC_write_pos = 0;
@@ -151,34 +157,30 @@ static void CC_init(void)
 
 static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
 {
-
    static const int16_t CC_kernel[32]=
    {
-      0x01FF, 0x01FE, 0x01FA, 0x01F4, 0x01EC, 0x01E1, 0x01D4, 0x01C5,
-      0x01B4, 0x01A2, 0x018E, 0x0178, 0x0161, 0x014A, 0x0131, 0x0119,
-      0x0100, 0x00E6, 0x00CE, 0x00B5, 0x009E, 0x0087, 0x0071, 0x005D,
-      0x004B, 0x003A, 0x002B, 0x001E, 0x0013, 0x000B, 0x0005, 0x0001
+      0x0800, 0x07fb, 0x07eb, 0x07d3, 0x07b3, 0x0787, 0x0753, 0x0717,
+      0x06d3, 0x068b, 0x063b, 0x05e2, 0x0586, 0x052a, 0x04c6, 0x0466,
+      0x0402, 0x0399, 0x0339, 0x02d5, 0x0279, 0x021d, 0x01c4, 0x0174,
+      0x012c, 0x00e8, 0x00ac, 0x0078, 0x004c, 0x002c, 0x0014, 0x0004
    };
    static const int16_t CC_kernel_r[32]=
    {
-      0x0000, 0x0001, 0x0005, 0x000B, 0x0013, 0x001E, 0x002B, 0x003A,
-      0x004B, 0x005D, 0x0071, 0x0087, 0x009E, 0x00B5, 0x00CE, 0x00E6,
-      0x0100, 0x0119, 0x0131, 0x014A, 0x0161, 0x0178, 0x018E, 0x01A2,
-      0x01B4, 0x01C5, 0x01D4, 0x01E1, 0x01EC, 0x01F4, 0x01FA, 0x01FE
+      0x0000, 0x0004, 0x0014, 0x002c, 0x004c, 0x0078, 0x00ac, 0x00e8,
+      0x012c, 0x0174, 0x01c4, 0x021d, 0x0279, 0x02d5, 0x0339, 0x0399,
+      0x0402, 0x0466, 0x04c6, 0x052a, 0x0586, 0x05e2, 0x063b, 0x068b,
+      0x06d3, 0x0717, 0x0753, 0x0787, 0x07b3, 0x07d3, 0x07eb, 0x07fb
    };
 
    static int16_t out_buf[2048];
    unsigned i;
-#ifndef CC_RESAMPLER_NO_HIGHPASS
-   int32_t capacitor = CC_capacitor;
-#endif
+
    unsigned int accumulated_samples = CC_accumulated_samples;
    unsigned int write_pos = CC_write_pos;
    int32_t current_l = CC_current_l;
    int32_t current_r = CC_current_r;
    int32_t next_l    = CC_next_l;
    int32_t next_r    = CC_next_r;
-
 
    for (i=0; i!=samples; i++)
    {
@@ -191,14 +193,21 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
       if (accumulated_samples == 32)
       {
 #ifdef CC_RESAMPLER_NO_HIGHPASS
-         out_buf[write_pos++] = (current_l>>14);
-         out_buf[write_pos++] = (current_r>>14);
+         out_buf[write_pos++] = (current_l>>16);
+         out_buf[write_pos++] = (current_r>>16);
 #else
-         capacitor += ((current_l ) - capacitor) >> 14;
-         out_buf[write_pos++] = (current_l>>14) - (capacitor >> 14);
-         out_buf[write_pos++] = (current_r>>14) - (capacitor >> 14);
-#endif
+         int16_t sample_l = (current_l>>16);
+         int32_t tmp_l = CC_highpass_l + ((sample_l-CC_prevsmpl_l)<<8);
+         CC_highpass_l = tmp_l - (tmp_l>>8);
+         CC_prevsmpl_l = sample_l;
+         out_buf[write_pos++] = ((CC_highpass_l+128)>>8);
 
+         int16_t sample_r = (current_r>>16);
+         int32_t tmp_r = CC_highpass_r + ((sample_r-CC_prevsmpl_r)<<8);
+         CC_highpass_r = tmp_r - (tmp_r>>8);
+         CC_prevsmpl_r = sample_r;
+         out_buf[write_pos++] = ((CC_highpass_r+128)>>8);
+#endif
          accumulated_samples = 0;
          current_l = next_l;
          current_r = next_r;
@@ -212,9 +221,6 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
          }
       }
    }
-#ifndef CC_RESAMPLER_NO_HIGHPASS
-   CC_capacitor = capacitor;
-#endif
    CC_accumulated_samples = accumulated_samples;
    CC_write_pos = write_pos;
    CC_current_l = current_l;
