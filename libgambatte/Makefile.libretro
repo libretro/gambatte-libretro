@@ -221,6 +221,18 @@ else ifneq (,$(findstring armv,$(platform)))
 else ifeq ($(platform), emscripten)
 	TARGET := $(TARGET_NAME)_libretro_emscripten.bc
 
+# GCW0
+else ifeq ($(platform), gcw0)
+	TARGET := $(TARGET_NAME)_libretro.so
+	CC = /opt/gcw0-toolchain/usr/bin/mipsel-linux-gcc
+	CXX = /opt/gcw0-toolchain/usr/bin/mipsel-linux-g++
+	AR = /opt/gcw0-toolchain/usr/bin/mipsel-linux-ar
+	fpic := -fPIC
+	SHARED := -shared -Wl,-version-script=libretro/link.T
+	PLATFORM_DEFINES := -DCC_RESAMPLER
+	CFLAGS += -O3 -fomit-frame-pointer -march=mips32 -mtune=mips32r2 -mhard-float
+	CXXFLAGS += $(CFLAGS)
+
 # Windows
 else
 	TARGET := $(TARGET_NAME)_libretro.dll
