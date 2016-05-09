@@ -114,6 +114,10 @@ public:
    void setGameShark(const std::string &codes);
 
    void clearCheats();
+   
+#ifdef __LIBRETRO__
+   unsigned char read(unsigned p) const;
+#endif
 
 private:
 	struct Priv;

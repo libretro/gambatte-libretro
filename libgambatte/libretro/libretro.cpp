@@ -545,6 +545,8 @@ unsigned retro_get_region() { return RETRO_REGION_NTSC; }
 
 void *retro_get_memory_data(unsigned id)
 {
+   static uint8_t bytes[4];
+   
    switch (id)
    {
       case RETRO_MEMORY_SAVE_RAM:
@@ -557,6 +559,17 @@ void *retro_get_memory_data(unsigned id)
           * realizing that that memchunk hack is ugly, or 
           * otherwise getting rearranged. */
          return (char*)gb.savedata_ptr() + gb.savedata_size();
+      default:
+         /* An even uglier hack, since we pass an invalid memory
+          * id to read directly from the emulated memory. This is
+          * done so because both retro_get_memory_data and
+          * RETRO_ENVIRONMENT_SET_MEMORY_MAPS are too restrictive
+          * to implement what the cheevos module needs. */
+          bytes[0] = gb.read(id);
+          bytes[1] = gb.read(id + 1);
+          bytes[2] = gb.read(id + 2);
+          bytes[3] = gb.read(id + 3);
+          return bytes;
    }
 
    return 0;

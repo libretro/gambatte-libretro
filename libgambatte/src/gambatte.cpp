@@ -142,5 +142,11 @@ void GB::clearCheats() {
  p_->cpu.clearCheats();
 }
 
+#ifdef __LIBRETRO__
+unsigned char GB::read(unsigned p) const {
+ return p_->cpu.mem_.read(p, 0);
+}
+#endif
+
 }
 
