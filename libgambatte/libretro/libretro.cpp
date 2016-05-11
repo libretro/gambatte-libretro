@@ -508,29 +508,16 @@ bool retro_load_game(const struct retro_game_info *info)
    check_variables();
 
    //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
-   unsigned sramsize = gb.savedata_size();
-   if (sramsize)
+   struct retro_memory_descriptor descs[] =
    {
-      unsigned romsize = pow2ceil(info->size) & ~0x4000;
-      unsigned ramsize = (gb.isCgb() ? 8 : 2) * 0x1000ul;
-      char * sramdata = (char*)gb.savedata_ptr();
-      char * romdata = sramdata - romsize;
-      char * ramdata = sramdata + sramsize;
-      struct retro_memory_descriptor descs[3];
-      memset(descs, 0, sizeof(descs));
-      descs[0].ptr=ramdata;
-      descs[0].len=ramsize;
-      descs[0].addrspace="";
-      descs[1].ptr=sramdata;
-      descs[1].len=sramsize;
-      descs[1].addrspace="S";
-      descs[2].ptr=romdata;
-      descs[2].len=romsize;
-      descs[2].addrspace="R";
-      descs[2].flags=RETRO_MEMDESC_CONST;
-      struct retro_memory_map maps={descs, 3};
-      environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &maps);
-   }
+     { 0, gb.vram_ptr(),     0, 0x8000, 0, 0, 8192, "VRAM" },
+     { 0, gb.rambank0_ptr(), 0, 0xC000, 0, 0, 4096, "RAMBANK0" },
+     { 0, gb.rambank1_ptr(), 0, 0xD000, 0, 0, 4096, "RAMBANK1" },
+   };
+   
+   struct retro_memory_map mmaps = { descs, sizeof(descs) / sizeof(descs[0]) };
+   
+   environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &mmaps);
 
    return true;
 }
@@ -545,8 +532,6 @@ unsigned retro_get_region() { return RETRO_REGION_NTSC; }
 
 void *retro_get_memory_data(unsigned id)
 {
-   static uint8_t bytes[4];
-   
    switch (id)
    {
       case RETRO_MEMORY_SAVE_RAM:
@@ -559,17 +544,6 @@ void *retro_get_memory_data(unsigned id)
           * realizing that that memchunk hack is ugly, or 
           * otherwise getting rearranged. */
          return (char*)gb.savedata_ptr() + gb.savedata_size();
-      default:
-         /* An even uglier hack, since we pass an invalid memory
-          * id to read directly from the emulated memory. This is
-          * done so because both retro_get_memory_data and
-          * RETRO_ENVIRONMENT_SET_MEMORY_MAPS are too restrictive
-          * to implement what the cheevos module needs. */
-          bytes[0] = gb.read(id);
-          bytes[1] = gb.read(id + 1);
-          bytes[2] = gb.read(id + 2);
-          bytes[3] = gb.read(id + 3);
-          return bytes;
    }
 
    return 0;

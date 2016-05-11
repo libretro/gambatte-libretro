@@ -116,7 +116,9 @@ public:
    void clearCheats();
    
 #ifdef __LIBRETRO__
-   unsigned char read(unsigned p) const;
+   void *vram_ptr() const;
+   void *rambank0_ptr() const;
+   void *rambank1_ptr() const;
 #endif
 
 private:

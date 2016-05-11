@@ -127,6 +127,12 @@ namespace gambatte
          {
             return *rtc_.getActive();
          }
+         
+#ifdef __LIBRETRO__
+         void *vram_ptr() const { return memptrs_.vramdata(); }
+         void *rambank0_ptr(bool cgb) const { return cgb ? memptrs_.wsrambankptr() : memptrs_.rambankdata(); }
+         void *rambank1_ptr(bool cgb) const { return cgb ? memptrs_.wsrambankptr() + 4096 : memptrs_.rambankdata() + 4096; }
+#endif
 
          const std::string saveBasePath() const;
          void setSaveDir(const std::string &dir);

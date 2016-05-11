@@ -44,6 +44,9 @@ public:
    void display_setColorCorrection(bool enable) { lcd_.setColorCorrection(enable); }
    video_pixel_t display_gbcToRgb32(const unsigned bgr15) { return lcd_.gbcToRgb32(bgr15); }
    void clearCheats() { cart_.clearCheats(); }
+   void *vram_ptr() const { return (void*)cart_.vram_ptr(); }
+   void *rambank0_ptr() const { return (void*)cart_.rambank0_ptr(lcd_.isCgb()); }
+   void *rambank1_ptr() const { return (void*)cart_.rambank1_ptr(lcd_.isCgb()); }
 #else
    void loadSavedata() { cart_.loadSavedata(); }
    void saveSavedata() { cart_.saveSavedata(); }

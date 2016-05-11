@@ -143,8 +143,16 @@ void GB::clearCheats() {
 }
 
 #ifdef __LIBRETRO__
-unsigned char GB::read(unsigned p) const {
- return p_->cpu.mem_.read(p, 0);
+void *GB::vram_ptr() const {
+ return p_->cpu.vram_ptr();
+}
+
+void *GB::rambank0_ptr() const {
+ return p_->cpu.rambank0_ptr();
+}
+
+void *GB::rambank1_ptr() const {
+ return p_->cpu.rambank1_ptr();
 }
 #endif
 
