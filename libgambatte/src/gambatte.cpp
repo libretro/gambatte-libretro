@@ -142,5 +142,27 @@ void GB::clearCheats() {
  p_->cpu.clearCheats();
 }
 
+#ifdef __LIBRETRO__
+void *GB::vram_ptr() const {
+ return p_->cpu.vram_ptr();
+}
+
+void *GB::rambank0_ptr() const {
+ return p_->cpu.rambank0_ptr();
+}
+
+void *GB::rambank1_ptr() const {
+ return p_->cpu.rambank1_ptr();
+}
+
+void *GB::rombank0_ptr() const {
+ return p_->cpu.rombank0_ptr();
+}
+
+void *GB::rombank1_ptr() const {
+ return p_->cpu.rombank1_ptr();
+}
+#endif
+
 }
 

@@ -127,7 +127,7 @@ namespace gambatte
          {
             return *rtc_.getActive();
          }
-
+         
          const std::string saveBasePath() const;
          void setSaveDir(const std::string &dir);
          int loadROM(const void *romdata, unsigned romsize, bool forceDmg, bool multicartCompat);

@@ -508,29 +508,28 @@ bool retro_load_game(const struct retro_game_info *info)
    check_variables();
 
    //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
-   unsigned sramsize = gb.savedata_size();
-   if (sramsize)
+   unsigned sramlen = gb.savedata_size();
+   
+   struct retro_memory_descriptor descs[] =
    {
-      unsigned romsize = pow2ceil(info->size) & ~0x4000;
-      unsigned ramsize = (gb.isCgb() ? 8 : 2) * 0x1000ul;
-      char * sramdata = (char*)gb.savedata_ptr();
-      char * romdata = sramdata - romsize;
-      char * ramdata = sramdata + sramsize;
-      struct retro_memory_descriptor descs[3];
-      memset(descs, 0, sizeof(descs));
-      descs[0].ptr=ramdata;
-      descs[0].len=ramsize;
-      descs[0].addrspace="";
-      descs[1].ptr=sramdata;
-      descs[1].len=sramsize;
-      descs[1].addrspace="S";
-      descs[2].ptr=romdata;
-      descs[2].len=romsize;
-      descs[2].addrspace="R";
-      descs[2].flags=RETRO_MEMDESC_CONST;
-      struct retro_memory_map maps={descs, 3};
-      environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &maps);
-   }
+      {                   0, gb.rambank0_ptr(), 0, 0xC000, 0, 0, 0x1000,  NULL },
+      {                   0, gb.rambank1_ptr(), 0, 0xD000, 0, 0, 0x1000,  NULL },
+      {                   0, gb.vram_ptr(),     0, 0x8000, 0, 0, 0x2000,  NULL },
+      { RETRO_MEMDESC_CONST, gb.rombank0_ptr(), 0, 0x0000, 0, 0, 0x4000,  NULL },
+      { RETRO_MEMDESC_CONST, gb.rombank1_ptr(), 0, 0x4000, 0, 0, 0x4000,  NULL },
+      {                   0, gb.savedata_ptr(), 0, 0xA000, 0, 0, sramlen, NULL },
+   };
+   
+   struct retro_memory_map mmaps =
+   {
+      descs,
+      sizeof(descs) / sizeof(descs[0]) - (sramlen == 0)
+   };
+   
+   environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &mmaps);
+   
+   bool yes = true;
+   environ_cb(RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS, &yes);
 
    return true;
 }
@@ -556,7 +555,7 @@ void *retro_get_memory_data(unsigned id)
           * libgambatte/src/memory/memptrs.cpp MemPtrs::reset not
           * realizing that that memchunk hack is ugly, or 
           * otherwise getting rearranged. */
-         return (char*)gb.savedata_ptr() + gb.savedata_size();
+         return gb.rambank0_ptr();
    }
 
    return 0;
