@@ -508,14 +508,23 @@ bool retro_load_game(const struct retro_game_info *info)
    check_variables();
 
    //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
+   unsigned sramlen = gb.savedata_size();
+   
    struct retro_memory_descriptor descs[] =
    {
-     { 0, gb.vram_ptr(),     0, 0x8000, 0, 0, 8192, "VRAM" },
-     { 0, gb.rambank0_ptr(), 0, 0xC000, 0, 0, 4096, "RAMBANK0" },
-     { 0, gb.rambank1_ptr(), 0, 0xD000, 0, 0, 4096, "RAMBANK1" },
+     { 0, gb.rambank0_ptr(), 0, 0xC000, 0, 0, 0x1000,  NULL },
+     { 0, gb.rambank1_ptr(), 0, 0xD000, 0, 0, 0x1000,  NULL },
+     { 0, gb.vram_ptr(),     0, 0x8000, 0, 0, 0x2000,  NULL },
+     { 0, gb.rombank0_ptr(), 0, 0x0000, 0, 0, 0x4000,  NULL },
+     { 0, gb.rombank1_ptr(), 0, 0x4000, 0, 0, 0x4000,  NULL },
+     { 0, gb.savedata_ptr(), 0, 0xA000, 0, 0, sramlen, NULL },
    };
    
-   struct retro_memory_map mmaps = { descs, sizeof(descs) / sizeof(descs[0]) };
+   struct retro_memory_map mmaps =
+   {
+      descs,
+      sizeof(descs) / sizeof(descs[0]) - (sramlen == 0)
+   };
    
    environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &mmaps);
 
@@ -543,7 +552,7 @@ void *retro_get_memory_data(unsigned id)
           * libgambatte/src/memory/memptrs.cpp MemPtrs::reset not
           * realizing that that memchunk hack is ugly, or 
           * otherwise getting rearranged. */
-         return (char*)gb.savedata_ptr() + gb.savedata_size();
+         return gb.rambank0_ptr();
    }
 
    return 0;

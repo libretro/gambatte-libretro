@@ -154,6 +154,14 @@ void *GB::rambank0_ptr() const {
 void *GB::rambank1_ptr() const {
  return p_->cpu.rambank1_ptr();
 }
+
+void *GB::rombank0_ptr() const {
+ return p_->cpu.rombank0_ptr();
+}
+
+void *GB::rombank1_ptr() const {
+ return p_->cpu.rombank1_ptr();
+}
 #endif
 
 }
