@@ -25,7 +25,9 @@ static gambatte::video_pixel_t* video_buf;
 static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
 
+#ifdef CC_RESAMPLER
 #include "cc_resampler.h"
+#endif
 
 namespace input
 {
