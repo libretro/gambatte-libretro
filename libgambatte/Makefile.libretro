@@ -157,6 +157,16 @@ else ifeq ($(platform), ctr)
 	CXXFLAGS += $(CFLAGS)
 	STATIC_LINKING = 1
 
+# Raspberry Pi 1
+else ifeq ($(platform), rpi1)
+	TARGET := $(TARGET_NAME)_libretro.so
+	fpic := -fPIC
+	SHARED := -shared -Wl,-version-script=libretro/link.T
+	PLATFORM_DEFINES := -DARM
+	CFLAGS += -marm -march=armv6j -mfpu=vfp -mfloat-abi=hard
+	CFLAGS += -fomit-frame-pointer -ffast-math
+	CXXFLAGS += $(CFLAGS)
+
 # Raspberry Pi 2
 else ifeq ($(platform), rpi2)
 	TARGET := $(TARGET_NAME)_libretro.so
