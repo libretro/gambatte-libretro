@@ -496,6 +496,8 @@ void CPU::process(unsigned long const cycles) {
 	while (mem_.isActive()) {
 		unsigned short pc = pc_;
 
+		mem_.checkSerial(cycleCounter);
+
 		if (mem_.halted()) {
 			if (cycleCounter < mem_.nextEventTime()) {
 				unsigned long cycles = mem_.nextEventTime() - cycleCounter;

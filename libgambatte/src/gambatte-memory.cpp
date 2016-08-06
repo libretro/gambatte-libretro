@@ -26,7 +26,10 @@
 namespace gambatte {
 
 Memory::Memory(Interrupter const &interrupter)
-: getInput_(0)
+: serialize_value_(0xFF)
+, serialize_is_fastcgb_(false)
+, getInput_(0)
+, serial_io_(0)
 , divLastUpdate_(0)
 , lastOamDmaUpdate_(disabled_time)
 , lcd_(ioamhram_, 0, VideoInterruptRequester(intreq_))
@@ -62,6 +65,8 @@ unsigned long Memory::saveState(SaveState &state, unsigned long cc) {
 	state.mem.dmaSource = dmaSource_;
 	state.mem.dmaDestination = dmaDestination_;
 	state.mem.oamDmaPos = oamDmaPos_;
+	state.mem.serialize_value = serialize_value_;
+	state.mem.serialize_is_fastcgb = serialize_is_fastcgb_;
 
 	intreq_.saveState(state);
 	cart_.saveState(state);
@@ -92,9 +97,11 @@ void Memory::loadState(SaveState const &state) {
 	dmaSource_ = state.mem.dmaSource;
 	dmaDestination_ = state.mem.dmaDestination;
 	oamDmaPos_ = state.mem.oamDmaPos;
+	serialize_value_ = state.mem.serialize_value;
+	serialize_is_fastcgb_ = state.mem.serialize_is_fastcgb;
 	serialCnt_ = intreq_.eventTime(intevent_serial) != disabled_time
 	           ? serialCntFrom(intreq_.eventTime(intevent_serial) - state.cpu.cycleCounter,
-	                           ioamhram_[0x102] & isCgb() * 2)
+	                           serialize_is_fastcgb_)
 	           : 8;
 
 	cart_.setVrambank(ioamhram_[0x14F] & isCgb());
@@ -127,20 +134,50 @@ void Memory::setEndtime(unsigned long cc, unsigned long inc) {
 	intreq_.setEventTime<intevent_end>(cc + (inc << isDoubleSpeed()));
 }
 
+void Memory::startSerialTransfer(unsigned long cc, unsigned char data, bool fastCgb)
+{
+	// If serial interrupt is enabled
+	serialCnt_ = 8;
+
+	serialize_value_ = data;
+	serialize_is_fastcgb_ = fastCgb;
+	intreq_.setEventTime<intevent_serial>(serialize_is_fastcgb_
+		? (cc & ~0x07ul) + 0x010 * 8
+		: (cc & ~0xFFul) + 0x200 * 8);
+}
+
+void Memory::checkSerial(unsigned long const cc) {
+	// Periodically checks if serial data is received
+	if ((serial_io_ != 0) &&
+		 ((ioamhram_[0x102] & 0x80) == 0x80) &&
+		 (intreq_.eventTime(intevent_serial) == disabled_time)) {
+		unsigned char data;
+		bool fastCgb;
+		if (serial_io_->check(ioamhram_[0x101], data, fastCgb)) {
+			startSerialTransfer(cc, data, fastCgb);
+		}
+	}
+}
 void Memory::updateSerial(unsigned long const cc) {
 	if (intreq_.eventTime(intevent_serial) != disabled_time) {
 		if (intreq_.eventTime(intevent_serial) <= cc) {
-			ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << serialCnt_) - 1) & 0xFF;
+			bool fire = ((ioamhram_[0x102] & 0x80) == 0x80);
+			ioamhram_[0x101] = ((ioamhram_[0x101] << serialCnt_) |
+					    (serialize_value_ >> (8 - serialCnt_))) & 0xFF;
 			ioamhram_[0x102] &= 0x7F;
 			intreq_.setEventTime<intevent_serial>(disabled_time);
-			intreq_.flagIrq(8);
+			if (fire) {
+				intreq_.flagIrq(8);
+			}
 		} else {
 			int const targetCnt = serialCntFrom(intreq_.eventTime(intevent_serial) - cc,
-			                                    ioamhram_[0x102] & isCgb() * 2);
-			ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << (serialCnt_ - targetCnt)) - 1) & 0xFF;
+			                                    serialize_is_fastcgb_);
+			ioamhram_[0x101] = ((ioamhram_[0x101] << (serialCnt_ - targetCnt)) |
+					    (serialize_value_ >> (8 - (serialCnt_ - targetCnt)))) & 0xFF;
 			serialCnt_ = targetCnt;
 		}
 	}
+	checkSerial(cc);
 }
 
 void Memory::updateTimaIrq(unsigned long cc) {
@@ -606,11 +643,12 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		serialCnt_ = 8;
 
 		if ((data & 0x81) == 0x81) {
-			intreq_.setEventTime<intevent_serial>((data & isCgb() * 2)
-				? (cc & ~0x07ul) + 0x010 * 8
-				: (cc & ~0xFFul) + 0x200 * 8);
-		} else
-			intreq_.setEventTime<intevent_serial>(disabled_time);
+			unsigned char receivedByte = 0xFF;
+			if (serial_io_ != 0) {
+				receivedByte = serial_io_->send(ioamhram_[0x101], (data & isCgb() * 2));
+			}
+			startSerialTransfer(cc, receivedByte, (data & isCgb() * 2));
+		}
 
 		data |= 0x7E - isCgb() * 2;
 		break;

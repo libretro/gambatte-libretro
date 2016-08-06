@@ -75,6 +75,8 @@ struct SaveState {
 		unsigned short dmaDestination;
 		unsigned char rambank;
 		unsigned char oamDmaPos;
+		unsigned char serialize_value;
+		unsigned char serialize_is_fastcgb;
 		bool IME;
 		bool halted;
 		bool enableRam;

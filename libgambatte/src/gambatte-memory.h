@@ -28,6 +28,7 @@
 namespace gambatte {
 
 class InputGetter;
+class SerialIO;
 
 class Memory {
 public:
@@ -94,11 +95,13 @@ public:
 		} else
 			nontrivial_ff_write(p, data, cc);
 	}
+	void startSerialTransfer(unsigned long cycleCounter, unsigned char data, bool fastCgb);
 
 	unsigned long event(unsigned long cycleCounter);
 	unsigned long resetCounters(unsigned long cycleCounter);
 	void setSaveDir(std::string const &dir) { cart_.setSaveDir(dir); }
 	void setInputGetter(InputGetter *getInput) { getInput_ = getInput; }
+	void setSerialIO(SerialIO* serial_io) { serial_io_ = serial_io; }
 	void setEndtime(unsigned long cc, unsigned long inc);
 	void setSoundBuffer(uint_least32_t *buf) { psg_.setBuffer(buf); }
 	std::size_t fillSoundBuffer(unsigned long cc);
@@ -113,6 +116,7 @@ public:
 
 	void setGameGenie(std::string const &codes) { cart_.setGameGenie(codes); }
 	void setGameShark(std::string const &codes) { interrupter_.setGameShark(codes); }
+	void checkSerial(unsigned long cc);
 	void updateInput();
 
    int loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat);
@@ -120,7 +124,10 @@ public:
 private:
 	Cartridge cart_;
 	unsigned char ioamhram_[0x200];
+	unsigned char serialize_value_;
+	bool serialize_is_fastcgb_;
 	InputGetter *getInput_;
+	SerialIO *serial_io_;
 	unsigned long divLastUpdate_;
 	unsigned long lastOamDmaUpdate_;
 	InterruptRequester intreq_;

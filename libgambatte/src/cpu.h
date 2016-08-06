@@ -25,6 +25,8 @@
 
 namespace gambatte {
 
+class SerialIO;
+
 class CPU {
 public:
 	CPU();
@@ -56,6 +58,9 @@ public:
 
 	void setInputGetter(InputGetter *getInput) {
 		mem_.setInputGetter(getInput);
+	}
+	void setSerialIO(SerialIO *serial_io) {
+		mem_.setSerialIO(serial_io);
 	}
 
 	void setSaveDir(std::string const &sdir) {
