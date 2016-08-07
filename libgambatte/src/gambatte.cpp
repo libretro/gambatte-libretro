@@ -61,6 +61,9 @@ void GB::reset() {
 void GB::setInputGetter(InputGetter *getInput) {
 	p_->cpu.setInputGetter(getInput);
 }
+void GB::setSerialIO(SerialIO *serial_io) {
+	p_->cpu.setSerialIO(serial_io);
+}
 
 void GB::Priv::on_load_succeeded(unsigned flags)
 {
