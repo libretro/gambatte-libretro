@@ -25,11 +25,15 @@
 
 namespace gambatte {
 
-Memory::Memory(Interrupter const &interrupter)
-: serialize_value_(0xFF)
-, serialize_is_fastcgb_(false)
-, getInput_(0)
+Memory::Memory(Interrupter const &interrupter) :
+#ifdef HAVE_NETWORK
+  serialize_value_(0xFF)
+, serialize_is_fastcgb_(false),
+#endif
+   getInput_(0)
+#ifdef HAVE_NETWORK
 , serial_io_(0)
+#endif
 , divLastUpdate_(0)
 , lastOamDmaUpdate_(disabled_time)
 , lcd_(ioamhram_, 0, VideoInterruptRequester(intreq_))
@@ -65,8 +69,10 @@ unsigned long Memory::saveState(SaveState &state, unsigned long cc) {
 	state.mem.dmaSource = dmaSource_;
 	state.mem.dmaDestination = dmaDestination_;
 	state.mem.oamDmaPos = oamDmaPos_;
+#ifdef HAVE_NETWORK
 	state.mem.serialize_value = serialize_value_;
 	state.mem.serialize_is_fastcgb = serialize_is_fastcgb_;
+#endif
 
 	intreq_.saveState(state);
 	cart_.saveState(state);
@@ -97,11 +103,18 @@ void Memory::loadState(SaveState const &state) {
 	dmaSource_ = state.mem.dmaSource;
 	dmaDestination_ = state.mem.dmaDestination;
 	oamDmaPos_ = state.mem.oamDmaPos;
+#ifdef HAVE_NETWOWRK
 	serialize_value_ = state.mem.serialize_value;
 	serialize_is_fastcgb_ = state.mem.serialize_is_fastcgb;
+#endif
 	serialCnt_ = intreq_.eventTime(intevent_serial) != disabled_time
 	           ? serialCntFrom(intreq_.eventTime(intevent_serial) - state.cpu.cycleCounter,
-	                           serialize_is_fastcgb_)
+#ifdef HAVE_NETWORK
+	                           serialize_is_fastcgb_
+#else
+                              ioamhram_[0x102] & isCgb() * 2
+#endif
+                              )
 	           : 8;
 
 	cart_.setVrambank(ioamhram_[0x14F] & isCgb());
@@ -134,6 +147,7 @@ void Memory::setEndtime(unsigned long cc, unsigned long inc) {
 	intreq_.setEventTime<intevent_end>(cc + (inc << isDoubleSpeed()));
 }
 
+#ifdef HAVE_NETWORK
 void Memory::startSerialTransfer(unsigned long cc, unsigned char data, bool fastCgb)
 {
 	// If serial interrupt is enabled
@@ -158,26 +172,44 @@ void Memory::checkSerial(unsigned long const cc) {
 		}
 	}
 }
+#endif
+
 void Memory::updateSerial(unsigned long const cc) {
 	if (intreq_.eventTime(intevent_serial) != disabled_time) {
 		if (intreq_.eventTime(intevent_serial) <= cc) {
+#ifdef HAVE_NETWORK
 			bool fire = ((ioamhram_[0x102] & 0x80) == 0x80);
 			ioamhram_[0x101] = ((ioamhram_[0x101] << serialCnt_) |
 					    (serialize_value_ >> (8 - serialCnt_))) & 0xFF;
+#else
+         ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << serialCnt_) - 1) & 0xFF;
+#endif
+
 			ioamhram_[0x102] &= 0x7F;
 			intreq_.setEventTime<intevent_serial>(disabled_time);
-			if (fire) {
+#ifdef HAVE_NETWORK
+			if (fire)
 				intreq_.flagIrq(8);
-			}
+#else
+         intreq_.flagIrq(8);
+#endif
 		} else {
 			int const targetCnt = serialCntFrom(intreq_.eventTime(intevent_serial) - cc,
+#ifdef HAVE_NETWORK
 			                                    serialize_is_fastcgb_);
 			ioamhram_[0x101] = ((ioamhram_[0x101] << (serialCnt_ - targetCnt)) |
 					    (serialize_value_ >> (8 - (serialCnt_ - targetCnt)))) & 0xFF;
+#else
+                                             ioamhram_[0x102] & isCgb() * 2);
+         ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << (serialCnt_ - targetCnt)) - 1) & 0xFF;
+#endif
 			serialCnt_ = targetCnt;
 		}
 	}
+
+#ifdef HAVE_NETWORK
 	checkSerial(cc);
+#endif
 }
 
 void Memory::updateTimaIrq(unsigned long cc) {
@@ -642,13 +674,24 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		updateSerial(cc);
 		serialCnt_ = 8;
 
-		if ((data & 0x81) == 0x81) {
+#ifdef HAVE_NETWORK
+		if ((data & 0x81) == 0x81)
+      {
 			unsigned char receivedByte = 0xFF;
-			if (serial_io_ != 0) {
+			if (serial_io_ != 0)
 				receivedByte = serial_io_->send(ioamhram_[0x101], (data & isCgb() * 2));
-			}
 			startSerialTransfer(cc, receivedByte, (data & isCgb() * 2));
-		}
+      }
+#else
+		if ((data & 0x81) == 0x81)
+      {
+         intreq_.setEventTime<intevent_serial>((data & isCgb() * 2)
+               ? (cc & ~0x07ul) + 0x010 * 8
+               : (cc & ~0xFFul) + 0x200 * 8);
+      }
+      else
+         intreq_.setEventTime<intevent_serial>(disabled_time);
+#endif
 
 		data |= 0x7E - isCgb() * 2;
 		break;

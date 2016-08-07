@@ -25,7 +25,9 @@
 
 namespace gambatte {
 
+#ifdef HAVE_NETWORK
 class SerialIO;
+#endif
 
 class CPU {
 public:
@@ -59,9 +61,11 @@ public:
 	void setInputGetter(InputGetter *getInput) {
 		mem_.setInputGetter(getInput);
 	}
+#ifdef HAVE_NETWORK
 	void setSerialIO(SerialIO *serial_io) {
 		mem_.setSerialIO(serial_io);
 	}
+#endif
 
 	void setSaveDir(std::string const &sdir) {
 		mem_.setSaveDir(sdir);

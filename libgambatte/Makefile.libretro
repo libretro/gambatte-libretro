@@ -1,4 +1,5 @@
 DEBUG = 0
+HAVE_NETWORK = 0
 
 ifeq ($(platform),)
 	platform = unix
@@ -39,6 +40,7 @@ ifeq ($(platform), unix)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
 	SHARED := -shared -Wl,-version-script=libretro/link.T
+	HAVE_NETWORK=1
 
 # OS X
 else ifeq ($(platform), osx)
@@ -53,6 +55,7 @@ else ifeq ($(platform), osx)
 		CXXFLAGS += $(ARCHFLAGS)
 		LDFLAGS += $(ARCHFLAGS)
 	endif
+	HAVE_NETWORK=1
 
 # iOS
 else ifneq (,$(findstring ios,$(platform)))
@@ -74,6 +77,7 @@ else
 	CXX += -miphoneos-version-min=5.0
 	PLATFORM_DEFINES := -miphoneos-version-min=5.0
 endif
+	HAVE_NETWORK=1
 
 # Theos
 else ifeq ($(platform), theos_ios)
@@ -84,6 +88,7 @@ else ifeq ($(platform), theos_ios)
 	THEOS_BUILD_DIR := objs
 	include $(THEOS)/makefiles/common.mk
 	LIBRARY_NAME = $(TARGET_NAME)_libretro_ios
+	HAVE_NETWORK=1
 
 # QNX
 else ifeq ($(platform), qnx)
@@ -94,6 +99,7 @@ else ifeq ($(platform), qnx)
 	CXX = QCC -Vgcc_ntoarmv7le_cpp
 	AR = QCC -Vgcc_ntoarmv7le
 	PLATFORM_DEFINES := -D__BLACKBERRY_QNX__ -fexceptions -marm -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=softfp
+	HAVE_NETWORK=1
 
 # PS3
 else ifeq ($(platform), ps3)
@@ -166,6 +172,7 @@ else ifeq ($(platform), rpi1)
 	CFLAGS += -marm -march=armv6j -mfpu=vfp -mfloat-abi=hard
 	CFLAGS += -fomit-frame-pointer -ffast-math
 	CXXFLAGS += $(CFLAGS)
+	HAVE_NETWORK=1
 
 # Raspberry Pi 2
 else ifeq ($(platform), rpi2)
@@ -176,6 +183,7 @@ else ifeq ($(platform), rpi2)
 	CFLAGS += -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
 	CFLAGS += -fomit-frame-pointer -ffast-math
 	CXXFLAGS += $(CFLAGS)
+	HAVE_NETWORK=1
 
 # Raspberry Pi 3
 else ifeq ($(platform), rpi3)
@@ -186,6 +194,7 @@ else ifeq ($(platform), rpi3)
 	CFLAGS += -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 	CFLAGS += -fomit-frame-pointer -ffast-math
 	CXXFLAGS += $(CFLAGS)
+	HAVE_NETWORK=1
 
 # Xbox 360
 else ifeq ($(platform), xenon)
@@ -236,6 +245,7 @@ else ifneq (,$(findstring armv,$(platform)))
 		PLATFORM_DEFINES += -mfloat-abi=hard
 	endif
 	PLATFORM_DEFINES += -DARM
+	HAVE_NETWORK=1
 
 # emscripten
 else ifeq ($(platform), emscripten)
@@ -258,6 +268,7 @@ else
 	TARGET := $(TARGET_NAME)_libretro.dll
 	CC = gcc
 	CXX = g++
+	HAVE_NETWORK=1
 	SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=libretro/link.T
 
 endif
@@ -277,6 +288,10 @@ include Makefile.common
 OBJS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
 
 DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DINLINE=inline -DVIDEO_RGB565
+
+ifeq ($(HAVE_NETWORK), 1)
+DEFINES += -DHAVE_NETWORK
+endif
 
 CFLAGS += $(CODE_DEFINES) $(fpic) $(DEFINES)
 CXXFLAGS += $(fpic) $(DEFINES)

@@ -20,7 +20,9 @@
 #define GAMBATTE_H
 
 #include "inputgetter.h"
+#ifdef HAVE_NETWORK
 #include "serial_io.h"
+#endif
 #include "gbint.h"
 #include <string>
 #include <stddef.h>
@@ -83,8 +85,10 @@ public:
 	/** Sets the callback used for getting input state. */
 	void setInputGetter(InputGetter *getInput);
 
+#ifdef HAVE_NETWORK
 	/** Sets the callback used for transferring serial data. */
 	void setSerialIO(SerialIO *serial_io);
+#endif
 	
 	/** Sets the directory used for storing save data. The default is the same directory as the ROM Image file. */
 	void setSaveDir(const std::string &sdir);

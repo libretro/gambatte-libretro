@@ -61,9 +61,12 @@ void GB::reset() {
 void GB::setInputGetter(InputGetter *getInput) {
 	p_->cpu.setInputGetter(getInput);
 }
+
+#ifdef HAVE_NETWORK
 void GB::setSerialIO(SerialIO *serial_io) {
 	p_->cpu.setSerialIO(serial_io);
 }
+#endif
 
 void GB::Priv::on_load_succeeded(unsigned flags)
 {

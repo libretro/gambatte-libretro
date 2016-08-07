@@ -496,7 +496,9 @@ void CPU::process(unsigned long const cycles) {
 	while (mem_.isActive()) {
 		unsigned short pc = pc_;
 
+#ifdef HAVE_NETWORK
 		mem_.checkSerial(cycleCounter);
+#endif
 
 		if (mem_.halted()) {
 			if (cycleCounter < mem_.nextEventTime()) {
