@@ -10,7 +10,7 @@
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#elif
+#else
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
