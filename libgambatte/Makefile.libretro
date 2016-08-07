@@ -267,7 +267,6 @@ else
 	TARGET := $(TARGET_NAME)_libretro.dll
 	CC = gcc
 	CXX = g++
-	HAVE_NETWORK=1
 	SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=libretro/link.T
 
 endif
