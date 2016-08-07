@@ -7,10 +7,20 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#elif
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#endif
+
+#ifdef _WIN32
+#define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
+#define bcopy(b1,b2,len) (memmove((b2), (b1), (len)), (void) 0)
+#endif
 
 extern retro_log_printf_t log_cb;
 //FILE* fpout;
@@ -209,7 +219,12 @@ unsigned char NetSerial::send(unsigned char data, bool fastCgb)
 
 	buffer[0] = data;
 	buffer[1] = fastCgb;
-	if (write(sockfd_, buffer, 2) <= 0) {
+#ifdef _WIN32
+   if (::send(sockfd_, (char*) buffer, 2, 0) <= 0)
+#else
+	if (write(sockfd_, buffer, 2) <= 0)
+#endif
+   {
 		log_cb(RETRO_LOG_ERROR, "Error writing to socket: %s\n", strerror(errno));
 		close(sockfd_);
 		sockfd_ = -1;
@@ -217,8 +232,12 @@ unsigned char NetSerial::send(unsigned char data, bool fastCgb)
 	}
 
 //	std::cout <<  "(" << master_txn_cnt << "," << slave_txn_cnt << ") Master waiting for response... " << std::endl;
-
-	if (read(sockfd_, buffer, 2) <= 0) {
+#ifdef _WIN32
+	if (recv(sockfd_, (char*) buffer, 2, 0) <= 0) 
+#else
+   if (read(sockfd_, buffer, 2) <= 0) 
+#endif
+   {
 		log_cb(RETRO_LOG_ERROR, "Error reading from socket: %s\n", strerror(errno));
 		close(sockfd_);
 		sockfd_ = -1;
@@ -238,7 +257,11 @@ unsigned char NetSerial::send(unsigned char data, bool fastCgb)
 bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 {
 	unsigned char buffer[2];
+#ifdef _WIN32
+	u_long bytes_avail = 0;
+#else
 	int bytes_avail = 0;
+#endif
 	if (is_stopped_) {
 		return false;
 	}
@@ -247,7 +270,12 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 			return false;
 		}
 	}
-	if (ioctl(sockfd_, FIONREAD, &bytes_avail) < 0) {
+#ifdef _WIN32
+   if (ioctlsocket(sockfd_, FIONREAD, &bytes_avail) < 0)
+#else
+	if (ioctl(sockfd_, FIONREAD, &bytes_avail) < 0)
+#endif
+   {
 		log_cb(RETRO_LOG_ERROR, "IOCTL Failed: %s\n", strerror(errno));
 		return false;
 	}
@@ -257,7 +285,12 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 		return false;
 	}
 
-	if (read(sockfd_, buffer, 2) <= 0) {
+#ifdef _WIN32
+	if (recv(sockfd_, (char*) buffer, 2, 0) <= 0) 
+#else
+   if (read(sockfd_, buffer, 2) <= 0) 
+#endif
+   {
 		log_cb(RETRO_LOG_ERROR, "Error reading from socket: %s\n", strerror(errno));
 		close(sockfd_);
 		sockfd_ = -1;
@@ -272,7 +305,12 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 
 	buffer[0] = out;
 	buffer[1] = 128;
-	if (write(sockfd_, buffer, 2) <= 0) {
+   #ifdef _WIN32
+      if (::send(sockfd_, (char*) buffer, 2, 0) <= 0)
+   #else
+   	if (write(sockfd_, buffer, 2) <= 0)
+   #endif
+   {
 		log_cb(RETRO_LOG_ERROR, "Error writing to socket: %s\n", strerror(errno));
 		close(sockfd_);
 		sockfd_ = -1;
