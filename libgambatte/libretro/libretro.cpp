@@ -161,6 +161,7 @@ void retro_deinit()
 #else
    free(video_buf);
 #endif
+   video_buf = NULL;
 }
 
 void retro_set_environment(retro_environment_t cb)
