@@ -281,6 +281,8 @@ else
 	CXXFLAGS += -O3 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
 endif
 
+CXXFLAGS += -std=c++98
+
 CORE_DIR := src
 
 include Makefile.common
