@@ -28,6 +28,7 @@ endif
 TARGET_NAME := gambatte
 
 version_script = libgambatte/libretro/link.T
+core_installdir := $(prefix)/lib
 
 ifeq ($(ARCHFLAGS),)
 ifeq ($(archs),ppc)
@@ -342,3 +343,9 @@ clean:
 
 .PHONY: clean clean-objs
 endif
+
+install: $(TARGET)
+	install -D -m 755 $(TARGET) $(DESTDIR)$(core_installdir)/$(TARGET)
+
+uninstall:
+	rm $(DESTDIR)$(core_installdir)/$(TARGET)
