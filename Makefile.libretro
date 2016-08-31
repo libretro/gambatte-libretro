@@ -27,6 +27,9 @@ endif
 
 TARGET_NAME := gambatte
 
+version_script = libgambatte/libretro/link.T
+core_installdir := $(prefix)/lib
+
 ifeq ($(ARCHFLAGS),)
 ifeq ($(archs),ppc)
    ARCHFLAGS = -arch ppc -arch ppc64
@@ -39,7 +42,7 @@ endif
 ifeq ($(platform), unix)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
-	SHARED := -shared -Wl,-version-script=libretro/link.T
+	SHARED := -shared -Wl,-version-script=$(version_script)
 	HAVE_NETWORK=1
 
 # OS X
@@ -94,7 +97,7 @@ else ifeq ($(platform), theos_ios)
 else ifeq ($(platform), qnx)
 	TARGET := $(TARGET_NAME)_libretro_qnx.so
 	fpic := -fPIC
-	SHARED := -lcpp -lm -shared -Wl,-version-script=libretro/link.T
+	SHARED := -lcpp -lm -shared -Wl,-version-script=$(version_script)
 	CC = qcc -Vgcc_ntoarmv7le
 	CXX = QCC -Vgcc_ntoarmv7le_cpp
 	AR = QCC -Vgcc_ntoarmv7le
@@ -166,7 +169,7 @@ else ifeq ($(platform), ctr)
 else ifeq ($(platform), rpi1)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
-	SHARED := -shared -Wl,-version-script=libretro/link.T
+	SHARED := -shared -Wl,-version-script=$(version_script)
 	PLATFORM_DEFINES := -DARM
 	CFLAGS += -marm -march=armv6j -mfpu=vfp -mfloat-abi=hard
 	CFLAGS += -fomit-frame-pointer -ffast-math
@@ -177,7 +180,7 @@ else ifeq ($(platform), rpi1)
 else ifeq ($(platform), rpi2)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
-	SHARED := -shared -Wl,-version-script=libretro/link.T
+	SHARED := -shared -Wl,-version-script=$(version_script)
 	PLATFORM_DEFINES := -DARM
 	CFLAGS += -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
 	CFLAGS += -fomit-frame-pointer -ffast-math
@@ -188,7 +191,7 @@ else ifeq ($(platform), rpi2)
 else ifeq ($(platform), rpi3)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
-	SHARED := -shared -Wl,-version-script=libretro/link.T
+	SHARED := -shared -Wl,-version-script=$(version_script)
 	PLATFORM_DEFINES := -DARM
 	CFLAGS += -marm -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 	CFLAGS += -fomit-frame-pointer -ffast-math
@@ -226,7 +229,7 @@ else ifeq ($(platform), wii)
 else ifneq (,$(findstring armv,$(platform)))
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
-	SHARED := -shared -Wl,-version-script=libretro/link.T
+	SHARED := -shared -Wl,-version-script=$(version_script)
 	ifneq (,$(findstring cortexa5,$(platform)))
 		PLATFORM_DEFINES += -marm -mcpu=cortex-a5
 	else ifneq (,$(findstring cortexa8,$(platform)))
@@ -257,7 +260,7 @@ else ifeq ($(platform), gcw0)
 	CXX = /opt/gcw0-toolchain/usr/bin/mipsel-linux-g++
 	AR = /opt/gcw0-toolchain/usr/bin/mipsel-linux-ar
 	fpic := -fPIC
-	SHARED := -shared -Wl,-version-script=libretro/link.T
+	SHARED := -shared -Wl,-version-script=$(version_script)
 	PLATFORM_DEFINES := -DCC_RESAMPLER
 	CFLAGS += -O3 -fomit-frame-pointer -march=mips32 -mtune=mips32r2 -mhard-float
 	CXXFLAGS += $(CFLAGS)
@@ -268,7 +271,7 @@ else
    HAVE_NETWORK=1
 	CC = gcc
 	CXX = g++
-	SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=libretro/link.T
+	SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=$(version_script)
    LDFLAGS := -lws2_32
 
 endif
@@ -283,7 +286,7 @@ endif
 
 CXXFLAGS += -std=c++98
 
-CORE_DIR := src
+CORE_DIR := libgambatte/src
 
 include Makefile.common
 
@@ -340,3 +343,9 @@ clean:
 
 .PHONY: clean clean-objs
 endif
+
+install: $(TARGET)
+	install -D -m 755 $(TARGET) $(DESTDIR)$(core_installdir)/$(TARGET)
+
+uninstall:
+	rm $(DESTDIR)$(core_installdir)/$(TARGET)
