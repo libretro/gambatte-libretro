@@ -136,7 +136,7 @@ else ifeq ($(platform), psp1)
 	CC = psp-gcc$(EXE_EXT)
 	CXX = psp-g++$(EXE_EXT)
 	AR = psp-ar$(EXE_EXT)
-	PLATFORM_DEFINES := -DPSP -DCC_RESAMPLER
+	PLATFORM_DEFINES := -DPSP -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
 	CFLAGS += -G0
 	CXXFLAGS += -G0
 	STATIC_LINKING = 1
@@ -147,7 +147,7 @@ else ifeq ($(platform), vita)
 	CC = arm-vita-eabi-gcc$(EXE_EXT)
 	CXX = arm-vita-eabi-g++$(EXE_EXT)
 	AR = arm-vita-eabi-ar$(EXE_EXT)
-	PLATFORM_DEFINES := -DCC_RESAMPLER
+	PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
 	CFLAGS += -DVITA
 	CXXFLAGS += -DVITA
 	STATIC_LINKING = 1
@@ -158,7 +158,7 @@ else ifeq ($(platform), ctr)
 	CC = $(DEVKITARM)/bin/arm-none-eabi-gcc$(EXE_EXT)
 	CXX = $(DEVKITARM)/bin/arm-none-eabi-g++$(EXE_EXT)
 	AR = $(DEVKITARM)/bin/arm-none-eabi-ar$(EXE_EXT)
-	PLATFORM_DEFINES := -DARM11 -D_3DS -DCC_RESAMPLER
+	PLATFORM_DEFINES := -DARM11 -D_3DS -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
 	CFLAGS += -march=armv6k -mtune=mpcore -mfloat-abi=hard
 	CFLAGS += -Wall -mword-relocations
 	CFLAGS += -fomit-frame-pointer -ffast-math
@@ -261,7 +261,7 @@ else ifeq ($(platform), gcw0)
 	AR = /opt/gcw0-toolchain/usr/bin/mipsel-linux-ar
 	fpic := -fPIC
 	SHARED := -shared -Wl,-version-script=$(version_script)
-	PLATFORM_DEFINES := -DCC_RESAMPLER
+	PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
 	CFLAGS += -O3 -fomit-frame-pointer -march=mips32 -mtune=mips32r2 -mhard-float
 	CXXFLAGS += $(CFLAGS)
 
