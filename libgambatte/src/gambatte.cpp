@@ -168,6 +168,14 @@ void *GB::rombank0_ptr() const {
 void *GB::rombank1_ptr() const {
  return p_->cpu.rombank1_ptr();
 }
+
+const void *GB::zeropage_ptr() const {
+ return p_->cpu.zeropage_ptr();
+}
+
+unsigned GB::ff_read(unsigned p, unsigned long cc) {
+ return p_->cpu.ff_read(p, cc);
+}
 #endif
 
 }

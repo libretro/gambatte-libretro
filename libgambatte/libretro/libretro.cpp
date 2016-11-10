@@ -591,11 +591,15 @@ bool retro_load_game(const struct retro_game_info *info)
    //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
    unsigned sramlen = gb.savedata_size();
    
+   // Ugly hack alert 2: removing the constantness of the poiter.
+   void* zeropage = (void*)gb.zeropage_ptr();
+   
    struct retro_memory_descriptor descs[] =
    {
       {                   0, gb.rambank0_ptr(), 0, 0xC000,               0, 0, 0x1000,  NULL },
       {                   0, gb.rambank1_ptr(), 0, 0xD000,               0, 0, 0x1000,  NULL },
       {                   0, gb.vram_ptr(),     0, 0x8000,               0, 0, 0x2000,  NULL },
+      {                   0, zeropage,          0, 0xFF80,               0, 0, 0x0080,  NULL },
       { RETRO_MEMDESC_CONST, gb.rombank0_ptr(), 0, 0x0000,               0, 0, 0x4000,  NULL },
       { RETRO_MEMDESC_CONST, gb.rombank1_ptr(), 0, 0x4000,               0, 0, 0x4000,  NULL },
       {                   0, gb.savedata_ptr(), 0, 0xA000, (size_t)~0x1FFF, 0, sramlen, NULL },
@@ -746,6 +750,11 @@ void retro_run()
    bool updated = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
       check_variables();
+   
+   /* Ugly hack alert 3: read the interrupt enable flag and write it to the
+    * 127th byte of the zero page ram, so it can be queried in achievements. */
+   uint8_t* zero_page = (uint8_t*)gb.zeropage_ptr();
+   zero_page[127] = gb.ff_read(0xff, 0);
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
