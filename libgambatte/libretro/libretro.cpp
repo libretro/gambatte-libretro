@@ -27,6 +27,8 @@ static retro_environment_t environ_cb;
 static gambatte::video_pixel_t* video_buf;
 static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
+static uint8_t zeropage_copy[128];
+static const void* zeropage_ptr;
 
 #ifdef CC_RESAMPLER
 #include "cc_resampler.h"
@@ -590,19 +592,21 @@ bool retro_load_game(const struct retro_game_info *info)
 
    //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
    unsigned sramlen = gb.savedata_size();
-   
-   // Ugly hack alert 2: removing the constantness of the poiter.
-   void* zeropage = (void*)gb.zeropage_ptr();
-   
+   const uint64_t rom = RETRO_MEMDESC_CONST;
+
+   memset((void*)zeropage_copy, 0, sizeof(zeropage_copy));
+   zeropage_ptr = gb.zeropage_ptr();
+
+   // Ugly hack alert 2: zeropage_copy is only updated at the end of retro_run.
    struct retro_memory_descriptor descs[] =
    {
-      {                   0, gb.rambank0_ptr(), 0, 0xC000,               0, 0, 0x1000,  NULL },
-      {                   0, gb.rambank1_ptr(), 0, 0xD000,               0, 0, 0x1000,  NULL },
-      {                   0, gb.vram_ptr(),     0, 0x8000,               0, 0, 0x2000,  NULL },
-      {                   0, zeropage,          0, 0xFF80,               0, 0, 0x0080,  NULL },
-      { RETRO_MEMDESC_CONST, gb.rombank0_ptr(), 0, 0x0000,               0, 0, 0x4000,  NULL },
-      { RETRO_MEMDESC_CONST, gb.rombank1_ptr(), 0, 0x4000,               0, 0, 0x4000,  NULL },
-      {                   0, gb.savedata_ptr(), 0, 0xA000, (size_t)~0x1FFF, 0, sramlen, NULL },
+      {   0, gb.rambank0_ptr(),    0, 0xC000,               0, 0, 0x1000,  NULL },
+      {   0, gb.rambank1_ptr(),    0, 0xD000,               0, 0, 0x1000,  NULL },
+      {   0, gb.vram_ptr(),        0, 0x8000,               0, 0, 0x2000,  NULL },
+      {   0, (void*)zeropage_copy, 0, 0xFF80,               0, 0, 0x0080,  NULL },
+      { rom, gb.rombank0_ptr(),    0, 0x0000,               0, 0, 0x4000,  NULL },
+      { rom, gb.rombank1_ptr(),    0, 0x4000,               0, 0, 0x4000,  NULL },
+      {   0, gb.savedata_ptr(),    0, 0xA000, (size_t)~0x1FFF, 0, sramlen, NULL },
    };
    
    struct retro_memory_map mmaps =
@@ -751,10 +755,8 @@ void retro_run()
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
       check_variables();
    
-   /* Ugly hack alert 3: read the interrupt enable flag and write it to the
-    * 127th byte of the zero page ram, so it can be queried in achievements. */
-   uint8_t* zero_page = (uint8_t*)gb.zeropage_ptr();
-   zero_page[127] = gb.ff_read(0xff, 0);
+   memcpy((void*)zeropage_copy, zeropage_ptr, 128);
+   zeropage_copy[127] = gb.ff_read(0xff, 0);
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
