@@ -76,6 +76,12 @@ static std::string gb_NetworkClientAddr;
 static blipper_t *resampler_l;
 static blipper_t *resampler_r;
 
+static void update_zero_page()
+{
+   memcpy((void*)zeropage_copy, zeropage_ptr, 128);
+   zeropage_copy[127] = gb.ff_read(0xff, 0);
+}
+
 void retro_get_system_info(struct retro_system_info *info)
 {
    info->library_name = "Gambatte";
@@ -214,6 +220,8 @@ void retro_reset()
       memcpy(gb.savedata_ptr(), sram, gb.savedata_size());
       delete[] sram;
    }
+   
+   update_zero_page();
 }
 
 static size_t serialize_size = 0;
@@ -241,6 +249,7 @@ bool retro_unserialize(const void *data, size_t size)
       return false;
 
    gb.loadState(data);
+   update_zero_page();
    return true;
 }
 
@@ -594,7 +603,6 @@ bool retro_load_game(const struct retro_game_info *info)
    unsigned sramlen = gb.savedata_size();
    const uint64_t rom = RETRO_MEMDESC_CONST;
 
-   memset((void*)zeropage_copy, 0, sizeof(zeropage_copy));
    zeropage_ptr = gb.zeropage_ptr();
 
    // Ugly hack alert 2: zeropage_copy is only updated at the end of retro_run.
@@ -620,6 +628,7 @@ bool retro_load_game(const struct retro_game_info *info)
    bool yes = true;
    environ_cb(RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS, &yes);
 
+   update_zero_page();
    return true;
 }
 
@@ -755,8 +764,7 @@ void retro_run()
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
       check_variables();
    
-   memcpy((void*)zeropage_copy, zeropage_ptr, 128);
-   zeropage_copy[127] = gb.ff_read(0xff, 0);
+   update_zero_page();
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }
