@@ -592,18 +592,14 @@ bool retro_load_game(const struct retro_game_info *info)
    unsigned sramlen = gb.savedata_size();
    const uint64_t rom = RETRO_MEMDESC_CONST;
 
-   void* oam_ram_ptr = (void*)gb.oamram_ptr();
-   void* zeropage_ptr = (void*)gb.zeropage_ptr();
-
-   // Ugly hack alert 2: zeropage_copy is only updated at the end of retro_run.
    struct retro_memory_descriptor descs[] =
    {
-      {   0, zeropage_ptr,      0, 0xFF80,               0, 0, 0x0080,  NULL },
+      {   0, gb.zeropage_ptr(), 0, 0xFF80,               0, 0, 0x0080,  NULL },
       {   0, gb.rambank0_ptr(), 0, 0xC000,               0, 0, 0x1000,  NULL },
       {   0, gb.rambank1_ptr(), 0, 0xD000,               0, 0, 0x1000,  NULL },
       {   0, gb.savedata_ptr(), 0, 0xA000, (size_t)~0x1FFF, 0, sramlen, NULL },
       {   0, gb.vram_ptr(),     0, 0x8000,               0, 0, 0x2000,  NULL },
-      {   0, oam_ram_ptr,       0, 0xFE00,               0, 0, 0x00A0,  NULL },
+      {   0, gb.oamram_ptr(),   0, 0xFE00,               0, 0, 0x00A0,  NULL },
       { rom, gb.rombank0_ptr(), 0, 0x0000,               0, 0, 0x4000,  NULL },
       { rom, gb.rombank1_ptr(), 0, 0x4000,               0, 0, 0x4000,  NULL },
    };

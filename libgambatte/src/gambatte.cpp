@@ -169,11 +169,11 @@ void *GB::rombank1_ptr() const {
  return p_->cpu.rombank1_ptr();
 }
 
-const void *GB::zeropage_ptr() const {
+void *GB::zeropage_ptr() const {
  return p_->cpu.zeropage_ptr();
 }
 
-const void *GB::oamram_ptr() const {
+void *GB::oamram_ptr() const {
  return p_->cpu.oamram_ptr();
 }
 #endif
