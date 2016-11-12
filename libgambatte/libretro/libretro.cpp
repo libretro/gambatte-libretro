@@ -27,8 +27,6 @@ static retro_environment_t environ_cb;
 static gambatte::video_pixel_t* video_buf;
 static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
-static uint8_t zeropage_copy[128];
-static const void* zeropage_ptr;
 
 #ifdef CC_RESAMPLER
 #include "cc_resampler.h"
@@ -75,12 +73,6 @@ static std::string gb_NetworkClientAddr;
 
 static blipper_t *resampler_l;
 static blipper_t *resampler_r;
-
-static void update_zero_page()
-{
-   memcpy((void*)zeropage_copy, zeropage_ptr, 128);
-   zeropage_copy[127] = gb.ff_read(0xff, 0);
-}
 
 void retro_get_system_info(struct retro_system_info *info)
 {
@@ -220,8 +212,6 @@ void retro_reset()
       memcpy(gb.savedata_ptr(), sram, gb.savedata_size());
       delete[] sram;
    }
-   
-   update_zero_page();
 }
 
 static size_t serialize_size = 0;
@@ -249,7 +239,6 @@ bool retro_unserialize(const void *data, size_t size)
       return false;
 
    gb.loadState(data);
-   update_zero_page();
    return true;
 }
 
@@ -603,18 +592,20 @@ bool retro_load_game(const struct retro_game_info *info)
    unsigned sramlen = gb.savedata_size();
    const uint64_t rom = RETRO_MEMDESC_CONST;
 
-   zeropage_ptr = gb.zeropage_ptr();
+   void* oam_ram_ptr = (void*)gb.oamram_ptr();
+   void* zeropage_ptr = (void*)gb.zeropage_ptr();
 
    // Ugly hack alert 2: zeropage_copy is only updated at the end of retro_run.
    struct retro_memory_descriptor descs[] =
    {
-      {   0, gb.rambank0_ptr(),    0, 0xC000,               0, 0, 0x1000,  NULL },
-      {   0, gb.rambank1_ptr(),    0, 0xD000,               0, 0, 0x1000,  NULL },
-      {   0, gb.vram_ptr(),        0, 0x8000,               0, 0, 0x2000,  NULL },
-      {   0, (void*)zeropage_copy, 0, 0xFF80,               0, 0, 0x0080,  NULL },
-      { rom, gb.rombank0_ptr(),    0, 0x0000,               0, 0, 0x4000,  NULL },
-      { rom, gb.rombank1_ptr(),    0, 0x4000,               0, 0, 0x4000,  NULL },
-      {   0, gb.savedata_ptr(),    0, 0xA000, (size_t)~0x1FFF, 0, sramlen, NULL },
+      {   0, zeropage_ptr,      0, 0xFF80,               0, 0, 0x0080,  NULL },
+      {   0, gb.rambank0_ptr(), 0, 0xC000,               0, 0, 0x1000,  NULL },
+      {   0, gb.rambank1_ptr(), 0, 0xD000,               0, 0, 0x1000,  NULL },
+      {   0, gb.savedata_ptr(), 0, 0xA000, (size_t)~0x1FFF, 0, sramlen, NULL },
+      {   0, gb.vram_ptr(),     0, 0x8000,               0, 0, 0x2000,  NULL },
+      {   0, oam_ram_ptr,       0, 0xFE00,               0, 0, 0x00A0,  NULL },
+      { rom, gb.rombank0_ptr(), 0, 0x0000,               0, 0, 0x4000,  NULL },
+      { rom, gb.rombank1_ptr(), 0, 0x4000,               0, 0, 0x4000,  NULL },
    };
    
    struct retro_memory_map mmaps =
@@ -628,7 +619,6 @@ bool retro_load_game(const struct retro_game_info *info)
    bool yes = true;
    environ_cb(RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS, &yes);
 
-   update_zero_page();
    return true;
 }
 
@@ -763,8 +753,6 @@ void retro_run()
    bool updated = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
       check_variables();
-   
-   update_zero_page();
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }

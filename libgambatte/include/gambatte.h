@@ -130,7 +130,7 @@ public:
    void *rombank0_ptr() const;
    void *rombank1_ptr() const;
    const void *zeropage_ptr() const;
-   unsigned ff_read(unsigned p, unsigned long cc);
+   const void *oamram_ptr() const;
 #endif
 
 private:

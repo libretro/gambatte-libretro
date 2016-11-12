@@ -53,6 +53,7 @@ public:
    void *rombank0_ptr() const { return cart_.romdata(0); }
    void *rombank1_ptr() const { return cart_.romdata(0) + 0x4000; }
    const void *zeropage_ptr() const { return ioamhram_ + 0x0180; }
+   const void *oamram_ptr() const { return ioamhram_; }
 #else
    void loadSavedata() { cart_.loadSavedata(); }
    void saveSavedata() { cart_.saveSavedata(); }

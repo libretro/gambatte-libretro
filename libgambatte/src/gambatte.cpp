@@ -173,8 +173,8 @@ const void *GB::zeropage_ptr() const {
  return p_->cpu.zeropage_ptr();
 }
 
-unsigned GB::ff_read(unsigned p, unsigned long cc) {
- return p_->cpu.ff_read(p, cc);
+const void *GB::oamram_ptr() const {
+ return p_->cpu.oamram_ptr();
 }
 #endif
 
