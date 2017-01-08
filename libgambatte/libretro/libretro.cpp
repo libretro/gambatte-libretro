@@ -199,10 +199,16 @@ void retro_reset()
 {
    // gambatte seems to clear out SRAM on reset.
    uint8_t *sram = 0;
+   uint8_t *rtc = 0;
    if (gb.savedata_size())
    {
       sram = new uint8_t[gb.savedata_size()];
       memcpy(sram, gb.savedata_ptr(), gb.savedata_size());
+   }
+   if (gb.rtcdata_size())
+   {
+      rtc = new uint8_t[gb.rtcdata_size()];
+      memcpy(rtc, gb.rtcdata_ptr(), gb.rtcdata_size());
    }
 
    gb.reset();
@@ -211,6 +217,11 @@ void retro_reset()
    {
       memcpy(gb.savedata_ptr(), sram, gb.savedata_size());
       delete[] sram;
+   }
+   if (rtc)
+   {
+      memcpy(gb.rtcdata_ptr(), rtc, gb.rtcdata_size());
+      delete[] rtc;
    }
 }
 
