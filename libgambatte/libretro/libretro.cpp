@@ -540,6 +540,9 @@ static unsigned pow2ceil(unsigned n) {
 
 bool retro_load_game(const struct retro_game_info *info)
 {
+   if (!info)
+      return false;
+
    bool can_dupe = false;
    environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
    if (!can_dupe)
