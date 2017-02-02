@@ -18,6 +18,8 @@ extern "C" void* linearMemAlign(size_t size, size_t alignment);
 extern "C" void linearFree(void* mem);
 #endif
 
+char systempath[4096];
+
 retro_log_printf_t log_cb;
 static retro_video_refresh_t video_cb;
 static retro_input_poll_t input_poll_cb;
@@ -578,6 +580,12 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
 #endif
+   
+   //get bootloader dir
+   const char* systemdirtmp;
+   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,(void *)systemdirtmp);
+   if(!worked)memset(systempath,0,4096);
+   else strcpy(systempath,systemdirtmp);
 
    unsigned flags = 0;
    struct retro_variable var = {0};
