@@ -21,6 +21,7 @@
 #include "savestate.h"
 #include "sound.h"
 #include "video.h"
+#include "bootloader.h"
 #include <cstring>
 
 namespace gambatte {
@@ -993,6 +994,9 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		}
 
 		return;
+   case 0x50://for bootloader,swap bootloader with rom
+      call_FF50();
+      return;
 	case 0x51:
 		dmaSource_ = data << 8 | (dmaSource_ & 0xFF);
 		return;

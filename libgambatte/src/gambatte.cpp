@@ -21,6 +21,7 @@
 #include "savestate.h"
 #include "statesaver.h"
 #include "initstate.h"
+#include "bootloader.h"
 #include <sstream>
 
 namespace gambatte {
@@ -53,9 +54,24 @@ long GB::runFor(gambatte::video_pixel_t *const videoBuf, const int pitch,
 
 void GB::reset() {
    SaveState state;
+   bool bootloaderexists = have_bootloader(p_->cpu.isCgb());
+   
+   printf("Bootloader exists:%d\n",(int)bootloaderexists);
+   
    p_->cpu.setStatePtrs(state);
    setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
+   
+   if(bootloaderexists){
+      resetbootloader();
+      set_address_space_start((void*)p_->cpu.rombank0_ptr());
+      loadbootloader(p_->cpu.isCgb());
+      state.cpu.pc = 0x0000;
+      //the hw registers must be zeroed out to prevent the logo from being garbled
+      std::memset((void*)(state.mem.ioamhram.get() + 0x100),0x00,0x100);
+   }
+
    p_->cpu.loadState(state);
+   
 }
 
 void GB::setInputGetter(InputGetter *getInput) {
@@ -70,10 +86,25 @@ void GB::setSerialIO(SerialIO *serial_io) {
 
 void GB::Priv::on_load_succeeded(unsigned flags)
 {
-	SaveState state;
-	cpu.setStatePtrs(state);
-	setInitState(state, cpu.isCgb(), gbaCgbMode = flags & GBA_CGB);
-	cpu.loadState(state);
+   SaveState state;
+   bool bootloaderexists = have_bootloader(cpu.isCgb());
+   gbaCgbMode = flags & GBA_CGB;
+   
+   printf("Bootloader exists:%d\n",(int)bootloaderexists);
+   
+   cpu.setStatePtrs(state);
+   setInitState(state, cpu.isCgb(), gbaCgbMode);
+   
+   if(bootloaderexists){
+      resetbootloader();
+      set_address_space_start((void*)cpu.rombank0_ptr());
+      loadbootloader(cpu.isCgb());
+      state.cpu.pc = 0x0000;
+      //the hw registers must be zeroed out to prevent the logo from being garbled
+      std::memset((void*)(state.mem.ioamhram.get() + 0x100),0x00,0x100);
+   }
+   
+   cpu.loadState(state);
 
 	stateNo = 1;
 }
