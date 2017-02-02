@@ -582,9 +582,9 @@ bool retro_load_game(const struct retro_game_info *info)
 #endif
    
    //get bootloader dir
-   const char* systemdirtmp;
-   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,(void *)systemdirtmp);
-   if(!worked)memset(systempath,0,4096);
+   const char* systemdirtmp = NULL;
+   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,&systemdirtmp);
+   if(!worked)systempath[0] = 0;
    else strcpy(systempath,systemdirtmp);
 
    unsigned flags = 0;
