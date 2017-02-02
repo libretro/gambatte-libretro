@@ -61,7 +61,7 @@ void GB::reset() {
    p_->cpu.setStatePtrs(state);
    setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
    
-   if(bootloaderexists){
+   if(bootloaderexists && !p_->gbaCgbMode){
       resetbootloader();
       set_address_space_start((void*)p_->cpu.rombank0_ptr());
       loadbootloader(p_->cpu.isCgb());
@@ -95,7 +95,7 @@ void GB::Priv::on_load_succeeded(unsigned flags)
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode);
    
-   if(bootloaderexists){
+   if(bootloaderexists && !gbaCgbMode){
       resetbootloader();
       set_address_space_start((void*)cpu.rombank0_ptr());
       loadbootloader(cpu.isCgb());
