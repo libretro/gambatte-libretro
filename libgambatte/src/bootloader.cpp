@@ -1,14 +1,17 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <sys/stat.h>
 
 #include <string>
 
 using std::string;
 
 inline bool exist(const std::string& name){
-   struct stat buffer;
-   return (stat(name.c_str(), &buffer) == 0);
+    FILE *file;
+    if ((file = fopen(name.c_str(), "r")){
+        fclose(file);
+        return true;
+    }
+    return false;
 }
 
 extern char systempath[];
@@ -51,7 +54,7 @@ bool loadbootloader(bool isgbc){
    if(isgbc)size = 0x900;
    else size = 0x100;
    
-   fp = fopen(path.c_str(), "r");
+   fp = fopen(path.c_str(), "rb");
    if (fp){
       n = fread(bootromswapspace, size, 1, fp);
    }
