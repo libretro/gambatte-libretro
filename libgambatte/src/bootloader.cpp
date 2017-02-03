@@ -1,12 +1,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-
 #include <string>
 
 #include "bootloader.h"
-
-using std::string;
 
 inline bool exist(const std::string& name){
    FILE *file = fopen(name.c_str(), "r");
@@ -17,8 +14,7 @@ inline bool exist(const std::string& name){
    return false;
 }
 
-extern char systempath[];
-
+static char bootrompath[4096];
 static uint8_t bootromswapspace[0x900];
 static uint8_t rombackup[0x900];
 static void* addrspace_start = NULL;
@@ -30,17 +26,21 @@ static bool gbc_mode;
 
 
 //this is the only retroarch specific function,everything else can just be copied over
-static string get_bootloader_path(string bootloadername){
+static std::string get_bootloader_path(std::string bootloadername){
    std::string path;
-   path = systempath;
-   if(path == "")return "";
-   if(path[path.length() - 1] != '/')path += '/';
-   path += bootloadername;
+   if(bootrompath != NULL){
+      path = bootrompath;
+      if(path[path.length() - 1] != '/')path += '/';
+      path += bootloadername;
+   }
+   else{
+      path = "";
+   }
    return path;
 }
 
 bool have_bootloader(bool isgbc){
-   string path;
+   std::string path;
    if(isgbc)path = get_bootloader_path("gbc_bios.bin");
    else path = get_bootloader_path("gb_bios.bin");
    if(path == "")return false;
@@ -49,7 +49,7 @@ bool have_bootloader(bool isgbc){
 
 bool loadbootloader(bool isgbc){
    unsigned int size;
-   string path;
+   std::string path;
    int n = 0;
    FILE *fp;
    
@@ -90,6 +90,19 @@ void resetbootloader(){
    using_bootloader = false;
 }
 
+void set_bootrom_directory(char* dir){
+   if(dir != NULL){
+      strcpy(bootrompath,dir);
+   }
+   else{
+      bootrompath[0] = 0;
+   }
+}
+
+void set_address_space_start(void* start){
+   addrspace_start = start;
+}
+
 void bootloader_choosebank(bool inbootloader){
    //inbootloader = (state.mem.ioamhram.get()[0x150] != 0xFF);//do not uncomment this is just for reference
    if(using_bootloader){
@@ -103,10 +116,6 @@ void bootloader_choosebank(bool inbootloader){
       //switching from game to game or bootloader to bootloader needs no changes
       
    }
-}
-
-void set_address_space_start(void* start){
-   addrspace_start = start;
 }
 
 void call_FF50(){

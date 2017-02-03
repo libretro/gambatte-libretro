@@ -24,7 +24,7 @@
 #include "bootloader.h"
 #include <sstream>
 
-#include "string.h"
+#include <string.h>//for memset
 
 namespace gambatte {
 struct GB::Priv {

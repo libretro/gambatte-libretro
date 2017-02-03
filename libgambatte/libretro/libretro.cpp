@@ -2,6 +2,7 @@
 #include "blipper.h"
 #include <gambatte.h>
 #include "gbcpalettes.h"
+#include "bootloader.h"
 #ifdef HAVE_NETWORK
 #include "net_serial.h"
 #endif
@@ -17,8 +18,6 @@
 extern "C" void* linearMemAlign(size_t size, size_t alignment);
 extern "C" void linearFree(void* mem);
 #endif
-
-char systempath[4096];
 
 retro_log_printf_t log_cb;
 static retro_video_refresh_t video_cb;
@@ -584,8 +583,8 @@ bool retro_load_game(const struct retro_game_info *info)
    //get bootloader dir
    const char* systemdirtmp = NULL;
    bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,&systemdirtmp);
-   if(!worked)systempath[0] = 0;
-   else strcpy(systempath,systemdirtmp);
+   if(!worked)set_bootrom_directory((char*)NULL);
+   else set_bootrom_directory((char*) systemdirtmp);
 
    unsigned flags = 0;
    struct retro_variable var = {0};
