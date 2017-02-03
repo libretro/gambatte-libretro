@@ -24,6 +24,8 @@
 #include "bootloader.h"
 #include <sstream>
 
+#include "string.h"
+
 namespace gambatte {
 struct GB::Priv {
 	CPU cpu;
@@ -56,8 +58,6 @@ void GB::reset() {
    SaveState state;
    bool bootloaderexists = have_bootloader(p_->cpu.isCgb());
    
-   printf("Bootloader exists:%d\n",(int)bootloaderexists);
-   
    p_->cpu.setStatePtrs(state);
    setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
    
@@ -67,7 +67,7 @@ void GB::reset() {
       loadbootloader(p_->cpu.isCgb());
       state.cpu.pc = 0x0000;
       //the hw registers must be zeroed out to prevent the logo from being garbled
-      std::memset((void*)(state.mem.ioamhram.get() + 0x100),0x00,0x100);
+      memset((void*)(state.mem.ioamhram.get() + 0x100),0x00,0x100);
    }
 
    p_->cpu.loadState(state);
@@ -90,8 +90,6 @@ void GB::Priv::on_load_succeeded(unsigned flags)
    bool bootloaderexists = have_bootloader(cpu.isCgb());
    gbaCgbMode = flags & GBA_CGB;
    
-   printf("Bootloader exists:%d\n",(int)bootloaderexists);
-   
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode);
    
@@ -101,7 +99,7 @@ void GB::Priv::on_load_succeeded(unsigned flags)
       loadbootloader(cpu.isCgb());
       state.cpu.pc = 0x0000;
       //the hw registers must be zeroed out to prevent the logo from being garbled
-      std::memset((void*)(state.mem.ioamhram.get() + 0x100),0x00,0x100);
+      memset((void*)(state.mem.ioamhram.get() + 0x100),0x00,0x100);
    }
    
    cpu.loadState(state);
