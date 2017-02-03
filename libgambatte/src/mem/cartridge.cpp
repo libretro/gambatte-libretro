@@ -447,7 +447,7 @@ namespace gambatte
 
    int Cartridge::loadROM(const void *data, unsigned romsize, const bool forceDmg, const bool multiCartCompat)
    {
-      uint8_t *romdata = (uint8_t*)data;
+      const uint8_t *romdata = (uint8_t*)data;
       if (romsize < 0x4000 || !romdata)
          return -1;
 

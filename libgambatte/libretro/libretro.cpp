@@ -292,7 +292,7 @@ static bool startswith(const std::string s1, const std::string prefix)
 static int gb_colorization_enable = 0;
 
 static std::string rom_path;
-char internal_game_name[17];
+static char internal_game_name[17];
 
 static void load_custom_palette(void)
 {
@@ -599,7 +599,6 @@ bool retro_load_game(const struct retro_game_info *info)
 
    check_variables();
 
-   //Ugly hack alert: This entire thing depends upon cartridge.cpp and memptrs.cpp not changing in weird ways.
    unsigned sramlen = gb.savedata_size();
    const uint64_t rom = RETRO_MEMDESC_CONST;
 
@@ -698,9 +697,9 @@ void retro_run()
    if (frames_count < expected_frames) // Detect frame dupes.
    {
 #ifdef VIDEO_RGB565
-      video_cb(0, 160, 144, 512);
+      video_cb(NULL, 160, 144, 512);
 #else
-      video_cb(0, 160, 144, 1024);
+      video_cb(NULL, 160, 144, 1024);
 #endif
       frames_count++;
       return;
