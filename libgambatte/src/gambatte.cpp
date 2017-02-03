@@ -138,9 +138,10 @@ void GB::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) 
 void GB::loadState(const void *data) {
    SaveState state;
    p_->cpu.setStatePtrs(state);
-
+   
    if (StateSaver::loadState(state, data)) {
       p_->cpu.loadState(state);
+      bootloader_choosebank(state.mem.ioamhram.get()[0x150] != 0xFF);
    }
 }
 
