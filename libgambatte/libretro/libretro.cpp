@@ -583,8 +583,8 @@ bool retro_load_game(const struct retro_game_info *info)
    //get bootloader dir
    const char* systemdirtmp = NULL;
    bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,&systemdirtmp);
-   if(!worked)set_bootrom_directory((char*)NULL);
-   else set_bootrom_directory((char*) systemdirtmp);
+   if(!worked)set_bootrom_directory("");
+   else set_bootrom_directory(systemdirtmp);
 
    unsigned flags = 0;
    struct retro_variable var = {0};

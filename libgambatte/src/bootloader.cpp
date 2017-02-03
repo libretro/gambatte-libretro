@@ -14,7 +14,7 @@ inline bool exist(const std::string& name){
    return false;
 }
 
-static char bootrompath[4096];
+static std::string bootrompath;
 static uint8_t bootromswapspace[0x900];
 static uint8_t rombackup[0x900];
 static void* addrspace_start = NULL;
@@ -35,7 +35,7 @@ static void patch_gbc_to_gba_mode(){
 //this is the only retroarch specific function,everything else can just be copied over
 static std::string get_bootloader_path(std::string bootloadername){
    std::string path;
-   if(bootrompath[0] != 0){
+   if(bootrompath != ""){
       path = bootrompath;
       if(path[path.length() - 1] != '/')path += '/';
       path += bootloadername;
@@ -102,13 +102,8 @@ void resetbootloader(){
    gbc_mode = false;
 }
 
-void set_bootrom_directory(char* dir){
-   if(dir != NULL){
-      strcpy(bootrompath,dir);
-   }
-   else{
-      bootrompath[0] = 0;
-   }
+void set_bootrom_directory(std::string dir){
+   bootrompath = dir;
 }
 
 void set_address_space_start(void* start){
