@@ -28,6 +28,18 @@ static gambatte::video_pixel_t* video_buf;
 static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
 
+//Dual mode runs two GBCs side by side.
+//Currently, they load the same ROM, take the same input, and only the left one supports SRAM, cheats, savestates, or sound.
+//Can be made useful later, but for now, it's just a tech demo.
+//#define DUAL_MODE
+
+#ifdef DUAL_MODE
+static gambatte::GB gb2;
+#define NUM_GAMEBOYS 2
+#else
+#define NUM_GAMEBOYS 1
+#endif
+
 #ifdef CC_RESAMPLER
 #include "cc_resampler.h"
 #endif
@@ -91,7 +103,7 @@ static struct retro_system_timing g_timing;
 
 void retro_get_system_av_info(struct retro_system_av_info *info)
 {
-   retro_game_geometry geom = { 160, 144, 160, 144 };
+   retro_game_geometry geom = { 160*NUM_GAMEBOYS, 144, 160*NUM_GAMEBOYS, 144 };
    info->geometry = geom;
    info->timing   = g_timing;
 }
@@ -116,6 +128,9 @@ void retro_init(void)
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
    gb.setInputGetter(&gb_input);
+#ifdef DUAL_MODE
+   gb2.setInputGetter(&gb_input);
+#endif
 
    double fps = 4194304.0 / 70224.0;
    double sample_rate = fps * 35112;
@@ -140,12 +155,12 @@ void retro_init(void)
 
 #ifdef _3DS
    video_buf = (gambatte::video_pixel_t*)
-               linearMemAlign(256 * 144 * sizeof(gambatte::video_pixel_t), 128);
+               linearMemAlign(sizeof(gambatte::video_pixel_t) * 256 * NUM_GAMEBOYS * 144, 128);
 #else
    video_buf = (gambatte::video_pixel_t*)
-               malloc(256 * 144 * sizeof(gambatte::video_pixel_t));
+               malloc(sizeof(gambatte::video_pixel_t) * 256 * NUM_GAMEBOYS * 144);
 #endif
-   video_pitch = 256;
+   video_pitch = 256 * NUM_GAMEBOYS;
 
    check_system_specs();
 }
@@ -212,6 +227,9 @@ void retro_reset()
    }
 
    gb.reset();
+#ifdef DUAL_MODE
+   gb2.reset();
+#endif
 
    if (sram)
    {
@@ -590,6 +608,10 @@ bool retro_load_game(const struct retro_game_info *info)
 
    if (gb.load(info->data, info->size, flags) != 0)
       return false;
+#ifdef DUAL_MODE
+   if (gb2.load(info->data, info->size, flags) != 0)
+      return false;
+#endif
 
    rom_path = info->path ? info->path : "";
    strncpy(internal_game_name, (const char*)info->data + 0x134, sizeof(internal_game_name) - 1);
@@ -697,9 +719,9 @@ void retro_run()
    if (frames_count < expected_frames) // Detect frame dupes.
    {
 #ifdef VIDEO_RGB565
-      video_cb(NULL, 160, 144, 512);
+      video_cb(NULL, 160*NUM_GAMEBOYS, 144, 512*NUM_GAMEBOYS);
 #else
-      video_cb(NULL, 160, 144, 1024);
+      video_cb(NULL, 160*NUM_GAMEBOYS, 144, 1024*NUM_GAMEBOYS);
 #endif
       frames_count++;
       return;
@@ -731,6 +753,9 @@ void retro_run()
       samples_count += samples;
       samples = 2064;
    }
+#ifdef DUAL_MODE
+   while (gb2.runFor(video_buf+160, video_pitch, sound_buf.u32, samples) == -1) {}
+#endif
 
    samples_count += samples;
 
@@ -741,9 +766,9 @@ void retro_run()
 #endif
 
 #ifdef VIDEO_RGB565
-   video_cb(video_buf, 160, 144, 512);
+   video_cb(video_buf, 160*NUM_GAMEBOYS, 144, 512*NUM_GAMEBOYS);
 #else
-   video_cb(video_buf, 160, 144, 1024);
+   video_cb(video_buf, 160*NUM_GAMEBOYS, 144, 1024*NUM_GAMEBOYS);
 #endif
 
 
