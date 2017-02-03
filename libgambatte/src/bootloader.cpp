@@ -25,10 +25,17 @@ static bool gbc_mode;
 
 
 
+static void patch_gbc_to_gba_mode(){
+   /*moves one jump over another and puts ld b,0x01 into the original position*/
+   uint16_t patchloc = 0xF2;
+   uint8_t patch[0x7] = {0xCD,0xD0,0x05/*<-call systemsetup*/,0x06,0x01/*<-ld b,0x1*/,0x00/*<-nop*/,0x00/*<-nop*/};
+   memcpy(bootromswapspace + patchloc,patch,0x7);
+}
+
 //this is the only retroarch specific function,everything else can just be copied over
 static std::string get_bootloader_path(std::string bootloadername){
    std::string path;
-   if(bootrompath != NULL){
+   if(bootrompath[0] != 0){
       path = bootrompath;
       if(path[path.length() - 1] != '/')path += '/';
       path += bootloadername;
@@ -47,7 +54,7 @@ bool have_bootloader(bool isgbc){
    return exist(path);
 }
 
-bool loadbootloader(bool isgbc){
+bool loadbootloader(bool isgbc,bool isgba){
    unsigned int size;
    std::string path;
    int n = 0;
@@ -71,6 +78,10 @@ bool loadbootloader(bool isgbc){
    using_bootloader = true;
    gbc_mode = isgbc;
    
+   if(isgba){//patch bootloader to fake gba mode
+      patch_gbc_to_gba_mode();
+   }
+   
    //backup rom segment that is shared with bootloader
    memcpy(rombackup,(uint8_t*)addrspace_start,size);
    
@@ -88,6 +99,7 @@ void resetbootloader(){
    has_called_FF50 = false;
    addrspace_start = NULL;
    using_bootloader = false;
+   gbc_mode = false;
 }
 
 void set_bootrom_directory(char* dir){

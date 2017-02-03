@@ -1,6 +1,6 @@
 //load the rom then call the loadbootloader() function before execution starts
 bool have_bootloader(bool isgbc);
-bool loadbootloader(bool isgbc);
+bool loadbootloader(bool isgbc,bool isgba);
 void resetbootloader();
 
 void set_bootrom_directory(char* dir);

@@ -61,13 +61,13 @@ void GB::reset() {
    p_->cpu.setStatePtrs(state);
    setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
    
-   if(bootloaderexists && !p_->gbaCgbMode){
+   if(bootloaderexists){
       resetbootloader();
       set_address_space_start((void*)p_->cpu.rombank0_ptr());
-      loadbootloader(p_->cpu.isCgb());
+      loadbootloader(p_->cpu.isCgb(), p_->gbaCgbMode);
       state.cpu.pc = 0x0000;
       //the hw registers must be zeroed out to prevent the logo from being garbled
-      memset((void*)(state.mem.ioamhram.get() + 0x100),0x00,0x100);
+      memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
    }
 
    p_->cpu.loadState(state);
@@ -93,13 +93,13 @@ void GB::Priv::on_load_succeeded(unsigned flags)
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode);
    
-   if(bootloaderexists && !gbaCgbMode){
+   if(bootloaderexists){
       resetbootloader();
       set_address_space_start((void*)cpu.rombank0_ptr());
-      loadbootloader(cpu.isCgb());
+      loadbootloader(cpu.isCgb(), gbaCgbMode);
       state.cpu.pc = 0x0000;
       //the hw registers must be zeroed out to prevent the logo from being garbled
-      memset((void*)(state.mem.ioamhram.get() + 0x100),0x00,0x100);
+      memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
    }
    
    cpu.loadState(state);
