@@ -60,11 +60,11 @@ void GB::reset() {
    p_->cpu.setStatePtrs(state);
    setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
    
-   if(usebootloaders){
+   if(p_->cpu.mem_.bootloader.get_bootloader_enabled()){
       p_->cpu.mem_.bootloader.reset();
       p_->cpu.mem_.bootloader.set_address_space_start((void*)p_->cpu.rombank0_ptr());
       p_->cpu.mem_.bootloader.load(p_->cpu.isCgb(), p_->gbaCgbMode);
-      if(p_->cpu.mem_.bootloader.enabled()){
+      if(p_->cpu.mem_.bootloader.booting_with_bootloader()){
          state.cpu.pc = 0x0000;
          //the hw registers must be zeroed out to prevent the logo from being garbled
          memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
@@ -77,6 +77,14 @@ void GB::reset() {
 
 void GB::setInputGetter(InputGetter *getInput) {
 	p_->cpu.setInputGetter(getInput);
+}
+
+void GB::setBootloaderGetter(bool (*getter)(bool,uint8_t*)) {
+   p_->cpu.mem_.bootloader.set_bootloader_getter(getter);
+}
+   
+void GB::setBootloaderEnabled(bool enabled) {
+   p_->cpu.mem_.bootloader.set_bootloader_enabled(enabled);
 }
 
 #ifdef HAVE_NETWORK
@@ -93,11 +101,11 @@ void GB::Priv::on_load_succeeded(unsigned flags)
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode);
    
-   if(usebootloaders){
+   if(cpu.mem_.bootloader.get_bootloader_enabled()){
       cpu.mem_.bootloader.reset();
       cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
       cpu.mem_.bootloader.load(cpu.isCgb(), gbaCgbMode);
-      if(cpu.mem_.bootloader.enabled()){
+      if(cpu.mem_.bootloader.booting_with_bootloader()){
          state.cpu.pc = 0x0000;
          //the hw registers must be zeroed out to prevent the logo from being garbled
          memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);

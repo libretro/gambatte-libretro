@@ -84,6 +84,11 @@ public:
 	
 	/** Sets the callback used for getting input state. */
 	void setInputGetter(InputGetter *getInput);
+   
+   /** Sets the callback used for getting the bootloader data. */
+   void setBootloaderGetter(bool (*getter)(bool,uint8_t*));
+   
+   void setBootloaderEnabled(bool enabled);
 
 #ifdef HAVE_NETWORK
 	/** Sets the callback used for transferring serial data. */

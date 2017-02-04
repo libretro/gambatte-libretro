@@ -4,8 +4,10 @@
 
 #include "bootloader.h"
 
-bool usebootloaders = true;
-bool (*get_raw_bootloader_data)(bool/*gbcver*/,uint8_t* /*data*/) = NULL;
+Bootloader::Bootloader(){
+   usebootloaders = true;
+   get_raw_bootloader_data = NULL;
+}
 
 void Bootloader::patch_gbc_to_gba_mode(){
    /*moves one jump over another and puts ld b,0x01 into the original position*/
@@ -57,8 +59,20 @@ void Bootloader::reset(){
    gbc_mode = false;
 }
 
-bool Bootloader::enabled(){
+bool Bootloader::booting_with_bootloader(){
    return using_bootloader;
+}
+
+void Bootloader::set_bootloader_getter(bool (*getter)(bool,uint8_t*)){
+   get_raw_bootloader_data = getter;
+}
+
+bool Bootloader::get_bootloader_enabled(){
+   return usebootloaders;
+}
+
+void Bootloader::set_bootloader_enabled(bool enabled){
+   usebootloaders = enabled;
 }
 
 void Bootloader::set_address_space_start(void* start){

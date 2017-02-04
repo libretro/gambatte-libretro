@@ -188,7 +188,7 @@ void retro_init(void)
    check_system_specs();
    
    //gb/gbc bootloader support
-   get_raw_bootloader_data = get_bootloader_from_file;
+   gb.setBootloaderGetter(get_bootloader_from_file);
    
 }
 
@@ -634,8 +634,12 @@ bool retro_load_game(const struct retro_game_info *info)
    var.key = "gambatte_gb_bootloaderenabled";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
-      if (!strcmp(var.value, "enabled")) usebootloaders = true;
-      else usebootloaders = false;
+      if (!strcmp(var.value, "enabled")){
+         gb.setBootloaderEnabled(true);
+      }
+      else {
+         gb.setBootloaderEnabled(false);
+      }
    }
 
    if (gb.load(info->data, info->size, flags) != 0)
