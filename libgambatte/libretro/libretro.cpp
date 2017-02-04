@@ -14,6 +14,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <string>
+
 #ifdef _3DS
 extern "C" void* linearMemAlign(size_t size, size_t alignment);
 extern "C" void linearFree(void* mem);
@@ -32,6 +34,41 @@ static gambatte::GB gb;
 #ifdef CC_RESAMPLER
 #include "cc_resampler.h"
 #endif
+
+bool get_bootloader_from_file(bool isgbc,uint8_t* data){
+   const char* systemdirtmp = NULL;
+   std::string path;
+   unsigned int size;
+   int n = 0;
+   FILE *fp;
+   
+   //get path
+   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,&systemdirtmp);
+   if(!worked)return false;
+   path = systemdirtmp;
+   path += "/";//retroarch/libretro does not add a slash at the end of directory names
+   
+   if(isgbc){
+      path += "gbc_bios.bin";
+      size = 0x900;
+   }
+   else{
+      path += "gb_bios.bin";
+      size = 0x100;
+   }
+   
+   //open file
+   fp = fopen(path.c_str(), "rb");
+   if(fp){
+      n = fread(data, size, 1, fp);
+      fclose(fp);
+   }
+   else return false;
+   
+   if(n != 1)return false;
+   
+   return true;
+}
 
 namespace input
 {
@@ -149,6 +186,10 @@ void retro_init(void)
    video_pitch = 256;
 
    check_system_specs();
+   
+   //gb/gbc bootloader support
+   get_raw_bootloader_data = get_bootloader_from_file;
+   
 }
 
 void retro_deinit()
@@ -579,12 +620,6 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
 #endif
-   
-   //get bootloader dir
-   const char* systemdirtmp = NULL;
-   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,&systemdirtmp);
-   if(!worked)set_bootrom_directory("");
-   else set_bootrom_directory(systemdirtmp);
 
    unsigned flags = 0;
    struct retro_variable var = {0};

@@ -995,7 +995,7 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 
 		return;
    case 0x50://for bootloader,swap bootloader with rom
-      call_FF50();
+      bootloader.call_FF50();
       ioamhram_[0x150] = 0xFF;
       return;
 	case 0x51:

@@ -1,14 +1,37 @@
+#ifndef BOOTLOADER_H
+#define BOOTLOADER_H
+
+#include <stdint.h>
 #include <string>
-//load the rom then call the loadbootloader() function before execution starts
-bool have_bootloader(bool isgbc);
-bool loadbootloader(bool isgbc,bool isgba);
-void resetbootloader();
 
-void set_bootrom_directory(std::string dir);
-void set_address_space_start(void* start);
+extern bool usebootloaders;
+extern bool (*get_raw_bootloader_data)(bool/*gbcver*/,uint8_t* /*data*/);
 
-void bootloader_choosebank(bool inbootloader);
+class Bootloader{
+private:
+   uint8_t bootromswapspace[0x900];
+   uint8_t rombackup[0x900];
+   void* addrspace_start;
+   unsigned int bootloadersize;
+   bool has_called_FF50;
+   bool using_bootloader;
+   bool gbc_mode;
 
-void call_FF50();
-void uncall_FF50();
+   void patch_gbc_to_gba_mode();
+   
+public:
+   //load the rom then call the loadbootloader() function before execution starts
+   void load(bool isgbc,bool isgba);
+   void reset();
+   bool enabled();
+
+   void set_address_space_start(void* start);
+
+   void choosebank(bool inbootloader);
+
+   void call_FF50();
+   void uncall_FF50();
+};
+
+#endif
 

@@ -1,80 +1,37 @@
 #include <stdint.h>
-#include <stdio.h>
 #include <string.h>
 #include <string>
 
 #include "bootloader.h"
 
-inline bool exist(const std::string& name){
-   FILE *file = fopen(name.c_str(), "r");
-   if(file){
-      fclose(file);
-      return true;
-   }
-   return false;
-}
+bool usebootloaders = true;
+bool (*get_raw_bootloader_data)(bool/*gbcver*/,uint8_t* /*data*/) = NULL;
 
-static std::string bootrompath;
-static uint8_t bootromswapspace[0x900];
-static uint8_t rombackup[0x900];
-static void* addrspace_start = NULL;
-static unsigned int bootloadersize = 0;
-static bool has_called_FF50 = false;
-static bool using_bootloader = false;
-static bool gbc_mode;
-
-
-
-static void patch_gbc_to_gba_mode(){
+void Bootloader::patch_gbc_to_gba_mode(){
    /*moves one jump over another and puts ld b,0x01 into the original position*/
    uint16_t patchloc = 0xF2;
    uint8_t patch[0x7] = {0xCD,0xD0,0x05/*<-call systemsetup*/,0x06,0x01/*<-ld b,0x1*/,0x00/*<-nop*/,0x00/*<-nop*/};
    memcpy(bootromswapspace + patchloc,patch,0x7);
 }
 
-//this is the only retroarch specific function,everything else can just be copied over
-static std::string get_bootloader_path(std::string bootloadername){
-   std::string path;
-   if(bootrompath != ""){
-      path = bootrompath;
-      if(path[path.length() - 1] != '/')path += '/';
-      path += bootloadername;
-   }
-   else{
-      path = "";
-   }
-   return path;
-}
-
-bool have_bootloader(bool isgbc){
-   std::string path;
-   if(isgbc)path = get_bootloader_path("gbc_bios.bin");
-   else path = get_bootloader_path("gb_bios.bin");
-   if(path == "")return false;
-   return exist(path);
-}
-
-bool loadbootloader(bool isgbc,bool isgba){
-   unsigned int size;
-   std::string path;
-   int n = 0;
-   FILE *fp;
+void Bootloader::load(bool isgbc,bool isgba){
+   bool bootloaderavail;
    
-   if(isgbc)path = get_bootloader_path("gbc_bios.bin");
-   else path = get_bootloader_path("gb_bios.bin");
-   if(path == "")return false;
-   
-   if(isgbc)size = 0x900;
-   else size = 0x100;
-   
-   fp = fopen(path.c_str(), "rb");
-   if(fp){
-      n = fread(bootromswapspace, size, 1, fp);
-      fclose(fp);
+   if(get_raw_bootloader_data == NULL){
+      using_bootloader = false;
+      return;
    }
    
-   if(n != 1)return false;
-   bootloadersize = size;
+   bootloaderavail = get_raw_bootloader_data(isgbc,bootromswapspace);
+   
+   if(!bootloaderavail){
+      using_bootloader = false;
+      return;
+   }
+   
+   if(isgbc)bootloadersize = 0x900;
+   else bootloadersize = 0x100;
+   
    using_bootloader = true;
    gbc_mode = isgbc;
    
@@ -83,18 +40,16 @@ bool loadbootloader(bool isgbc,bool isgba){
    }
    
    //backup rom segment that is shared with bootloader
-   memcpy(rombackup,(uint8_t*)addrspace_start,size);
+   memcpy(rombackup,(uint8_t*)addrspace_start,bootloadersize);
    
    //put bootloader in main memory
-   memcpy((uint8_t*)addrspace_start,bootromswapspace,size);
+   memcpy((uint8_t*)addrspace_start,bootromswapspace,bootloadersize);
    
    //put back cartridge data in a 256 byte window of the bios that is not mapped(GBC only)
    if(isgbc)memcpy(((uint8_t*)addrspace_start) + 0x100,rombackup + 0x100,0x100);
-   
-   return true;
 }
 
-void resetbootloader(){
+void Bootloader::reset(){
    bootloadersize = 0;
    has_called_FF50 = false;
    addrspace_start = NULL;
@@ -102,15 +57,15 @@ void resetbootloader(){
    gbc_mode = false;
 }
 
-void set_bootrom_directory(std::string dir){
-   bootrompath = dir;
+bool Bootloader::enabled(){
+   return using_bootloader;
 }
 
-void set_address_space_start(void* start){
+void Bootloader::set_address_space_start(void* start){
    addrspace_start = start;
 }
 
-void bootloader_choosebank(bool inbootloader){
+void Bootloader::choosebank(bool inbootloader){
    //inbootloader = (state.mem.ioamhram.get()[0x150] != 0xFF);//do not uncomment this is just for reference
    if(using_bootloader){
       
@@ -125,7 +80,7 @@ void bootloader_choosebank(bool inbootloader){
    }
 }
 
-void call_FF50(){
+void Bootloader::call_FF50(){
    if(!has_called_FF50 && using_bootloader){
       //put rom back in main memory when bootloader has finished
       memcpy((uint8_t*)addrspace_start,rombackup,bootloadersize);
@@ -134,7 +89,7 @@ void call_FF50(){
 }
 
 //this is a developer function only,a real gameboy can never undo calling 0xFF50,this function is for savestate functionality
-void uncall_FF50(){
+void Bootloader::uncall_FF50(){
    memcpy((uint8_t*)addrspace_start,bootromswapspace,bootloadersize);
    //put back cartridge data in a 256 byte window of the bios that is not mapped(GBC only)
    if(gbc_mode)memcpy(((uint8_t*)addrspace_start) + 0x100,rombackup + 0x100,0x100);

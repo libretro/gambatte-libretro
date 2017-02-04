@@ -56,18 +56,19 @@ long GB::runFor(gambatte::video_pixel_t *const videoBuf, const int pitch,
 
 void GB::reset() {
    SaveState state;
-   bool bootloaderexists = have_bootloader(p_->cpu.isCgb());
    
    p_->cpu.setStatePtrs(state);
    setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
    
-   if(bootloaderexists){
-      resetbootloader();
-      set_address_space_start((void*)p_->cpu.rombank0_ptr());
-      loadbootloader(p_->cpu.isCgb(), p_->gbaCgbMode);
-      state.cpu.pc = 0x0000;
-      //the hw registers must be zeroed out to prevent the logo from being garbled
-      memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
+   if(usebootloaders){
+      p_->cpu.mem_.bootloader.reset();
+      p_->cpu.mem_.bootloader.set_address_space_start((void*)p_->cpu.rombank0_ptr());
+      p_->cpu.mem_.bootloader.load(p_->cpu.isCgb(), p_->gbaCgbMode);
+      if(p_->cpu.mem_.bootloader.enabled()){
+         state.cpu.pc = 0x0000;
+         //the hw registers must be zeroed out to prevent the logo from being garbled
+         memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
+      }
    }
 
    p_->cpu.loadState(state);
@@ -87,19 +88,20 @@ void GB::setSerialIO(SerialIO *serial_io) {
 void GB::Priv::on_load_succeeded(unsigned flags)
 {
    SaveState state;
-   bool bootloaderexists = have_bootloader(cpu.isCgb());
    gbaCgbMode = flags & GBA_CGB;
    
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode);
    
-   if(bootloaderexists){
-      resetbootloader();
-      set_address_space_start((void*)cpu.rombank0_ptr());
-      loadbootloader(cpu.isCgb(), gbaCgbMode);
-      state.cpu.pc = 0x0000;
-      //the hw registers must be zeroed out to prevent the logo from being garbled
-      memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
+   if(usebootloaders){
+      cpu.mem_.bootloader.reset();
+      cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
+      cpu.mem_.bootloader.load(cpu.isCgb(), gbaCgbMode);
+      if(cpu.mem_.bootloader.enabled()){
+         state.cpu.pc = 0x0000;
+         //the hw registers must be zeroed out to prevent the logo from being garbled
+         memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
+      }
    }
    
    cpu.loadState(state);
@@ -139,7 +141,7 @@ void GB::loadState(const void *data) {
    
    if (StateSaver::loadState(state, data)) {
       p_->cpu.loadState(state);
-      bootloader_choosebank(state.mem.ioamhram.get()[0x150] != 0xFF);
+      p_->cpu.mem_.bootloader.choosebank(state.mem.ioamhram.get()[0x150] != 0xFF);
    }
 }
 
