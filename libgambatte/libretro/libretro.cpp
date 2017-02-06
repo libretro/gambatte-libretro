@@ -35,19 +35,23 @@ static gambatte::GB gb;
 #include "cc_resampler.h"
 #endif
 
-bool get_bootloader_from_file(bool isgbc,uint8_t* data){
-   const char* systemdirtmp = NULL;
-   std::string path;
-   unsigned int size;
-   int n = 0;
-   FILE *fp;
+bool get_bootloader_from_file(bool isgbc,uint8_t* data,uint32_t max_size)
+{
+   struct retro_variable var = {0};
+   var.key = "gambatte_gb_bootloaderenabled";
+   if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
+      return false;
+   if(!(strcmp(var.value,"enabled") == 0))
+      return false;
    
    //get path
+   const char* systemdirtmp = NULL;
    bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,&systemdirtmp);
    if(!worked)return false;
-   path = systemdirtmp;
+   std::string path = systemdirtmp;
    path += "/";//retroarch/libretro does not add a slash at the end of directory names
    
+   unsigned int size;
    if(isgbc){
       path += "gbc_bios.bin";
       size = 0x900;
@@ -56,9 +60,11 @@ bool get_bootloader_from_file(bool isgbc,uint8_t* data){
       path += "gb_bios.bin";
       size = 0x100;
    }
+   if(size > max_size)return false;
    
    //open file
-   fp = fopen(path.c_str(), "rb");
+   int n = 0;
+   FILE *fp = fopen(path.c_str(), "rb");
    if(fp){
       n = fread(data, size, 1, fp);
       fclose(fp);
@@ -629,17 +635,6 @@ bool retro_load_game(const struct retro_game_info *info)
    {
       if (!strcmp(var.value, "GB")) flags |= gambatte::GB::FORCE_DMG;
       if (!strcmp(var.value, "GBA")) flags |= gambatte::GB::GBA_CGB;
-   }
-   
-   var.key = "gambatte_gb_bootloaderenabled";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (!strcmp(var.value, "enabled")){
-         gb.setBootloaderEnabled(true);
-      }
-      else {
-         gb.setBootloaderEnabled(false);
-      }
    }
 
    if (gb.load(info->data, info->size, flags) != 0)

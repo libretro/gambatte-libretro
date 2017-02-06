@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <string>
 
+namespace gambatte {
+
 class Bootloader{
    
 private:
@@ -14,8 +16,7 @@ private:
    bool has_called_FF50;
    bool using_bootloader;
    bool gbc_mode;
-   bool usebootloaders;
-   bool (*get_raw_bootloader_data)(bool/*gbcver*/,uint8_t* /*data*/);
+   bool (*get_raw_bootloader_data)(bool isgbc,uint8_t* data,uint32_t max_size);
 
    void patch_gbc_to_gba_mode();
    void uncall_FF50();
@@ -26,10 +27,9 @@ public:
    void reset();
    bool booting_with_bootloader();
 
-   void set_bootloader_getter(bool (*getter)(bool,uint8_t*));
+   void set_bootloader_getter(bool (*getter)(bool isgbc,uint8_t* data,uint32_t max_size));
    
    bool get_bootloader_enabled();
-   void set_bootloader_enabled(bool enabled);
    
    void set_address_space_start(void* start);
 
@@ -37,6 +37,8 @@ public:
 
    void call_FF50();
 };
+   
+}
 
 #endif
 

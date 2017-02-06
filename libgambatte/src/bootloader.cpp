@@ -4,8 +4,9 @@
 
 #include "bootloader.h"
 
+namespace gambatte {
+
 Bootloader::Bootloader(){
-   usebootloaders = true;
    get_raw_bootloader_data = NULL;
 }
 
@@ -17,15 +18,12 @@ void Bootloader::patch_gbc_to_gba_mode(){
 }
 
 void Bootloader::load(bool isgbc,bool isgba){
-   bool bootloaderavail;
-   
    if(get_raw_bootloader_data == NULL){
       using_bootloader = false;
       return;
    }
    
-   bootloaderavail = get_raw_bootloader_data(isgbc,bootromswapspace);
-   
+   bool bootloaderavail = get_raw_bootloader_data(isgbc,bootromswapspace,0x900/*max_size*/);
    if(!bootloaderavail){
       using_bootloader = false;
       return;
@@ -34,7 +32,6 @@ void Bootloader::load(bool isgbc,bool isgba){
    if(isgbc)bootloadersize = 0x900;
    else bootloadersize = 0x100;
    
-   using_bootloader = true;
    gbc_mode = isgbc;
    
    if(isgba){//patch bootloader to fake gba mode
@@ -49,6 +46,8 @@ void Bootloader::load(bool isgbc,bool isgba){
    
    //put back cartridge data in a 256 byte window of the bios that is not mapped(GBC only)
    if(isgbc)memcpy(((uint8_t*)addrspace_start) + 0x100,rombackup + 0x100,0x100);
+   
+   using_bootloader = true;
 }
 
 void Bootloader::reset(){
@@ -63,16 +62,12 @@ bool Bootloader::booting_with_bootloader(){
    return using_bootloader;
 }
 
-void Bootloader::set_bootloader_getter(bool (*getter)(bool,uint8_t*)){
+void Bootloader::set_bootloader_getter(bool (*getter)(bool isgbc,uint8_t* data,uint32_t max_size)){
    get_raw_bootloader_data = getter;
 }
 
 bool Bootloader::get_bootloader_enabled(){
-   return usebootloaders;
-}
-
-void Bootloader::set_bootloader_enabled(bool enabled){
-   usebootloaders = enabled;
+   return get_raw_bootloader_data != NULL;
 }
 
 void Bootloader::set_address_space_start(void* start){
@@ -108,4 +103,6 @@ void Bootloader::uncall_FF50(){
    //put back cartridge data in a 256 byte window of the bios that is not mapped(GBC only)
    if(gbc_mode)memcpy(((uint8_t*)addrspace_start) + 0x100,rombackup + 0x100,0x100);
    has_called_FF50 = false;
+}
+   
 }

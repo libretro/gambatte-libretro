@@ -34,7 +34,7 @@ struct GB::Priv {
 	
 	Priv() : stateNo(1), gbaCgbMode(false) {}
 
-	void on_load_succeeded(unsigned flags);
+   void full_init();
 };
 	
 GB::GB() : p_(new Priv) {}
@@ -53,50 +53,9 @@ long GB::runFor(gambatte::video_pixel_t *const videoBuf, const int pitch,
 	
 	return cyclesSinceBlit < 0 ? cyclesSinceBlit : static_cast<long>(samples) - (cyclesSinceBlit >> 1);
 }
-
-void GB::reset() {
+   
+void GB::Priv::full_init(){
    SaveState state;
-   
-   p_->cpu.setStatePtrs(state);
-   setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
-   
-   if(p_->cpu.mem_.bootloader.get_bootloader_enabled()){
-      p_->cpu.mem_.bootloader.reset();
-      p_->cpu.mem_.bootloader.set_address_space_start((void*)p_->cpu.rombank0_ptr());
-      p_->cpu.mem_.bootloader.load(p_->cpu.isCgb(), p_->gbaCgbMode);
-      if(p_->cpu.mem_.bootloader.booting_with_bootloader()){
-         state.cpu.pc = 0x0000;
-         //the hw registers must be zeroed out to prevent the logo from being garbled
-         memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
-      }
-   }
-
-   p_->cpu.loadState(state);
-   
-}
-
-void GB::setInputGetter(InputGetter *getInput) {
-	p_->cpu.setInputGetter(getInput);
-}
-
-void GB::setBootloaderGetter(bool (*getter)(bool,uint8_t*)) {
-   p_->cpu.mem_.bootloader.set_bootloader_getter(getter);
-}
-   
-void GB::setBootloaderEnabled(bool enabled) {
-   p_->cpu.mem_.bootloader.set_bootloader_enabled(enabled);
-}
-
-#ifdef HAVE_NETWORK
-void GB::setSerialIO(SerialIO *serial_io) {
-	p_->cpu.setSerialIO(serial_io);
-}
-#endif
-
-void GB::Priv::on_load_succeeded(unsigned flags)
-{
-   SaveState state;
-   gbaCgbMode = flags & GBA_CGB;
    
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode);
@@ -113,9 +72,25 @@ void GB::Priv::on_load_succeeded(unsigned flags)
    }
    
    cpu.loadState(state);
-
-	stateNo = 1;
 }
+
+void GB::reset() {
+   p_->full_init();
+}
+
+void GB::setInputGetter(InputGetter *getInput) {
+	p_->cpu.setInputGetter(getInput);
+}
+
+void GB::setBootloaderGetter(bool (*getter)(bool isgbc,uint8_t* data,uint32_t max_size)) {
+   p_->cpu.mem_.bootloader.set_bootloader_getter(getter);
+}
+
+#ifdef HAVE_NETWORK
+void GB::setSerialIO(SerialIO *serial_io) {
+	p_->cpu.setSerialIO(serial_io);
+}
+#endif
 
 void *GB::savedata_ptr() { return p_->cpu.savedata_ptr(); }
 unsigned GB::savedata_size() { return p_->cpu.savedata_size(); }
@@ -125,8 +100,11 @@ unsigned GB::rtcdata_size() { return p_->cpu.rtcdata_size(); }
 int GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
 	const int failed = p_->cpu.load(romdata, romsize, flags & FORCE_DMG, flags & MULTICART_COMPAT);
 	
-	if (!failed)
-		p_->on_load_succeeded(flags);
+   if (!failed) {
+      p_->gbaCgbMode = flags & GBA_CGB;
+      p_->full_init();
+      p_->stateNo = 1;
+   }
 	
 	return failed;
 }
