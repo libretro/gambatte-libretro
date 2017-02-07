@@ -1,12 +1,12 @@
 #ifndef BOOTLOADER_H
 #define BOOTLOADER_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 
 namespace gambatte {
 
-class Bootloader{
+class Bootloader {
    
 private:
    uint8_t bootromswapspace[0x900];
@@ -15,7 +15,7 @@ private:
    unsigned int bootloadersize;
    bool has_called_FF50;
    bool using_bootloader;
-   bool gbc_mode;
+   
    bool (*get_raw_bootloader_data)(bool isgbc,uint8_t* data,uint32_t max_size);
 
    void patch_gbc_to_gba_mode();

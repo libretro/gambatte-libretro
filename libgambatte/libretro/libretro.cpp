@@ -1,20 +1,19 @@
 #include "libretro.h"
 #include "blipper.h"
-#include <gambatte.h>
+#include "gambatte.h"
 #include "gbcpalettes.h"
 #include "bootloader.h"
 #ifdef HAVE_NETWORK
 #include "net_serial.h"
 #endif
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 #include <fstream>
 #include <sstream>
-#include <string.h>
-#include <stdlib.h>
-
+#include <cstdlib>
 #include <string>
+#include <cstring>
 
 #ifdef _3DS
 extern "C" void* linearMemAlign(size_t size, size_t alignment);

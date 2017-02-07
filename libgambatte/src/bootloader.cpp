@@ -1,5 +1,5 @@
-#include <stdint.h>
-#include <string.h>
+#include <cstdint>
+#include <cstring>
 #include <string>
 
 #include "bootloader.h"
@@ -32,8 +32,6 @@ void Bootloader::load(bool isgbc,bool isgba){
    if(isgbc)bootloadersize = 0x900;
    else bootloadersize = 0x100;
    
-   gbc_mode = isgbc;
-   
    if(isgba){//patch bootloader to fake gba mode
       patch_gbc_to_gba_mode();
    }
@@ -41,11 +39,11 @@ void Bootloader::load(bool isgbc,bool isgba){
    //backup rom segment that is shared with bootloader
    memcpy(rombackup,(uint8_t*)addrspace_start,bootloadersize);
    
+   //put back cartridge data in a 256 byte window of the bios that is not mapped(GBC only)
+   if(isgbc)memcpy(bootromswapspace + 0x100,rombackup + 0x100,0x100);
+   
    //put bootloader in main memory
    memcpy((uint8_t*)addrspace_start,bootromswapspace,bootloadersize);
-   
-   //put back cartridge data in a 256 byte window of the bios that is not mapped(GBC only)
-   if(isgbc)memcpy(((uint8_t*)addrspace_start) + 0x100,rombackup + 0x100,0x100);
    
    using_bootloader = true;
 }
@@ -55,7 +53,6 @@ void Bootloader::reset(){
    has_called_FF50 = false;
    addrspace_start = NULL;
    using_bootloader = false;
-   gbc_mode = false;
 }
 
 bool Bootloader::booting_with_bootloader(){
@@ -100,8 +97,6 @@ void Bootloader::call_FF50(){
 //this is a developer function only,a real gameboy can never undo calling 0xFF50,this function is for savestate functionality
 void Bootloader::uncall_FF50(){
    memcpy((uint8_t*)addrspace_start,bootromswapspace,bootloadersize);
-   //put back cartridge data in a 256 byte window of the bios that is not mapped(GBC only)
-   if(gbc_mode)memcpy(((uint8_t*)addrspace_start) + 0x100,rombackup + 0x100,0x100);
    has_called_FF50 = false;
 }
    
