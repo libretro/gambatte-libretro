@@ -16,6 +16,8 @@ private:
    bool has_called_FF50;
    bool using_bootloader;
    
+   //Set this to NULL or return false if you want to ignore bootloaders completely
+   //(initial value is NULL and so the bootloader is disabled by default)
    bool (*get_raw_bootloader_data)(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size);
 
    void patch_gbc_to_gba_mode();
@@ -28,8 +30,6 @@ public:
    bool booting_with_bootloader();
 
    void set_bootloader_getter(bool (*getter)(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size));
-   
-   bool get_bootloader_enabled();
    
    void set_address_space_start(void* start);
 

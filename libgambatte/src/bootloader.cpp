@@ -63,10 +63,6 @@ void Bootloader::set_bootloader_getter(bool (*getter)(void* userdata, bool isgbc
    get_raw_bootloader_data = getter;
 }
 
-bool Bootloader::get_bootloader_enabled(){
-   return get_raw_bootloader_data != NULL;
-}
-
 void Bootloader::set_address_space_start(void* start){
    addrspace_start = start;
 }

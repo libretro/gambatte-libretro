@@ -59,15 +59,13 @@ void GB::Priv::full_init(){
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode);
    
-   if(cpu.mem_.bootloader.get_bootloader_enabled()){
-      cpu.mem_.bootloader.reset();
-      cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
-      cpu.mem_.bootloader.load(cpu.isCgb(), gbaCgbMode);
-      if(cpu.mem_.bootloader.booting_with_bootloader()){
-         state.cpu.pc = 0x0000;
-         //the hw registers must be zeroed out to prevent the logo from being garbled
-         memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
-      }
+   cpu.mem_.bootloader.reset();
+   cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
+   cpu.mem_.bootloader.load(cpu.isCgb(), gbaCgbMode);
+   if(cpu.mem_.bootloader.booting_with_bootloader()){
+      state.cpu.pc = 0x0000;
+      //the hw registers must be zeroed out to prevent the logo from being garbled
+      memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
    }
    
    cpu.loadState(state);
