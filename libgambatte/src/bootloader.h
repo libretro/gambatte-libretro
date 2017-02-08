@@ -16,7 +16,7 @@ private:
    bool has_called_FF50;
    bool using_bootloader;
    
-   bool (*get_raw_bootloader_data)(bool isgbc,uint8_t* data,uint32_t max_size);
+   bool (*get_raw_bootloader_data)(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size);
 
    void patch_gbc_to_gba_mode();
    void uncall_FF50();
@@ -27,7 +27,7 @@ public:
    void reset();
    bool booting_with_bootloader();
 
-   void set_bootloader_getter(bool (*getter)(bool isgbc,uint8_t* data,uint32_t max_size));
+   void set_bootloader_getter(bool (*getter)(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size));
    
    bool get_bootloader_enabled();
    

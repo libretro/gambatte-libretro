@@ -34,7 +34,7 @@ static gambatte::GB gb;
 #include "cc_resampler.h"
 #endif
 
-bool get_bootloader_from_file(bool isgbc,uint8_t* data,uint32_t max_size)
+bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)
 {
    struct retro_variable var = {0};
    var.key = "gambatte_gb_bootloaderenabled";
@@ -59,7 +59,7 @@ bool get_bootloader_from_file(bool isgbc,uint8_t* data,uint32_t max_size)
       path += "gb_bios.bin";
       size = 0x100;
    }
-   if(size > max_size)return false;
+   if(size > buf_size)return false;
    
    //open file
    int n = 0;

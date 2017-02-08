@@ -81,7 +81,7 @@ void GB::setInputGetter(InputGetter *getInput) {
 	p_->cpu.setInputGetter(getInput);
 }
 
-void GB::setBootloaderGetter(bool (*getter)(bool isgbc,uint8_t* data,uint32_t max_size)) {
+void GB::setBootloaderGetter(bool (*getter)(void* userdata, bool isgbc, uint8_t* data, uint32_t max_size)) {
    p_->cpu.mem_.bootloader.set_bootloader_getter(getter);
 }
 

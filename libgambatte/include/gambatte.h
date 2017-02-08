@@ -86,7 +86,7 @@ public:
 	void setInputGetter(InputGetter *getInput);
    
    /** Sets the callback used for getting the bootloader data. */
-   void setBootloaderGetter(bool (*getter)(bool isgbc,uint8_t* data,uint32_t max_size));
+   void setBootloaderGetter(bool (*getter)(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size));
 
 #ifdef HAVE_NETWORK
 	/** Sets the callback used for transferring serial data. */

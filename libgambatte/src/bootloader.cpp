@@ -14,16 +14,16 @@ void Bootloader::patch_gbc_to_gba_mode(){
    /*moves one jump over another and puts ld b,0x01 into the original position*/
    uint16_t patchloc = 0xF2;
    uint8_t patch[0x7] = {0xCD,0xD0,0x05/*<-call systemsetup*/,0x06,0x01/*<-ld b,0x1*/,0x00/*<-nop*/,0x00/*<-nop*/};
-   memcpy(bootromswapspace + patchloc,patch,0x7);
+   memcpy(bootromswapspace + patchloc, patch, 0x7);
 }
 
-void Bootloader::load(bool isgbc,bool isgba){
+void Bootloader::load(bool isgbc, bool isgba){
    if(get_raw_bootloader_data == NULL){
       using_bootloader = false;
       return;
    }
    
-   bool bootloaderavail = get_raw_bootloader_data(isgbc,bootromswapspace,0x900/*max_size*/);
+   bool bootloaderavail = get_raw_bootloader_data((void*)this, isgbc, bootromswapspace, 0x900/*buf_size*/);
    if(!bootloaderavail){
       using_bootloader = false;
       return;
@@ -37,13 +37,13 @@ void Bootloader::load(bool isgbc,bool isgba){
    }
    
    //backup rom segment that is shared with bootloader
-   memcpy(rombackup,(uint8_t*)addrspace_start,bootloadersize);
+   memcpy(rombackup,(uint8_t*)addrspace_start, bootloadersize);
    
    //put back cartridge data in a 256 byte window of the bios that is not mapped(GBC only)
-   if(isgbc)memcpy(bootromswapspace + 0x100,rombackup + 0x100,0x100);
+   if(isgbc)memcpy(bootromswapspace + 0x100, rombackup + 0x100, 0x100);
    
    //put bootloader in main memory
-   memcpy((uint8_t*)addrspace_start,bootromswapspace,bootloadersize);
+   memcpy((uint8_t*)addrspace_start, bootromswapspace, bootloadersize);
    
    using_bootloader = true;
 }
@@ -59,7 +59,7 @@ bool Bootloader::booting_with_bootloader(){
    return using_bootloader;
 }
 
-void Bootloader::set_bootloader_getter(bool (*getter)(bool isgbc,uint8_t* data,uint32_t max_size)){
+void Bootloader::set_bootloader_getter(bool (*getter)(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)){
    get_raw_bootloader_data = getter;
 }
 
@@ -89,14 +89,14 @@ void Bootloader::choosebank(bool inbootloader){
 void Bootloader::call_FF50(){
    if(!has_called_FF50 && using_bootloader){
       //put rom back in main memory when bootloader has finished
-      memcpy((uint8_t*)addrspace_start,rombackup,bootloadersize);
+      memcpy((uint8_t*)addrspace_start, rombackup, bootloadersize);
       has_called_FF50 = true;
    }
 }
 
 //this is a developer function only,a real gameboy can never undo calling 0xFF50,this function is for savestate functionality
 void Bootloader::uncall_FF50(){
-   memcpy((uint8_t*)addrspace_start,bootromswapspace,bootloadersize);
+   memcpy((uint8_t*)addrspace_start, bootromswapspace, bootloadersize);
    has_called_FF50 = false;
 }
    
