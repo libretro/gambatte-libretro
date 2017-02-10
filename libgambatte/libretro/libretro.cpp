@@ -23,6 +23,15 @@
 #include <string>
 #include <cstring>
 
+// Normalize Path separators based on platform
+#ifndef PATH_SEPARATOR
+# if defined(WINDOWS_PATH_STYLE) || defined(_WIN32)
+#  define PATH_SEPARATOR '\\'
+# else
+#  define PATH_SEPARATOR '/'
+# endif
+#endif
+
 #ifdef _3DS
 extern "C" void* linearMemAlign(size_t size, size_t alignment);
 extern "C" void linearFree(void* mem);
@@ -72,7 +81,7 @@ bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_
       return false;
 
    std::string path = systemdirtmp;
-   path += "/"; //retroarch/libretro does not add a slash at the end of directory names
+   path += PATH_SEPARATOR; //retroarch/libretro does not add a slash at the end of directory names
    
    unsigned int size;
 
