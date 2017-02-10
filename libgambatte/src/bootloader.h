@@ -1,7 +1,7 @@
 #ifndef BOOTLOADER_H
 #define BOOTLOADER_H
 
-#include <cstdint>
+#include <stdint.h>
 #include <string>
 
 namespace gambatte {

@@ -6,6 +6,8 @@
 #ifdef HAVE_NETWORK
 #include "net_serial.h"
 #endif
+#include <string/stdstring.h>
+#include <streams/file_stream.h>
 
 #include <cassert>
 #include <cstdio>
@@ -50,39 +52,52 @@ bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_
 {
    struct retro_variable var = {0};
    var.key = "gambatte_gb_bootloaderenabled";
+
    if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
       return false;
-   if(!(strcmp(var.value,"enabled") == 0))
+   if (!string_is_equal(var.value, "enabled"))
       return false;
-   
-   //get path
-   const char* systemdirtmp = NULL;
-   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,&systemdirtmp);
-   if(!worked)return false;
+
+   // get path
+   const char *systemdirtmp = NULL;
+   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &systemdirtmp);
+
+   if(!worked)
+      return false;
+
    std::string path = systemdirtmp;
-   path += "/";//retroarch/libretro does not add a slash at the end of directory names
+   path += "/"; //retroarch/libretro does not add a slash at the end of directory names
    
    unsigned int size;
-   if(isgbc){
+
+   if (isgbc)
+   {
       path += "gbc_bios.bin";
       size = 0x900;
    }
-   else{
+   else
+   {
       path += "gb_bios.bin";
       size = 0x100;
    }
-   if(size > buf_size)return false;
+
+   if(size > buf_size)
+      return false;
    
-   //open file
+   // open file
    int n = 0;
-   FILE *fp = fopen(path.c_str(), "rb");
-   if(fp){
-      n = fread(data, size, 1, fp);
-      fclose(fp);
+   RFILE *fp = filestream_open(path.c_str(), RFILE_MODE_READ | RFILE_HINT_UNBUFFERED, 0);
+
+   if (fp)
+   {
+      n = filestream_read(fp, data, size);
+      filestream_close(fp);
    }
-   else return false;
+   else
+      return false;
    
-   if(n != 1)return false;
+   if (n != size)
+      return false;
    
    return true;
 }
@@ -116,9 +131,9 @@ class SNESInput : public gambatte::InputGetter
 
 #ifdef HAVE_NETWORK
 enum SerialMode {
-	SERIAL_NONE,
-	SERIAL_SERVER,
-	SERIAL_CLIENT
+   SERIAL_NONE,
+   SERIAL_SERVER,
+   SERIAL_CLIENT
 };
 static NetSerial gb_net_serial;
 static SerialMode gb_serialMode = SERIAL_NONE;
@@ -215,8 +230,8 @@ void retro_init(void)
 void retro_deinit()
 {
 #ifndef CC_RESAMPLER
-   blipper_free(resampler_l);;
-   blipper_free(resampler_r);;
+   blipper_free(resampler_l);
+   blipper_free(resampler_r);
 #endif
 #ifdef _3DS
    linearFree(video_buf);
@@ -386,7 +401,7 @@ static void load_custom_palette(void)
    if (!palette_file.is_open())// && !findGbcTitlePal(internal_game_name))
    {
       // try again with default.pal
-	  //- removed last line if colorization is enabled
+     //- removed last line if colorization is enabled
       custom_palette_path = system_directory + "/palettes/" + "default.pal";
       palette_file.open(custom_palette_path.c_str());
    }
@@ -441,7 +456,7 @@ static void load_custom_palette(void)
       else if (startswith(line, "Background1="))
          gb.setDmgPaletteColor(0, 1, rgb32);
       else if (startswith(line, "Background2="))
-         gb.setDmgPaletteColor(0, 2, rgb32);      	
+         gb.setDmgPaletteColor(0, 2, rgb32);       
       else if (startswith(line, "Background3="))
          gb.setDmgPaletteColor(0, 3, rgb32);
       else if (startswith(line, "Sprite%2010="))
@@ -473,54 +488,54 @@ static void check_variables(void)
    gb.setColorCorrection(colorCorrection);
 
 #ifdef HAVE_NETWORK
-	gb_serialMode = SERIAL_NONE;
+   gb_serialMode = SERIAL_NONE;
    var.key = "gambatte_gb_link_mode";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-		if (!strcmp(var.value, "Network Server")) {
-			gb_serialMode = SERIAL_SERVER;
-		} else if (!strcmp(var.value, "Network Client")) {
-			gb_serialMode = SERIAL_CLIENT;
-		}
-	}
+      if (!strcmp(var.value, "Network Server")) {
+         gb_serialMode = SERIAL_SERVER;
+      } else if (!strcmp(var.value, "Network Client")) {
+         gb_serialMode = SERIAL_CLIENT;
+      }
+   }
 
    var.key = "gambatte_gb_link_network_port";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-		gb_NetworkPort=atoi(var.value);
+      gb_NetworkPort=atoi(var.value);
    }
 
-	gb_NetworkClientAddr = "";
+   gb_NetworkClientAddr = "";
    var.key = "gambatte_gb_link_network_server_ip_octet1";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-		gb_NetworkClientAddr += std::string(var.value);
+      gb_NetworkClientAddr += std::string(var.value);
    }
    var.key = "gambatte_gb_link_network_server_ip_octet2";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-		gb_NetworkClientAddr += "." + std::string(var.value);
+      gb_NetworkClientAddr += "." + std::string(var.value);
    }
    var.key = "gambatte_gb_link_network_server_ip_octet3";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-		gb_NetworkClientAddr += "." + std::string(var.value);
+      gb_NetworkClientAddr += "." + std::string(var.value);
    }
    var.key = "gambatte_gb_link_network_server_ip_octet4";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-		gb_NetworkClientAddr += "." + std::string(var.value);
+      gb_NetworkClientAddr += "." + std::string(var.value);
    }
 
-	switch(gb_serialMode)
-	{
-		case SERIAL_SERVER:
-			gb_net_serial.start(true, gb_NetworkPort, gb_NetworkClientAddr);
-			gb.setSerialIO(&gb_net_serial);
-			break;
-		case SERIAL_CLIENT:
-			gb_net_serial.start(false, gb_NetworkPort, gb_NetworkClientAddr);
-			gb.setSerialIO(&gb_net_serial);
-			break;
-		default:
-			gb_net_serial.stop();
-			gb.setSerialIO(NULL);
-			break;
-	}
+   switch(gb_serialMode)
+   {
+      case SERIAL_SERVER:
+         gb_net_serial.start(true, gb_NetworkPort, gb_NetworkClientAddr);
+         gb.setSerialIO(&gb_net_serial);
+         break;
+      case SERIAL_CLIENT:
+         gb_net_serial.start(false, gb_NetworkPort, gb_NetworkClientAddr);
+         gb.setSerialIO(&gb_net_serial);
+         break;
+      default:
+         gb_net_serial.stop();
+         gb.setSerialIO(NULL);
+         break;
+   }
 #endif
 
    var.key = "gambatte_gb_colorization";
@@ -561,21 +576,21 @@ static void check_variables(void)
       break;
         
       case 2:
-	    load_custom_palette();
+       load_custom_palette();
       break;
-	  
+     
       case 3:
-	    var.key = "gambatte_gb_internal_palette";
-	    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-		{
-			// Load the selected internal palette
-			gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
-		}
+       var.key = "gambatte_gb_internal_palette";
+       if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+      {
+         // Load the selected internal palette
+         gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
+      }
       break;
 
       default:
-	    gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Grayscale"));
-	  break;
+       gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Grayscale"));
+     break;
    }
    //gambatte is using custom colorization then we have a previously palette loaded, 
    //skip this loop then

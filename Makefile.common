@@ -1,4 +1,4 @@
-INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro
+INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro -I$(CORE_DIR)/../libretro-common/include
 
 SOURCES_CXX := $(CORE_DIR)/bootloader.cpp \
 					$(CORE_DIR)/cpu.cpp \
@@ -34,4 +34,8 @@ ifeq ($(HAVE_NETWORK),1)
 SOURCES_CXX += $(CORE_DIR)/../libretro/net_serial.cpp
 endif
 
-SOURCES_C := $(CORE_DIR)/../libretro/blipper.c
+SOURCES_C := $(CORE_DIR)/../libretro/blipper.c \
+							$(CORE_DIR)/../libretro-common/streams/file_stream.c \
+							$(CORE_DIR)/../libretro-common/string/stdstring.c
+
+INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro -I$(CORE_DIR)/../libretro-common/include
