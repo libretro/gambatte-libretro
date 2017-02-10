@@ -21,7 +21,9 @@
 #include "savestate.h"
 #include "statesaver.h"
 #include "initstate.h"
+#include "bootloader.h"
 #include <sstream>
+#include <cstring>
 
 namespace gambatte {
 struct GB::Priv {
@@ -31,7 +33,7 @@ struct GB::Priv {
 	
 	Priv() : stateNo(1), gbaCgbMode(false) {}
 
-	void on_load_succeeded(unsigned flags);
+   void full_init();
 };
 	
 GB::GB() : p_(new Priv) {}
@@ -50,16 +52,35 @@ long GB::runFor(gambatte::video_pixel_t *const videoBuf, const int pitch,
 	
 	return cyclesSinceBlit < 0 ? cyclesSinceBlit : static_cast<long>(samples) - (cyclesSinceBlit >> 1);
 }
+   
+void GB::Priv::full_init(){
+   SaveState state;
+   
+   cpu.setStatePtrs(state);
+   setInitState(state, cpu.isCgb(), gbaCgbMode);
+   
+   cpu.mem_.bootloader.reset();
+   cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
+   cpu.mem_.bootloader.load(cpu.isCgb(), gbaCgbMode);
+   if(cpu.mem_.bootloader.booting_with_bootloader()){
+      state.cpu.pc = 0x0000;
+      //the hw registers must be zeroed out to prevent the logo from being garbled
+      memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
+   }
+   
+   cpu.loadState(state);
+}
 
 void GB::reset() {
-   SaveState state;
-   p_->cpu.setStatePtrs(state);
-   setInitState(state, p_->cpu.isCgb(), p_->gbaCgbMode);
-   p_->cpu.loadState(state);
+   p_->full_init();
 }
 
 void GB::setInputGetter(InputGetter *getInput) {
 	p_->cpu.setInputGetter(getInput);
+}
+
+void GB::setBootloaderGetter(bool (*getter)(void* userdata, bool isgbc, uint8_t* data, uint32_t max_size)) {
+   p_->cpu.mem_.bootloader.set_bootloader_getter(getter);
 }
 
 #ifdef HAVE_NETWORK
@@ -67,16 +88,6 @@ void GB::setSerialIO(SerialIO *serial_io) {
 	p_->cpu.setSerialIO(serial_io);
 }
 #endif
-
-void GB::Priv::on_load_succeeded(unsigned flags)
-{
-	SaveState state;
-	cpu.setStatePtrs(state);
-	setInitState(state, cpu.isCgb(), gbaCgbMode = flags & GBA_CGB);
-	cpu.loadState(state);
-
-	stateNo = 1;
-}
 
 void *GB::savedata_ptr() { return p_->cpu.savedata_ptr(); }
 unsigned GB::savedata_size() { return p_->cpu.savedata_size(); }
@@ -86,8 +97,11 @@ unsigned GB::rtcdata_size() { return p_->cpu.rtcdata_size(); }
 int GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
 	const int failed = p_->cpu.load(romdata, romsize, flags & FORCE_DMG, flags & MULTICART_COMPAT);
 	
-	if (!failed)
-		p_->on_load_succeeded(flags);
+   if (!failed) {
+      p_->gbaCgbMode = flags & GBA_CGB;
+      p_->full_init();
+      p_->stateNo = 1;
+   }
 	
 	return failed;
 }
@@ -107,9 +121,10 @@ void GB::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) 
 void GB::loadState(const void *data) {
    SaveState state;
    p_->cpu.setStatePtrs(state);
-
+   
    if (StateSaver::loadState(state, data)) {
       p_->cpu.loadState(state);
+      p_->cpu.mem_.bootloader.choosebank(state.mem.ioamhram.get()[0x150] != 0xFF);
    }
 }
 

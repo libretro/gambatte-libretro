@@ -1,6 +1,7 @@
 INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro
 
-SOURCES_CXX := $(CORE_DIR)/cpu.cpp \
+SOURCES_CXX := $(CORE_DIR)/bootloader.cpp \
+					$(CORE_DIR)/cpu.cpp \
 					$(CORE_DIR)/gambatte.cpp \
 					$(CORE_DIR)/initstate.cpp \
 					$(CORE_DIR)/interrupter.cpp \

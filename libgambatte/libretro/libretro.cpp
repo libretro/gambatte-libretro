@@ -1,17 +1,19 @@
 #include "libretro.h"
 #include "blipper.h"
-#include <gambatte.h>
+#include "gambatte.h"
 #include "gbcpalettes.h"
+#include "bootloader.h"
 #ifdef HAVE_NETWORK
 #include "net_serial.h"
 #endif
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 #include <fstream>
 #include <sstream>
-#include <string.h>
-#include <stdlib.h>
+#include <cstdlib>
+#include <string>
+#include <cstring>
 
 #ifdef _3DS
 extern "C" void* linearMemAlign(size_t size, size_t alignment);
@@ -43,6 +45,47 @@ static gambatte::GB gb2;
 #ifdef CC_RESAMPLER
 #include "cc_resampler.h"
 #endif
+
+bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)
+{
+   struct retro_variable var = {0};
+   var.key = "gambatte_gb_bootloaderenabled";
+   if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
+      return false;
+   if(!(strcmp(var.value,"enabled") == 0))
+      return false;
+   
+   //get path
+   const char* systemdirtmp = NULL;
+   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY,&systemdirtmp);
+   if(!worked)return false;
+   std::string path = systemdirtmp;
+   path += "/";//retroarch/libretro does not add a slash at the end of directory names
+   
+   unsigned int size;
+   if(isgbc){
+      path += "gbc_bios.bin";
+      size = 0x900;
+   }
+   else{
+      path += "gb_bios.bin";
+      size = 0x100;
+   }
+   if(size > buf_size)return false;
+   
+   //open file
+   int n = 0;
+   FILE *fp = fopen(path.c_str(), "rb");
+   if(fp){
+      n = fread(data, size, 1, fp);
+      fclose(fp);
+   }
+   else return false;
+   
+   if(n != 1)return false;
+   
+   return true;
+}
 
 namespace input
 {
@@ -163,6 +206,10 @@ void retro_init(void)
    video_pitch = 256 * NUM_GAMEBOYS;
 
    check_system_specs();
+   
+   //gb/gbc bootloader support
+   gb.setBootloaderGetter(get_bootloader_from_file);
+   
 }
 
 void retro_deinit()
@@ -188,6 +235,7 @@ void retro_set_environment(retro_environment_t cb)
       { "gambatte_gb_internal_palette", "Internal Palette; GBC - Blue|GBC - Brown|GBC - Dark Blue|GBC - Dark Brown|GBC - Dark Green|GBC - Grayscale|GBC - Green|GBC - Inverted|GBC - Orange|GBC - Pastel Mix|GBC - Red|GBC - Yellow|Special 1|Special 2|Special 3" },
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
       { "gambatte_gb_hwmode", "Emulated hardware; Auto|GB|GBA" }, // unfortunately, libgambatte does not have a 'force GBC' flag
+      { "gambatte_gb_bootloaderenabled", "Use official bootloader; enabled|disabled" },
 #ifdef HAVE_NETWORK
       { "gambatte_gb_link_mode", "GameBoy Link Mode; Not Connected|Network Server|Network Client" },
       { "gambatte_gb_link_network_port", "Network Link Port; 56400|56401|56402|56403|56404|56405|56406|56407|56408|56409|56410|56411|56412|56413|56414|56415|56416|56417|56418|56419|56420" },
