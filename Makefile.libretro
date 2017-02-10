@@ -296,6 +296,12 @@ else
 	CXXFLAGS += -O3 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
 endif
 
+ifneq ($(SANITIZER),)
+    CFLAGS   += -fsanitize=$(SANITIZER)
+    CXXFLAGS += -fsanitize=$(SANITIZER)
+    LDFLAGS  += -fsanitize=$(SANITIZER)
+endif
+
 CXXFLAGS += -std=c++98
 
 CORE_DIR := libgambatte/src
