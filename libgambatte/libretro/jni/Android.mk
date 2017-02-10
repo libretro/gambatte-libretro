@@ -29,6 +29,6 @@ LOCAL_CXXFLAGS += -DINLINE=inline -DHAVE_STDINT_H -DHAVE_INTTYPES_H -D__LIBRETRO
 ifeq ($(HAVE_NETWORK),1)
 LOCAL_CXXFLAGS += -DHAVE_NETWORK
 endif
-LOCAL_C_INCLUDES = $(CORE_DIR) $(CORE_DIR)/../include $(CORE_DIR)/../../common $(CORE_DIR)/../../common/resample $(CORE_DIR)/../libretro
+LOCAL_C_INCLUDES = $(CORE_DIR) $(CORE_DIR)/../include $(CORE_DIR)/../libretro-common/include $(CORE_DIR)/../../common $(CORE_DIR)/../../common/resample $(CORE_DIR)/../libretro
 
 include $(BUILD_SHARED_LIBRARY)
