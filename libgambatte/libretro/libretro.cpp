@@ -6,6 +6,12 @@
 #ifdef HAVE_NETWORK
 #include "net_serial.h"
 #endif
+
+#if defined(__DJGPP__) && defined(__STRICT_ANSI__)
+/* keep this above libretro-common includes */
+#undef __STRICT_ANSI__
+#endif
+
 #include <string/stdstring.h>
 #include <streams/file_stream.h>
 
