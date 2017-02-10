@@ -92,7 +92,7 @@ bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_
    
    // open file
    int n = 0;
-   RFILE *fp = filestream_open(path.c_str(), RFILE_MODE_READ | RFILE_HINT_UNBUFFERED, 0);
+   RFILE *fp = filestream_open(path.c_str(), RFILE_MODE_READ, 0);
 
    if (fp)
    {
