@@ -961,17 +961,17 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		oamDmaInitSetup();
 		return;
 	case 0x47:
-		if (!isCgb())
+		if (!isCgb())//may need to be disabled for force gbc mode with bootloader to work
 			lcd_.dmgBgPaletteChange(data, cc);
 
 		break;
 	case 0x48:
-		if (!isCgb())
+		if (!isCgb())//may need to be disabled for force gbc mode with bootloader to work
 			lcd_.dmgSpPalette1Change(data, cc);
 
 		break;
 	case 0x49:
-		if (!isCgb())
+		if (!isCgb())//may need to be disabled for force gbc mode with bootloader to work
 			lcd_.dmgSpPalette2Change(data, cc);
 
 		break;
