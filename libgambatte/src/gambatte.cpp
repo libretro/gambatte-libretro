@@ -64,9 +64,16 @@ void GB::Priv::full_init() {
    cpu.mem_.bootloader.load(cpu.isCgb(), gbaCgbMode);
 
    if (cpu.mem_.bootloader.booting_with_bootloader()) {
+      uint8_t *ioamhram = (uint8_t*)state.mem.ioamhram.get();
+      uint8_t serialctrl = (cpu.isCgb() || gbaCgbMode) ? 0x7C : 0x7E;
       state.cpu.pc = 0x0000;
       // the hw registers must be zeroed out to prevent the logo from being garbled
-      memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
+      memset((void*)(ioamhram + 0x100), 0x00, 0x100);
+      //init values taken from SameBoy
+      ioamhram[0x100] = 0x0F;//joypad initial value
+      ioamhram[0x102] = serialctrl;//serialctrl
+      ioamhram[0x148] = 0xFF;//object palette 0
+      ioamhram[0x149] = 0xFF;//object palette 1
    }
    
    cpu.loadState(state);
