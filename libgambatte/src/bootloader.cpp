@@ -23,6 +23,9 @@ void Bootloader::load(bool isgbc, bool isgba){
       return;
    }
    
+   //the gba only uses the gbc bios
+   if(isgba)isgbc = true;
+   
    bool bootloaderavail = get_raw_bootloader_data((void*)this, isgbc, bootromswapspace, 0x900/*buf_size*/);
    if(!bootloaderavail){
       using_bootloader = false;
