@@ -961,19 +961,22 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		oamDmaInitSetup();
 		return;
 	case 0x47:
-		if (!isCgb())//may need to be disabled for force gbc mode with bootloader to work
+         
+		if (!isCgb() || bootloader.using_bootloader)//bootloader sets color palette
 			lcd_.dmgBgPaletteChange(data, cc);
 
 		break;
 	case 0x48:
-		if (!isCgb())//may need to be disabled for force gbc mode with bootloader to work
+         
+		if (!isCgb() || bootloader.using_bootloader)//bootloader sets color palette
 			lcd_.dmgSpPalette1Change(data, cc);
-
+         
 		break;
 	case 0x49:
-		if (!isCgb())//may need to be disabled for force gbc mode with bootloader to work
+         
+		if (!isCgb() || bootloader.using_bootloader)//bootloader sets color palette
 			lcd_.dmgSpPalette2Change(data, cc);
-
+         
 		break;
 	case 0x4A:
 		lcd_.wyChange(data, cc);
@@ -981,7 +984,9 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 	case 0x4B:
 		lcd_.wxChange(data, cc);
 		break;
-
+   case 0x4C://switch to classic gb mode from gbc mode,flushes the gbc palette to the gb color buffer,makes gb palette register work properly
+      lcd_.swapToDMG();
+      break;
 	case 0x4D:
 		if (isCgb())
 			ioamhram_[0x14D] = (ioamhram_[0x14D] & ~1u) | (data & 1);

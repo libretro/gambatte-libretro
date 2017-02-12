@@ -519,9 +519,9 @@ namespace gambatte
                   break;
          }
 
-         cgb = header[0x0143] >> 7 & (1 ^ forceDmg);
+         //cgb = header[0x0143] >> 7 & (1 ^ forceDmg);
          //gbc should be default since you can force gb or gba
-         //cgb = !forceDmg;
+         cgb = !forceDmg;
          printf("cgb: %d\n", cgb);
       }
 

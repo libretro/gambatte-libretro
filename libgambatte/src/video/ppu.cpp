@@ -584,7 +584,11 @@ static void doFullTilesUnrolledCgb(PPUPriv &p, int const xend, video_pixel_t *co
 					unsigned char const id = p.spriteList[i].oampos;
 					unsigned const sattrib = p.spriteList[i].attrib;
 					unsigned spword        = p.spwordList[i];
-					video_pixel_t const *const spPalette = p.spPalette + (sattrib & 7) * 4;
+               video_pixel_t const * spPalette;
+               if(sattrib & 0x10)//support gb games in gbc mode
+                  spPalette = p.spPalette + 4;
+               else
+                  spPalette = p.spPalette + (sattrib & 7) * 4;
 
 					if (!((attrib | sattrib) & bgprioritymask)) {
 						unsigned char  *const idt = idtab + pos;
@@ -773,7 +777,10 @@ static void plotPixel(PPUPriv &p) {
 
 			if (spdata && lcdcObjEn(p)
 					&& (!((attrib | p.attrib) & attr_bgpriority) || !twdata || !lcdcBgEn(p))) {
-				pixel = p.spPalette[(attrib & 7) * 4 + spdata];
+            if(attrib & 0x10)//support gb games in gbc mode
+               pixel = p.spPalette[4 + spdata];
+				else
+               pixel = p.spPalette[(attrib & 7) * 4 + spdata];
 			}
 		} else {
 			do {

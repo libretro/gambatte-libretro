@@ -25,7 +25,7 @@
 #endif
 #include "gbint.h"
 #include <string>
-#include <stddef.h>
+#include <cstddef>
 
 namespace gambatte {
 #ifdef VIDEO_RGB565

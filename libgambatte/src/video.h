@@ -50,6 +50,12 @@ class LCD
       void loadState(const SaveState &state, const unsigned char *oamram);
       void setDmgPaletteColor(unsigned palNum, unsigned colorNum, video_pixel_t rgb32);
       void setVideoBuffer(video_pixel_t *videoBuf, int pitch);
+   
+      void swapToDMG() {
+         setDmgPalette(ppu_.bgPalette()    , dmgColorsRgb32_    ,  bgpData_[0]);
+         setDmgPalette(ppu_.spPalette()    , dmgColorsRgb32_ + 4, objpData_[0]);
+         setDmgPalette(ppu_.spPalette() + 4, dmgColorsRgb32_ + 8, objpData_[1]);
+      }
 
       void dmgBgPaletteChange(const unsigned data, const unsigned long cycleCounter) {
          update(cycleCounter);
@@ -70,13 +76,17 @@ class LCD
       }
 
       void cgbBgColorChange(unsigned index, const unsigned data, const unsigned long cycleCounter) {
-         if (bgpData_[index] != data)
+         if (bgpData_[index] != data) {
             doCgbBgColorChange(index, data, cycleCounter);
+            doCgbColorChange(bgpData_, dmgColorsRgb32_, index, data);
+         }
       }
 
       void cgbSpColorChange(unsigned index, const unsigned data, const unsigned long cycleCounter) {
-         if (objpData_[index] != data)
+         if (objpData_[index] != data) {
             doCgbSpColorChange(index, data, cycleCounter);
+            doCgbColorChange(objpData_, dmgColorsRgb32_ + 4, index, data);
+         }
       }
 
       unsigned cgbBgColorRead(const unsigned index, const unsigned long cycleCounter) {
@@ -198,8 +208,8 @@ class LCD
       static void setDmgPalette(video_pixel_t *palette, const video_pixel_t *dmgColors, unsigned data);
       void setDmgPaletteColor(unsigned index, video_pixel_t rgb32);
 
-      void refreshPalettes();
       void setDBuffer();
+      void refreshPalettes();
 
       void doMode2IrqEvent();
       void event();
