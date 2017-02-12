@@ -84,6 +84,9 @@ void LCD::saveState(SaveState &state) const
    state.ppu.nextM0Irq = eventTimes_(MODE0_IRQ) - ppu_.now();
    state.ppu.pendingLcdstatIrq = eventTimes_(ONESHOT_LCDSTATIRQ) != disabled_time;
    
+   if(isCgb())
+      for(int i = 0;i < 12;i++)
+         ((unsigned int*)state.ppu.dmgPalette)[i] = dmgColorsRgb32_[i];
    
 
    lycIrq_.saveState(state);
@@ -126,6 +129,10 @@ void LCD::loadState(const SaveState &state, const unsigned char *const oamram)
          eventTimes_.set(static_cast<MemEvent>(i), disabled_time);
    }
 
+   if(isCgb())
+      for(int i = 0;i < 12;i++)
+         dmgColorsRgb32_[i] = ((unsigned int*)state.ppu.dmgPalette)[i];
+   
    refreshPalettes();
 }
 

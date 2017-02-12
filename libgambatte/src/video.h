@@ -53,20 +53,6 @@ class LCD
       void setVideoBuffer(video_pixel_t *videoBuf, int pitch);
       void setDmgMode(bool mode) { ppu_.setDmgMode(mode); }
    
-      /*
-      void backupDMGpal(SaveState &state) {
-         //use extra cgb palette ram to back up the dmg color map
-         std::memcpy(ppu_.bgPalette() + 4, dmgColorsRgb32_    , 4 * sizeof(video_pixel_t));
-         std::memcpy(ppu_.spPalette() + 8, dmgColorsRgb32_ + 4, 8 * sizeof(video_pixel_t));
-      }
-   
-      void restoreDMGpal(SaveState &state) {
-         //put extra cgb palette ram back into the dmg color map
-         std::memcpy(dmgColorsRgb32_    , ppu_.bgPalette() + 4, 4 * sizeof(video_pixel_t));
-         std::memcpy(dmgColorsRgb32_ + 4, ppu_.spPalette() + 8, 8 * sizeof(video_pixel_t));
-      }
-      */
-   
       void swapToDMG() {
          setDmgPalette(ppu_.bgPalette()    , dmgColorsRgb32_    ,  bgpData_[0]);
          setDmgPalette(ppu_.spPalette()    , dmgColorsRgb32_ + 4, objpData_[0]);
