@@ -83,6 +83,8 @@ void LCD::saveState(SaveState &state) const
    state.mem.hdmaTransfer = hdmaIsEnabled();
    state.ppu.nextM0Irq = eventTimes_(MODE0_IRQ) - ppu_.now();
    state.ppu.pendingLcdstatIrq = eventTimes_(ONESHOT_LCDSTATIRQ) != disabled_time;
+   
+   
 
    lycIrq_.saveState(state);
    m0Irq_.saveState(state);

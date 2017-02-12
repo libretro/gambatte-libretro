@@ -585,8 +585,8 @@ static void doFullTilesUnrolledCgb(PPUPriv &p, int const xend, video_pixel_t *co
 					unsigned const sattrib = p.spriteList[i].attrib;
 					unsigned spword        = p.spwordList[i];
                video_pixel_t const * spPalette;
-               if(sattrib & 0x10)//support gb games in gbc mode
-                  spPalette = p.spPalette + 4;
+               if(p.dmgMode)//support gb games in gbc mode
+                  spPalette = p.spPalette + (sattrib >> 2 & 4);
                else
                   spPalette = p.spPalette + (sattrib & 7) * 4;
 
@@ -777,8 +777,8 @@ static void plotPixel(PPUPriv &p) {
 
 			if (spdata && lcdcObjEn(p)
 					&& (!((attrib | p.attrib) & attr_bgpriority) || !twdata || !lcdcBgEn(p))) {
-            if(attrib & 0x10)//support gb games in gbc mode
-               pixel = p.spPalette[4 + spdata];
+            if(p.dmgMode)//support gb games in gbc mode
+               pixel = p.spPalette[(attrib >> 2 & 4) + spdata];
 				else
                pixel = p.spPalette[(attrib & 7) * 4 + spdata];
 			}
@@ -1464,6 +1464,7 @@ PPUPriv::PPUPriv(NextM0Time &nextM0Time, unsigned char const *const oamram, unsi
 , xpos(0)
 , endx(0)
 , cgb(false)
+, dmgMode(false)
 , weMaster(false)
 {
 	std::memset(spriteList, 0, sizeof spriteList);
@@ -1617,6 +1618,7 @@ void PPU::loadState(SaveState const &ss, unsigned char const *const oamram) {
 	p_.wy = ss.mem.ioamhram.get()[0x14A];
 	p_.wy2 = ss.ppu.oldWy;
 	p_.wx = ss.mem.ioamhram.get()[0x14B];
+   p_.dmgMode = (ss.mem.ioamhram.get()[0x14C] == 0x85);
 	p_.xpos = std::min<int>(ss.ppu.xpos, 168);
 	p_.endx = (p_.xpos & ~7) + (ss.ppu.endx & 7);
 	p_.endx = std::min(p_.endx <= p_.xpos ? p_.endx + 8 : p_.endx, 168);

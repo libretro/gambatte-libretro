@@ -62,6 +62,11 @@ unsigned long Memory::saveState(SaveState &state, unsigned long cc) {
 	nontrivial_ff_read(0x05, cc);
 	nontrivial_ff_read(0x0F, cc);
 	nontrivial_ff_read(0x26, cc);
+   
+   /*
+   if(isCgb() && bootloader.using_bootloader && ioamhram_[0x14C] == 0x85)
+      lcd_.backupDMGpal();
+   */
 
 	state.mem.divLastUpdate = divLastUpdate_;
 	state.mem.nextSerialtime = intreq_.eventTime(intevent_serial);
@@ -137,6 +142,11 @@ void Memory::loadState(SaveState const &state) {
 
 	if (!isCgb())
 		std::memset(cart_.vramdata() + 0x2000, 0, 0x2000);
+   
+   /*
+   if(isCgb() && bootloader.using_bootloader && ioamhram_[0x14C] == 0x85)
+      lcd_.restoreDMGpal();
+   */
 }
 
 void Memory::setEndtime(unsigned long cc, unsigned long inc) {
@@ -985,6 +995,7 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		lcd_.wxChange(data, cc);
 		break;
    case 0x4C://switch to classic gb mode from gbc mode,flushes the gbc palette to the gb color buffer,makes gb palette register work properly
+      ioamhram_[0x14C] = 0x85;//arbitrary value,0x85 indicates DMG mode,official is unknown
       lcd_.swapToDMG();
       break;
 	case 0x4D:
