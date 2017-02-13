@@ -230,6 +230,9 @@ void retro_init(void)
    
    //gb/gbc bootloader support
    gb.setBootloaderGetter(get_bootloader_from_file);
+#ifdef DUAL_MODE
+   gb2.setBootloaderGetter(get_bootloader_from_file);
+#endif
    
 }
 
