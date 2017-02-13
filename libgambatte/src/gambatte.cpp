@@ -103,7 +103,15 @@ void *GB::rtcdata_ptr() { return p_->cpu.rtcdata_ptr(); }
 unsigned GB::rtcdata_size() { return p_->cpu.rtcdata_size(); }
 
 int GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
-	const int failed = p_->cpu.load(romdata, romsize, flags & (FORCE_DMG | FORCE_CGB), flags & MULTICART_COMPAT);
+   unsigned int cartflags;
+   if ((flags & GBA_CGB) || (flags & FORCE_CGB))
+      cartflags = FORCE_CGB;
+   else if (flags & FORCE_DMG)
+      cartflags = FORCE_DMG;
+   else
+      cartflags = 0;
+   
+	const int failed = p_->cpu.load(romdata, romsize, cartflags, flags & MULTICART_COMPAT);
 	
    if (!failed) {
       p_->gbaCgbMode = flags & GBA_CGB;
