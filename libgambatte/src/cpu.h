@@ -77,8 +77,8 @@ public:
 		return mem_.saveBasePath();
 	}
 
-	int load(const void *romdata, unsigned int romsize, bool forceDmg, bool multicartCompat) {
-		return mem_.loadROM(romdata, romsize, forceDmg, multicartCompat);
+	int load(const void *romdata, unsigned int romsize, unsigned int forceModel, bool multicartCompat) {
+		return mem_.loadROM(romdata, romsize, forceModel, multicartCompat);
 	}
 
 #if 0

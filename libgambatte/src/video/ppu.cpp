@@ -1618,7 +1618,7 @@ void PPU::loadState(SaveState const &ss, unsigned char const *const oamram) {
 	p_.wy = ss.mem.ioamhram.get()[0x14A];
 	p_.wy2 = ss.ppu.oldWy;
 	p_.wx = ss.mem.ioamhram.get()[0x14B];
-   p_.dmgMode = (ss.mem.ioamhram.get()[0x14C] == 0x85);
+   p_.dmgMode = (ss.mem.ioamhram.get()[0x14C] == 0x04);
 	p_.xpos = std::min<int>(ss.ppu.xpos, 168);
 	p_.endx = (p_.xpos & ~7) + (ss.ppu.endx & 7);
 	p_.endx = std::min(p_.endx <= p_.xpos ? p_.endx + 8 : p_.endx, 168);

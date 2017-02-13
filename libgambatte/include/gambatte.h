@@ -43,7 +43,8 @@ public:
 	enum LoadFlag {
       FORCE_DMG        = 1, /**< Treat the ROM as not having CGB support regardless of what its header advertises. */
       GBA_CGB          = 2, /**< Use GBA intial CPU register values when in CGB mode. */
-      MULTICART_COMPAT = 4  /**< Use heuristics to detect and support some multicart MBCs disguised as MBC1. */
+      MULTICART_COMPAT = 4,  /**< Use heuristics to detect and support some multicart MBCs disguised as MBC1. */
+      FORCE_CGB        = 8
 	};
 	
    int load(const void *romdata, unsigned size, unsigned flags = 0);

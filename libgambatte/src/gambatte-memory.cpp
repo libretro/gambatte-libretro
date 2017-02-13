@@ -985,8 +985,10 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		lcd_.wxChange(data, cc);
 		break;
    case 0x4C://switch to classic gb mode from gbc mode,flushes the gbc palette to the gb color buffer,makes gb palette register work properly
-      ioamhram_[0x14C] = 0x85;//arbitrary value,0x85 indicates DMG mode,official is unknown
-      lcd_.swapToDMG();
+      if (data == 0x04) {
+         ioamhram_[0x14C] = 0x04;//0x04 is gbc dmg mode
+         lcd_.swapToDMG();
+      }
       return;
 	case 0x4D:
 		if (isCgb())
@@ -1147,9 +1149,9 @@ std::size_t Memory::fillSoundBuffer(unsigned long cc) {
 	return psg_.fillBuffer();
 }
 
-int Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat)
+int Memory::loadROM(const void *romdata, unsigned int romsize, unsigned int forceModel, const bool multicartCompat)
 {
-   if (const int fail = cart_.loadROM(romdata, romsize, forceDmg, multicartCompat))
+   if (const int fail = cart_.loadROM(romdata, romsize, forceModel, multicartCompat))
       return fail;
    psg_.init(cart_.isCgb());
    lcd_.reset(ioamhram_, cart_.vramdata(), cart_.isCgb());

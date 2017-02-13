@@ -445,7 +445,7 @@ namespace gambatte
       return n;
    }
 
-   int Cartridge::loadROM(const void *data, unsigned romsize, const bool forceDmg, const bool multiCartCompat)
+   int Cartridge::loadROM(const void *data, unsigned int romsize, unsigned int forceModel, const bool multiCartCompat)
    {
       const uint8_t *romdata = (uint8_t*)data;
       if (romsize < 0x4000 || !romdata)
@@ -519,10 +519,16 @@ namespace gambatte
                   break;
          }
 
-         //cgb = header[0x0143] >> 7 & (1 ^ forceDmg);
-         //gbc should be default since you can force gb or gba
-         cgb = !forceDmg;
-         printf("cgb: %d\n", cgb);
+         switch(forceModel){
+            case 1://FORCE_DMG
+               cgb = false;
+               break;
+            case 8://FORCE_CGB
+               cgb = true;
+               break;
+            case 0://dont force anything
+               cgb = header[0x0143] >> 7;
+         }
       }
 
       printf("rambanks: %u\n", rambanks);
