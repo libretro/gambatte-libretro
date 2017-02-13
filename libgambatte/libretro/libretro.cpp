@@ -551,7 +551,7 @@ static void check_variables(void)
 
    if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
       return;
-
+   
    if (gb.isCgb())
       return;
 

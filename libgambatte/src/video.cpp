@@ -138,7 +138,7 @@ void LCD::loadState(const SaveState &state, const unsigned char *const oamram)
 
 void LCD::refreshPalettes()
 {
-   if (ppu_.cgb())
+   if (ppu_.cgb() && !ppu_.inDmgMode())
    {
       for (unsigned i = 0; i < 8 * 8; i += 2)
       {
