@@ -962,19 +962,19 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		return;
 	case 0x47:
          
-		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//bootloader sets color palette
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//allow in gbc gb mode
 			lcd_.dmgBgPaletteChange(data, cc);
 
 		break;
 	case 0x48:
          
-		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//bootloader sets color palette
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//allow in gbc gb mode
 			lcd_.dmgSpPalette1Change(data, cc);
          
 		break;
 	case 0x49:
          
-		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//bootloader sets color palette
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//allow in gbc gb mode
 			lcd_.dmgSpPalette2Change(data, cc);
          
 		break;
@@ -984,10 +984,17 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 	case 0x4B:
 		lcd_.wxChange(data, cc);
 		break;
-   case 0x4C://switch to classic gb mode from gbc mode,flushes the gbc palette to the gb color buffer,makes gb palette register work properly
-      if (data == 0x04) {
-         ioamhram_[0x14C] = 0x04;//0x04 is gbc dmg mode
-         lcd_.swapToDMG();
+   case 0x4C://switch to classic gb mode from gbc mode or lock system to gbc mode
+      if ((ioamhram_[0x14C] != 0x04)/*gb mode*/ && (ioamhram_[0x14C] != 0x80)/*gbc mode*/) {
+         //mode has not been set yet, set the mode if data is valid
+         if (data == 0x04) {
+            ioamhram_[0x14C] = 0x04;//0x04 is gbc gb mode, lock register and switch mode to gb emulation mode
+            lcd_.swapToDMG();
+         }
+         else if (data == 0x80)
+            ioamhram_[0x14C] = 0x80;//0x80 is gbc mode, no special operations needed, just lock this register
+         
+         //any other write to this register is invalid and will just be ignored
       }
       return;
 	case 0x4D:
@@ -1002,7 +1009,7 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		}
 
 		return;
-   case 0x50://for bootloader,swap bootloader with rom
+   case 0x50://for bootloader, swap bootloader with rom
       bootloader.call_FF50();
       ioamhram_[0x150] = 0xFF;
       return;
