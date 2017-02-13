@@ -962,19 +962,19 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		return;
 	case 0x47:
          
-		if (!isCgb() || bootloader.using_bootloader)//bootloader sets color palette
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//bootloader sets color palette
 			lcd_.dmgBgPaletteChange(data, cc);
 
 		break;
 	case 0x48:
          
-		if (!isCgb() || bootloader.using_bootloader)//bootloader sets color palette
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//bootloader sets color palette
 			lcd_.dmgSpPalette1Change(data, cc);
          
 		break;
 	case 0x49:
          
-		if (!isCgb() || bootloader.using_bootloader)//bootloader sets color palette
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//bootloader sets color palette
 			lcd_.dmgSpPalette2Change(data, cc);
          
 		break;

@@ -81,14 +81,16 @@ class LCD
       void cgbBgColorChange(unsigned index, const unsigned data, const unsigned long cycleCounter) {
          if (bgpData_[index] != data) {
             doCgbBgColorChange(index, data, cycleCounter);
-            doCgbColorChange(bgpData_, dmgColorsRgb32_, index, data);
+            if(index < 8)
+               doCgbColorChange(bgpData_, dmgColorsRgb32_, index, data);
          }
       }
 
       void cgbSpColorChange(unsigned index, const unsigned data, const unsigned long cycleCounter) {
          if (objpData_[index] != data) {
             doCgbSpColorChange(index, data, cycleCounter);
-            doCgbColorChange(objpData_, dmgColorsRgb32_ + 4, index, data);
+            if(index < 8 * 2/*dmg has 2 sprite banks*/)
+               doCgbColorChange(objpData_, dmgColorsRgb32_ + 4, index, data);
          }
       }
 
