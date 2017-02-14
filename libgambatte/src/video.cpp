@@ -150,7 +150,7 @@ void LCD::refreshPalettes()
       if (ppu_.inDmgMode())
       {
          for (unsigned i = 0; i < 8 * 3; i += 2)
-            doCgbColorChange(dmgColorsGBC_, dmgColorsRgb32_, i, dmgColorsGBC_[i]);
+             dmgColorsRgb32_[i >> 1] = gbcToRgb32( dmgColorsGBC_[i] |  dmgColorsGBC_[i + 1] << 8);
       }
       setDmgPalette(ppu_.bgPalette()    , dmgColorsRgb32_    ,  bgpData_[0]);
       setDmgPalette(ppu_.spPalette()    , dmgColorsRgb32_ + 4, objpData_[0]);
