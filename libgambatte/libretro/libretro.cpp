@@ -54,6 +54,29 @@ static gambatte::GB gb2;
 #include "cc_resampler.h"
 #endif
 
+bool file_present_in_system(std::string fname)
+{
+   const char *systemdirtmp = NULL;
+   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &systemdirtmp);
+   
+   if(!worked)
+      return false;
+   
+   std::string fullpath = systemdirtmp;
+   fullpath += "/";
+   fullpath += fname;
+   
+   RFILE *fp = filestream_open(fullpath.c_str(), RFILE_MODE_READ, 0);
+   
+   if (fp)
+   {
+      filestream_close(fp);
+      return true;
+   }
+   
+   return false;
+}
+
 bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)
 {
    struct retro_variable var = {0};
@@ -668,15 +691,40 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
 #endif
+   
+   bool has_gbc_bootloader = file_present_in_system("gbc_bios.bin");
+   bool use_bootloader = false;
+   
+   struct retro_variable var = {0};
+   
+   var.key = "gambatte_gb_bootloaderenabled";
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "enabled"))
+         use_bootloader = true;
+   }
 
    unsigned flags = 0;
-   struct retro_variable var = {0};
    var.key = "gambatte_gb_hwmode";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
-      if (!strcmp(var.value, "GB")) flags |= gambatte::GB::FORCE_DMG;
-      if (!strcmp(var.value, "GBC")) flags |= gambatte::GB::FORCE_CGB;
-      if (!strcmp(var.value, "GBA")) flags |= gambatte::GB::GBA_CGB;
+      if (!strcmp(var.value, "GB"))
+      {
+          flags |= gambatte::GB::FORCE_DMG;
+      }
+      
+      if (!strcmp(var.value, "GBC"))
+      {
+         if (has_gbc_bootloader && use_bootloader)
+            flags |= gambatte::GB::FORCE_CGB;
+      }
+
+      if (!strcmp(var.value, "GBA"))
+      {
+         flags |= gambatte::GB::GBA_CGB;
+         if (has_gbc_bootloader && use_bootloader)
+            flags |= gambatte::GB::FORCE_CGB;
+      }
    }
 
    if (gb.load(info->data, info->size, flags) != 0)
