@@ -92,7 +92,7 @@ struct SaveState {
 		//SpriteMapper::OamReader
 		Ptr<unsigned char> oamReaderBuf;
 		Ptr<bool> oamReaderSzbuf;
-      unsigned char dmgPalette[4 * 12];
+      unsigned char dmgPalette[8 * 3];
       
 		unsigned long videoCycles;
 		unsigned long enableDisplayM0Time;

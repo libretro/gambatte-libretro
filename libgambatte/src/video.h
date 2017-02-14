@@ -25,7 +25,6 @@
 #include "video/next_m0_time.h"
 #include "video/ppu.h"
 #include <memory>
-#include <string>
 
 namespace gambatte {
 
@@ -54,10 +53,8 @@ class LCD
       void setDmgMode(bool mode) { ppu_.setDmgMode(mode); }
    
       void swapToDMG() {
-         setDmgPalette(ppu_.bgPalette()    , dmgColorsRgb32_    ,  bgpData_[0]);
-         setDmgPalette(ppu_.spPalette()    , dmgColorsRgb32_ + 4, objpData_[0]);
-         setDmgPalette(ppu_.spPalette() + 4, dmgColorsRgb32_ + 8, objpData_[1]);
          ppu_.setDmgMode(true);
+         refreshPalettes();
       }
 
       void dmgBgPaletteChange(const unsigned data, const unsigned long cycleCounter) {
@@ -82,7 +79,7 @@ class LCD
          if (bgpData_[index] != data) {
             doCgbBgColorChange(index, data, cycleCounter);
             if(index < 8)
-               doCgbColorChange(bgpData_, dmgColorsRgb32_, index, data);
+               doCgbColorChange(dmgColorsGBC_, dmgColorsRgb32_, index, data);
          }
       }
 
@@ -90,7 +87,7 @@ class LCD
          if (objpData_[index] != data) {
             doCgbSpColorChange(index, data, cycleCounter);
             if(index < 8 * 2/*dmg has 2 sprite banks*/)
-               doCgbColorChange(objpData_, dmgColorsRgb32_ + 4, index, data);
+               doCgbColorChange(dmgColorsGBC_ + 8, dmgColorsRgb32_ + 4, index, data);
          }
       }
 
@@ -198,6 +195,7 @@ class LCD
 
       PPU ppu_;
       video_pixel_t dmgColorsRgb32_[3 * 4];
+      unsigned char dmgColorsGBC_[3 * 8];
       unsigned char  bgpData_[8 * 8];
       unsigned char objpData_[8 * 8];
 

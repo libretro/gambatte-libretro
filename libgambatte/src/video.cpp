@@ -20,6 +20,7 @@
 #include "savestate.h"
 #include <cstring>
 #include <algorithm>
+#include <string>
 
 namespace gambatte
 {
@@ -84,9 +85,8 @@ void LCD::saveState(SaveState &state) const
    state.ppu.nextM0Irq = eventTimes_(MODE0_IRQ) - ppu_.now();
    state.ppu.pendingLcdstatIrq = eventTimes_(ONESHOT_LCDSTATIRQ) != disabled_time;
    
-   if(isCgb())
-      for(int i = 0;i < 12;i++)
-         ((unsigned int*)state.ppu.dmgPalette)[i] = dmgColorsRgb32_[i];
+   if (isCgb())
+      std::memcpy(state.ppu.dmgPalette, dmgColorsGBC_, 8 * 3);
    
 
    lycIrq_.saveState(state);
@@ -129,9 +129,8 @@ void LCD::loadState(const SaveState &state, const unsigned char *const oamram)
          eventTimes_.set(static_cast<MemEvent>(i), disabled_time);
    }
 
-   if(isCgb())
-      for(int i = 0;i < 12;i++)
-         dmgColorsRgb32_[i] = ((unsigned int*)state.ppu.dmgPalette)[i];
+   if (isCgb())
+      std::memcpy(dmgColorsGBC_, state.ppu.dmgPalette, 8 * 3);
    
    refreshPalettes();
 }
@@ -148,6 +147,11 @@ void LCD::refreshPalettes()
    }
    else
    {
+      if (ppu_.inDmgMode())
+      {
+         for (unsigned i = 0; i < 8 * 3; i += 2)
+            doCgbColorChange(dmgColorsGBC_, dmgColorsRgb32_, i, dmgColorsGBC_[i]);
+      }
       setDmgPalette(ppu_.bgPalette()    , dmgColorsRgb32_    ,  bgpData_[0]);
       setDmgPalette(ppu_.spPalette()    , dmgColorsRgb32_ + 4, objpData_[0]);
       setDmgPalette(ppu_.spPalette() + 4, dmgColorsRgb32_ + 8, objpData_[1]);
