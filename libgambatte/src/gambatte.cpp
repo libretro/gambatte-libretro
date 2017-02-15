@@ -30,12 +30,12 @@ struct GB::Priv {
 	CPU cpu;
 	int stateNo;
 	bool gbaCgbMode;
-	bool gbForced;
+	bool dmgForced;
 	bool cgbForced;
-	bool usingGbBios;
+	bool usingDmgBios;
 	bool usingCgbBios;
 	
-	Priv() : stateNo(1), gbaCgbMode(false), gbForced(false), cgbForced(false), usingGbBios(false), usingCgbBios(false) {}
+	Priv() : stateNo(1), gbaCgbMode(false), dmgForced(false), cgbForced(false), usingDmgBios(false), usingCgbBios(false) {}
 
    void full_init();
 };
@@ -111,9 +111,9 @@ int GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
 	
    if (!failed) {
       p_->gbaCgbMode = flags & GBA_CGB;
-      p_->gbForced = flags & FORCE_DMG;
+      p_->dmgForced = flags & FORCE_DMG;
       p_->cgbForced = flags & FORCE_CGB;
-      p_->usingGbBios = flags & USING_GB_BIOS;
+      p_->usingDmgBios = flags & USING_DMG_BIOS;
       p_->usingCgbBios = flags & USING_CGB_BIOS;
       p_->full_init();
       p_->stateNo = 1;
@@ -126,16 +126,16 @@ bool GB::isCgb() const {
 	return p_->cpu.isCgb();
 }
 
-bool GB::isGbForced() const {
-	return p_->gbForced;
+bool GB::isDmgForced() const {
+	return p_->dmgForced;
 }
 
 bool GB::isCgbForced() const {
 	return p_->cgbForced;
 }
 
-bool GB::isUsingGbBios() const {
-	return p_->usingGbBios;
+bool GB::isUsingDmgBios() const {
+	return p_->usingDmgBios;
 }
 
 bool GB::isUsingCgbBios() const {
