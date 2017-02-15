@@ -44,7 +44,9 @@ public:
       FORCE_DMG        = 1, /**< Treat the ROM as not having CGB support regardless of what its header advertises. */
       GBA_CGB          = 2, /**< Use GBA intial CPU register values when in CGB mode. */
       MULTICART_COMPAT = 4,  /**< Use heuristics to detect and support some multicart MBCs disguised as MBC1. */
-      FORCE_CGB        = 8
+      FORCE_CGB        = 8,
+      USING_GB_BIOS    = 16,
+      USING_CGB_BIOS   = 32
 	};
 	
    int load(const void *romdata, unsigned size, unsigned flags = 0);
@@ -107,7 +109,16 @@ public:
 
 	/** Returns true if DMG mode was forced **/
 	bool isGbForced() const;
-	
+
+	/** Returns true if CGB mode was forced **/
+	bool isCgbForced() const;
+
+	/** Returns true if using real GB BIOS **/
+	bool isUsingGbBios() const;
+
+	/** Returns true if using real CGB BIOS **/
+	bool isUsingCgbBios() const;
+
 	/** Returns true if a ROM image is loaded. */
 	bool isLoaded() const;
 	
