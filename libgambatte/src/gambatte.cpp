@@ -70,7 +70,7 @@ void GB::Priv::full_init() {
       // the hw registers must be zeroed out to prevent the logo from being garbled
       std::memset((void*)(ioamhram + 0x100), 0x00, 0x100);
       //init values taken from SameBoy
-      ioamhram[0x100] = 0x0F;//joypad initial value
+      ioamhram[0x100] = 0xCF;//joypad initial value
       ioamhram[0x102] = serialctrl;//serialctrl
       ioamhram[0x148] = 0xFC;//object palette 0
       ioamhram[0x149] = 0xFC;//object palette 1
