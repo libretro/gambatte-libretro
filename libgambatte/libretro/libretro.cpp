@@ -570,16 +570,28 @@ static void check_variables(void)
    }
 #endif
 
+   // there's no colorization in real GB, this avoids having a GBC game with GB palettes too
+   if (gb.isGbForced() == true)
+      return;
+
+   // if it's using real GB BIOS, there's no sense to see the GB bootloader in the screen & colorization all together
+   bool has_gb_bootloader = file_present_in_system("gb_bios.bin");
+   bool use_bootloader = false;
+   var.key = "gambatte_gb_bootloaderenabled";
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "enabled"))
+         use_bootloader = true;
+   }
+   if (!gb.isCgb() && has_gb_bootloader && use_bootloader)
+      return;
+
    var.key = "gambatte_gb_colorization";
 
    if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
       return;
    
    if (gb.isCgb())
-      return;
-
-   // there's no colorization in real GB, this avoids having a GBC game with GB palettes too
-   if (gb.isGbForced() == true)
       return;
 
    // else it is a GB-mono game -> set a color palette
