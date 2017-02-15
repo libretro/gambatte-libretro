@@ -92,6 +92,7 @@ struct PPUPriv {
 	unsigned char endx;
 
 	bool cgb;
+   bool dmgMode;
 	bool weMaster;
 
 	PPUPriv(NextM0Time &nextM0Time, unsigned char const *oamram, unsigned char const *vram);
@@ -106,10 +107,12 @@ public:
 
 	video_pixel_t * bgPalette() { return p_.bgPalette; }
 	bool cgb() const { return p_.cgb; }
+   void setDmgMode(bool mode) { p_.dmgMode = mode; }
+   bool inDmgMode() const { return p_.dmgMode; }
 	void doLyCountEvent() { p_.lyCounter.doEvent(); }
 	unsigned long doSpriteMapEvent(unsigned long time) { return p_.spriteMapper.doEvent(time); }
 	PPUFrameBuf const & frameBuf() const { return p_.framebuf; }
-
+   
 	bool inactivePeriodAfterDisplayEnable(unsigned long cc) const {
 		return p_.spriteMapper.inactivePeriodAfterDisplayEnable(cc);
 	}

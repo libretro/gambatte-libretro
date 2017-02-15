@@ -961,19 +961,22 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		oamDmaInitSetup();
 		return;
 	case 0x47:
-		if (!isCgb())
+         
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//allow in gbc gb mode
 			lcd_.dmgBgPaletteChange(data, cc);
 
 		break;
 	case 0x48:
-		if (!isCgb())
+         
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//allow in gbc gb mode
 			lcd_.dmgSpPalette1Change(data, cc);
-
+         
 		break;
 	case 0x49:
-		if (!isCgb())
+         
+		if (!isCgb() || (ioamhram_[0x14C] == 0x04))//allow in gbc gb mode
 			lcd_.dmgSpPalette2Change(data, cc);
-
+         
 		break;
 	case 0x4A:
 		lcd_.wyChange(data, cc);
@@ -981,7 +984,19 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 	case 0x4B:
 		lcd_.wxChange(data, cc);
 		break;
-
+   case 0x4C://switch to classic gb mode from gbc mode or lock system to gbc mode
+      if ((ioamhram_[0x14C] != 0x04)/*gb mode*/ && (ioamhram_[0x14C] != 0x80)/*gbc mode*/) {
+         //mode has not been set yet, set the mode if data is valid
+         if (data == 0x04) {
+            ioamhram_[0x14C] = 0x04;//0x04 is gbc gb mode, lock register and switch mode to gb emulation mode
+            lcd_.swapToDMG();
+         }
+         else if (data == 0x80)
+            ioamhram_[0x14C] = 0x80;//0x80 is gbc mode, no special operations needed, just lock this register
+         
+         //any other write to this register is invalid and will just be ignored
+      }
+      return;
 	case 0x4D:
 		if (isCgb())
 			ioamhram_[0x14D] = (ioamhram_[0x14D] & ~1u) | (data & 1);
@@ -994,7 +1009,7 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		}
 
 		return;
-   case 0x50://for bootloader,swap bootloader with rom
+   case 0x50://for bootloader, swap bootloader with rom
       bootloader.call_FF50();
       ioamhram_[0x150] = 0xFF;
       return;
@@ -1141,9 +1156,9 @@ std::size_t Memory::fillSoundBuffer(unsigned long cc) {
 	return psg_.fillBuffer();
 }
 
-int Memory::loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat)
+int Memory::loadROM(const void *romdata, unsigned int romsize, unsigned int forceModel, const bool multicartCompat)
 {
-   if (const int fail = cart_.loadROM(romdata, romsize, forceDmg, multicartCompat))
+   if (const int fail = cart_.loadROM(romdata, romsize, forceModel, multicartCompat))
       return fail;
    psg_.init(cart_.isCgb());
    lcd_.reset(ioamhram_, cart_.vramdata(), cart_.isCgb());

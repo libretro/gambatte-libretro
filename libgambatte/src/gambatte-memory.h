@@ -132,7 +132,7 @@ public:
 #endif
 	void updateInput();
 
-   int loadROM(const void *romdata, unsigned romsize, const bool forceDmg, const bool multicartCompat);
+   int loadROM(const void *romdata, unsigned int romsize, unsigned int forceModel, const bool multicartCompat);
 
 private:
 	Cartridge cart_;

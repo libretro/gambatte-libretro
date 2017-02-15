@@ -14,7 +14,6 @@ private:
    void* addrspace_start;
    unsigned int bootloadersize;
    bool has_called_FF50;
-   bool using_bootloader;
    
    //Set this to NULL or return false if you want to ignore bootloaders completely
    //(initial value is NULL and so the bootloader is disabled by default)
@@ -24,10 +23,11 @@ private:
    void uncall_FF50();
    
 public:
+   bool using_bootloader;
+   
    Bootloader();
    void load(bool isgbc,bool isgba);
    void reset();
-   bool booting_with_bootloader();
 
    void set_bootloader_getter(bool (*getter)(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size));
    

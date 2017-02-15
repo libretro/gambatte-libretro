@@ -31,7 +31,7 @@ struct SaveState {
 	class Ptr {
 	public:
 		Ptr() : ptr(0), size_(0) {}
-		T const * get() const { return ptr; }
+		T* get() const { return ptr; }
 		std::size_t size() const { return size_; }
 		void set(T *p, std::size_t size) { ptr = p; size_ = size; }
 
@@ -92,7 +92,8 @@ struct SaveState {
 		//SpriteMapper::OamReader
 		Ptr<unsigned char> oamReaderBuf;
 		Ptr<bool> oamReaderSzbuf;
-
+      unsigned char dmgPalette[8 * 3];
+      
 		unsigned long videoCycles;
 		unsigned long enableDisplayM0Time;
 		unsigned short lastM0Time;

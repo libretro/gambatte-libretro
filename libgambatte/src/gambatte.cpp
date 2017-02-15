@@ -63,10 +63,17 @@ void GB::Priv::full_init() {
    cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
    cpu.mem_.bootloader.load(cpu.isCgb(), gbaCgbMode);
 
-   if (cpu.mem_.bootloader.booting_with_bootloader()) {
+   if (cpu.mem_.bootloader.using_bootloader) {
+      uint8_t *ioamhram = (uint8_t*)state.mem.ioamhram.get();
+      uint8_t serialctrl = (cpu.isCgb() || gbaCgbMode) ? 0x7C : 0x7E;
       state.cpu.pc = 0x0000;
       // the hw registers must be zeroed out to prevent the logo from being garbled
-      memset((void*)(state.mem.ioamhram.get() + 0x100), 0x00, 0x100);
+      std::memset((void*)(ioamhram + 0x100), 0x00, 0x100);
+      //init values taken from SameBoy
+      ioamhram[0x100] = 0x0F;//joypad initial value
+      ioamhram[0x102] = serialctrl;//serialctrl
+      ioamhram[0x148] = 0xFC;//object palette 0
+      ioamhram[0x149] = 0xFC;//object palette 1
    }
    
    cpu.loadState(state);
@@ -96,7 +103,7 @@ void *GB::rtcdata_ptr() { return p_->cpu.rtcdata_ptr(); }
 unsigned GB::rtcdata_size() { return p_->cpu.rtcdata_size(); }
 
 int GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
-	const int failed = p_->cpu.load(romdata, romsize, flags & FORCE_DMG, flags & MULTICART_COMPAT);
+	const int failed = p_->cpu.load(romdata, romsize, flags & (FORCE_DMG | FORCE_CGB), flags & MULTICART_COMPAT);
 	
    if (!failed) {
       p_->gbaCgbMode = flags & GBA_CGB;

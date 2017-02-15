@@ -38,7 +38,7 @@ namespace gambatte
 
    void LCD::setColorCorrection(bool colorCorrection_)
    {
-      colorCorrection=colorCorrection_;
+      colorCorrection = colorCorrection_;
       refreshPalettes();
    }
 

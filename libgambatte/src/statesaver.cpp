@@ -343,6 +343,7 @@ SaverList::SaverList() {
 	{ static const char label[] = { o,b,j,p,       NUL }; ADDPTR(ppu.objpData); }
 	{ static const char label[] = { s,p,o,s,b,u,f, NUL }; ADDPTR(ppu.oamReaderBuf); }
 	{ static const char label[] = { s,p,s,z,b,u,f, NUL }; ADDPTR(ppu.oamReaderSzbuf); }
+   { static const char label[] = { d,m,g,p,a,l,   NUL }; ADDARRAY(ppu.dmgPalette); }
 	{ static const char label[] = { s,p,a,t,t,r,   NUL }; ADDARRAY(ppu.spAttribList); }
 	{ static const char label[] = { s,p,b,y,t,e,NO0, NUL }; ADDARRAY(ppu.spByte0List); }
 	{ static const char label[] = { s,p,b,y,t,e,NO1, NUL }; ADDARRAY(ppu.spByte1List); }
