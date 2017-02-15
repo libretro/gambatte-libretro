@@ -281,7 +281,7 @@ void retro_set_environment(retro_environment_t cb)
       { "gambatte_gb_colorization", "GB Colorization; disabled|auto|internal|custom" },
       { "gambatte_gb_internal_palette", "Internal Palette; GBC - Blue|GBC - Brown|GBC - Dark Blue|GBC - Dark Brown|GBC - Dark Green|GBC - Grayscale|GBC - Green|GBC - Inverted|GBC - Orange|GBC - Pastel Mix|GBC - Red|GBC - Yellow|Special 1|Special 2|Special 3" },
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
-      { "gambatte_gb_hwmode", "Emulated hardware; Auto|GB|GBC|GBA" },
+      { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
       { "gambatte_gb_bootloaderenabled", "Use official bootloader; enabled|disabled" },
 #ifdef HAVE_NETWORK
       { "gambatte_gb_link_mode", "GameBoy Link Mode; Not Connected|Network Server|Network Client" },
@@ -578,6 +578,10 @@ static void check_variables(void)
    if (gb.isCgb())
       return;
 
+   // there's no colorization in real GB, this avoids having a GBC game with GB palettes too
+   if (gb.isGbForced() == true)
+      return;
+
    // else it is a GB-mono game -> set a color palette
    //bool gb_colorization_old = gb_colorization_enable;
 
@@ -602,8 +606,8 @@ static void check_variables(void)
         gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
         if (!gbc_bios_palette)
         {
-           // no custom palette found, load the default (blue)
-           gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Blue"));
+           // no custom palette found, load the default (Dark Green, such as GBC BIOS)
+           gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Dark Green"));
         }
       break;
         

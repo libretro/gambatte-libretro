@@ -104,6 +104,9 @@ public:
 	
 	/** Returns true if the currently loaded ROM image is treated as having CGB support. */
 	bool isCgb() const;
+
+	/** Returns true if DMG mode was forced **/
+	bool isGbForced() const;
 	
 	/** Returns true if a ROM image is loaded. */
 	bool isLoaded() const;

@@ -30,8 +30,9 @@ struct GB::Priv {
 	CPU cpu;
 	int stateNo;
 	bool gbaCgbMode;
+	bool gbForced;
 	
-	Priv() : stateNo(1), gbaCgbMode(false) {}
+	Priv() : stateNo(1), gbaCgbMode(false), gbForced(false) {}
 
    void full_init();
 };
@@ -107,6 +108,7 @@ int GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
 	
    if (!failed) {
       p_->gbaCgbMode = flags & GBA_CGB;
+      p_->gbForced = flags & FORCE_DMG;
       p_->full_init();
       p_->stateNo = 1;
    }
@@ -116,6 +118,10 @@ int GB::load(const void *romdata, unsigned romsize, const unsigned flags) {
 
 bool GB::isCgb() const {
 	return p_->cpu.isCgb();
+}
+
+bool GB::isGbForced() const {
+	return p_->gbForced;
 }
 
 bool GB::isLoaded() const {
