@@ -80,7 +80,7 @@ bool file_present_in_system(std::string fname)
 bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)
 {
    struct retro_variable var = {0};
-   var.key = "gambatte_gb_bootloaderenabled";
+   var.key = "gambatte_gb_bootloader";
 
    if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
       return false;
@@ -281,8 +281,8 @@ void retro_set_environment(retro_environment_t cb)
       { "gambatte_gb_colorization", "GB Colorization; disabled|auto|internal|custom" },
       { "gambatte_gb_internal_palette", "Internal Palette; GBC - Blue|GBC - Brown|GBC - Dark Blue|GBC - Dark Brown|GBC - Dark Green|GBC - Grayscale|GBC - Green|GBC - Inverted|GBC - Orange|GBC - Pastel Mix|GBC - Red|GBC - Yellow|Special 1|Special 2|Special 3" },
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
-      { "gambatte_gb_hwmode", "Emulated hardware; Auto|GB|GBC|GBA" },
-      { "gambatte_gb_bootloaderenabled", "Use official bootloader; enabled|disabled" },
+      { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
+      { "gambatte_gb_bootloader", "Use official bootloader; enabled|disabled" },
 #ifdef HAVE_NETWORK
       { "gambatte_gb_link_mode", "GameBoy Link Mode; Not Connected|Network Server|Network Client" },
       { "gambatte_gb_link_network_port", "Network Link Port; 56400|56401|56402|56403|56404|56405|56406|56407|56408|56409|56410|56411|56412|56413|56414|56415|56416|56417|56418|56419|56420" },
@@ -697,7 +697,7 @@ bool retro_load_game(const struct retro_game_info *info)
    
    struct retro_variable var = {0};
    
-   var.key = "gambatte_gb_bootloaderenabled";
+   var.key = "gambatte_gb_bootloader";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
       if (!strcmp(var.value, "enabled"))
