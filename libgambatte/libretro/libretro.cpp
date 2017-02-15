@@ -602,8 +602,8 @@ static void check_variables(void)
         gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
         if (!gbc_bios_palette)
         {
-           // no custom palette found, load the default (blue)
-           gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Blue"));
+           // no custom palette found, load the default (Dark Green, such as GBC BIOS)
+           gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Dark Green"));
         }
       break;
         
