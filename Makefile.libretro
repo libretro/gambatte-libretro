@@ -276,6 +276,7 @@ else ifneq (,$(findstring armv,$(platform)))
 # emscripten
 else ifeq ($(platform), emscripten)
 	TARGET := $(TARGET_NAME)_libretro_$(platform).bc
+	STATIC_LINKING = 1
 
 # GCW0
 else ifeq ($(platform), gcw0)

@@ -43,4 +43,3 @@ SOURCES_C += $(CORE_DIR)/../libretro/blipper.c \
 				 $(LIBRETRO_COMM_DIR)/string/stdstring.c
 endif
 
-INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro -I$(LIBRETRO_COMM_DIR)/include
