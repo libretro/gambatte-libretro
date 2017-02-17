@@ -578,7 +578,15 @@ static void check_variables(void)
    if (gb.isCgb())
       return;
 
-   // else it is a GB-mono game -> set a color palette
+   // there's no colorization in real GB, this avoids having a GBC game with GB palettes too
+   if (gb.isDmgForced())
+      return;
+
+   // if it's using real GB BIOS, there's no sense to see the GB bootloader in the screen & colorization all together
+   if (gb.isUsingDmgBios())
+      return;
+
+   // else it is a GB-mono game using HLE BIOS (with gambatte_gb_hwmode Auto, GBC or GBA) -> set a color palette
    //bool gb_colorization_old = gb_colorization_enable;
 
    if (strcmp(var.value, "disabled") == 0)
@@ -692,6 +700,7 @@ bool retro_load_game(const struct retro_game_info *info)
    }
 #endif
    
+   bool has_gb_bootloader = file_present_in_system("gb_bios.bin");
    bool has_gbc_bootloader = file_present_in_system("gbc_bios.bin");
    bool use_bootloader = false;
    
@@ -726,6 +735,11 @@ bool retro_load_game(const struct retro_game_info *info)
             flags |= gambatte::GB::FORCE_CGB;
       }
    }
+
+   if (has_gb_bootloader && use_bootloader)
+      flags |= gambatte::GB::USING_DMG_BIOS;
+   if (has_gbc_bootloader && use_bootloader)
+      flags |= gambatte::GB::USING_CGB_BIOS;
 
    if (gb.load(info->data, info->size, flags) != 0)
       return false;
