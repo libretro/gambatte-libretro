@@ -54,12 +54,13 @@ static gambatte::GB gb2;
 #include "cc_resampler.h"
 #endif
 
+bool use_official_bootloader = false;
+
 bool file_present_in_system(std::string fname)
 {
    const char *systemdirtmp = NULL;
    bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &systemdirtmp);
-   
-   if(!worked)
+   if (!worked)
       return false;
    
    std::string fullpath = systemdirtmp;
@@ -79,19 +80,13 @@ bool file_present_in_system(std::string fname)
 
 bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)
 {
-   struct retro_variable var = {0};
-   var.key = "gambatte_gb_bootloaderenabled";
-
-   if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
-      return false;
-   if (!string_is_equal(var.value, "enabled"))
+   if (!use_official_bootloader)
       return false;
 
    // get path
    const char *systemdirtmp = NULL;
    bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &systemdirtmp);
-
-   if(!worked)
+   if (!worked)
       return false;
 
    std::string path = systemdirtmp;
@@ -110,7 +105,7 @@ bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_
       size = 0x100;
    }
 
-   if(size > buf_size)
+   if (size > buf_size)
       return false;
    
    // open file
@@ -257,6 +252,18 @@ void retro_init(void)
    gb2.setBootloaderGetter(get_bootloader_from_file);
 #endif
    
+   struct retro_variable var = {0};
+   var.key = "gambatte_gb_bootloader";
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (string_is_equal(var.value, "enabled"))
+         use_official_bootloader = true;
+      else
+         use_official_bootloader = false;
+   }
+   else
+      use_official_bootloader = false;
+   
 }
 
 void retro_deinit()
@@ -282,7 +289,7 @@ void retro_set_environment(retro_environment_t cb)
       { "gambatte_gb_internal_palette", "Internal Palette; GBC - Blue|GBC - Brown|GBC - Dark Blue|GBC - Dark Brown|GBC - Dark Green|GBC - Grayscale|GBC - Green|GBC - Inverted|GBC - Orange|GBC - Pastel Mix|GBC - Red|GBC - Yellow|Special 1|Special 2|Special 3" },
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
       { "gambatte_gb_hwmode", "Emulated hardware; Auto|GB|GBC|GBA" },
-      { "gambatte_gb_bootloaderenabled", "Use official bootloader; enabled|disabled" },
+      { "gambatte_gb_bootloader", "Use official bootloader (restart); enabled|disabled" },
 #ifdef HAVE_NETWORK
       { "gambatte_gb_link_mode", "GameBoy Link Mode; Not Connected|Network Server|Network Client" },
       { "gambatte_gb_link_network_port", "Network Link Port; 56400|56401|56402|56403|56404|56405|56406|56407|56408|56409|56410|56411|56412|56413|56414|56415|56416|56417|56418|56419|56420" },
@@ -693,18 +700,9 @@ bool retro_load_game(const struct retro_game_info *info)
 #endif
    
    bool has_gbc_bootloader = file_present_in_system("gbc_bios.bin");
-   bool use_bootloader = false;
-   
-   struct retro_variable var = {0};
-   
-   var.key = "gambatte_gb_bootloaderenabled";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (!strcmp(var.value, "enabled"))
-         use_bootloader = true;
-   }
 
    unsigned flags = 0;
+   struct retro_variable var = {0};
    var.key = "gambatte_gb_hwmode";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
@@ -715,14 +713,14 @@ bool retro_load_game(const struct retro_game_info *info)
       
       if (!strcmp(var.value, "GBC"))
       {
-         if (has_gbc_bootloader && use_bootloader)
+         if (has_gbc_bootloader && use_official_bootloader)
             flags |= gambatte::GB::FORCE_CGB;
       }
 
       if (!strcmp(var.value, "GBA"))
       {
          flags |= gambatte::GB::GBA_CGB;
-         if (has_gbc_bootloader && use_bootloader)
+         if (has_gbc_bootloader && use_official_bootloader)
             flags |= gambatte::GB::FORCE_CGB;
       }
    }
