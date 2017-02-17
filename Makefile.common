@@ -1,7 +1,7 @@
 LIBRETRO_COMM_DIR := $(CORE_DIR)/../libretro-common
 INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro -I$(LIBRETRO_COMM_DIR)/include
 
-SOURCES_C   :=
+SOURCES_C   := $(CORE_DIR)/../libretro/blipper.c
 SOURCES_CXX := $(CORE_DIR)/bootloader.cpp \
 					$(CORE_DIR)/cpu.cpp \
 					$(CORE_DIR)/gambatte.cpp \
@@ -38,8 +38,7 @@ endif
 
 ifeq ($(STATIC_LINKING),1)
 else
-SOURCES_C += $(CORE_DIR)/../libretro/blipper.c \
-				 $(LIBRETRO_COMM_DIR)/streams/file_stream.c \
+SOURCES_C += $(LIBRETRO_COMM_DIR)/streams/file_stream.c \
 				 $(LIBRETRO_COMM_DIR)/string/stdstring.c
 endif
 
