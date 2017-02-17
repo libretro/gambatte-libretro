@@ -1,5 +1,7 @@
-INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro -I$(CORE_DIR)/../libretro-common/include
+LIBRETRO_COMM_DIR := $(CORE_DIR)/../libretro-common
+INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro -I$(LIBRETRO_COMM_DIR)/include
 
+SOURCES_C   :=
 SOURCES_CXX := $(CORE_DIR)/bootloader.cpp \
 					$(CORE_DIR)/cpu.cpp \
 					$(CORE_DIR)/gambatte.cpp \
@@ -34,8 +36,10 @@ ifeq ($(HAVE_NETWORK),1)
 SOURCES_CXX += $(CORE_DIR)/../libretro/net_serial.cpp
 endif
 
-SOURCES_C := $(CORE_DIR)/../libretro/blipper.c \
-							$(CORE_DIR)/../libretro-common/streams/file_stream.c \
-							$(CORE_DIR)/../libretro-common/string/stdstring.c
+ifeq ($(STATIC_LINKING),1)
+else
+SOURCES_C += $(CORE_DIR)/../libretro/blipper.c \
+				 $(LIBRETRO_COMM_DIR)/streams/file_stream.c \
+				 $(LIBRETRO_COMM_DIR)/string/stdstring.c
+endif
 
-INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro -I$(CORE_DIR)/../libretro-common/include
