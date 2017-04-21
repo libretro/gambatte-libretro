@@ -25,25 +25,6 @@
 
 #include <string/stdstring.h>
 
-bool string_is_empty(const char *data)
-{
-   return (data == NULL) || (*data == '\0');
-}
-
-bool string_is_equal(const char *a, const char *b)
-{
-   if (!a || !b)
-      return false;
-   return (strcmp(a, b) == 0);
-}
-
-bool string_is_equal_noncase(const char *a, const char *b)
-{
-   if (!a || !b)
-      return false;
-   return (strcasecmp(a, b) == 0);
-}
-
 char *string_to_upper(char *s)
 {
    char *cs = (char *)s;
@@ -62,17 +43,15 @@ char *string_to_lower(char *s)
 
 char *string_ucwords(char *s)
 {
-  char *cs = (char *)s;
-  for ( ; *cs != '\0'; cs++)
-  {
-    if (*cs == ' ')
-    {
-      *(cs+1) = toupper(*(cs+1));
-    }
-  }
+   char *cs = (char *)s;
+   for ( ; *cs != '\0'; cs++)
+   {
+      if (*cs == ' ')
+         *(cs+1) = toupper(*(cs+1));
+   }
 
-  s[0] = toupper(s[0]);
-  return s;
+   s[0] = toupper(s[0]);
+   return s;
 }
 
 char *string_replace_substring(const char *in,
@@ -165,15 +144,17 @@ char *string_trim_whitespace(char *const s)
    return s;
 }
 
-char* word_wrap(char* buffer, char* string, int line_width)
+char *word_wrap(char* buffer, const char *string, int line_width)
 {
-   unsigned i = 0;
-   int k, counter;
+   unsigned i   = 0;
+   unsigned len = (unsigned)strlen(string);
 
-   while(i < strlen(string))
+   while (i < len)
    {
+      unsigned counter;
+
       /* copy string until the end of the line is reached */
-      for (counter = 1; counter <= line_width; counter++)
+      for (counter = 1; counter <= (unsigned)line_width; counter++)
       {
          /* check if end of string reached */
          if (i == strlen(string))
@@ -190,6 +171,7 @@ char* word_wrap(char* buffer, char* string, int line_width)
             counter = 1;
          i++;
       }
+
       /* check for whitespace */
       if (string[i] == ' ')
       {
@@ -198,16 +180,18 @@ char* word_wrap(char* buffer, char* string, int line_width)
       }
       else
       {
+         int k;
+
          /* check for nearest whitespace back in string */
          for (k = i; k > 0; k--)
          {
-            if (string[k] == ' ')
-            {
-               buffer[k] = '\n';
-               /* set string index back to character after this one */
-               i = k + 1;
-               break;
-            }
+            if (string[k] != ' ')
+               continue;
+
+            buffer[k] = '\n';
+            /* set string index back to character after this one */
+            i         = k + 1;
+            break;
          }
       }
    }
