@@ -12,7 +12,6 @@
 #undef __STRICT_ANSI__
 #endif
 
-#include <string/stdstring.h>
 #include <streams/file_stream.h>
 
 #include <cassert>
@@ -256,7 +255,7 @@ void retro_init(void)
    var.key = "gambatte_gb_bootloader";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
-      if (string_is_equal(var.value, "enabled"))
+      if (!strcmp(var.value, "enabled"))
          use_official_bootloader = true;
       else
          use_official_bootloader = false;
