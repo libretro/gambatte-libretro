@@ -278,10 +278,10 @@ CXXFLAGS += $(fpic) $(DEFINES)
 LIBS :=
 
 %.o: %.cpp
-	$(CXX) -c -o $@ $< $(CXXFLAGS) $(INCFLAGS)
+	$(CXX) -c -o $@ $< $(CPPFLAGS) $(CXXFLAGS) $(INCFLAGS)
 
 %.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS) $(INCFLAGS)
+	$(CC) -c -o $@ $< $(CPPFLAGS) $(CFLAGS) $(INCFLAGS)
 
 ifeq ($(platform), theos_ios)
 COMMON_FLAGS := -DIOS $(COMMON_DEFINES) $(INCFLAGS) -I$(THEOS_INCLUDE_PATH) -Wno-error
