@@ -184,7 +184,7 @@ static struct retro_system_timing g_timing;
 
 void retro_get_system_av_info(struct retro_system_av_info *info)
 {
-   retro_game_geometry geom = { 160*NUM_GAMEBOYS, 144, 160*NUM_GAMEBOYS, 144 };
+   retro_game_geometry geom = { 160*NUM_GAMEBOYS, 144, 160*NUM_GAMEBOYS, 144, 160.0f/144.0f };
    info->geometry = geom;
    info->timing   = g_timing;
 }
