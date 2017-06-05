@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "libretro.h"
 #include "blipper.h"
 #include "gambatte.h"
