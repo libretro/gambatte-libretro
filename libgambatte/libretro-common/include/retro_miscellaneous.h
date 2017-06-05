@@ -54,6 +54,9 @@
 #include <limits.h>
 #include <math.h>
 
+#ifdef _MSC_VER
+#include <compat/msvc.h>
+#endif
 #include <retro_inline.h>
 
 #ifndef PATH_MAX_LENGTH
