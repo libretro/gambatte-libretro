@@ -229,7 +229,7 @@ else ifeq ($(platform), gcw0)
    fpic := -fPIC
    SHARED := -shared -Wl,-version-script=$(version_script)
    PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
-   CFLAGS += -O3 -fomit-frame-pointer -march=mips32 -mtune=mips32r2 -mhard-float
+   CFLAGS += -fomit-frame-pointer -march=mips32 -mtune=mips32r2 -mhard-float
    CXXFLAGS += $(CFLAGS)
 
 # Windows
@@ -246,8 +246,8 @@ ifeq ($(DEBUG), 1)
    CFLAGS += -O0 -g
    CXXFLAGS += -O0 -g
 else
-   CFLAGS += -O3
-   CXXFLAGS += -O3 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
+   CFLAGS += -O2
+   CXXFLAGS += -O2 -fno-exceptions -fno-rtti -DHAVE_STDINT_H
 endif
 
 ifneq ($(SANITIZER),)
