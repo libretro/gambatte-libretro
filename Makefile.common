@@ -38,7 +38,6 @@ endif
 
 ifeq ($(STATIC_LINKING),1)
 else
-SOURCES_C += $(LIBRETRO_COMM_DIR)/streams/file_stream.c \
-				 $(LIBRETRO_COMM_DIR)/string/stdstring.c
+SOURCES_C += $(LIBRETRO_COMM_DIR)/streams/file_stream.c
 endif
 
