@@ -331,6 +331,8 @@ else
 	LD = $(CC)
 endif
 
+INCFLAGS += $(INCFLAGS_PLATFORM)
+
 ifeq ($(platform), theos_ios)
 COMMON_FLAGS := -DIOS $(COMMON_DEFINES) $(INCFLAGS) -I$(THEOS_INCLUDE_PATH) -Wno-error
 $(LIBRARY_NAME)_CFLAGS += $(CFLAGS) $(COMMON_FLAGS)
