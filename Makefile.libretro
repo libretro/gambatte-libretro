@@ -76,9 +76,14 @@ else ifneq (,$(findstring ios,$(platform)))
    ifeq ($(IOSSDK),)
       IOSSDK := $(shell xcodebuild -version -sdk iphoneos Path)
    endif
-   CC = cc -arch armv7 -isysroot $(IOSSDK)
-   CXX = c++ -arch armv7 -isysroot $(IOSSDK)
-   ifeq ($(platform),ios9)
+   ifeq ($(platform),ios-arm64)
+      CC = cc -arch arm64 -isysroot $(IOSSDK)
+      CXX = c++ -arch arm64 -isysroot $(IOSSDK)
+   else
+      CC = cc -arch armv7 -isysroot $(IOSSDK)
+      CXX = c++ -arch armv7 -isysroot $(IOSSDK)
+   endif
+   ifeq ($(platform),$(filter $(platform),ios9 ios-arm64))
       CC += -miphoneos-version-min=8.0
       CXX += -miphoneos-version-min=8.0
       PLATFORM_DEFINES := -miphoneos-version-min=8.0
@@ -309,7 +314,7 @@ include Makefile.common
 
 OBJS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
 
-DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DINLINE=inline -DVIDEO_RGB565
+DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DINLINE=inline
 
 ifeq ($(HAVE_NETWORK), 1)
    DEFINES += -DHAVE_NETWORK
