@@ -1,6 +1,10 @@
 LIBRETRO_COMM_DIR := $(CORE_DIR)/../libretro-common
 INCFLAGS := -I$(CORE_DIR) -I$(CORE_DIR)/../include -I$(CORE_DIR)/../../common -I$(CORE_DIR)/../../common/resample -I$(CORE_DIR)/../libretro -I$(LIBRETRO_COMM_DIR)/include
 
+ifneq (,$(findstring msvc2003,$(platform)))
+INCFLAGS += -I$(LIBRETRO_COMM_DIR)/include/compat/msvc
+endif
+
 SOURCES_C   := $(CORE_DIR)/../libretro/blipper.c
 SOURCES_CXX := $(CORE_DIR)/bootloader.cpp \
 					$(CORE_DIR)/cpu.cpp \
