@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "libretro.h"
+#include <libretro.h>
 #include "blipper.h"
 #include "gambatte.h"
 #include "gbcpalettes.h"
@@ -64,11 +64,12 @@ bool file_present_in_system(std::string fname)
    if (!worked)
       return false;
    
-   std::string fullpath = systemdirtmp;
-   fullpath += "/";
-   fullpath += fname;
+   std::string fullpath  = systemdirtmp;
+   fullpath             += "/";
+   fullpath             += fname;
    
-   RFILE *fp = filestream_open(fullpath.c_str(), RFILE_MODE_READ, 0);
+   RFILE *fp             = filestream_open(fullpath.c_str(), RETRO_VFS_FILE_ACCESS_READ, 
+         RETRO_VFS_FILE_ACCESS_HINT_NONE);
    
    if (fp)
    {
@@ -111,7 +112,8 @@ bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_
    
    // open file
    int n = 0;
-   RFILE *fp = filestream_open(path.c_str(), RFILE_MODE_READ, 0);
+   RFILE *fp = filestream_open(path.c_str(), RETRO_VFS_FILE_ACCESS_READ,
+         RETRO_VFS_FILE_ACCESS_HINT_NONE);
 
    if (fp)
    {

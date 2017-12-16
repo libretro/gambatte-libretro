@@ -42,6 +42,10 @@ endif
 
 ifeq ($(STATIC_LINKING),1)
 else
-SOURCES_C += $(LIBRETRO_COMM_DIR)/streams/file_stream.c
+SOURCES_C += $(LIBRETRO_COMM_DIR)/streams/file_stream.c \
+				 $(LIBRETRO_COMM_DIR)/vfs/vfs_implementation.c \
+				 $(LIBRETRO_COMM_DIR)/compat/fopen_utf8.c \
+				 $(LIBRETRO_COMM_DIR)/compat/compat_strl.c \
+				 $(LIBRETRO_COMM_DIR)/encodings/encoding_utf.c
 endif
 
