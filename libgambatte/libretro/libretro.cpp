@@ -285,6 +285,7 @@ void retro_deinit()
 
 void retro_set_environment(retro_environment_t cb)
 {
+   struct retro_vfs_interface_info vfs_iface_info;
    environ_cb = cb;
 
    static const struct retro_variable vars[] = {
@@ -305,6 +306,11 @@ void retro_set_environment(retro_environment_t cb)
    };
 
    cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void*)vars);
+
+   vfs_iface_info.required_interface_version = 1;
+   vfs_iface_info.iface                      = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
+	   filestream_vfs_init(&vfs_iface_info);
 }
 
 void retro_set_video_refresh(retro_video_refresh_t cb) { video_cb = cb; }
