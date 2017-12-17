@@ -456,13 +456,8 @@ CXXFLAGS += -Od -Zi -DDEBUG -D_DEBUG
 endif
 else
 ifneq (,$(findstring msvc,$(platform)))
-ifeq ($(STATIC_LINKING),1)
 	CFLAGS += -MT
 	CXXFLAGS += -MT
-else
-	CFLAGS += -MD
-	CXXFLAGS += -MD
-endif
 
 CFLAGS += -O2 -DNDEBUG
 CXXFLAGS += -O2 -DNDEBUG
