@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/libretro/gambatte-libretro.svg?branch=master)](https://travis-ci.org/libretro/gambatte-libretro)
+[![Build status](https://ci.appveyor.com/api/projects/status/tejf7jniu1imotag/branch/master?svg=true)](https://ci.appveyor.com/project/bparker06/gambatte-libretro/branch/master)
+
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 Copyright (C) 2007 by Sindre Aamås
