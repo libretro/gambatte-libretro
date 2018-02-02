@@ -1,6 +1,11 @@
 #ifndef _NET_SERIAL_H
 #define _NET_SERIAL_H
 
+#if defined(__HAIKU__)
+#include <sys/socket.h>
+#include <sys/select.h>
+#endif
+
 #include <gambatte.h>
 #include <time.h>
 
