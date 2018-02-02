@@ -46,6 +46,9 @@ ifneq (,$(findstring unix,$(platform)))
    fpic := -fPIC
    SHARED := -shared -Wl,-version-script=$(version_script)
    HAVE_NETWORK=1
+   ifneq (,$(findstring Haiku,$(shell uname -s)))
+   LDFLAGS += -lnetwork -lroot
+   endif
 
    # Raspberry Pi
    ifneq (,$(findstring rpi,$(platform)))
