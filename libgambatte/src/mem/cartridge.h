@@ -32,9 +32,9 @@ namespace gambatte
    {
       public:
          virtual ~Mbc() {}
-         virtual void romWrite(unsigned P, unsigned data) = 0;
-         virtual void saveState(SaveState::Mem &ss) const = 0;
-         virtual void loadState(const SaveState::Mem &ss) = 0;
+         virtual void romWrite(unsigned P, unsigned data) {};
+         virtual void saveState(SaveState::Mem &ss) const {};
+         virtual void loadState(const SaveState::Mem &ss) {};
          virtual bool isAddressWithinAreaRombankCanBeMappedTo(unsigned address, unsigned rombank) const = 0;
    };
 
