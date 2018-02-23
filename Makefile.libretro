@@ -477,9 +477,11 @@ ifneq (,$(findstring msvc,$(platform)))
 	ifeq ($(STATIC_LINKING),1)
 	CFLAGS += -MTd
 	CXXFLAGS += -MTd
+	LDFLAGS += -DEBUG
 else
 	CFLAGS += -MDd
 	CXXFLAGS += -MDd
+	LDFLAGS += -DEBUG
 endif
 
 CFLAGS += -Od -Zi -DDEBUG -D_DEBUG
