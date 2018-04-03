@@ -31,4 +31,6 @@ LOCAL_CXXFLAGS += -DHAVE_NETWORK
 endif
 LOCAL_C_INCLUDES = $(CORE_DIR) $(CORE_DIR)/../include $(CORE_DIR)/../libretro-common/include $(CORE_DIR)/../../common $(CORE_DIR)/../../common/resample $(CORE_DIR)/../libretro
 
+LOCAL_LDLIBS := -latomic
+
 include $(BUILD_SHARED_LIBRARY)
