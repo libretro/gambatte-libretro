@@ -82,20 +82,23 @@ bool file_present_in_system(std::string fname)
 
 bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)
 {
+   std::string path;
+   unsigned int size;
+   RFILE *fp                = NULL;
+   int64_t n                = 0;
+   bool worked              = false;
+   const char *systemdirtmp = NULL;
    if (!use_official_bootloader)
       return false;
 
    // get path
-   const char *systemdirtmp = NULL;
-   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &systemdirtmp);
+   worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &systemdirtmp);
    if (!worked)
       return false;
 
-   std::string path = systemdirtmp;
+   path  = systemdirtmp;
    path += "/"; //retroarch/libretro does not add a slash at the end of directory names
    
-   unsigned int size;
-
    if (isgbc)
    {
       path += "gbc_bios.bin";
@@ -111,17 +114,14 @@ bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_
       return false;
    
    // open file
-   int n = 0;
-   RFILE *fp = filestream_open(path.c_str(), RETRO_VFS_FILE_ACCESS_READ,
+   fp = filestream_open(path.c_str(), RETRO_VFS_FILE_ACCESS_READ,
          RETRO_VFS_FILE_ACCESS_HINT_NONE);
 
-   if (fp)
-   {
-      n = filestream_read(fp, data, size);
-      filestream_close(fp);
-   }
-   else
+   if (!fp)
       return false;
+
+   n = filestream_read(fp, data, size);
+   filestream_close(fp);
    
    if (n != size)
       return false;
