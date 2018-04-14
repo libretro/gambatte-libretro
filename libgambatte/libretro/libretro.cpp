@@ -39,6 +39,8 @@ static gambatte::video_pixel_t* video_buf;
 static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
 
+static bool up_down_allowed = false;
+
 //Dual mode runs two GBCs side by side.
 //Currently, they load the same ROM, take the same input, and only the left one supports SRAM, cheats, savestates, or sound.
 //Can be made useful later, but for now, it's just a tech demo.
@@ -152,6 +154,18 @@ class SNESInput : public gambatte::InputGetter
          unsigned res = 0;
          for (unsigned i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
             res |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes) ? input::btn_map[i].gb : 0;
+
+         if (!up_down_allowed)
+         {
+            if (res & gambatte::InputGetter::UP)
+               if (res & gambatte::InputGetter::DOWN)
+                  res &= ~(gambatte::InputGetter::UP | gambatte::InputGetter::DOWN);
+
+            if (res & gambatte::InputGetter::LEFT)
+               if (res & gambatte::InputGetter::RIGHT)
+                  res &= ~(gambatte::InputGetter::LEFT | gambatte::InputGetter::RIGHT);
+         }
+
          return res;
       }
 } static gb_input;
@@ -257,6 +271,8 @@ void retro_init(void)
    
    struct retro_variable var = {0};
    var.key = "gambatte_gb_bootloader";
+
+
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
       if (!strcmp(var.value, "enabled"))
@@ -266,7 +282,7 @@ void retro_init(void)
    }
    else
       use_official_bootloader = false;
-   
+
 }
 
 void retro_deinit()
@@ -289,6 +305,7 @@ void retro_set_environment(retro_environment_t cb)
    environ_cb = cb;
 
    static const struct retro_variable vars[] = {
+      { "gambatte_up_down_allowed", "Up / Down Allowed; disabled|enabled" },
       { "gambatte_gb_colorization", "GB Colorization; disabled|auto|internal|custom" },
       { "gambatte_gb_internal_palette", "Internal Palette; GBC - Blue|GBC - Brown|GBC - Dark Blue|GBC - Dark Brown|GBC - Dark Green|GBC - Grayscale|GBC - Green|GBC - Inverted|GBC - Orange|GBC - Pastel Mix|GBC - Red|GBC - Yellow|Special 1|Special 2|Special 3" },
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
@@ -532,8 +549,22 @@ static void check_variables(void)
    bool colorCorrection=true;
    struct retro_variable var = {0};
    var.key = "gambatte_gbc_color_correction";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "disabled")) colorCorrection=false;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "disabled"))
+      colorCorrection=false;
    gb.setColorCorrection(colorCorrection);
+
+   var.key   = "gambatte_up_down_allowed";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "enabled"))
+         up_down_allowed = true;
+      else
+         up_down_allowed = false;
+   }
+   else
+      up_down_allowed = false;
 
 #ifdef HAVE_NETWORK
    gb_serialMode = SERIAL_NONE;
