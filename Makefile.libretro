@@ -478,14 +478,14 @@ endif
 ifeq ($(DEBUG), 1)
 ifneq (,$(findstring msvc,$(platform)))
 	ifeq ($(STATIC_LINKING),1)
-	CFLAGS += -MTd
-	CXXFLAGS += -MTd
-	LDFLAGS += -DEBUG
-else
-	CFLAGS += -MDd
-	CXXFLAGS += -MDd
-	LDFLAGS += -DEBUG
-endif
+		CFLAGS += -MTd
+		CXXFLAGS += -MTd
+		LDFLAGS += -DEBUG
+	else
+		CFLAGS += -MDd
+		CXXFLAGS += -MDd
+		LDFLAGS += -DEBUG
+	endif
 
 CFLAGS += -Od -Zi -DDEBUG -D_DEBUG
 CXXFLAGS += -Od -Zi -DDEBUG -D_DEBUG
@@ -495,8 +495,13 @@ CXXFLAGS += -Od -Zi -DDEBUG -D_DEBUG
 endif
 else
 ifneq (,$(findstring msvc,$(platform)))
-	CFLAGS += -MT
-	CXXFLAGS += -MT
+	ifeq ($(STATIC_LINKING),1)
+		CFLAGS += -MT
+		CXXFLAGS += -MT
+	else
+		CFLAGS += -MD
+		CXXFLAGS += -MD
+	endif
 
 CFLAGS += -O2 -DNDEBUG
 CXXFLAGS += -O2 -DNDEBUG
@@ -534,8 +539,6 @@ endif
 
 CFLAGS += $(CODE_DEFINES) $(fpic) $(DEFINES)
 CXXFLAGS += $(fpic) $(DEFINES)
-
-LIBS :=
 
 OBJOUT   = -o
 LINKOUT  = -o 
