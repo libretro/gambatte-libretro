@@ -40,6 +40,7 @@ static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
 
 static bool up_down_allowed = false;
+static bool rom_loaded = false;
 
 //Dual mode runs two GBCs side by side.
 //Currently, they load the same ROM, take the same input, and only the left one supports SRAM, cheats, savestates, or sound.
@@ -806,6 +807,7 @@ bool retro_load_game(const struct retro_game_info *info)
    bool yes = true;
    environ_cb(RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS, &yes);
 
+   rom_loaded = true;
    return true;
 }
 
@@ -813,13 +815,15 @@ bool retro_load_game(const struct retro_game_info *info)
 bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t) { return false; }
 
 void retro_unload_game()
-{}
+{
+   rom_loaded = false;
+}
 
 unsigned retro_get_region() { return RETRO_REGION_NTSC; }
 
 void *retro_get_memory_data(unsigned id)
 {
-   switch (id)
+   if (rom_loaded) switch (id)
    {
       case RETRO_MEMORY_SAVE_RAM:
          return gb.savedata_ptr();
@@ -838,7 +842,7 @@ void *retro_get_memory_data(unsigned id)
 
 size_t retro_get_memory_size(unsigned id)
 {
-   switch (id)
+   if (rom_loaded) switch (id)
    {
       case RETRO_MEMORY_SAVE_RAM:
          return gb.savedata_size();
