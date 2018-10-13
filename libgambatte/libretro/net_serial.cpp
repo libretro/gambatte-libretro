@@ -17,11 +17,6 @@
 #include <netdb.h>
 #endif
 
-#ifdef _WIN32
-#define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
-#define bcopy(b1,b2,len) (memmove((b2), (b1), (len)), (void) 0)
-#endif
-
 extern retro_log_printf_t log_cb;
 //FILE* fpout;
 //FILE* fpin;
@@ -107,7 +102,7 @@ bool NetSerial::startServerSocket()
 	struct sockaddr_in server_addr;
 
 	if (server_fd_ < 0) {
-		bzero((char *)&server_addr, sizeof(server_addr));
+		memset((char *)&server_addr, '\0', sizeof(server_addr));
 		server_addr.sin_family = AF_INET;
 		server_addr.sin_port = htons(port_);
 		server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -172,7 +167,7 @@ bool NetSerial::startClientSocket()
 	struct sockaddr_in server_addr;
 
 	if (sockfd_ < 0) {
-		bzero((char *)&server_addr, sizeof(server_addr));
+		memset((char *)&server_addr, '\0', sizeof(server_addr));
 		server_addr.sin_family = AF_INET;
 		server_addr.sin_port = htons(port_);
 
@@ -189,7 +184,7 @@ bool NetSerial::startClientSocket()
 			return false;
 		}
 
-		bcopy((char*)server_hostname->h_addr, (char*)&server_addr.sin_addr.s_addr, server_hostname->h_length);
+		memmove((char*)server_hostname->h_addr, (char*)&server_addr.sin_addr.s_addr, server_hostname->h_length);
 		if (connect(fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
 			log_cb(RETRO_LOG_ERROR, "Error connecting to server: %s\n", strerror(errno));
 			close(fd);
