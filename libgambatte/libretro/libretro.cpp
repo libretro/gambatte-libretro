@@ -309,6 +309,9 @@ void retro_set_environment(retro_environment_t cb)
       { "gambatte_up_down_allowed", "Allow Opposing Directions; disabled|enabled" },
       { "gambatte_gb_colorization", "GB Colorization; disabled|auto|gbc|sgb|internal|custom" },
       { "gambatte_gb_internal_palette", "Internal Palette; \
+GB - DMG|\
+GB - Pocket|\
+GB - Light|\
 GBC - Blue|\
 GBC - Brown|\
 GBC - Dark Blue|\

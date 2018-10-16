@@ -28,6 +28,27 @@ namespace {
 	PACK15_1(c0), PACK15_1(c1), PACK15_1(c2), PACK15_1(c3)
 
 //
+// Game Boy Palettes
+//
+static const unsigned short gbdmg[] = { // Original Game Boy
+	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B),
+	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B),
+	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B)
+};
+
+static const unsigned short gbpoc[] = { // Game Boy Pocket
+	PACK15_4(0xC6CFA5, 0x8C966B, 0x4A5139, 0x181C18),
+	PACK15_4(0xC6CFA5, 0x8C966B, 0x4A5139, 0x181C18),
+	PACK15_4(0xC6CFA5, 0x8C966B, 0x4A5139, 0x181C18)
+};
+
+static const unsigned short gblit[] = { // Game Boy Light
+	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B),
+	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B),
+	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B)
+};
+
+//
 // Game Boy Color Palettes
 //
 static const unsigned short p005[] = {
@@ -557,6 +578,9 @@ static const unsigned short sgb4H[] = {
 struct GbcPaletteEntry { const char *title; const unsigned short *p; };
 
 static const GbcPaletteEntry gbcDirPalettes[] = {
+	{ "GB - DMG", gbdmg },    // Pea green
+	{ "GB - Light", gblit },  // Aquamarine
+	{ "GB - Pocket", gbpoc }, // Pristine greyscale
 	{ "GBC - Blue", p518 },       // Left
 	{ "GBC - Brown", p012 },      // Up
 	{ "GBC - Dark Blue", p50D },  // A + Left
