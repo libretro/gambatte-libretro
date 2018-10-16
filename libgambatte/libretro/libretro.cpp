@@ -307,8 +307,59 @@ void retro_set_environment(retro_environment_t cb)
 
    static const struct retro_variable vars[] = {
       { "gambatte_up_down_allowed", "Allow Opposing Directions; disabled|enabled" },
-      { "gambatte_gb_colorization", "GB Colorization; disabled|auto|internal|custom" },
-      { "gambatte_gb_internal_palette", "Internal Palette; GBC - Blue|GBC - Brown|GBC - Dark Blue|GBC - Dark Brown|GBC - Dark Green|GBC - Grayscale|GBC - Green|GBC - Inverted|GBC - Orange|GBC - Pastel Mix|GBC - Red|GBC - Yellow|Special 1|Special 2|Special 3" },
+      { "gambatte_gb_colorization", "GB Colorization; disabled|auto|gbc|sgb|internal|custom" },
+      { "gambatte_gb_internal_palette", "Internal Palette; \
+GB - DMG|\
+GB - Pocket|\
+GB - Light|\
+GBC - Blue|\
+GBC - Brown|\
+GBC - Dark Blue|\
+GBC - Dark Brown|\
+GBC - Dark Green|\
+GBC - Grayscale|\
+GBC - Green|\
+GBC - Inverted|\
+GBC - Orange|\
+GBC - Pastel Mix|\
+GBC - Red|\
+GBC - Yellow|\
+SGB - 1A|\
+SGB - 1B|\
+SGB - 1C|\
+SGB - 1D|\
+SGB - 1E|\
+SGB - 1F|\
+SGB - 1G|\
+SGB - 1H|\
+SGB - 2A|\
+SGB - 2B|\
+SGB - 2C|\
+SGB - 2D|\
+SGB - 2E|\
+SGB - 2F|\
+SGB - 2G|\
+SGB - 2H|\
+SGB - 3A|\
+SGB - 3B|\
+SGB - 3C|\
+SGB - 3D|\
+SGB - 3E|\
+SGB - 3F|\
+SGB - 3G|\
+SGB - 3H|\
+SGB - 4A|\
+SGB - 4B|\
+SGB - 4C|\
+SGB - 4D|\
+SGB - 4E|\
+SGB - 4F|\
+SGB - 4G|\
+SGB - 4H|\
+Special 1|\
+Special 2|\
+Special 3"
+}, // So many... place on seperate lines for readability...
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
       { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
       { "gambatte_gb_bootloader", "Use official bootloader (restart); enabled|disabled" },
@@ -637,40 +688,100 @@ static void check_variables(void)
       gb_colorization_enable = 2;
    else if (strcmp(var.value, "internal") == 0)
       gb_colorization_enable = 3;
+   else if (strcmp(var.value, "gbc") == 0)
+      gb_colorization_enable = 4;
+   else if (strcmp(var.value, "sgb") == 0)
+      gb_colorization_enable = 5;
 
    //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
    //std::string internal_game_name = reinterpret_cast<const char *>(info->data + 0x134); // buggy with some games ("YOSSY NO COOKIE", "YOSSY NO PANEPON, etc.)
 
-   // load a GBC BIOS builtin palette
+   // Containers for GBC/SGB BIOS built-in palettes
    unsigned short* gbc_bios_palette = NULL;
+   unsigned short* sgb_bios_palette = NULL;
 
    switch (gb_colorization_enable)
    {
-      case 1:   
-        gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
-        if (!gbc_bios_palette)
-        {
-           // no custom palette found, load the default (Dark Green, such as GBC BIOS)
-           gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Dark Green"));
-        }
-      break;
-        
+      case 1:
+         // Automatic colourisation
+         // Order of preference:
+         // 1 - SGB, if more colourful than GBC
+         // 2 - GBC, if more colourful than SGB
+         // 3 - SGB, if no GBC palette defined
+         // 4 - User-defined internal palette, if neither GBC nor SGB palettes defined
+         //
+         // Load GBC BIOS built-in palette
+         gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
+         // Load SGB BIOS built-in palette
+         sgb_bios_palette = const_cast<unsigned short*>(findSgbTitlePal(internal_game_name));
+         // If both GBC and SGB palettes are defined,
+         // use whichever is more colourful
+         if (gbc_bios_palette != 0)
+         {
+            if (sgb_bios_palette != 0)
+            {
+               if (gbc_bios_palette != p005 &&
+                   gbc_bios_palette != p006 &&
+                   gbc_bios_palette != p007 &&
+                   gbc_bios_palette != p008 &&
+                   gbc_bios_palette != p012 &&
+                   gbc_bios_palette != p013 &&
+                   gbc_bios_palette != p016 &&
+                   gbc_bios_palette != p017 &&
+                   gbc_bios_palette != p01B)
+               {
+                  // Limited color GBC palette -> use SGB equivalent
+                  gbc_bios_palette = sgb_bios_palette;
+               }
+            }
+         }
+         // If no GBC palette is defined, use SGB palette
+         if (gbc_bios_palette == 0)
+         {
+            gbc_bios_palette = sgb_bios_palette;
+         }
+         // If neither GBC nor SGB palettes are defined, set
+         // user-defined internal palette
+         if (gbc_bios_palette == 0)
+         {
+            var.key = "gambatte_gb_internal_palette";
+            if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+            {
+               // Load the selected internal palette
+               gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
+            }
+         }
+         break;
       case 2:
-       load_custom_palette();
-      break;
-     
+         load_custom_palette();
+         break;
       case 3:
-       var.key = "gambatte_gb_internal_palette";
-       if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-      {
-         // Load the selected internal palette
-         gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
-      }
-      break;
-
+         var.key = "gambatte_gb_internal_palette";
+         if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+         {
+            // Load the selected internal palette
+            gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
+         }
+         break;
+      case 4:
+         // Force GBC colourisation
+         gbc_bios_palette = const_cast<unsigned short*>(findGbcTitlePal(internal_game_name));
+         if (gbc_bios_palette == 0)
+         {
+            gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Dark Green")); // GBC Default
+         }
+         break;
+      case 5:
+         // Force SGB colourisation
+         gbc_bios_palette = const_cast<unsigned short*>(findSgbTitlePal(internal_game_name));
+         if (gbc_bios_palette == 0)
+         {
+            gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("SGB - 1A")); // SGB Default
+         }
+         break;
       default:
-       gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Grayscale"));
-     break;
+         gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Grayscale"));
+         break;
    }
    //gambatte is using custom colorization then we have a previously palette loaded, 
    //skip this loop then
