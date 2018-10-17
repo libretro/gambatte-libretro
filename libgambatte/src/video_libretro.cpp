@@ -20,6 +20,7 @@
 #include "savestate.h"
 #include <cstring>
 #include <algorithm>
+#include <cmath>
 
 namespace gambatte
 {
@@ -39,6 +40,16 @@ namespace gambatte
    void LCD::setColorCorrection(bool colorCorrection_)
    {
       colorCorrection = colorCorrection_;
+      refreshPalettes();
+   }
+   
+   void LCD::setColorCorrectionMode(unsigned colorCorrectionMode_)
+   {
+      // Note: We only have two modes, so could make 'colorCorrectionMode'
+      // a bool... but may want to add other modes in the future
+      // (e.g. a special GBA colour correction mode for when the GBA
+      // flag is set in Shantae/Zelda: Oracle/etc.)
+      colorCorrectionMode = colorCorrectionMode_;
       refreshPalettes();
    }
 
@@ -117,35 +128,70 @@ namespace gambatte
 
    video_pixel_t LCD::gbcToRgb32(const unsigned bgr15)
    {
+      const unsigned r = bgr15       & 0x1F;
+      const unsigned g = bgr15 >>  5 & 0x1F;
+      const unsigned b = bgr15 >> 10 & 0x1F;
+      
       if (colorCorrection)
       {
+         if (colorCorrectionMode == 1)
+         {
+            // Use fast (inaccurate) Gambatte default method
 #ifdef VIDEO_RGB565
-         const unsigned r = bgr15 & 0x1F;
-         const unsigned g = bgr15 >> 5 & 0x1F;
-         const unsigned b = bgr15 >> 10 & 0x1F;
-
-         return (((r * 13 + g * 2 + b + 8) << 7) & 0xF800) | ((g * 3 + b + 1) >> 1) << 5 | ((r * 3 + g * 2 + b * 11 + 8) >> 4);
+            return (((r * 13 + g * 2 + b + 8) << 7) & 0xF800) | ((g * 3 + b + 1) >> 1) << 5 | ((r * 3 + g * 2 + b * 11 + 8) >> 4);
 #else
-         const unsigned r = bgr15       & 0x1F;
-         const unsigned g = bgr15 >>  5 & 0x1F;
-         const unsigned b = bgr15 >> 10 & 0x1F;
-
-         return ((r * 13 + g * 2 + b) >> 1) << 16 | (g * 3 + b) << 9 | (r * 3 + g * 2 + b * 11) >> 1;
+            return ((r * 13 + g * 2 + b) >> 1) << 16 | (g * 3 + b) << 9 | (r * 3 + g * 2 + b * 11) >> 1;
 #endif
+         }
+         else
+         {
+            // Use Pokefan531's "gold standard" GBC colour correction
+            // (https://forums.libretro.com/t/real-gba-and-ds-phat-colors/1540/159)
+            // NB: The results produced by this implementation are ever so slightly
+            // different from the output of the gbc-colour shader. This is due to the
+            // fact that we have to tolerate rounding errors here that are simply not
+            // an issue when tweaking the final image with a post-processing shader.
+            // *However:* the difference is so tiny small that 99.9% of users will
+            // never notice, and the result is still 100x better than the 'fast'
+            // colour correction method.
+            //
+            // Constants
+            // (Don't know whether floating-point rounding modes can be changed
+            // dynamically at run time, so can't rely on constant folding of
+            // inline [float / float] expressions - just play it safe...)
+            const float targetGamma = 2.2;
+            const float displayGammaInv = 1.0 / targetGamma;
+            const float rgbMax = 31.0;
+            const float rgbMaxInv = 1.0 / rgbMax;
+            // Perform gamma expansion
+            float rCorrect = std::pow(static_cast<float>(r) * rgbMaxInv, targetGamma);
+            float gCorrect = std::pow(static_cast<float>(g) * rgbMaxInv, targetGamma);
+            float bCorrect = std::pow(static_cast<float>(b) * rgbMaxInv, targetGamma);
+            // Perform colour mangling (lots of magic numbers...)
+            rCorrect = (0.86629 * rCorrect) + (0.13361 * gCorrect);
+            gCorrect = (0.02429 * rCorrect) + (0.70857 * gCorrect) + (0.26714 * bCorrect);
+            bCorrect = (0.11337 * rCorrect) + (0.11448 * gCorrect) + (0.77215 * bCorrect);
+            // Perform gamma compression
+            rCorrect = rgbMax * std::pow(rCorrect, displayGammaInv);
+            gCorrect = rgbMax * std::pow(gCorrect, displayGammaInv);
+            bCorrect = rgbMax * std::pow(bCorrect, displayGammaInv);
+            // Convert back to 5bit unsigned
+            unsigned rFinal = static_cast<unsigned>(rCorrect + 0.5) & 0x1F;
+            unsigned gFinal = static_cast<unsigned>(gCorrect + 0.5) & 0x1F;
+            unsigned bFinal = static_cast<unsigned>(bCorrect + 0.5) & 0x1F;
+            
+#ifdef VIDEO_RGB565
+            return rFinal<<11 | gFinal<<6 | bFinal;
+#else
+            return rFinal<<16 | gFinal<<8 | bFinal;
+#endif
+         }
       }
       else
       {
 #ifdef VIDEO_RGB565
-         const unsigned r = bgr15       & 0x1F;
-         const unsigned g = bgr15 >>  5 & 0x1F;
-         const unsigned b = bgr15 >> 10 & 0x1F;
-
          return r<<11 | g<<6 | b;
 #else
-         const unsigned r = bgr15       & 0x1F;
-         const unsigned g = bgr15 >>  5 & 0x1F;
-         const unsigned b = bgr15 >> 10 & 0x1F;
-
          return r<<16 | g<<8 | b;
 #endif
       }

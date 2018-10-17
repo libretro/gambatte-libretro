@@ -361,6 +361,7 @@ Special 2|\
 Special 3"
 }, // So many... place on seperate lines for readability...
       { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
+      { "gambatte_gbc_color_correction_mode", "Color correction mode; accurate|fast" },
       { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
       { "gambatte_gb_bootloader", "Use official bootloader (restart); enabled|disabled" },
 #ifdef HAVE_NETWORK
@@ -604,7 +605,15 @@ static void check_variables(void)
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "disabled"))
       colorCorrection=false;
    gb.setColorCorrection(colorCorrection);
-
+   
+   unsigned colorCorrectionMode = 0;
+   var.key   = "gambatte_gbc_color_correction_mode";
+   var.value = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "fast")) {
+      colorCorrectionMode = 1;
+   }
+   gb.setColorCorrectionMode(colorCorrectionMode);
+   
    var.key   = "gambatte_up_down_allowed";
    var.value = NULL;
 

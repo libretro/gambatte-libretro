@@ -154,6 +154,7 @@ class LCD
       bool isDoubleSpeed() const { return ppu_.lyCounter().isDoubleSpeed(); }
 
       void setColorCorrection(bool colorCorrection);
+      void setColorCorrectionMode(unsigned colorCorrectionMode);
       video_pixel_t gbcToRgb32(const unsigned bgr15);
    private:
       enum Event { MEM_EVENT, LY_COUNT }; enum { NUM_EVENTS = LY_COUNT + 1 };
@@ -225,6 +226,7 @@ class LCD
       void doCgbSpColorChange(unsigned index, unsigned data, unsigned long cycleCounter);
 
       bool colorCorrection;
+      unsigned colorCorrectionMode;
       void doCgbColorChange(unsigned char *const pdata,
             video_pixel_t *const palette, unsigned index, const unsigned data);
 

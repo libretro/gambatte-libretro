@@ -154,6 +154,10 @@ void GB::setColorCorrection(bool enable) {
    p_->cpu.mem_.display_setColorCorrection(enable);
 }
 
+void GB::setColorCorrectionMode(unsigned colorCorrectionMode) {
+   p_->cpu.mem_.display_setColorCorrectionMode(colorCorrectionMode);
+}
+
 video_pixel_t GB::gbcToRgb32(const unsigned bgr15) {
    return p_->cpu.mem_.display_gbcToRgb32(bgr15);
 }
