@@ -307,7 +307,7 @@ void retro_set_environment(retro_environment_t cb)
 
    static const struct retro_variable vars[] = {
       { "gambatte_up_down_allowed", "Allow Opposing Directions; disabled|enabled" },
-      { "gambatte_gb_colorization", "GB Colorization; disabled|auto|gbc|sgb|internal|custom" },
+      { "gambatte_gb_colorization", "GB Colorization; disabled|auto|GBC|SGB|internal|custom" },
       { "gambatte_gb_internal_palette", "Internal Palette; \
 GB - DMG|\
 GB - Pocket|\
@@ -360,7 +360,7 @@ Special 1|\
 Special 2|\
 Special 3"
 }, // So many... place on seperate lines for readability...
-      { "gambatte_gbc_color_correction", "Color correction; enabled|disabled" },
+      { "gambatte_gbc_color_correction", "Color correction; GBC only|always|disabled" },
       { "gambatte_gbc_color_correction_mode", "Color correction mode; accurate|fast" },
       { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
       { "gambatte_gb_bootloader", "Use official bootloader (restart); enabled|disabled" },
@@ -599,12 +599,16 @@ static void load_custom_palette(void)
 
 static void check_variables(void)
 {
-   bool colorCorrection=true;
+   unsigned colorCorrection = 0;
    struct retro_variable var = {0};
    var.key = "gambatte_gbc_color_correction";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "disabled"))
-      colorCorrection=false;
-   gb.setColorCorrection(colorCorrection);
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "GBC only"))
+         colorCorrection = 1;
+      else if (!strcmp(var.value, "always"))
+         colorCorrection = 2;
+   }
    
    unsigned colorCorrectionMode = 0;
    var.key   = "gambatte_gbc_color_correction_mode";
@@ -680,11 +684,19 @@ static void check_variables(void)
 
    var.key = "gambatte_gb_colorization";
 
-   if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value)
+   if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value) {
+      // Should really wait until the end to call setColorCorrection(),
+      // but don't want to have to change the indentation of all the
+      // following code... (makes it too difficult to see the changes in
+      // a git diff...)
+      gb.setColorCorrection(gb.isCgb() && (colorCorrection != 0));
       return;
+   }
    
-   if (gb.isCgb())
+   if (gb.isCgb()) {
+      gb.setColorCorrection(colorCorrection != 0);
       return;
+   }
 
    // else it is a GB-mono game -> set a color palette
    //bool gb_colorization_old = gb_colorization_enable;
@@ -697,9 +709,9 @@ static void check_variables(void)
       gb_colorization_enable = 2;
    else if (strcmp(var.value, "internal") == 0)
       gb_colorization_enable = 3;
-   else if (strcmp(var.value, "gbc") == 0)
+   else if (strcmp(var.value, "GBC") == 0)
       gb_colorization_enable = 4;
-   else if (strcmp(var.value, "sgb") == 0)
+   else if (strcmp(var.value, "SGB") == 0)
       gb_colorization_enable = 5;
 
    //std::string internal_game_name = gb.romTitle(); // available only in latest Gambatte
@@ -708,6 +720,7 @@ static void check_variables(void)
    // Containers for GBC/SGB BIOS built-in palettes
    unsigned short* gbc_bios_palette = NULL;
    unsigned short* sgb_bios_palette = NULL;
+   bool isGbcPalette = false;
 
    switch (gb_colorization_enable)
    {
@@ -727,6 +740,7 @@ static void check_variables(void)
          // use whichever is more colourful
          if (gbc_bios_palette != 0)
          {
+            isGbcPalette = true;
             if (sgb_bios_palette != 0)
             {
                if (gbc_bios_palette != p005 &&
@@ -741,6 +755,7 @@ static void check_variables(void)
                {
                   // Limited color GBC palette -> use SGB equivalent
                   gbc_bios_palette = sgb_bios_palette;
+                  isGbcPalette = false;
                }
             }
          }
@@ -758,6 +773,9 @@ static void check_variables(void)
             {
                // Load the selected internal palette
                gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
+               if (!strncmp("GBC", var.value, 3)) {
+                  isGbcPalette = true;
+               }
             }
          }
          break;
@@ -770,6 +788,9 @@ static void check_variables(void)
          {
             // Load the selected internal palette
             gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal(var.value));
+            if (!strncmp("GBC", var.value, 3)) {
+               isGbcPalette = true;
+            }
          }
          break;
       case 4:
@@ -779,6 +800,7 @@ static void check_variables(void)
          {
             gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Dark Green")); // GBC Default
          }
+         isGbcPalette = true;
          break;
       case 5:
          // Force SGB colourisation
@@ -790,8 +812,13 @@ static void check_variables(void)
          break;
       default:
          gbc_bios_palette = const_cast<unsigned short*>(findGbcDirPal("GBC - Grayscale"));
+         isGbcPalette = true;
          break;
    }
+   
+   // Enable colour correction, if required
+   gb.setColorCorrection((colorCorrection == 2) || ((colorCorrection == 1) && isGbcPalette));
+   
    //gambatte is using custom colorization then we have a previously palette loaded, 
    //skip this loop then
    if (gb_colorization_enable != 2)
