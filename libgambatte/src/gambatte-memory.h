@@ -49,6 +49,7 @@ public:
    unsigned rtcdata_size() { return cart_.rtcdata_size(); }
    void display_setColorCorrection(bool enable) { lcd_.setColorCorrection(enable); }
    void display_setColorCorrectionMode(unsigned colorCorrectionMode) { lcd_.setColorCorrectionMode(colorCorrectionMode); }
+   void display_setDarkFilterLevel(unsigned darkFilterLevel) { lcd_.setDarkFilterLevel(darkFilterLevel); }
    video_pixel_t display_gbcToRgb32(const unsigned bgr15) { return lcd_.gbcToRgb32(bgr15); }
    void clearCheats() { cart_.clearCheats(); }
    void *vram_ptr() const { return cart_.vramdata(); }

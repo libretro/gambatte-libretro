@@ -114,6 +114,7 @@ public:
 
    void setColorCorrection(bool enable);
    void setColorCorrectionMode(unsigned colorCorrectionMode);
+   void setDarkFilterLevel(unsigned darkFilterLevel);
    video_pixel_t gbcToRgb32(const unsigned bgr15);
 
    /** Set Game Genie codes to apply to currently loaded ROM image. Cleared on ROM load.
