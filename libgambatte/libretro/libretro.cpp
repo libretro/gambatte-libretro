@@ -362,6 +362,7 @@ Special 3"
 }, // So many... place on seperate lines for readability...
       { "gambatte_gbc_color_correction", "Color correction; GBC only|always|disabled" },
       { "gambatte_gbc_color_correction_mode", "Color correction mode; accurate|fast" },
+      { "gambatte_dark_filter_level", "Dark Filter Level (percent); 0|5|10|15|20|25|30|35|40|45|50" },
       { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
       { "gambatte_gb_bootloader", "Use official bootloader (restart); enabled|disabled" },
 #ifdef HAVE_NETWORK
@@ -617,6 +618,15 @@ static void check_variables(void)
       colorCorrectionMode = 1;
    }
    gb.setColorCorrectionMode(colorCorrectionMode);
+   
+   unsigned darkFilterLevel = 0;
+   var.key   = "gambatte_dark_filter_level";
+   var.value = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      darkFilterLevel = static_cast<unsigned>(atoi(var.value));
+   }
+   gb.setDarkFilterLevel(darkFilterLevel);
    
    var.key   = "gambatte_up_down_allowed";
    var.value = NULL;

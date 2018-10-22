@@ -158,6 +158,10 @@ void GB::setColorCorrectionMode(unsigned colorCorrectionMode) {
    p_->cpu.mem_.display_setColorCorrectionMode(colorCorrectionMode);
 }
 
+void GB::setDarkFilterLevel(unsigned darkFilterLevel) {
+   p_->cpu.mem_.display_setDarkFilterLevel(darkFilterLevel);
+}
+
 video_pixel_t GB::gbcToRgb32(const unsigned bgr15) {
    return p_->cpu.mem_.display_gbcToRgb32(bgr15);
 }
