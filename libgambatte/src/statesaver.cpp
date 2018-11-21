@@ -72,6 +72,7 @@ class imemstream
       {
          std::memcpy(data, rd_ptr, size);
          rd_ptr += size;
+         has_read += size;
       }
 
       void ignore(size_t len = 1)
@@ -335,6 +336,10 @@ SaverList::SaverList() {
 	{ static const char label[] = { d,m,a,d,s,t,   NUL }; ADD(mem.dmaDestination); }
 	{ static const char label[] = { r,a,m,b,a,n,k, NUL }; ADD(mem.rambank); }
 	{ static const char label[] = { o,d,m,a,p,o,s, NUL }; ADD(mem.oamDmaPos); }
+#ifdef HAVE_NETWORK
+	{ static const char label[] = { n,e,t,s,v,     NUL }; ADD(mem.serialize_value); }
+	{ static const char label[] = { n,e,t,s,f,c,   NUL }; ADD(mem.serialize_is_fastcgb); }
+#endif
 	{ static const char label[] = { i,m,e,         NUL }; ADD(mem.IME); }
 	{ static const char label[] = { s,r,a,m,o,n,   NUL }; ADD(mem.enableRam); }
 	{ static const char label[] = { r,a,m,b,m,o,d, NUL }; ADD(mem.rambankMode); }
@@ -376,6 +381,7 @@ SaverList::SaverList() {
 	{ static const char label[] = { s,w,p,n,e,g,   NUL }; ADD(spu.ch1.sweep.negging); }
 	{ static const char label[] = { d,u,t,NO1,c,t,r, NUL }; ADD(spu.ch1.duty.nextPosUpdate); }
 	{ static const char label[] = { d,u,t,NO1,p,o,s, NUL }; ADD(spu.ch1.duty.pos); }
+	{ static char const label[] = { d,u,t,NO1,h,i,   NUL }; ADD(spu.ch1.duty.high); }
 	{ static const char label[] = { e,n,v,NO1,c,t,r, NUL }; ADD(spu.ch1.env.counter); }
 	{ static const char label[] = { e,n,v,NO1,v,o,l, NUL }; ADD(spu.ch1.env.volume); }
 	{ static const char label[] = { l,e,n,NO1,c,t,r, NUL }; ADD(spu.ch1.lcounter.counter); }
@@ -386,6 +392,7 @@ SaverList::SaverList() {
 	{ static const char label[] = { c,NO1,m,a,s,t,r, NUL }; ADD(spu.ch1.master); }
 	{ static const char label[] = { d,u,t,NO2,c,t,r, NUL }; ADD(spu.ch2.duty.nextPosUpdate); }
 	{ static const char label[] = { d,u,t,NO2,p,o,s, NUL }; ADD(spu.ch2.duty.pos); }
+	{ static char const label[] = { d,u,t,NO2,h,i,   NUL }; ADD(spu.ch2.duty.high); }
 	{ static const char label[] = { e,n,v,NO2,c,t,r, NUL }; ADD(spu.ch2.env.counter); }
 	{ static const char label[] = { e,n,v,NO2,v,o,l, NUL }; ADD(spu.ch2.env.volume); }
 	{ static const char label[] = { l,e,n,NO2,c,t,r, NUL }; ADD(spu.ch2.lcounter.counter); }
