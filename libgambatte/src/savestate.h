@@ -77,7 +77,7 @@ struct SaveState {
 		unsigned char oamDmaPos;
 #ifdef HAVE_NETWORK
 		unsigned char serialize_value;
-		unsigned char serialize_is_fastcgb;
+		bool serialize_is_fastcgb;
 #endif
 		bool IME;
 		bool halted;

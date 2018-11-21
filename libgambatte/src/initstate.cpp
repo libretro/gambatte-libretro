@@ -1208,6 +1208,10 @@ void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbM
 	state.mem.dmaDestination = 0;
 	state.mem.rambank = 0;
 	state.mem.oamDmaPos = 0xFE;
+#ifdef HAVE_NETWORK
+	state.mem.serialize_value = 0xFF;
+	state.mem.serialize_is_fastcgb = false;
+#endif
 	state.mem.IME = false;
 	state.mem.halted = false;
 	state.mem.enableRam = false;
