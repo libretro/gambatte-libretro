@@ -21,6 +21,7 @@ namespace gambatte
          case 0x13:
          case 0x1B:
          case 0x1E:
+         case 0xFE:
          case 0xFF:
             return true;
          default:
@@ -32,6 +33,7 @@ namespace gambatte
    {
       switch (headerByte0x147)
       {
+         case 0xFE: // huc3
          case 0x0F:
          case 0x10:
             return true;
@@ -57,15 +59,25 @@ namespace gambatte
 
    void *Cartridge::rtcdata_ptr()
    {
-      if (hasRtc(memptrs_.romdata()[0x147]))
-         return &rtc_.getBaseTime();
+      if (hasRtc(memptrs_.romdata()[0x147])) {
+         if (isHuC3()) {
+            return &huc3_.getBaseTime();
+         } else {
+            return &rtc_.getBaseTime();
+         }
+      }
       return 0;
    }
 
    unsigned Cartridge::rtcdata_size()
    { 
-      if (hasRtc(memptrs_.romdata()[0x147]))
-         return sizeof(rtc_.getBaseTime());
+      if (hasRtc(memptrs_.romdata()[0x147])) {
+         if (isHuC3()) {
+            return sizeof(huc3_.getBaseTime());
+         } else {
+            return sizeof(rtc_.getBaseTime());
+         }
+      }
       return 0;
    }
 

@@ -21,6 +21,7 @@
 
 #include "memptrs.h"
 #include "rtc.h"
+#include "huc3.h"
 #include "savestate.h"
 #include <memory>
 #include <string>
@@ -134,6 +135,10 @@ namespace gambatte
          void setGameGenie(const std::string &codes);
          void clearCheats();
 
+         bool isHuC3() const { return huc3_.isHuC3(); }
+         unsigned char HuC3Read(unsigned p, unsigned long const cc) { return huc3_.read(p, cc); }
+         void HuC3Write(unsigned p, unsigned data) { huc3_.write(p, data); }
+
          void *savedata_ptr();
          unsigned savedata_size();
 
@@ -152,6 +157,7 @@ namespace gambatte
          };
          MemPtrs memptrs_;
          Rtc rtc_;
+         HuC3Chip huc3_;
 
          std::auto_ptr<Mbc> mbc;
 
