@@ -75,6 +75,7 @@ struct SaveState {
 		unsigned short dmaDestination;
 		unsigned char rambank;
 		unsigned char oamDmaPos;
+		unsigned char HuC3RAMflag;
 #ifdef HAVE_NETWORK
 		unsigned char serialize_value;
 		bool serialize_is_fastcgb;
@@ -198,6 +199,19 @@ struct SaveState {
 		unsigned char dataS;
 		bool lastLatchData;
 	} rtc;
+
+	struct HuC3 {
+		unsigned long baseTime;
+		unsigned long haltTime;
+		unsigned long dataTime;
+		unsigned long writingTime;
+		unsigned long irBaseCycle;
+		bool halted;
+		unsigned char shift;
+		unsigned char ramValue;
+		unsigned char modeflag;
+		bool irReceivingPulse;
+	} huc3;
 };
 
 }

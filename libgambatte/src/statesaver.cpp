@@ -344,6 +344,7 @@ SaverList::SaverList() {
 	{ static const char label[] = { s,r,a,m,o,n,   NUL }; ADD(mem.enableRam); }
 	{ static const char label[] = { r,a,m,b,m,o,d, NUL }; ADD(mem.rambankMode); }
 	{ static const char label[] = { h,d,m,a,       NUL }; ADD(mem.hdmaTransfer); }
+	{ static const char label[] = { h,u,c,NO3,r,a,m, NUL }; ADD(mem.HuC3RAMflag); }
 	{ static const char label[] = { b,g,p,         NUL }; ADDPTR(ppu.bgpData); }
 	{ static const char label[] = { o,b,j,p,       NUL }; ADDPTR(ppu.objpData); }
 	{ static const char label[] = { s,p,o,s,b,u,f, NUL }; ADDPTR(ppu.oamReaderBuf); }
@@ -426,6 +427,16 @@ SaverList::SaverList() {
 	{ static const char label[] = { r,t,c,m,       NUL }; ADD(rtc.dataM); }
 	{ static const char label[] = { r,t,c,s,       NUL }; ADD(rtc.dataS); }
 	{ static const char label[] = { r,t,c,l,l,d,   NUL }; ADD(rtc.lastLatchData); }
+	{ static char const label[] = { h,NO3,b,a,s,e,t, NUL }; ADD(huc3.baseTime); }
+	{ static const char label[] = { h,NO3,h,a,l,t,t, NUL }; ADD(huc3.haltTime); }
+	{ static const char label[] = { h,NO3,d,a,t,a,t, NUL }; ADD(huc3.dataTime); }
+	{ static const char label[] = { h,NO3,w,r,i,t,t, NUL }; ADD(huc3.writingTime); }
+	{ static const char label[] = { h,NO3,h,a,l,t, NUL }; ADD(huc3.halted); }
+	{ static const char label[] = { h,NO3,s,h,f,t, NUL }; ADD(huc3.shift); }
+	{ static const char label[] = { h,NO3,r,v,     NUL }; ADD(huc3.ramValue); }
+	{ static const char label[] = { h,NO3,m,f,     NUL }; ADD(huc3.modeflag); }
+	{ static const char label[] = { h,NO3,i,r,c,y, NUL }; ADD(huc3.irBaseCycle); }
+	{ static const char label[] = { h,NO3,i,r,a,c, NUL }; ADD(huc3.irReceivingPulse); }
 	
 #undef ADD
 #undef ADDPTR

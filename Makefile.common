@@ -20,6 +20,7 @@ SOURCES_CXX := $(CORE_DIR)/bootloader.cpp \
 					$(CORE_DIR)/video_libretro.cpp \
 					$(CORE_DIR)/mem/cartridge.cpp \
 					$(CORE_DIR)/mem/cartridge_libretro.cpp \
+					$(CORE_DIR)/mem/huc3.cpp \
 					$(CORE_DIR)/mem/memptrs.cpp \
 					$(CORE_DIR)/mem/rtc.cpp \
 					$(CORE_DIR)/sound/channel1.cpp \

@@ -344,6 +344,74 @@ namespace gambatte
          setRombank();
       }
    };
+   class HuC3 : public DefaultMbc {
+      MemPtrs &memptrs_;
+      HuC3Chip *const huc3_;
+      unsigned char rombank_;
+      unsigned char rambank_;
+      unsigned char ramflag_;
+      void setRambank() const {
+         huc3_->setRamflag(ramflag_);
+         unsigned flags;
+         if(ramflag_ >= 0x0B && ramflag_ < 0x0F) {
+            // System registers mode
+            flags = MemPtrs::READ_EN | MemPtrs::WRITE_EN | MemPtrs::RTC_EN;
+         }
+         else if(ramflag_ == 0x0A || ramflag_ > 0x0D) {
+            // Read/write mode
+            flags = MemPtrs::READ_EN | MemPtrs::WRITE_EN;
+         }
+         else {
+            // Read-only mode ??
+            flags = MemPtrs::READ_EN;
+         }
+         memptrs_.setRambank(flags, rambank_ & (rambanks(memptrs_) - 1));
+      }
+      void setRombank() const { memptrs_.setRombank(std::max(rombank_ & (rombanks(memptrs_) - 1), 1u)); }
+      public:
+      explicit HuC3(MemPtrs &memptrs, HuC3Chip *const huc3)
+         : memptrs_(memptrs),
+         huc3_(huc3),
+         rombank_(1),
+         rambank_(0),
+         ramflag_(0)
+      {
+      }
+      virtual void romWrite(unsigned const p, unsigned const data) {
+         switch (p >> 13 & 3) {
+         case 0:
+            ramflag_ = data;
+            //printf("[HuC3] set ramflag to %02X\n", data);
+            setRambank();
+            break;
+         case 1:
+            //printf("[HuC3] set rombank to %02X\n", data);
+            rombank_ = data;
+            setRombank();
+            break;
+         case 2:
+            //printf("[HuC3] set rambank to %02X\n", data);
+            rambank_ = data;
+            setRambank();
+            break;
+         case 3:
+            // GEST: "programs will write 1 here"
+            break;
+         }
+      }
+      virtual void saveState(SaveState::Mem &ss) const {
+         ss.rombank = rombank_;
+         ss.rambank = rambank_;
+         ss.HuC3RAMflag = ramflag_;
+      }
+      virtual void loadState(SaveState::Mem const &ss) {
+         rombank_ = ss.rombank;
+         rambank_ = ss.rambank;
+         ramflag_ = ss.HuC3RAMflag;
+         setRambank();
+         setRombank();
+      }
+   };
    class Mbc5 : public DefaultMbc {
       MemPtrs &memptrs;
       unsigned short rombank;
@@ -400,6 +468,7 @@ namespace gambatte
    {
       switch (headerByte0x147)
       {
+         case 0xFE: // huc3
          case 0x0F:
          case 0x10:
             return true;
@@ -419,10 +488,12 @@ namespace gambatte
    {
       mbc->saveState(state.mem);
       rtc_.saveState(state);
+      huc3_.saveState(state);
    }
 
    void Cartridge::loadState(const SaveState &state)
    {
+      huc3_.loadState(state);
       rtc_.loadState(state);
       mbc->loadState(state.mem);
    }
@@ -455,7 +526,7 @@ namespace gambatte
       unsigned rambanks = 1;
       unsigned rombanks = 2;
       bool cgb = false;
-      enum Cartridgetype { PLAIN, MBC1, MBC2, MBC3, MBC5, HUC1 } type = PLAIN;
+      enum Cartridgetype { PLAIN, MBC1, MBC2, MBC3, MBC5, HUC1, HUC3 } type = PLAIN;
 
       {
          unsigned i;
@@ -494,7 +565,7 @@ namespace gambatte
             case 0x22: printf("MBC7 ROM not supported.\n"); return -1;
             case 0xFC: printf("Pocket Camera ROM not supported.\n"); return -1;
             case 0xFD: printf("Bandai TAMA5 ROM not supported.\n"); return -1;
-            case 0xFE: printf("HuC3 ROM+RAM+BATTERY loaded.\n"); return -1;
+            case 0xFE: printf("HuC3 ROM+RAM+BATTERY loaded.\n"); type = HUC3; break;
             case 0xFF: printf("HuC1 ROM+BATTERY loaded.\n"); type = HUC1; break;
             default: printf("Wrong data-format, corrupt or unsupported ROM.\n"); return -1;
          }
@@ -541,6 +612,7 @@ namespace gambatte
       mbc.reset();
       memptrs_.reset(rombanks, rambanks, cgb ? 8 : 2);
       rtc_.set(false, 0);
+      huc3_.set(false);
 
       memcpy(memptrs_.romdata(), romdata, ((romsize / 0x4000) * 0x4000ul) * sizeof(unsigned char));
       std::memset(memptrs_.romdata() + (romsize / 0x4000) * 0x4000ul, 0xFF, (rombanks - romsize / 0x4000) * 0x4000ul);
@@ -560,6 +632,10 @@ namespace gambatte
          case MBC3: mbc.reset(new Mbc3(memptrs_, hasRtc(memptrs_.romdata()[0x147]) ? &rtc_ : 0)); break;
          case MBC5: mbc.reset(new Mbc5(memptrs_)); break;
          case HUC1: mbc.reset(new HuC1(memptrs_)); break;
+         case HUC3:
+            huc3_.set(true);
+            mbc.reset(new HuC3(memptrs_, &huc3_));
+            break;
       }
 
       return 0;
