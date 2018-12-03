@@ -62,7 +62,7 @@ bool use_official_bootloader = false;
 
 // Colours from previous frame
 static gambatte::video_pixel_t prev_colours[160 * NUM_GAMEBOYS * 144] = {0};
-static bool blur_motion = false;
+static unsigned mix_frames_mode = 0;
 
 bool file_present_in_system(std::string fname)
 {
@@ -369,7 +369,7 @@ Special 3"
       { "gambatte_dark_filter_level", "Dark Filter Level (percent); 0|5|10|15|20|25|30|35|40|45|50" },
       { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
       { "gambatte_gb_bootloader", "Use official bootloader (restart); enabled|disabled" },
-      { "gambatte_mix_frames", "Mix frames; disabled|enabled" },
+      { "gambatte_mix_frames", "Mix frames; disabled|accurate|fast" },
 #ifdef HAVE_NETWORK
       { "gambatte_gb_link_mode", "GameBoy Link Mode; Not Connected|Network Server|Network Client" },
       { "gambatte_gb_link_network_port", "Network Link Port; 56400|56401|56402|56403|56404|56405|56406|56407|56408|56409|56410|56411|56412|56413|56414|56415|56416|56417|56418|56419|56420" },
@@ -648,19 +648,20 @@ static void check_variables(void)
    else
       up_down_allowed = false;
 
-   bool prev_blur_motion = blur_motion;
-   blur_motion = false;
+   unsigned prev_mix_frames_mode = mix_frames_mode;
+   mix_frames_mode = 0;
    var.key   = "gambatte_mix_frames";
    var.value = NULL;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
-     if (!strcmp(var.value, "enabled")) {
-         blur_motion = true;
-      }
+      if (!strcmp(var.value, "accurate"))
+         mix_frames_mode = 1;
+      else if (!strcmp(var.value, "fast"))
+         mix_frames_mode = 2;
    }
    // Must reset previous colours when turning 'mix frames'
    // on, otherwise first rendered frame may contain garbage
-   if (!prev_blur_motion && blur_motion) {
+   if ((prev_mix_frames_mode == 0) && (mix_frames_mode != 0)) {
       memset(prev_colours, 0, sizeof(gambatte::video_pixel_t) * 160 * NUM_GAMEBOYS * 144);
    }
 
@@ -1052,10 +1053,14 @@ static void render_audio(const int16_t *samples, unsigned frames)
    blipper_push_samples(resampler_r, samples + 1, frames, 2);
 }
 
-static void mix_frames(void)
+static void mix_frames_fast(void)
 {
    // Simple frame blending: mixes current frame 50:50 with
-   // previous one
+   // previous one.
+   // Uses fast bit twiddling method, suitable for very low
+   // end devices (NB: rounding errors will cause darkening
+   // of colours - this is fairly innocuous, but may annoy
+   // some users)
    unsigned offset = 0;
    unsigned colour_index = 0;
    for (unsigned i = 0; i < 144; i++)
@@ -1075,9 +1080,6 @@ static void mix_frames(void)
          // Do this in one shot to minimise unnecessary variables...
          // > Unpack current/previous frame colours and divide by 2
          // > Mix and repack colours for current frame
-         // Note: This will darken colours, due to rounding errors
-         // (not much we can do about this without incurring a large
-         // performance penalty...)
 #ifdef VIDEO_RGB565
          video_buf[buff_index] =   (((rgb >> 11 & 0x1F) >> 1) + ((rgb_prev >> 11 & 0x1F) >> 1)) << 11
                                  | (((rgb >>  6 & 0x1F) >> 1) + ((rgb_prev >>  6 & 0x1F) >> 1)) << 6
@@ -1086,6 +1088,66 @@ static void mix_frames(void)
          video_buf[buff_index] =   (((rgb >> 16 & 0x1F) >> 1) + ((rgb_prev >> 16 & 0x1F) >> 1)) << 16
                                  | (((rgb >>  8 & 0x1F) >> 1) + ((rgb_prev >>  8 & 0x1F) >> 1)) << 8
                                  | (((rgb       & 0x1F) >> 1) + ((rgb_prev       & 0x1F) >> 1));
+#endif
+      }
+      offset += video_pitch;
+   }
+}
+
+static void mix_frames_accurate(void)
+{
+   // Simple frame blending: mixes current frame 50:50 with
+   // previous one.
+   // Uses slow and accurate floating point conversion
+   // method. Not suitable for very low end devices, but
+   // should leave colour levels intact.
+   // NB: We're repeating some code here, just for performance
+   // reasons (i.e. putting an 'if' statement inside the inner
+   // loop to select between fast and accurate methods makes the
+   // fast method just a tiny bit too slow...)
+   unsigned offset = 0;
+   unsigned colour_index = 0;
+   for (unsigned i = 0; i < 144; i++)
+   {
+      for (unsigned j = 0; j < 160 * NUM_GAMEBOYS; j++)
+      {
+         // Get colours from current frame + previous frame
+         unsigned buff_index = offset + j;
+         gambatte::video_pixel_t rgb = video_buf[buff_index];
+         gambatte::video_pixel_t rgb_prev = prev_colours[colour_index];
+         
+         // Store current colours for next frame
+         prev_colours[colour_index] = rgb;
+         colour_index++;
+         
+         // Unpack current/previous frame colours and convert to float
+#ifdef VIDEO_RGB565
+         float r = static_cast<float>(rgb >> 11 & 0x1F);
+         float g = static_cast<float>(rgb >>  6 & 0x1F);
+         float b = static_cast<float>(rgb       & 0x1F);
+         
+         float r_prev = static_cast<float>(rgb_prev >> 11 & 0x1F);
+         float g_prev = static_cast<float>(rgb_prev >>  6 & 0x1F);
+         float b_prev = static_cast<float>(rgb_prev       & 0x1F);
+#else
+         float r = static_cast<float>(rgb >> 16 & 0x1F);
+         float g = static_cast<float>(rgb >>  8 & 0x1F);
+         float b = static_cast<float>(rgb       & 0x1F);
+         
+         float r_prev = static_cast<float>(rgb_prev >> 16 & 0x1F);
+         float g_prev = static_cast<float>(rgb_prev >>  8 & 0x1F);
+         float b_prev = static_cast<float>(rgb_prev       & 0x1F);
+#endif
+         // Mix colours for current frame and convert back to unsigned
+         unsigned r_mix = static_cast<unsigned>(((r * 0.5) + (r_prev * 0.5)) + 0.5) & 0x1F;
+         unsigned g_mix = static_cast<unsigned>(((g * 0.5) + (g_prev * 0.5)) + 0.5) & 0x1F;
+         unsigned b_mix = static_cast<unsigned>(((b * 0.5) + (b_prev * 0.5)) + 0.5) & 0x1F;
+         
+         // Repack colours for current frame
+#ifdef VIDEO_RGB565
+         video_buf[buff_index] = r_mix << 11 | g_mix << 6 | b_mix;
+#else
+         video_buf[buff_index] = r_mix << 16 | g_mix << 8 | b_mix;
 #endif
       }
       offset += video_pitch;
@@ -1149,8 +1211,18 @@ void retro_run()
    render_audio(sound_buf.i16, samples);
 #endif
 
-   if (blur_motion) {
-      mix_frames();
+   switch (mix_frames_mode)
+   {
+      case 1:
+         mix_frames_accurate();
+         break;
+      case 2:
+         mix_frames_fast();
+         break;
+      default:
+         // Do nothing
+         // (defensive coding - could remove this...)
+         break;
    }
 
 #ifdef VIDEO_RGB565
