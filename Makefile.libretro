@@ -624,7 +624,6 @@ endif
 endif
 
 $(TARGET): $(OBJS)
-	@echo "** BUILDING $(TARGET) FOR PLATFORM $(platform) **"
 ifeq ($(STATIC_LINKING), 1)
 ifneq (,$(findstring msvc,$(platform)))
 	$(LD) $(LINKOUT)$@ $(OBJECTS)
@@ -634,7 +633,6 @@ endif
 else
 	$(LD) $(LINKOUT)$@ $(SHARED) $(OBJS) $(LDFLAGS) $(LIBS)
 endif
-	@echo "** BUILD SUCCESSFUL! GG NO RE **"
 
 %.o: %.cpp
 	$(CXX) -c $(OBJOUT)$@ $< $(CPPFLAGS) $(CXXFLAGS) $(INCFLAGS)
