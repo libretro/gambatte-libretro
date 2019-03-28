@@ -155,6 +155,7 @@ class LCD
 
       void setColorCorrection(bool colorCorrection);
       void setColorCorrectionMode(unsigned colorCorrectionMode);
+      void setColorCorrectionBrightness(float colorCorrectionBrightness);
       void setDarkFilterLevel(unsigned darkFilterLevel);
       video_pixel_t gbcToRgb32(const unsigned bgr15);
    private:
@@ -228,6 +229,7 @@ class LCD
 
       bool colorCorrection;
       unsigned colorCorrectionMode;
+      float colorCorrectionBrightness;
       unsigned darkFilterLevel;
       void doCgbColorChange(unsigned char *const pdata,
             video_pixel_t *const palette, unsigned index, const unsigned data);

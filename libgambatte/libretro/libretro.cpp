@@ -366,6 +366,7 @@ Special 3"
 }, // So many... place on seperate lines for readability...
       { "gambatte_gbc_color_correction", "Color correction; GBC only|always|disabled" },
       { "gambatte_gbc_color_correction_mode", "Color correction mode; accurate|fast" },
+      { "gambatte_gbc_frontlight_position", "Color correction - frontlight position; central|above screen|below screen" },
       { "gambatte_dark_filter_level", "Dark Filter Level (percent); 0|5|10|15|20|25|30|35|40|45|50" },
       { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
       { "gambatte_gb_bootloader", "Use official bootloader (restart); enabled|disabled" },
@@ -625,6 +626,18 @@ static void check_variables(void)
       colorCorrectionMode = 1;
    }
    gb.setColorCorrectionMode(colorCorrectionMode);
+   
+   float colorCorrectionBrightness = 0.5f; /* central */
+   var.key   = "gambatte_gbc_frontlight_position";
+   var.value = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "above screen"))
+         colorCorrectionBrightness = 1.2f;
+      else if (!strcmp(var.value, "below screen"))
+         colorCorrectionBrightness = 0.0f;
+   }
+   gb.setColorCorrectionBrightness(colorCorrectionBrightness);
    
    unsigned darkFilterLevel = 0;
    var.key   = "gambatte_dark_filter_level";

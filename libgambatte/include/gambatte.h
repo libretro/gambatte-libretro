@@ -114,6 +114,7 @@ public:
 
    void setColorCorrection(bool enable);
    void setColorCorrectionMode(unsigned colorCorrectionMode);
+   void setColorCorrectionBrightness(float colorCorrectionBrightness);
    void setDarkFilterLevel(unsigned darkFilterLevel);
    video_pixel_t gbcToRgb32(const unsigned bgr15);
 
