@@ -158,6 +158,10 @@ void GB::setColorCorrectionMode(unsigned colorCorrectionMode) {
    p_->cpu.mem_.display_setColorCorrectionMode(colorCorrectionMode);
 }
 
+void GB::setColorCorrectionBrightness(float colorCorrectionBrightness) {
+   p_->cpu.mem_.display_setColorCorrectionBrightness(colorCorrectionBrightness);
+}
+
 void GB::setDarkFilterLevel(unsigned darkFilterLevel) {
    p_->cpu.mem_.display_setDarkFilterLevel(darkFilterLevel);
 }

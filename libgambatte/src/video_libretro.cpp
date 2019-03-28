@@ -22,6 +22,17 @@
 #include <algorithm>
 #include <cmath>
 
+/* GBC colour correction factors */
+#define GBC_CC_R  0.87
+#define GBC_CC_G  0.66
+#define GBC_CC_B  0.79
+#define GBC_CC_RG 0.115
+#define GBC_CC_RB 0.14
+#define GBC_CC_GR 0.18
+#define GBC_CC_GB 0.07
+#define GBC_CC_BR -0.05
+#define GBC_CC_BG 0.225
+
 namespace gambatte
 {
    void LCD::setDmgPaletteColor(const unsigned index, const video_pixel_t rgb32)
@@ -50,6 +61,12 @@ namespace gambatte
       // (e.g. a special GBA colour correction mode for when the GBA
       // flag is set in Shantae/Zelda: Oracle/etc.)
       colorCorrectionMode = colorCorrectionMode_;
+      refreshPalettes();
+   }
+   
+   void LCD::setColorCorrectionBrightness(float colorCorrectionBrightness_)
+   {
+      colorCorrectionBrightness = colorCorrectionBrightness_;
       refreshPalettes();
    }
    
@@ -146,16 +163,16 @@ namespace gambatte
       //
       // Constants
       // > Luminosity factors: photometric/digital ITU BT.709
-      static const float lumaR = 0.2126;
-      static const float lumaG = 0.7152;
-      static const float lumaB = 0.0722;
+      static const float lumaR = 0.2126f;
+      static const float lumaG = 0.7152f;
+      static const float lumaB = 0.0722f;
       // Calculate luminosity
       float luma = (lumaR * r) + (lumaG * g) + (lumaB * b);
       // Get 'darkness' scaling factor
       // > User set 'dark filter' level scaled by current luminosity
       //   (i.e. lighter colours affected more than darker colours)
-      float darkFactor = 1.0 - ((static_cast<float>(darkFilterLevel) * 0.01) * luma);
-      darkFactor = darkFactor < 0.0 ? 0.0 : darkFactor;
+      float darkFactor = 1.0f - ((static_cast<float>(darkFilterLevel) * 0.01f) * luma);
+      darkFactor = darkFactor < 0.0f ? 0.0f : darkFactor;
       // Perform scaling...
       r = r * darkFactor;
       g = g * darkFactor;
@@ -193,7 +210,7 @@ namespace gambatte
          else
          {
             // Use Pokefan531's "gold standard" GBC colour correction
-            // (https://forums.libretro.com/t/real-gba-and-ds-phat-colors/1540/159)
+            // (https://forums.libretro.com/t/real-gba-and-ds-phat-colors/1540/174)
             // NB: The results produced by this implementation are ever so slightly
             // different from the output of the gbc-colour shader. This is due to the
             // fact that we have to tolerate rounding errors here that are simply not
@@ -206,17 +223,26 @@ namespace gambatte
             static const float targetGamma = 2.2;
             static const float displayGammaInv = 1.0 / targetGamma;
             // Perform gamma expansion
-            float rCorrect = std::pow(static_cast<float>(r) * rgbMaxInv, targetGamma);
-            float gCorrect = std::pow(static_cast<float>(g) * rgbMaxInv, targetGamma);
-            float bCorrect = std::pow(static_cast<float>(b) * rgbMaxInv, targetGamma);
-            // Perform colour mangling (lots of magic numbers...)
-            rCorrect = (0.86629 * rCorrect) + (0.13361 * gCorrect);
-            gCorrect = (0.02429 * rCorrect) + (0.70857 * gCorrect) + (0.26714 * bCorrect);
-            bCorrect = (0.11337 * rCorrect) + (0.11448 * gCorrect) + (0.77215 * bCorrect);
+            float adjustedGamma = targetGamma - colorCorrectionBrightness;
+            float rFloat = std::pow(static_cast<float>(r) * rgbMaxInv, adjustedGamma);
+            float gFloat = std::pow(static_cast<float>(g) * rgbMaxInv, adjustedGamma);
+            float bFloat = std::pow(static_cast<float>(b) * rgbMaxInv, adjustedGamma);
+            // Perform colour mangling
+            float rCorrect = (GBC_CC_R  * rFloat) + (GBC_CC_GR * gFloat) + (GBC_CC_BR * bFloat);
+            float gCorrect = (GBC_CC_RG * rFloat) + (GBC_CC_G  * gFloat) + (GBC_CC_BG * bFloat);
+            float bCorrect = (GBC_CC_RB * rFloat) + (GBC_CC_GB * gFloat) + (GBC_CC_B  * bFloat);
+            // Range check...
+            rCorrect = rCorrect > 0.0f ? rCorrect : 0.0f;
+            gCorrect = gCorrect > 0.0f ? gCorrect : 0.0f;
+            bCorrect = bCorrect > 0.0f ? bCorrect : 0.0f;
             // Perform gamma compression
             rCorrect = std::pow(rCorrect, displayGammaInv);
             gCorrect = std::pow(gCorrect, displayGammaInv);
             bCorrect = std::pow(bCorrect, displayGammaInv);
+            // Range check...
+            rCorrect = rCorrect > 1.0f ? 1.0f : rCorrect;
+            gCorrect = gCorrect > 1.0f ? 1.0f : gCorrect;
+            bCorrect = bCorrect > 1.0f ? 1.0f : bCorrect;
             // Perform image darkening, if required
             if (darkFilterLevel > 0)
             {
