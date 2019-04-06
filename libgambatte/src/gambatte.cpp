@@ -196,6 +196,10 @@ void *GB::rambank1_ptr() const {
  return p_->cpu.rambank1_ptr();
 }
 
+void *GB::bankedram_ptr() const {
+ return p_->cpu.bankedram_ptr();
+}
+
 void *GB::rombank0_ptr() const {
  return p_->cpu.rombank0_ptr();
 }

@@ -134,6 +134,7 @@ public:
    void *vram_ptr() const;
    void *rambank0_ptr() const;
    void *rambank1_ptr() const;
+   void *bankedram_ptr() const;
    void *rombank0_ptr() const;
    void *rombank1_ptr() const;
    void *zeropage_ptr() const;

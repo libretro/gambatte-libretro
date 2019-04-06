@@ -981,14 +981,14 @@ bool retro_load_game(const struct retro_game_info *info)
 
    struct retro_memory_descriptor descs[] =
    {
-      { mainram, gb.rambank0_ptr(), 0, 0xC000,               0, 0, 0x1000,                        NULL },
-      { mainram, gb.rambank1_ptr(), 0, 0xD000,               0, 0, 0x1000,                        NULL },
-      { mainram, gb.zeropage_ptr(), 0, 0xFF80,               0, 0, 0x0080,                        NULL },
-      {       0, gb.savedata_ptr(), 0, 0xA000, (size_t)~0x1FFF, 0, sramlen,                       NULL },
-      {       0, gb.vram_ptr(),     0, 0x8000,               0, 0, 0x2000,                        NULL },
-      {       0, gb.oamram_ptr(),   0, 0xFE00,               0, 0, 0x00A0,                        NULL },
-      {     rom, gb.rombank0_ptr(), 0, 0x0000,               0, 0, 0x4000,                        NULL },
-      {     rom, gb.rombank1_ptr(), 0, 0x4000,               0, 0, 0x4000,                        NULL },
+      { mainram, gb.rambank0_ptr(),  0, 0xC000,               0, 0, 0x1000,                        NULL },
+      { mainram, gb.bankedram_ptr(), 0, 0xD000,               0, 0, 0x1000,                        NULL },
+      { mainram, gb.zeropage_ptr(),  0, 0xFF80,               0, 0, 0x0080,                        NULL },
+      {       0, gb.savedata_ptr(),  0, 0xA000, (size_t)~0x1FFF, 0, sramlen,                       NULL },
+      {       0, gb.vram_ptr(),      0, 0x8000,               0, 0, 0x2000,                        NULL },
+      {       0, gb.oamram_ptr(),    0, 0xFE00,               0, 0, 0x00A0,                        NULL },
+      {     rom, gb.rombank0_ptr(),  0, 0x0000,               0, 0, 0x4000,                        NULL },
+      {     rom, gb.rombank1_ptr(),  0, 0x4000,               0, 0, 0x4000,                        NULL },
    };
    
    struct retro_memory_map mmaps =
