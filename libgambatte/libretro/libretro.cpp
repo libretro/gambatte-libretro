@@ -995,7 +995,7 @@ bool retro_load_game(const struct retro_game_info *info)
    struct retro_memory_map mmaps =
    {
       descs,
-      sizeof(descs) / sizeof(descs[0]) - (sramlen == 0)
+      sizeof(descs) / sizeof(descs[0])
    };
    
    environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &mmaps);
