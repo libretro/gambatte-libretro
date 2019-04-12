@@ -1049,10 +1049,13 @@ size_t retro_get_memory_size(unsigned id)
           * libgambatte/src/memory/cartridge.cpp not changing
           * the call to memptrs.reset, but this is 
           * probably mostly safe.
+	  *
+	  * The size is fetched before the system can be set to
+	  * GBC, so we overestimate the size when in GB mode.
           *
           * GBC will probably not get a
           * hardware upgrade anytime soon. */
-         return (gb.isCgb() ? 8 : 2) * 0x1000ul;
+         return 8 * 0x1000ul;
    }
 
    return 0;
