@@ -50,6 +50,7 @@ public:
    void *vram_ptr() const { return mem_.vram_ptr(); }
    void *rambank0_ptr() const { return mem_.rambank0_ptr(); }
    void *rambank1_ptr() const { return mem_.rambank1_ptr(); }
+   void *rambank2_ptr() const { return mem_.rambank2_ptr(); }
    void *bankedram_ptr() const { return mem_.bankedram_ptr(); }
    void *rombank0_ptr() const { return mem_.rombank0_ptr(); }
    void *rombank1_ptr() const { return mem_.rombank1_ptr(); }
