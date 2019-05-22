@@ -49,7 +49,6 @@ static int asHex(char c) {
 
 void Interrupter::setGameShark(std::string const &codes) {
 	std::string code;
-	gsCodes_.clear();
 
 	for (std::size_t pos = 0; pos < codes.length(); pos += code.length() + 1) {
 		code = codes.substr(pos, codes.find(';', pos) - pos);
@@ -64,6 +63,10 @@ void Interrupter::setGameShark(std::string const &codes) {
 			gsCodes_.push_back(gs);
 		}
 	}
+}
+
+void Interrupter::clearCheats() {
+	gsCodes_.clear();
 }
 
 void Interrupter::applyVblankCheats(unsigned long const cc, Memory &memory) {

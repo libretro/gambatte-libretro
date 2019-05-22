@@ -81,9 +81,4 @@ namespace gambatte
       return 0;
    }
 
-   void Cartridge::clearCheats()
-   {
-      ggUndoList_.clear();
-   }
-
 }

@@ -1170,7 +1170,7 @@ int Memory::loadROM(const void *romdata, unsigned int romsize, unsigned int forc
       return fail;
    psg_.init(cart_.isCgb());
    lcd_.reset(ioamhram_, cart_.vramdata(), cart_.isCgb());
-   interrupter_.setGameShark(std::string());
+   interrupter_.clearCheats();
    return 0;
 }
 

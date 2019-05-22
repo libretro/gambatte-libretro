@@ -678,19 +678,22 @@ namespace gambatte
       if (loaded())
 #endif
       {
-         for (std::vector<AddrData>::reverse_iterator it = ggUndoList_.rbegin(), end = ggUndoList_.rend(); it != end; ++it)
-         {
-            if (memptrs_.romdata() + it->addr < memptrs_.romdataend())
-               memptrs_.romdata()[it->addr] = it->data;
-         }
-
-         ggUndoList_.clear();
-
          std::string code;
          for (std::size_t pos = 0; pos < codes.length()
                && (code = codes.substr(pos, codes.find(';', pos) - pos), true); pos += code.length() + 1)
             applyGameGenie(code);
       }
+   }
+
+   void Cartridge::clearCheats()
+   {
+       for (std::vector<AddrData>::reverse_iterator it = ggUndoList_.rbegin(), end = ggUndoList_.rend(); it != end; ++it)
+          {
+             if (memptrs_.romdata() + it->addr < memptrs_.romdataend())
+                memptrs_.romdata()[it->addr] = it->data;
+          }
+
+       ggUndoList_.clear();
    }
 
 }

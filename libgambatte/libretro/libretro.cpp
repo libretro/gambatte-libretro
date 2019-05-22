@@ -23,6 +23,7 @@
 #include <cstdlib>
 #include <string>
 #include <cstring>
+#include <algorithm>
 
 #ifdef _3DS
 extern "C" void* linearMemAlign(size_t size, size_t alignment);
@@ -468,11 +469,15 @@ void retro_cheat_reset()
 
 void retro_cheat_set(unsigned index, bool enabled, const char *code)
 {
-   std::string s = code;
-   if (s.find("-") != std::string::npos)
-      gb.setGameGenie(code);
-   else
-      gb.setGameShark(code);
+   std::string code_str(code);
+
+   replace(code_str.begin(), code_str.end(), '+', ';');
+
+   if (code_str.find("-") != std::string::npos) {
+      gb.setGameGenie(code_str);
+   } else {
+      gb.setGameShark(code_str);
+   }
 }
 
    
