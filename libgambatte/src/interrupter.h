@@ -37,6 +37,7 @@ public:
 	Interrupter(unsigned short &sp, unsigned short &pc);
 	unsigned long interrupt(unsigned address, unsigned long cycleCounter, Memory &memory);
 	void setGameShark(std::string const &codes);
+	void clearCheats();
 
 private:
 	unsigned short &sp_;
