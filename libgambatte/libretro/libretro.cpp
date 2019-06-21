@@ -40,6 +40,8 @@ static gambatte::video_pixel_t* video_buf;
 static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
 
+static bool libretro_supports_bitmasks = false;
+
 static bool up_down_allowed = false;
 static bool rom_loaded = false;
 
@@ -157,9 +159,19 @@ class SNESInput : public gambatte::InputGetter
    public:
       unsigned operator()()
       {
+         unsigned i;
          unsigned res = 0;
-         for (unsigned i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
-            res |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes) ? input::btn_map[i].gb : 0;
+         if (libretro_supports_bitmasks)
+         {
+            int16_t ret = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
+            for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
+               res |= (ret & (1 << i)) ? input::btn_map[i].gb : 0;
+         }
+         else
+         {
+            for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
+               res |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes) ? input::btn_map[i].gb : 0;
+         }
 
          if (!up_down_allowed)
          {
@@ -289,9 +301,12 @@ void retro_init(void)
    else
       use_official_bootloader = false;
 
+   if (environ_cb(RETRO_ENVIRONMENT_GET_INPUT_BITMASKS, NULL))
+      libretro_supports_bitmasks = true;
+
 }
 
-void retro_deinit()
+void retro_deinit(void)
 {
 #ifndef CC_RESAMPLER
    blipper_free(resampler_l);
@@ -303,6 +318,7 @@ void retro_deinit()
    free(video_buf);
 #endif
    video_buf = NULL;
+   libretro_supports_bitmasks = false;
 }
 
 void retro_set_environment(retro_environment_t cb)
