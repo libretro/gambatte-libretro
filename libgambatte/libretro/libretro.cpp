@@ -165,7 +165,7 @@ class SNESInput : public gambatte::InputGetter
          {
             int16_t ret = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
             for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
-               res |= (ret & (1 << i)) ? input::btn_map[i].gb : 0;
+               res |= (ret & (1 << input::btn_map[i].snes)) ? input::btn_map[i].gb : 0;
          }
          else
          {
