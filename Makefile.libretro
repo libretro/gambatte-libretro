@@ -20,6 +20,8 @@ ifeq ($(platform),)
       platform = win
    else ifneq ($(findstring Darwin,$(shell uname -s)),)
       platform = osx
+      OSX_CLTOOLS_VER = $(shell pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | awk '/version: ([0-9.]+)/ {print $$2}')
+      OSX_CLTOOLS_VER_MAJOR = $(shell echo $(OSX_TOOLS_VER) | cut -f1 -d.)
    else ifneq ($(findstring win,$(shell uname -s)),)
       platform = win
    endif
@@ -39,6 +41,8 @@ core_installdir := $(prefix)/lib
 ifeq ($(ARCHFLAGS),)
    ifeq ($(archs),ppc)
       ARCHFLAGS = -arch ppc -arch ppc64
+   else ifeq (true,$(shell [ $(OSX_CLTOOLS_VER_MAJOR) -ge 10 ] && echo true))
+      ARCHFLAGS = -arch x86_64
    else
       ARCHFLAGS = -arch i386 -arch x86_64
    endif
