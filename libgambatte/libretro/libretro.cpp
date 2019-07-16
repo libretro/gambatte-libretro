@@ -1006,11 +1006,12 @@ bool retro_load_game(const struct retro_game_info *info)
       { mainram, gb.rambank1_ptr(),  0, 0xD000,               0, 0, 0x1000,                        NULL },
       { mainram, gb.zeropage_ptr(),  0, 0xFF80,               0, 0, 0x0080,                        NULL },
       {       0, gb.vram_ptr(),      0, 0x8000,               0, 0, 0x2000,                        NULL },
-      {       0, gb.oamram_ptr(),    0, 0xFE00,               0, 0, 0x00A0,                        NULL },
+      {       0, gb.oamram_ptr(),    0, 0xFE00,      0xFFFFFF00, 0, 0x00A0,                        NULL },
       {     rom, gb.rombank0_ptr(),  0, 0x0000,               0, 0, 0x4000,                        NULL },
       {     rom, gb.rombank1_ptr(),  0, 0x4000,               0, 0, 0x4000,                        NULL },
       {       0, gb.savedata_ptr(),  0, 0xA000, (size_t)~0x1FFF, 0, sramlen,                       NULL },
-      { mainram, gb.rambank2_ptr(),  0, 0x10000,              0, 0, gb.isCgb() ? 0x6000 : 0,       NULL },
+      { mainram, gb.rambank2_ptr(),  0, 0x10000,     0xFFFF0000, 0, gb.isCgb() ? 0x6000 : 0,       NULL },
+      {       0, gb.oamram_ptr(), 0x100, 0xFF00,     0xFFFFFF00, 0, 0x0080,                        NULL },
    };
    
    struct retro_memory_map mmaps =
