@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include <libretro.h>
+#include <libretro_core_options.h>
 #include "blipper.h"
 #include "gambatte.h"
 #include "gbcpalettes.h"
@@ -41,6 +42,8 @@ static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
 
 static bool libretro_supports_bitmasks = false;
+
+static bool show_gb_link_settings = true;
 
 static bool up_down_allowed = false;
 static bool rom_loaded = false;
@@ -326,80 +329,7 @@ void retro_set_environment(retro_environment_t cb)
    struct retro_vfs_interface_info vfs_iface_info;
    environ_cb = cb;
 
-   static const struct retro_variable vars[] = {
-      { "gambatte_up_down_allowed", "Allow Opposing Directions; disabled|enabled" },
-      { "gambatte_gb_colorization", "GB Colorization; disabled|auto|GBC|SGB|internal|custom" },
-      { "gambatte_gb_internal_palette", "Internal Palette; \
-GB - DMG|\
-GB - Pocket|\
-GB - Light|\
-GBC - Blue|\
-GBC - Brown|\
-GBC - Dark Blue|\
-GBC - Dark Brown|\
-GBC - Dark Green|\
-GBC - Grayscale|\
-GBC - Green|\
-GBC - Inverted|\
-GBC - Orange|\
-GBC - Pastel Mix|\
-GBC - Red|\
-GBC - Yellow|\
-SGB - 1A|\
-SGB - 1B|\
-SGB - 1C|\
-SGB - 1D|\
-SGB - 1E|\
-SGB - 1F|\
-SGB - 1G|\
-SGB - 1H|\
-SGB - 2A|\
-SGB - 2B|\
-SGB - 2C|\
-SGB - 2D|\
-SGB - 2E|\
-SGB - 2F|\
-SGB - 2G|\
-SGB - 2H|\
-SGB - 3A|\
-SGB - 3B|\
-SGB - 3C|\
-SGB - 3D|\
-SGB - 3E|\
-SGB - 3F|\
-SGB - 3G|\
-SGB - 3H|\
-SGB - 4A|\
-SGB - 4B|\
-SGB - 4C|\
-SGB - 4D|\
-SGB - 4E|\
-SGB - 4F|\
-SGB - 4G|\
-SGB - 4H|\
-Special 1|\
-Special 2|\
-Special 3"
-}, // So many... place on seperate lines for readability...
-      { "gambatte_gbc_color_correction", "Color correction; GBC only|always|disabled" },
-      { "gambatte_gbc_color_correction_mode", "Color correction mode; accurate|fast" },
-      { "gambatte_gbc_frontlight_position", "Color correction - frontlight position; central|above screen|below screen" },
-      { "gambatte_dark_filter_level", "Dark Filter Level (percent); 0|5|10|15|20|25|30|35|40|45|50" },
-      { "gambatte_gb_hwmode", "Emulated hardware (restart); Auto|GB|GBC|GBA" },
-      { "gambatte_gb_bootloader", "Use official bootloader (restart); enabled|disabled" },
-      { "gambatte_mix_frames", "Mix frames; disabled|accurate|fast" },
-#ifdef HAVE_NETWORK
-      { "gambatte_gb_link_mode", "GameBoy Link Mode; Not Connected|Network Server|Network Client" },
-      { "gambatte_gb_link_network_port", "Network Link Port; 56400|56401|56402|56403|56404|56405|56406|56407|56408|56409|56410|56411|56412|56413|56414|56415|56416|56417|56418|56419|56420" },
-      { "gambatte_gb_link_network_server_ip_octet1", "Network link server address part 1 (client only); 0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160|161|162|163|164|165|166|167|168|169|170|171|172|173|174|175|176|177|178|179|180|181|182|183|184|185|186|187|188|189|190|191|192|193|194|195|196|197|198|199|200|201|202|203|204|205|206|207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|224|225|226|227|228|229|230|231|232|233|234|235|236|237|238|239|240|241|242|243|244|245|246|247|248|249|250|251|252|253|254|255" },
-      { "gambatte_gb_link_network_server_ip_octet2", "Network link server address part 2 (client only); 0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160|161|162|163|164|165|166|167|168|169|170|171|172|173|174|175|176|177|178|179|180|181|182|183|184|185|186|187|188|189|190|191|192|193|194|195|196|197|198|199|200|201|202|203|204|205|206|207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|224|225|226|227|228|229|230|231|232|233|234|235|236|237|238|239|240|241|242|243|244|245|246|247|248|249|250|251|252|253|254|255" },
-      { "gambatte_gb_link_network_server_ip_octet3", "Network link server address part 3 (client only); 0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160|161|162|163|164|165|166|167|168|169|170|171|172|173|174|175|176|177|178|179|180|181|182|183|184|185|186|187|188|189|190|191|192|193|194|195|196|197|198|199|200|201|202|203|204|205|206|207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|224|225|226|227|228|229|230|231|232|233|234|235|236|237|238|239|240|241|242|243|244|245|246|247|248|249|250|251|252|253|254|255" },
-      { "gambatte_gb_link_network_server_ip_octet4", "Network link server address part 4 (client only); 0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105|106|107|108|109|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149|150|151|152|153|154|155|156|157|158|159|160|161|162|163|164|165|166|167|168|169|170|171|172|173|174|175|176|177|178|179|180|181|182|183|184|185|186|187|188|189|190|191|192|193|194|195|196|197|198|199|200|201|202|203|204|205|206|207|208|209|210|211|212|213|214|215|216|217|218|219|220|221|222|223|224|225|226|227|228|229|230|231|232|233|234|235|236|237|238|239|240|241|242|243|244|245|246|247|248|249|250|251|252|253|254|255" },
-#endif
-      { NULL, NULL },
-   };
-
-   cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void*)vars);
+   libretro_set_core_options(environ_cb);
 
    vfs_iface_info.required_interface_version = 1;
    vfs_iface_info.iface                      = NULL;
@@ -629,6 +559,8 @@ static void load_custom_palette(void)
 
 static void check_variables(void)
 {
+   unsigned i, j;
+
    unsigned colorCorrection = 0;
    struct retro_variable var = {0};
    var.key = "gambatte_gbc_color_correction";
@@ -700,8 +632,10 @@ static void check_variables(void)
    }
 
 #ifdef HAVE_NETWORK
+
    gb_serialMode = SERIAL_NONE;
    var.key = "gambatte_gb_link_mode";
+   var.value = NULL;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
       if (!strcmp(var.value, "Network Server")) {
          gb_serialMode = SERIAL_SERVER;
@@ -711,26 +645,47 @@ static void check_variables(void)
    }
 
    var.key = "gambatte_gb_link_network_port";
+   var.value = NULL;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
       gb_NetworkPort=atoi(var.value);
    }
 
+   unsigned ip_index = 1;
    gb_NetworkClientAddr = "";
-   var.key = "gambatte_gb_link_network_server_ip_octet1";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-      gb_NetworkClientAddr += std::string(var.value);
-   }
-   var.key = "gambatte_gb_link_network_server_ip_octet2";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-      gb_NetworkClientAddr += "." + std::string(var.value);
-   }
-   var.key = "gambatte_gb_link_network_server_ip_octet3";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-      gb_NetworkClientAddr += "." + std::string(var.value);
-   }
-   var.key = "gambatte_gb_link_network_server_ip_octet4";
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-      gb_NetworkClientAddr += "." + std::string(var.value);
+
+   for (i = 0; i < 4; i++)
+   {
+      std::string octet = "0";
+      char tmp[8] = {0};
+
+      for (j = 0; j < 3; j++)
+      {
+         char key[64] = {0};
+
+         /* Should be using std::to_string() here, but some
+          * compilers don't support it... */
+         sprintf(key, "%s%u",
+              "gambatte_gb_link_network_server_ip_", ip_index);
+
+         var.key = key;
+         var.value = NULL;
+
+         if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+            octet += std::string(var.value);
+
+         ip_index++;
+      }
+
+      /* Remove leading zeros
+       * Should be using std::stoul() here, but some compilers
+       * don't support it... */
+      sprintf(tmp, "%u", atoi(octet.c_str()));
+      octet = std::string(tmp);
+
+      if (i < 3)
+         octet += ".";
+
+      gb_NetworkClientAddr += octet;
    }
 
    switch(gb_serialMode)
@@ -748,6 +703,48 @@ static void check_variables(void)
          gb.setSerialIO(NULL);
          break;
    }
+
+   /* Show/hide core options */
+
+   var.key = "gambatte_show_gb_link_settings";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      bool show_gb_link_settings_prev = show_gb_link_settings;
+
+      show_gb_link_settings = true;
+      if (strcmp(var.value, "disabled") == 0)
+         show_gb_link_settings = false;
+
+      if (show_gb_link_settings != show_gb_link_settings_prev)
+      {
+         struct retro_core_option_display option_display;
+
+         option_display.visible = show_gb_link_settings;
+
+         option_display.key = "gambatte_gb_link_mode";
+         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
+
+         option_display.key = "gambatte_gb_link_network_port";
+         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
+
+         for (i = 0; i < 12; i++)
+         {
+            char key[64] = {0};
+
+            /* Should be using std::to_string() here, but some
+             * compilers don't support it... */
+            sprintf(key, "%s%u",
+                 "gambatte_gb_link_network_server_ip_", i + 1);
+
+            option_display.key = key;
+
+            environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
+         }
+      }
+   }
+
 #endif
 
    var.key = "gambatte_gb_colorization";
