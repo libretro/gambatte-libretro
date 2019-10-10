@@ -571,12 +571,473 @@ static const unsigned short sgb4H[] = {
 	PACK15_4(0xF8F8C8, 0xB8C058, 0x808840, 0x405028)
 };
 
+//
+// Palettes by TheWolfBunny
+// https://www.deviantart.com/thewolfbunny/gallery/69987002/game-boy-palettes
+//
+static const unsigned short twb_756_production[] = {
+	PACK15_4(0xBBC4E4, 0x82899F, 0x4A4E5B, 0x121316),
+	PACK15_4(0xBBC4E4, 0x82899F, 0x4A4E5B, 0x121316),
+	PACK15_4(0xBBC4E4, 0x82899F, 0x4A4E5B, 0x121316)
+};
+
+static const unsigned short twb_akb48_pink[] = {
+	PACK15_4(0xF596B4, 0xAB697D, 0x623C48, 0x180F12),
+	PACK15_4(0xF596B4, 0xAB697D, 0x623C48, 0x180F12),
+	PACK15_4(0xF596B4, 0xAB697D, 0x623C48, 0x180F12)
+};
+
+static const unsigned short twb_angry_volcano[] = {
+	PACK15_4(0xF8B800, 0xF83800, 0xA81000, 0x1C0000),
+	PACK15_4(0xF8B800, 0xF83800, 0xA81000, 0x1C0000),
+	PACK15_4(0xF8B800, 0xF83800, 0xA81000, 0x1C0000)
+};
+
+static const unsigned short twb_anime_expo[] = {
+	PACK15_4(0xE5EAEB, 0x9BA3A6, 0x656E72, 0x242A2D),
+	PACK15_4(0xE5EAEB, 0x9BA3A6, 0x656E72, 0x242A2D),
+	PACK15_4(0xE5EAEB, 0x9BA3A6, 0x656E72, 0x242A2D)
+};
+
+static const unsigned short twb_aqours_blue[] = {
+	PACK15_4(0x009FE8, 0x006FA2, 0x003F5C, 0x000F17),
+	PACK15_4(0x009FE8, 0x006FA2, 0x003F5C, 0x000F17),
+	PACK15_4(0x009FE8, 0x006FA2, 0x003F5C, 0x000F17)
+};
+
+static const unsigned short twb_aquatic_iro[] = {
+	PACK15_4(0xA0D8EF, 0x2CA9E1, 0x3E62AD, 0x192F60),
+	PACK15_4(0xA0D8EF, 0x2CA9E1, 0x3E62AD, 0x192F60),
+	PACK15_4(0xA0D8EF, 0x2CA9E1, 0x3E62AD, 0x192F60)
+};
+
+static const unsigned short twb_bandai_namco[] = {
+	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000),
+	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000),
+	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000)
+};
+
+static const unsigned short twb_blossom_pink[] = {
+	PACK15_4(0xF09898, 0xA86A6A, 0x603C3C, 0x180F0F),
+	PACK15_4(0xF09898, 0xA86A6A, 0x603C3C, 0x180F0F),
+	PACK15_4(0xF09898, 0xA86A6A, 0x603C3C, 0x180F0F)
+};
+
+static const unsigned short twb_bubbles_blue[] = {
+	PACK15_4(0x88D0F0, 0x5F91A8, 0x365360, 0x0D1418),
+	PACK15_4(0x88D0F0, 0x5F91A8, 0x365360, 0x0D1418),
+	PACK15_4(0x88D0F0, 0x5F91A8, 0x365360, 0x0D1418)
+};
+
+static const unsigned short twb_builder_yellow[] = {
+	PACK15_4(0xFACD00, 0xAF8F00, 0x645200, 0x191400),
+	PACK15_4(0xFACD00, 0xAF8F00, 0x645200, 0x191400),
+	PACK15_4(0xFACD00, 0xAF8F00, 0x645200, 0x191400)
+};
+
+static const unsigned short twb_buttercup_green[] = {
+	PACK15_4(0xB8E088, 0x809C5F, 0x495936, 0x12160D),
+	PACK15_4(0xB8E088, 0x809C5F, 0x495936, 0x12160D),
+	PACK15_4(0xB8E088, 0x809C5F, 0x495936, 0x12160D)
+};
+
+static const unsigned short twb_camouflage[] = {
+	PACK15_4(0xBCAB90, 0xAC7E54, 0x79533D, 0x373538),
+	PACK15_4(0xBCAB90, 0xAC7E54, 0x79533D, 0x373538),
+	PACK15_4(0xBCAB90, 0xAC7E54, 0x79533D, 0x373538)
+};
+
+static const unsigned short twb_cardcaptor_pink[] = {
+	PACK15_4(0xF2F4F7, 0xEAC3D6, 0xE10E82, 0x460428),
+	PACK15_4(0xF2F4F7, 0xEAC3D6, 0xE10E82, 0x460428),
+	PACK15_4(0xF2F4F7, 0xEAC3D6, 0xE10E82, 0x460428)
+};
+
+static const unsigned short twb_christmas[] = {
+	PACK15_4(0xCBB96A, 0x20A465, 0xA03232, 0x100505),
+	PACK15_4(0xCBB96A, 0x20A465, 0xA03232, 0x100505),
+	PACK15_4(0xCBB96A, 0x20A465, 0xA03232, 0x100505)
+};
+
+static const unsigned short twb_crunchyroll_orange[] = {
+	PACK15_4(0xF78C25, 0xAC6219, 0x62380E, 0x180E03),
+	PACK15_4(0xF78C25, 0xAC6219, 0x62380E, 0x180E03),
+	PACK15_4(0xF78C25, 0xAC6219, 0x62380E, 0x180E03)
+};
+
+static const unsigned short twb_digivice[] = {
+	PACK15_4(0x8C8C73, 0x646453, 0x38382E, 0x000000),
+	PACK15_4(0x8C8C73, 0x646453, 0x38382E, 0x000000),
+	PACK15_4(0x8C8C73, 0x646453, 0x38382E, 0x000000)
+};
+
+static const unsigned short twb_do_the_dew[] = {
+	PACK15_4(0xFFFFFF, 0xA1D23F, 0xD82A34, 0x29673C),
+	PACK15_4(0xFFFFFF, 0xA1D23F, 0xD82A34, 0x29673C),
+	PACK15_4(0xFFFFFF, 0xA1D23F, 0xD82A34, 0x29673C)
+};
+
+static const unsigned short twb_eevee_brown[] = {
+	PACK15_4(0xC88D32, 0x8C6223, 0x503814, 0x140E05),
+	PACK15_4(0xC88D32, 0x8C6223, 0x503814, 0x140E05),
+	PACK15_4(0xC88D32, 0x8C6223, 0x503814, 0x140E05)
+};
+
+static const unsigned short twb_fruity_orange[] = {
+	PACK15_4(0xF3BF88, 0xF08300, 0x9F563A, 0x241A08),
+	PACK15_4(0xF3BF88, 0xF08300, 0x9F563A, 0x241A08),
+	PACK15_4(0xF3BF88, 0xF08300, 0x9F563A, 0x241A08)
+};
+
+static const unsigned short twb_game_com[] = {
+	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000),
+	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000),
+	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000)
+};
+
+static const unsigned short twb_game_grump_orange[] = {
+	PACK15_4(0xE9762F, 0xA35220, 0x5D2F12, 0x170B04),
+	PACK15_4(0xE9762F, 0xA35220, 0x5D2F12, 0x170B04),
+	PACK15_4(0xE9762F, 0xA35220, 0x5D2F12, 0x170B04)
+};
+
+static const unsigned short twb_gameking[] = {
+	PACK15_4(0x8CCE94, 0x6B9C63, 0x506541, 0x184221),
+	PACK15_4(0x8CCE94, 0x6B9C63, 0x506541, 0x184221),
+	PACK15_4(0x8CCE94, 0x6B9C63, 0x506541, 0x184221)
+};
+
+static const unsigned short twb_game_master[] = {
+	PACK15_4(0x829FA6, 0x5A787E, 0x384A50, 0x2D2D2B),
+	PACK15_4(0x829FA6, 0x5A787E, 0x384A50, 0x2D2D2B),
+	PACK15_4(0x829FA6, 0x5A787E, 0x384A50, 0x2D2D2B)
+};
+
+static const unsigned short twb_ghostly_aoi[] = {
+	PACK15_4(0x84A2D4, 0x5A79BA, 0x19448E, 0x0F2350),
+	PACK15_4(0x84A2D4, 0x5A79BA, 0x19448E, 0x0F2350),
+	PACK15_4(0x84A2D4, 0x5A79BA, 0x19448E, 0x0F2350)
+};
+
+static const unsigned short twb_golden_wild[] = {
+	PACK15_4(0xB99F65, 0x816F46, 0x4A3F28, 0x120F0A),
+	PACK15_4(0xB99F65, 0x816F46, 0x4A3F28, 0x120F0A),
+	PACK15_4(0xB99F65, 0x816F46, 0x4A3F28, 0x120F0A)
+};
+
+static const unsigned short twb_green_banana[] = {
+	PACK15_4(0x60D808, 0x489800, 0x386838, 0x204800),
+	PACK15_4(0x60D808, 0x489800, 0x386838, 0x204800),
+	PACK15_4(0x60D808, 0x489800, 0x386838, 0x204800)
+};
+
+static const unsigned short twb_greenscale[] = {
+	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C),
+	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C),
+	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C)
+};
+
+static const unsigned short twb_halloween[] = {
+	PACK15_4(0xFFCC00, 0xF68C00, 0x9540A5, 0x0E0610),
+	PACK15_4(0xFFCC00, 0xF68C00, 0x9540A5, 0x0E0610),
+	PACK15_4(0xFFCC00, 0xF68C00, 0x9540A5, 0x0E0610)
+};
+
+static const unsigned short twb_hero_yellow[] = {
+	PACK15_4(0xFFF100, 0xB2A800, 0x666000, 0x191800),
+	PACK15_4(0xFFF100, 0xB2A800, 0x666000, 0x191800),
+	PACK15_4(0xFFF100, 0xB2A800, 0x666000, 0x191800)
+};
+
+static const unsigned short twb_hokage_orange[] = {
+	PACK15_4(0xEA8352, 0xA35B39, 0x5D3420, 0x170D08),
+	PACK15_4(0xEA8352, 0xA35B39, 0x5D3420, 0x170D08),
+	PACK15_4(0xEA8352, 0xA35B39, 0x5D3420, 0x170D08)
+};
+
+static const unsigned short twb_labo_fawn[] = {
+	PACK15_4(0xD7AA73, 0x967650, 0x56442E, 0x15110B),
+	PACK15_4(0xD7AA73, 0x967650, 0x56442E, 0x15110B),
+	PACK15_4(0xD7AA73, 0x967650, 0x56442E, 0x15110B)
+};
+
+static const unsigned short twb_legendary_super_saiyan[] = {
+	PACK15_4(0xA5DB5A, 0x73993E, 0x425724, 0x101509),
+	PACK15_4(0xA5DB5A, 0x73993E, 0x425724, 0x101509),
+	PACK15_4(0xA5DB5A, 0x73993E, 0x425724, 0x101509)
+};
+
+static const unsigned short twb_lemon_lime_green[] = {
+	PACK15_4(0xF1C545, 0x51A631, 0x336632, 0x142813),
+	PACK15_4(0xF1C545, 0x51A631, 0x336632, 0x142813),
+	PACK15_4(0xF1C545, 0x51A631, 0x336632, 0x142813)
+};
+
+static const unsigned short twb_lime_midori[] = {
+	PACK15_4(0xE0EBAF, 0xAACF53, 0x7B8D42, 0x475950),
+	PACK15_4(0xE0EBAF, 0xAACF53, 0x7B8D42, 0x475950),
+	PACK15_4(0xE0EBAF, 0xAACF53, 0x7B8D42, 0x475950)
+};
+
+static const unsigned short twb_mania_plus_green[] = {
+	PACK15_4(0x79C14E, 0x548736, 0x304D1F, 0x0C1307),
+	PACK15_4(0x79C14E, 0x548736, 0x304D1F, 0x0C1307),
+	PACK15_4(0x79C14E, 0x548736, 0x304D1F, 0x0C1307)
+};
+
+static const unsigned short twb_microvision[] = {
+	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030),
+	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030),
+	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030)
+};
+
+static const unsigned short twb_million_live_gold[] = {
+	PACK15_4(0xCDB261, 0x8F7C43, 0x524726, 0x141109),
+	PACK15_4(0xCDB261, 0x8F7C43, 0x524726, 0x141109),
+	PACK15_4(0xCDB261, 0x8F7C43, 0x524726, 0x141109)
+};
+
+static const unsigned short twb_miraitowa_blue[] = {
+	PACK15_4(0x25BDEF, 0x1984A7, 0x0E4B5F, 0x031217),
+	PACK15_4(0x25BDEF, 0x1984A7, 0x0E4B5F, 0x031217),
+	PACK15_4(0x25BDEF, 0x1984A7, 0x0E4B5F, 0x031217)
+};
+
+static const unsigned short twb_nascar[] = {
+	PACK15_4(0xFFD659, 0xE4002B, 0x007AC2, 0x000000),
+	PACK15_4(0xFFD659, 0xE4002B, 0x007AC2, 0x000000),
+	PACK15_4(0xFFD659, 0xE4002B, 0x007AC2, 0x000000)
+};
+
+static const unsigned short twb_neo_geo_pocket[] = {
+	PACK15_4(0xF0F0F0, 0xB0B0B0, 0x707070, 0x101010),
+	PACK15_4(0xF0F0F0, 0xB0B0B0, 0x707070, 0x101010),
+	PACK15_4(0xF0F0F0, 0xB0B0B0, 0x707070, 0x101010)
+};
+
+static const unsigned short twb_neon_blue[] = {
+	PACK15_4(0x0AB9E6, 0x0781A1, 0x044A5C, 0x011217),
+	PACK15_4(0x0AB9E6, 0x0781A1, 0x044A5C, 0x011217),
+	PACK15_4(0x0AB9E6, 0x0781A1, 0x044A5C, 0x011217)
+};
+
+static const unsigned short twb_neon_green[] = {
+	PACK15_4(0x1EDC00, 0x159A00, 0x0C5800, 0x031600),
+	PACK15_4(0x1EDC00, 0x159A00, 0x0C5800, 0x031600),
+	PACK15_4(0x1EDC00, 0x159A00, 0x0C5800, 0x031600)
+};
+
+static const unsigned short twb_neon_pink[] = {
+	PACK15_4(0xFF3278, 0xB22354, 0x661430, 0x19050C),
+	PACK15_4(0xFF3278, 0xB22354, 0x661430, 0x19050C),
+	PACK15_4(0xFF3278, 0xB22354, 0x661430, 0x19050C)
+};
+
+static const unsigned short twb_neon_red[] = {
+	PACK15_4(0xFF3C28, 0xB22A1C, 0x661810, 0x190604),
+	PACK15_4(0xFF3C28, 0xB22A1C, 0x661810, 0x190604),
+	PACK15_4(0xFF3C28, 0xB22A1C, 0x661810, 0x190604)
+};
+
+static const unsigned short twb_neon_yellow[] = {
+	PACK15_4(0xE6FF00, 0xA1B200, 0x5C6600, 0x171900),
+	PACK15_4(0xE6FF00, 0xA1B200, 0x5C6600, 0x171900),
+	PACK15_4(0xE6FF00, 0xA1B200, 0x5C6600, 0x171900)
+};
+
+static const unsigned short twb_nick_orange[] = {
+	PACK15_4(0xFF6700, 0xB24800, 0x662900, 0x190A00),
+	PACK15_4(0xFF6700, 0xB24800, 0x662900, 0x190A00),
+	PACK15_4(0xFF6700, 0xB24800, 0x662900, 0x190A00)
+};
+
+static const unsigned short twb_nijigasaki_orange[] = {
+	PACK15_4(0xFAB920, 0xAF8116, 0x644A0C, 0x191203),
+	PACK15_4(0xFAB920, 0xAF8116, 0x644A0C, 0x191203),
+	PACK15_4(0xFAB920, 0xAF8116, 0x644A0C, 0x191203)
+};
+
+static const unsigned short twb_odyssey_gold[] = {
+	PACK15_4(0xC2A000, 0x877000, 0x4D4000, 0x131000),
+	PACK15_4(0xC2A000, 0x877000, 0x4D4000, 0x131000),
+	PACK15_4(0xC2A000, 0x877000, 0x4D4000, 0x131000)
+};
+
+static const unsigned short twb_patrick_star_pink[] = {
+	PACK15_4(0xFF7F8C, 0xB25862, 0x663238, 0x190C0E),
+	PACK15_4(0xFF7F8C, 0xB25862, 0x663238, 0x190C0E),
+	PACK15_4(0xFF7F8C, 0xB25862, 0x663238, 0x190C0E)
+};
+
+static const unsigned short twb_pikachu_yellow[] = {
+	PACK15_4(0xFFDC00, 0xB29A00, 0x665800, 0x191600),
+	PACK15_4(0xFFDC00, 0xB29A00, 0x665800, 0x191600),
+	PACK15_4(0xFFDC00, 0xB29A00, 0x665800, 0x191600)
+};
+
+static const unsigned short twb_pocket_tales[] = {
+	PACK15_4(0xD0D860, 0x88A000, 0x385000, 0x000000),
+	PACK15_4(0xD0D860, 0x88A000, 0x385000, 0x000000),
+	PACK15_4(0xD0D860, 0x88A000, 0x385000, 0x000000)
+};
+
+static const unsigned short twb_pokemon_mini[] = {
+	PACK15_4(0xA9BDA9, 0x788F78, 0x505F50, 0x243724),
+	PACK15_4(0xA9BDA9, 0x788F78, 0x505F50, 0x243724),
+	PACK15_4(0xA9BDA9, 0x788F78, 0x505F50, 0x243724)
+};
+
+static const unsigned short twb_pretty_guardian_gold[] = {
+	PACK15_4(0xB4AA82, 0x7D765B, 0x484434, 0x12110D),
+	PACK15_4(0xB4AA82, 0x7D765B, 0x484434, 0x12110D),
+	PACK15_4(0xB4AA82, 0x7D765B, 0x484434, 0x12110D)
+};
+
+static const unsigned short twb_sees_blue[] = {
+	PACK15_4(0x009AFF, 0x006BB2, 0x003D66, 0x000F19),
+	PACK15_4(0x009AFF, 0x006BB2, 0x003D66, 0x000F19),
+	PACK15_4(0x009AFF, 0x006BB2, 0x003D66, 0x000F19)
+};
+
+static const unsigned short twb_saint_snow_red[] = {
+	PACK15_4(0xCA3935, 0x8D2725, 0x501615, 0x140505),
+	PACK15_4(0xCA3935, 0x8D2725, 0x501615, 0x140505),
+	PACK15_4(0xCA3935, 0x8D2725, 0x501615, 0x140505)
+};
+
+static const unsigned short twb_scooby_doo_mystery[] = {
+	PACK15_4(0xC7DE31, 0xF79321, 0x73308F, 0x263232),
+	PACK15_4(0xC7DE31, 0xF79321, 0x73308F, 0x263232),
+	PACK15_4(0xC7DE31, 0xF79321, 0x73308F, 0x263232)
+};
+
+static const unsigned short twb_shiny_sky_blue[] = {
+	PACK15_4(0x8CB6DF, 0x627F9C, 0x384859, 0x0E1216),
+	PACK15_4(0x8CB6DF, 0x627F9C, 0x384859, 0x0E1216),
+	PACK15_4(0x8CB6DF, 0x627F9C, 0x384859, 0x0E1216)
+};
+
+static const unsigned short twb_sidem_green[] = {
+	PACK15_4(0x02AC71, 0x01784F, 0x00442D, 0x00110B),
+	PACK15_4(0x02AC71, 0x01784F, 0x00442D, 0x00110B),
+	PACK15_4(0x02AC71, 0x01784F, 0x00442D, 0x00110B)
+};
+
+static const unsigned short twb_slime_blue[] = {
+	PACK15_4(0x2F8CCC, 0x20628E, 0x123851, 0x040E14),
+	PACK15_4(0x2F8CCC, 0x20628E, 0x123851, 0x040E14),
+	PACK15_4(0x2F8CCC, 0x20628E, 0x123851, 0x040E14)
+};
+
+static const unsigned short twb_spongebob_yellow[] = {
+	PACK15_4(0xF8E867, 0xADA248, 0x635C29, 0x18170A),
+	PACK15_4(0xF8E867, 0xADA248, 0x635C29, 0x18170A),
+	PACK15_4(0xF8E867, 0xADA248, 0x635C29, 0x18170A)
+};
+
+static const unsigned short twb_stone_orange[] = {
+	PACK15_4(0xF6821E, 0xAC5B15, 0x62340C, 0x180D03),
+	PACK15_4(0xF6821E, 0xAC5B15, 0x62340C, 0x180D03),
+	PACK15_4(0xF6821E, 0xAC5B15, 0x62340C, 0x180D03)
+};
+
+static const unsigned short twb_straw_hat_red[] = {
+	PACK15_4(0xF8523C, 0xAD392A, 0x632018, 0x180806),
+	PACK15_4(0xF8523C, 0xAD392A, 0x632018, 0x180806),
+	PACK15_4(0xF8523C, 0xAD392A, 0x632018, 0x180806)
+};
+
+static const unsigned short twb_superball_ivory[] = {
+	PACK15_4(0xEEF0BC, 0xBCBC8A, 0x828250, 0x646432),
+	PACK15_4(0xEEF0BC, 0xBCBC8A, 0x828250, 0x646432),
+	PACK15_4(0xEEF0BC, 0xBCBC8A, 0x828250, 0x646432)
+};
+
+static const unsigned short twb_super_saiyan_blue[] = {
+	PACK15_4(0x05BCCC, 0x03838E, 0x024B51, 0x001214),
+	PACK15_4(0x05BCCC, 0x03838E, 0x024B51, 0x001214),
+	PACK15_4(0x05BCCC, 0x03838E, 0x024B51, 0x001214)
+};
+
+static const unsigned short twb_super_saiyan_rose[] = {
+	PACK15_4(0xF4AFB2, 0xAA7A7C, 0x614647, 0x181111),
+	PACK15_4(0xF4AFB2, 0xAA7A7C, 0x614647, 0x181111),
+	PACK15_4(0xF4AFB2, 0xAA7A7C, 0x614647, 0x181111)
+};
+
+static const unsigned short twb_supervision[] = {
+	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C),
+	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C),
+	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C)
+};
+
+static const unsigned short twb_survey_corps_brown[] = {
+	PACK15_4(0xAB7D57, 0x77573C, 0x443222, 0x110C08),
+	PACK15_4(0xAB7D57, 0x77573C, 0x443222, 0x110C08),
+	PACK15_4(0xAB7D57, 0x77573C, 0x443222, 0x110C08)
+};
+
+static const unsigned short twb_tea_midori[] = {
+	PACK15_4(0xD6E9CA, 0x88CB7F, 0x028760, 0x333631),
+	PACK15_4(0xD6E9CA, 0x88CB7F, 0x028760, 0x333631),
+	PACK15_4(0xD6E9CA, 0x88CB7F, 0x028760, 0x333631)
+};
+
+static const unsigned short twb_ti_83[] = {
+	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810),
+	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810),
+	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810)
+};
+
+static const unsigned short twb_tokyo_midtown[] = {
+	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000),
+	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000),
+	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000)
+};
+
+static const unsigned short twb_travel_wood[] = {
+	PACK15_4(0xF8D8B0, 0xA08058, 0x705030, 0x482810),
+	PACK15_4(0xF8D8B0, 0xA08058, 0x705030, 0x482810),
+	PACK15_4(0xF8D8B0, 0xA08058, 0x705030, 0x482810)
+};
+
+static const unsigned short twb_virtual_boy[] = {
+	PACK15_4(0xE30000, 0x950000, 0x560000, 0x000000),
+	PACK15_4(0xE30000, 0x950000, 0x560000, 0x000000),
+	PACK15_4(0xE30000, 0x950000, 0x560000, 0x000000)
+};
+
+static const unsigned short twb_vmu[] = {
+	PACK15_4(0x88CCA8, 0x46A290, 0x286244, 0x081480),
+	PACK15_4(0x88CCA8, 0x46A290, 0x286244, 0x081480),
+	PACK15_4(0x88CCA8, 0x46A290, 0x286244, 0x081480)
+};
+
+static const unsigned short twb_wisteria_murasaki[] = {
+	PACK15_4(0xDBD0E6, 0xA59ACA, 0x7058A3, 0x2E2930),
+	PACK15_4(0xDBD0E6, 0xA59ACA, 0x7058A3, 0x2E2930),
+	PACK15_4(0xDBD0E6, 0xA59ACA, 0x7058A3, 0x2E2930)
+};
+
+static const unsigned short twb_wonderswan[] = {
+	PACK15_4(0xFEFEFE, 0xC2C2C2, 0x686868, 0x1D1D1D),
+	PACK15_4(0xFEFEFE, 0xC2C2C2, 0x686868, 0x1D1D1D),
+	PACK15_4(0xFEFEFE, 0xC2C2C2, 0x686868, 0x1D1D1D)
+};
+
+static const unsigned short twb_yellow_banana[] = {
+	PACK15_4(0xF8D808, 0xD89800, 0xA86838, 0x704800),
+	PACK15_4(0xF8D808, 0xD89800, 0xA86838, 0x704800),
+	PACK15_4(0xF8D808, 0xD89800, 0xA86838, 0x704800)
+};
+
 #undef PACK15_4
 #undef PACK15_1
 #undef TO5BIT
 
 struct GbcPaletteEntry { const char *title; const unsigned short *p; };
 
+// Note: These entries must be in alphabetical order
 static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "GB - DMG", gbdmg },    // Pea green
 	{ "GB - Light", gblit },  // Aquamarine
@@ -628,6 +1089,82 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "Special 1", pExt1 },
 	{ "Special 2", pExt2 },
 	{ "Special 3", pExt3 },
+	{ "TWB01 - 756 Production", twb_756_production },
+	{ "TWB02 - AKB48 Pink", twb_akb48_pink },
+	{ "TWB03 - Angry Volcano", twb_angry_volcano },
+	{ "TWB04 - Anime Expo", twb_anime_expo },
+	{ "TWB05 - Aqours Blue", twb_aqours_blue },
+	{ "TWB06 - Aquatic Iro", twb_aquatic_iro },
+	{ "TWB07 - Bandai Namco", twb_bandai_namco },
+	{ "TWB08 - Blossom Pink", twb_blossom_pink },
+	{ "TWB09 - Bubbles Blue", twb_bubbles_blue },
+	{ "TWB10 - Builder Yellow", twb_builder_yellow },
+	{ "TWB11 - Buttercup Green", twb_buttercup_green },
+	{ "TWB12 - Camouflage", twb_camouflage },
+	{ "TWB13 - Cardcaptor Pink", twb_cardcaptor_pink },
+	{ "TWB14 - Christmas", twb_christmas },
+	{ "TWB15 - Crunchyroll Orange", twb_crunchyroll_orange },
+	{ "TWB16 - Digivice", twb_digivice },
+	{ "TWB17 - Do The Dew", twb_do_the_dew },
+	{ "TWB18 - Eevee Brown", twb_eevee_brown },
+	{ "TWB19 - Fruity Orange", twb_fruity_orange },
+	{ "TWB20 - Game.com", twb_game_com },
+	{ "TWB21 - Game Grump Orange", twb_game_grump_orange },
+	{ "TWB22 - GameKing", twb_gameking },
+	{ "TWB23 - Game Master", twb_game_master },
+	{ "TWB24 - Ghostly Aoi", twb_ghostly_aoi },
+	{ "TWB25 - Golden Wild", twb_golden_wild },
+	{ "TWB26 - Green Banana", twb_green_banana },
+	{ "TWB27 - Greenscale", twb_greenscale },
+	{ "TWB28 - Halloween", twb_halloween },
+	{ "TWB29 - Hero Yellow", twb_hero_yellow },
+	{ "TWB30 - Hokage Orange", twb_hokage_orange },
+	{ "TWB31 - Labo Fawn", twb_labo_fawn },
+	{ "TWB32 - Legendary Super Saiyan", twb_legendary_super_saiyan },
+	{ "TWB33 - Lemon Lime Green", twb_lemon_lime_green },
+	{ "TWB34 - Lime Midori", twb_lime_midori },
+	{ "TWB35 - Mania Plus Green", twb_mania_plus_green },
+	{ "TWB36 - Microvision", twb_microvision },
+	{ "TWB37 - Million Live Gold", twb_million_live_gold },
+	{ "TWB38 - Miraitowa Blue", twb_miraitowa_blue },
+	{ "TWB39 - NASCAR", twb_nascar },
+	{ "TWB40 - Neo Geo Pocket", twb_neo_geo_pocket },
+	{ "TWB41 - Neon Blue", twb_neon_blue },
+	{ "TWB42 - Neon Green", twb_neon_green },
+	{ "TWB43 - Neon Pink", twb_neon_pink },
+	{ "TWB44 - Neon Red", twb_neon_red },
+	{ "TWB45 - Neon Yellow", twb_neon_yellow },
+	{ "TWB46 - Nick Orange", twb_nick_orange },
+	{ "TWB47 - Nijigasaki Orange", twb_nijigasaki_orange },
+	{ "TWB48 - Odyssey Gold", twb_odyssey_gold },
+	{ "TWB49 - Patrick Star Pink", twb_patrick_star_pink },
+	{ "TWB50 - Pikachu Yellow", twb_pikachu_yellow },
+	{ "TWB51 - Pocket Tales", twb_pocket_tales },
+	{ "TWB52 - Pokemon mini", twb_pokemon_mini },
+	{ "TWB53 - Pretty Guardian Gold", twb_pretty_guardian_gold },
+	{ "TWB54 - S.E.E.S. Blue", twb_sees_blue },
+	{ "TWB55 - Saint Snow Red", twb_saint_snow_red },
+	{ "TWB56 - Scooby-Doo Mystery", twb_scooby_doo_mystery },
+	{ "TWB57 - Shiny Sky Blue", twb_shiny_sky_blue },
+	{ "TWB58 - Sidem Green", twb_sidem_green },
+	{ "TWB59 - Slime Blue", twb_slime_blue },
+	{ "TWB60 - Spongebob Yellow", twb_spongebob_yellow },
+	{ "TWB61 - Stone Orange", twb_stone_orange },
+	{ "TWB62 - Straw Hat Red", twb_straw_hat_red },
+	{ "TWB63 - Superball Ivory", twb_superball_ivory },
+	{ "TWB64 - Super Saiyan Blue", twb_super_saiyan_blue },
+	{ "TWB65 - Super Saiyan Rose", twb_super_saiyan_rose },
+	{ "TWB66 - Supervision", twb_supervision },
+	{ "TWB67 - Survey Corps Brown", twb_survey_corps_brown },
+	{ "TWB68 - Tea Midori", twb_tea_midori },
+	{ "TWB69 - TI-83", twb_ti_83 },
+	{ "TWB70 - Tokyo Midtown", twb_tokyo_midtown },
+	{ "TWB71 - Travel Wood", twb_travel_wood },
+	{ "TWB72 - Virtual Boy", twb_virtual_boy },
+	{ "TWB73 - VMU", twb_vmu },
+	{ "TWB74 - Wisteria Murasaki", twb_wisteria_murasaki },
+	{ "TWB75 - WonderSwan", twb_wonderswan },
+	{ "TWB76 - Yellow Banana", twb_yellow_banana },
 };
 
 static const GbcPaletteEntry gbcTitlePalettes[] = {

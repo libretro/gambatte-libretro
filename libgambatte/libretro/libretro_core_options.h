@@ -7,6 +7,28 @@
 #include <libretro.h>
 #include <retro_inline.h>
 
+#ifndef HAVE_NO_LANGEXTRA
+#include "libretro_core_options_intl.h"
+#endif
+
+/*
+ ********************************
+ * VERSION: 1.3
+ ********************************
+ *
+ * - 1.3: Move translations to libretro_core_options_intl.h
+ *        - libretro_core_options_intl.h includes BOM and utf-8
+ *          fix for MSVC 2010-2013
+ *        - Added HAVE_NO_LANGEXTRA flag to disable translations
+ *          on platforms/compilers without BOM support
+ * - 1.2: Use core options v1 interface when
+ *        RETRO_ENVIRONMENT_GET_CORE_OPTIONS_VERSION is >= 1
+ *        (previously required RETRO_ENVIRONMENT_GET_CORE_OPTIONS_VERSION == 1)
+ * - 1.1: Support generation of core options v0 retro_core_option_value
+ *        arrays containing options with a single value
+ * - 1.0: First commit
+*/
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -58,56 +80,132 @@ struct retro_core_option_definition option_defs_us[] = {
       "Internal Palette",
       "Selects palette used for colorizing Game Boy games when 'GB Colorization' is set to 'Internal', or when 'GB Colorization' is set to 'Auto' and game has no pre-defined SGB/GBC palette. 'GB' palettes mimic the display of original Game Boy hardware. 'GBC' palettes are identical to the built-in presets of the Game Boy Color. 'SGB' palettes are identical to the built-in presets of the Super Game Boy.",
       {
-         { "GB - DMG",         NULL },
-         { "GB - Pocket",      NULL },
-         { "GB - Light",       NULL },
-         { "GBC - Blue",       NULL },
-         { "GBC - Brown",      NULL },
-         { "GBC - Dark Blue",  NULL },
-         { "GBC - Dark Brown", NULL },
-         { "GBC - Dark Green", NULL },
-         { "GBC - Grayscale",  NULL },
-         { "GBC - Green",      NULL },
-         { "GBC - Inverted",   NULL },
-         { "GBC - Orange",     NULL },
-         { "GBC - Pastel Mix", NULL },
-         { "GBC - Red",        NULL },
-         { "GBC - Yellow",     NULL },
-         { "SGB - 1A",         NULL },
-         { "SGB - 1B",         NULL },
-         { "SGB - 1C",         NULL },
-         { "SGB - 1D",         NULL },
-         { "SGB - 1E",         NULL },
-         { "SGB - 1F",         NULL },
-         { "SGB - 1G",         NULL },
-         { "SGB - 1H",         NULL },
-         { "SGB - 2A",         NULL },
-         { "SGB - 2B",         NULL },
-         { "SGB - 2C",         NULL },
-         { "SGB - 2D",         NULL },
-         { "SGB - 2E",         NULL },
-         { "SGB - 2F",         NULL },
-         { "SGB - 2G",         NULL },
-         { "SGB - 2H",         NULL },
-         { "SGB - 3A",         NULL },
-         { "SGB - 3B",         NULL },
-         { "SGB - 3C",         NULL },
-         { "SGB - 3D",         NULL },
-         { "SGB - 3E",         NULL },
-         { "SGB - 3F",         NULL },
-         { "SGB - 3G",         NULL },
-         { "SGB - 3H",         NULL },
-         { "SGB - 4A",         NULL },
-         { "SGB - 4B",         NULL },
-         { "SGB - 4C",         NULL },
-         { "SGB - 4D",         NULL },
-         { "SGB - 4E",         NULL },
-         { "SGB - 4F",         NULL },
-         { "SGB - 4G",         NULL },
-         { "SGB - 4H",         NULL },
-         { "Special 1",        NULL },
-         { "Special 2",        NULL },
-         { "Special 3",        NULL },
+         { "GB - DMG",                       NULL },
+         { "GB - Pocket",                    NULL },
+         { "GB - Light",                     NULL },
+         { "GBC - Blue",                     NULL },
+         { "GBC - Brown",                    NULL },
+         { "GBC - Dark Blue",                NULL },
+         { "GBC - Dark Brown",               NULL },
+         { "GBC - Dark Green",               NULL },
+         { "GBC - Grayscale",                NULL },
+         { "GBC - Green",                    NULL },
+         { "GBC - Inverted",                 NULL },
+         { "GBC - Orange",                   NULL },
+         { "GBC - Pastel Mix",               NULL },
+         { "GBC - Red",                      NULL },
+         { "GBC - Yellow",                   NULL },
+         { "SGB - 1A",                       NULL },
+         { "SGB - 1B",                       NULL },
+         { "SGB - 1C",                       NULL },
+         { "SGB - 1D",                       NULL },
+         { "SGB - 1E",                       NULL },
+         { "SGB - 1F",                       NULL },
+         { "SGB - 1G",                       NULL },
+         { "SGB - 1H",                       NULL },
+         { "SGB - 2A",                       NULL },
+         { "SGB - 2B",                       NULL },
+         { "SGB - 2C",                       NULL },
+         { "SGB - 2D",                       NULL },
+         { "SGB - 2E",                       NULL },
+         { "SGB - 2F",                       NULL },
+         { "SGB - 2G",                       NULL },
+         { "SGB - 2H",                       NULL },
+         { "SGB - 3A",                       NULL },
+         { "SGB - 3B",                       NULL },
+         { "SGB - 3C",                       NULL },
+         { "SGB - 3D",                       NULL },
+         { "SGB - 3E",                       NULL },
+         { "SGB - 3F",                       NULL },
+         { "SGB - 3G",                       NULL },
+         { "SGB - 3H",                       NULL },
+         { "SGB - 4A",                       NULL },
+         { "SGB - 4B",                       NULL },
+         { "SGB - 4C",                       NULL },
+         { "SGB - 4D",                       NULL },
+         { "SGB - 4E",                       NULL },
+         { "SGB - 4F",                       NULL },
+         { "SGB - 4G",                       NULL },
+         { "SGB - 4H",                       NULL },
+         { "Special 1",                      NULL },
+         { "Special 2",                      NULL },
+         { "Special 3",                      NULL },
+         { "TWB01 - 756 Production",         NULL },
+         { "TWB02 - AKB48 Pink",             NULL },
+         { "TWB03 - Angry Volcano",          NULL },
+         { "TWB04 - Anime Expo",             NULL },
+         { "TWB05 - Aqours Blue",            NULL },
+         { "TWB06 - Aquatic Iro",            NULL },
+         { "TWB07 - Bandai Namco",           NULL },
+         { "TWB08 - Blossom Pink",           NULL },
+         { "TWB09 - Bubbles Blue",           NULL },
+         { "TWB10 - Builder Yellow",         NULL },
+         { "TWB11 - Buttercup Green",        NULL },
+         { "TWB12 - Camouflage",             NULL },
+         { "TWB13 - Cardcaptor Pink",        NULL },
+         { "TWB14 - Christmas",              NULL },
+         { "TWB15 - Crunchyroll Orange",     NULL },
+         { "TWB16 - Digivice",               NULL },
+         { "TWB17 - Do The Dew",             NULL },
+         { "TWB18 - Eevee Brown",            NULL },
+         { "TWB19 - Fruity Orange",          NULL },
+         { "TWB20 - Game.com",               NULL },
+         { "TWB21 - Game Grump Orange",      NULL },
+         { "TWB22 - GameKing",               NULL },
+         { "TWB23 - Game Master",            NULL },
+         { "TWB24 - Ghostly Aoi",            NULL },
+         { "TWB25 - Golden Wild",            NULL },
+         { "TWB26 - Green Banana",           NULL },
+         { "TWB27 - Greenscale",             NULL },
+         { "TWB28 - Halloween",              NULL },
+         { "TWB29 - Hero Yellow",            NULL },
+         { "TWB30 - Hokage Orange",          NULL },
+         { "TWB31 - Labo Fawn",              NULL },
+         { "TWB32 - Legendary Super Saiyan", NULL },
+         { "TWB33 - Lemon Lime Green",       NULL },
+         { "TWB34 - Lime Midori",            NULL },
+         { "TWB35 - Mania Plus Green",       NULL },
+         { "TWB36 - Microvision",            NULL },
+         { "TWB37 - Million Live Gold",      NULL },
+         { "TWB38 - Miraitowa Blue",         NULL },
+         { "TWB39 - NASCAR",                 NULL },
+         { "TWB40 - Neo Geo Pocket",         NULL },
+         { "TWB41 - Neon Blue",              NULL },
+         { "TWB42 - Neon Green",             NULL },
+         { "TWB43 - Neon Pink",              NULL },
+         { "TWB44 - Neon Red",               NULL },
+         { "TWB45 - Neon Yellow",            NULL },
+         { "TWB46 - Nick Orange",            NULL },
+         { "TWB47 - Nijigasaki Orange",      NULL },
+         { "TWB48 - Odyssey Gold",           NULL },
+         { "TWB49 - Patrick Star Pink",      NULL },
+         { "TWB50 - Pikachu Yellow",         NULL },
+         { "TWB51 - Pocket Tales",           NULL },
+         { "TWB52 - Pokemon mini",           NULL },
+         { "TWB53 - Pretty Guardian Gold",   NULL },
+         { "TWB54 - S.E.E.S. Blue",          NULL },
+         { "TWB55 - Saint Snow Red",         NULL },
+         { "TWB56 - Scooby-Doo Mystery",     NULL },
+         { "TWB57 - Shiny Sky Blue",         NULL },
+         { "TWB58 - Sidem Green",            NULL },
+         { "TWB59 - Slime Blue",             NULL },
+         { "TWB60 - Spongebob Yellow",       NULL },
+         { "TWB61 - Stone Orange",           NULL },
+         { "TWB62 - Straw Hat Red",          NULL },
+         { "TWB63 - Superball Ivory",        NULL },
+         { "TWB64 - Super Saiyan Blue",      NULL },
+         { "TWB65 - Super Saiyan Rose",      NULL },
+         { "TWB66 - Supervision",            NULL },
+         { "TWB67 - Survey Corps Brown",     NULL },
+         { "TWB68 - Tea Midori",             NULL },
+         { "TWB69 - TI-83",                  NULL },
+         { "TWB70 - Tokyo Midtown",          NULL },
+         { "TWB71 - Travel Wood",            NULL },
+         { "TWB72 - Virtual Boy",            NULL },
+         { "TWB73 - VMU",                    NULL },
+         { "TWB74 - Wisteria Murasaki",      NULL },
+         { "TWB75 - WonderSwan",             NULL },
+         { "TWB76 - Yellow Banana",          NULL },
          { NULL, NULL },
       },
       "GB - DMG"
@@ -489,48 +587,13 @@ struct retro_core_option_definition option_defs_us[] = {
    { NULL, NULL, NULL, {{0}}, NULL },
 };
 
-/* RETRO_LANGUAGE_JAPANESE */
-
-/* RETRO_LANGUAGE_FRENCH */
-
-/* RETRO_LANGUAGE_SPANISH */
-
-/* RETRO_LANGUAGE_GERMAN */
-
-/* RETRO_LANGUAGE_ITALIAN */
-
-/* RETRO_LANGUAGE_DUTCH */
-
-/* RETRO_LANGUAGE_PORTUGUESE_BRAZIL */
-
-/* RETRO_LANGUAGE_PORTUGUESE_PORTUGAL */
-
-/* RETRO_LANGUAGE_RUSSIAN */
-
-/* RETRO_LANGUAGE_KOREAN */
-
-/* RETRO_LANGUAGE_CHINESE_TRADITIONAL */
-
-/* RETRO_LANGUAGE_CHINESE_SIMPLIFIED */
-
-/* RETRO_LANGUAGE_ESPERANTO */
-
-/* RETRO_LANGUAGE_POLISH */
-
-/* RETRO_LANGUAGE_VIETNAMESE */
-
-/* RETRO_LANGUAGE_ARABIC */
-
-/* RETRO_LANGUAGE_GREEK */
-
-/* RETRO_LANGUAGE_TURKISH */
-
 /*
  ********************************
  * Language Mapping
  ********************************
 */
 
+#ifndef HAVE_NO_LANGEXTRA
 struct retro_core_option_definition *option_defs_intl[RETRO_LANGUAGE_LAST] = {
    option_defs_us, /* RETRO_LANGUAGE_ENGLISH */
    NULL,           /* RETRO_LANGUAGE_JAPANESE */
@@ -552,6 +615,7 @@ struct retro_core_option_definition *option_defs_intl[RETRO_LANGUAGE_LAST] = {
    NULL,           /* RETRO_LANGUAGE_GREEK */
    NULL,           /* RETRO_LANGUAGE_TURKISH */
 };
+#endif
 
 /*
  ********************************
@@ -560,7 +624,8 @@ struct retro_core_option_definition *option_defs_intl[RETRO_LANGUAGE_LAST] = {
 */
 
 /* Handles configuration/setting of core options.
- * Should only be called inside retro_set_environment().
+ * Should be called as early as possible - ideally inside
+ * retro_set_environment(), and no later than retro_load_game()
  * > We place the function body in the header to avoid the
  *   necessity of adding more .c files (i.e. want this to
  *   be as painless as possible for core devs)
@@ -573,8 +638,9 @@ static INLINE void libretro_set_core_options(retro_environment_t environ_cb)
    if (!environ_cb)
       return;
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_CORE_OPTIONS_VERSION, &version) && (version == 1))
+   if (environ_cb(RETRO_ENVIRONMENT_GET_CORE_OPTIONS_VERSION, &version) && (version >= 1))
    {
+#ifndef HAVE_NO_LANGEXTRA
       struct retro_core_options_intl core_options_intl;
       unsigned language = 0;
 
@@ -586,6 +652,9 @@ static INLINE void libretro_set_core_options(retro_environment_t environ_cb)
          core_options_intl.local = option_defs_intl[language];
 
       environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_INTL, &core_options_intl);
+#else
+      environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS, &option_defs_us);
+#endif
    }
    else
    {
@@ -655,7 +724,7 @@ static INLINE void libretro_set_core_options(retro_environment_t environ_cb)
             }
 
             /* Build values string */
-            if (num_values > 1)
+            if (num_values > 0)
             {
                size_t j;
 
@@ -688,7 +757,7 @@ static INLINE void libretro_set_core_options(retro_environment_t environ_cb)
          variables[option_index].value = values_buf[i];
          option_index++;
       }
-      
+
       /* Set variables */
       environ_cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
 
