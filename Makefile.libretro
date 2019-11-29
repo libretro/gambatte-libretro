@@ -254,7 +254,7 @@ else ifneq (,$(filter $(platform), ngc wii wiiu))
 
    # Nintendo WiiU
    ifneq (,$(findstring wiiu,$(platform)))
-      PLATFORM_DEFINES += -DWIIU -DHW_RVL -mwup
+      PLATFORM_DEFINES += -DWIIU -DHW_RVL
 
    # Nintendo Wii
    else ifneq (,$(findstring wii,$(platform)))
@@ -517,8 +517,8 @@ LIBS =
 else
    TARGET := $(TARGET_NAME)_libretro.dll
    HAVE_NETWORK=1
-   CC = gcc
-   CXX = g++
+   CC ?= gcc
+   CXX ?= g++
    SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=$(version_script)
    LDFLAGS := -lws2_32
 endif
