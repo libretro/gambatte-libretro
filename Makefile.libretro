@@ -36,14 +36,6 @@ TARGET_NAME := gambatte
 version_script = libgambatte/libretro/link.T
 core_installdir := $(prefix)/lib
 
-ifeq ($(ARCHFLAGS),)
-   ifeq ($(archs),ppc)
-      ARCHFLAGS = -arch ppc -arch ppc64
-   else
-      ARCHFLAGS = -arch i386 -arch x86_64
-   endif
-endif
-
 # Unix
 ifneq (,$(findstring unix,$(platform)))
    TARGET := $(TARGET_NAME)_libretro.so
@@ -103,9 +95,11 @@ else ifeq ($(platform), osx)
    TARGET := $(TARGET_NAME)_libretro.dylib
    fpic := -fPIC
    SHARED := -dynamiclib
-   OSXVER = `sw_vers -productVersion | cut -d. -f 2`
-   OSX_LT_MAVERICKS = `(( $(OSXVER) <= 9)) && echo "YES"`
-   #fpic += -mmacosx-version-min=10.1
+	OSXVER = $(shell sw_vers -productVersion | cut -d. -f 2)
+	OSX_GT_MOJAVE = $(shell (( $(OSXVER) >= 14)) && echo "YES")
+ifneq ($(OSX_GT_MOJAVE),YES)
+   fpic += -mmacosx-version-min=10.1
+endif
    ifndef ($(NOUNIVERSAL))
       CFLAGS += $(ARCHFLAGS)
       CXXFLAGS += $(ARCHFLAGS)
@@ -631,14 +625,17 @@ else
 	$(AR) rcs $@ $(OBJS)
 endif
 else
-	$(LD) $(LINKOUT)$@ $(SHARED) $(OBJS) $(LDFLAGS) $(LIBS)
+	$(LD) $(fpic) $(SHARED) $(LINKOUT) $@ $(OBJS) $(LDFLAGS) $(LIBS)
 endif
 
+CFLAGS += $(INCFLAGS)
+CXXFLAGS += $(INCFLAGS)
+
 %.o: %.cpp
-	$(CXX) -c $(OBJOUT)$@ $< $(CPPFLAGS) $(CXXFLAGS) $(INCFLAGS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(OBJOUT)$@ $<
 
 %.o: %.c
-	$(CC) -c $(OBJOUT)$@ $< $(CPPFLAGS) $(CFLAGS) $(INCFLAGS)
+	$(CC) $(CFLAGS) -c $(OBJOUT) $@ $<
 
 clean-objs:
 	rm -f $(OBJS)
