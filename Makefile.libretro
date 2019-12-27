@@ -14,7 +14,6 @@ unixcygpath = /$(subst :,,$(call unixpath,$1))
 ifeq ($(platform),)
    platform = unix
    ifeq ($(shell uname -s),)
-      EXE_EXT = .exe
       platform = win
    else ifneq ($(findstring MINGW,$(shell uname -s)),)
       platform = win
@@ -33,6 +32,21 @@ else ifneq (,$(findstring armv,$(platform)))
     endif
 else ifneq (,$(findstring rpi,$(platform)))
    override platform += unix
+endif
+
+# system platform
+system_platform = unix
+ifeq ($(shell uname -a),)
+	EXE_EXT = .exe
+	system_platform = win
+else ifneq ($(findstring Darwin,$(shell uname -a)),)
+	system_platform = osx
+	arch = intel
+	ifeq ($(shell uname -p),powerpc)
+		arch = ppc
+	endif
+else ifneq ($(findstring MINGW,$(shell uname -a)),)
+	system_platform = win
 endif
 
 TARGET_NAME := gambatte
