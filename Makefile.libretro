@@ -1,6 +1,5 @@
 DEBUG = 0
 HAVE_NETWORK = 0
-HAVE_NO_LANGEXTRA = 0
 
 SPACE :=
 SPACE := $(SPACE) $(SPACE)
@@ -112,7 +111,8 @@ endif
    endif
    HAVE_NETWORK=1
 ifeq ($(arch),ppc)
-	HAVE_NO_LANGEXTRA = 1
+	CFLAGS += -DHAVE_NO_LANGEXTRA
+	CXXFLAGS += -DHAVE_NO_LANGEXTRA
 endif
 
 # iOS
@@ -638,11 +638,6 @@ endif
 
 CFLAGS += $(INCFLAGS)
 CXXFLAGS += $(INCFLAGS)
-
-ifeq ($(HAVE_NO_LANGEXTRA), 1)
-	CFLAGS += -DHAVE_NO_LANGEXTRA
-	CXXFLAGS += -DHAVE_NO_LANGEXTRA
-endif
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(OBJOUT)$@ $<
