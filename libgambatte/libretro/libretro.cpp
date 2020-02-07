@@ -25,6 +25,7 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
+#include <cmath>
 
 #ifdef _3DS
 extern "C" void* linearMemAlign(size_t size, size_t alignment);
@@ -38,7 +39,6 @@ static retro_input_state_t input_state_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
 static gambatte::video_pixel_t* video_buf;
-static gambatte::uint_least32_t video_pitch;
 static gambatte::GB gb;
 
 static bool libretro_supports_bitmasks = false;
@@ -66,9 +66,520 @@ static gambatte::GB gb2;
 
 bool use_official_bootloader = false;
 
-// Colours from previous frame
-static gambatte::video_pixel_t prev_colours[160 * NUM_GAMEBOYS * 144] = {0};
-static unsigned mix_frames_mode = 0;
+#define GB_SCREEN_WIDTH 160
+#define VIDEO_WIDTH (GB_SCREEN_WIDTH * NUM_GAMEBOYS)
+#define VIDEO_HEIGHT 144
+/* Video buffer 'width' is 256, not 160 -> assume
+ * there is a benefit to making this a power of 2 */
+#define VIDEO_BUFF_SIZE (256 * NUM_GAMEBOYS * VIDEO_HEIGHT * sizeof(gambatte::video_pixel_t))
+#define VIDEO_PITCH (256 * NUM_GAMEBOYS)
+
+/*****************************/
+/* Interframe blending START */
+/*****************************/
+
+#define LCD_RESPONSE_TIME 0.333f
+/* > 'LCD Ghosting (Fast)' method does not
+ *   correctly interpret the set response time,
+ *   leading to an artificially subdued blur effect.
+ *   We have to compensate for this by increasing
+ *   the response time, hence this 'fake' value */
+#define LCD_RESPONSE_TIME_FAKE 0.5f
+
+enum frame_blend_method
+{
+   FRAME_BLEND_NONE = 0,
+   FRAME_BLEND_MIX,
+   FRAME_BLEND_MIX_FAST,
+   FRAME_BLEND_LCD_GHOSTING,
+   FRAME_BLEND_LCD_GHOSTING_FAST
+};
+
+static enum frame_blend_method frame_blend_type  = FRAME_BLEND_NONE;
+static gambatte::video_pixel_t* video_buf_prev_1 = NULL;
+static gambatte::video_pixel_t* video_buf_prev_2 = NULL;
+static gambatte::video_pixel_t* video_buf_prev_3 = NULL;
+static gambatte::video_pixel_t* video_buf_prev_4 = NULL;
+static float* video_buf_acc_r                    = NULL;
+static float* video_buf_acc_g                    = NULL;
+static float* video_buf_acc_b                    = NULL;
+static float frame_blend_response[4]             = {0.0f};
+static bool frame_blend_response_set             = false;
+static void (*blend_frames)(void)                = NULL;
+
+/* > Note: The individual frame blending functions
+ *   are somewhat WET (Write Everything Twice), in that
+ *   we duplicate the entire nested for loop.
+ *   This code is performance-critical, so we want to
+ *   minimise logic in the inner loops where possible  */
+static void blend_frames_mix(void)
+{
+   gambatte::video_pixel_t *curr = video_buf;
+   gambatte::video_pixel_t *prev = video_buf_prev_1;
+   size_t x, y;
+
+   for (y = 0; y < VIDEO_HEIGHT; y++)
+   {
+      for (x = 0; x < VIDEO_WIDTH; x++)
+      {
+         /* Get colours from current + previous frames */
+         gambatte::video_pixel_t rgb_curr = *(curr + x);
+         gambatte::video_pixel_t rgb_prev = *(prev + x);
+
+         /* Store colours for next frame */
+         *(prev + x) = rgb_curr;
+
+         /* Unpack colours and convert to float */
+#ifdef VIDEO_RGB565
+         float r_curr = static_cast<float>(rgb_curr >> 11 & 0x1F);
+         float g_curr = static_cast<float>(rgb_curr >>  6 & 0x1F);
+         float b_curr = static_cast<float>(rgb_curr       & 0x1F);
+
+         float r_prev = static_cast<float>(rgb_prev >> 11 & 0x1F);
+         float g_prev = static_cast<float>(rgb_prev >>  6 & 0x1F);
+         float b_prev = static_cast<float>(rgb_prev       & 0x1F);
+#else
+         float r_curr = static_cast<float>(rgb_curr >> 16 & 0x1F);
+         float g_curr = static_cast<float>(rgb_curr >>  8 & 0x1F);
+         float b_curr = static_cast<float>(rgb_curr       & 0x1F);
+
+         float r_prev = static_cast<float>(rgb_prev >> 16 & 0x1F);
+         float g_prev = static_cast<float>(rgb_prev >>  8 & 0x1F);
+         float b_prev = static_cast<float>(rgb_prev       & 0x1F);
+#endif
+         /* Mix colours for current frame and convert back to video_pixel_t */
+         gambatte::video_pixel_t r_mix =
+               static_cast<gambatte::video_pixel_t>(((r_curr * 0.5f) + (r_prev * 0.5f)) + 0.5f) & 0x1F;
+         gambatte::video_pixel_t g_mix =
+               static_cast<gambatte::video_pixel_t>(((g_curr * 0.5f) + (g_prev * 0.5f)) + 0.5f) & 0x1F;
+         gambatte::video_pixel_t b_mix =
+               static_cast<gambatte::video_pixel_t>(((b_curr * 0.5f) + (b_prev * 0.5f)) + 0.5f) & 0x1F;
+
+         // Repack colours for current frame
+#ifdef VIDEO_RGB565
+         *(curr + x) = r_mix << 11 | g_mix << 6 | b_mix;
+#else
+         *(curr + x) = r_mix << 16 | g_mix << 8 | b_mix;
+#endif
+      }
+
+      curr += VIDEO_PITCH;
+      prev += VIDEO_PITCH;
+   }
+}
+
+static void blend_frames_mix_fast(void)
+{
+   gambatte::video_pixel_t *curr = video_buf;
+   gambatte::video_pixel_t *prev = video_buf_prev_1;
+   size_t x, y;
+
+   for (y = 0; y < VIDEO_HEIGHT; y++)
+   {
+      for (x = 0; x < VIDEO_WIDTH; x++)
+      {
+         /* Get colours from current + previous frames */
+         gambatte::video_pixel_t rgb_curr = *(curr + x);
+         gambatte::video_pixel_t rgb_prev = *(prev + x);
+
+         /* Store colours for next frame */
+         *(prev + x) = rgb_curr;
+
+         /* Mix colours for current frame
+          * > Fast one-shot method (bit twiddling)
+          * > Causes mild darkening of colours due to
+          *   rounding errors */
+#ifdef VIDEO_RGB565
+         *(curr + x) =   (((rgb_curr >> 11 & 0x1F) >> 1) + ((rgb_prev >> 11 & 0x1F) >> 1)) << 11
+                       | (((rgb_curr >>  6 & 0x1F) >> 1) + ((rgb_prev >>  6 & 0x1F) >> 1)) << 6
+                       | (((rgb_curr       & 0x1F) >> 1) + ((rgb_prev       & 0x1F) >> 1));
+#else
+         *(curr + x) =   (((rgb_curr >> 16 & 0x1F) >> 1) + ((rgb_prev >> 16 & 0x1F) >> 1)) << 16
+                       | (((rgb_curr >>  8 & 0x1F) >> 1) + ((rgb_prev >>  8 & 0x1F) >> 1)) << 8
+                       | (((rgb_curr       & 0x1F) >> 1) + ((rgb_prev       & 0x1F) >> 1));
+#endif
+      }
+
+      curr += VIDEO_PITCH;
+      prev += VIDEO_PITCH;
+   }
+}
+
+static void blend_frames_lcd_ghost(void)
+{
+   gambatte::video_pixel_t *curr   = video_buf;
+   gambatte::video_pixel_t *prev_1 = video_buf_prev_1;
+   gambatte::video_pixel_t *prev_2 = video_buf_prev_2;
+   gambatte::video_pixel_t *prev_3 = video_buf_prev_3;
+   gambatte::video_pixel_t *prev_4 = video_buf_prev_4;
+   float *response                 = frame_blend_response;
+   size_t x, y;
+
+   for (y = 0; y < VIDEO_HEIGHT; y++)
+   {
+      for (x = 0; x < VIDEO_WIDTH; x++)
+      {
+         /* Get colours from current + previous frames */
+         gambatte::video_pixel_t rgb_curr   = *(curr + x);
+         gambatte::video_pixel_t rgb_prev_1 = *(prev_1 + x);
+         gambatte::video_pixel_t rgb_prev_2 = *(prev_2 + x);
+         gambatte::video_pixel_t rgb_prev_3 = *(prev_3 + x);
+         gambatte::video_pixel_t rgb_prev_4 = *(prev_4 + x);
+
+         /* Store colours for next frame */
+         *(prev_1 + x) = rgb_curr;
+         *(prev_2 + x) = rgb_prev_1;
+         *(prev_3 + x) = rgb_prev_2;
+         *(prev_4 + x) = rgb_prev_3;
+
+         /* Unpack colours and convert to float */
+#ifdef VIDEO_RGB565
+         float r_curr = static_cast<float>(rgb_curr >> 11 & 0x1F);
+         float g_curr = static_cast<float>(rgb_curr >>  6 & 0x1F);
+         float b_curr = static_cast<float>(rgb_curr       & 0x1F);
+
+         float r_prev_1 = static_cast<float>(rgb_prev_1 >> 11 & 0x1F);
+         float g_prev_1 = static_cast<float>(rgb_prev_1 >>  6 & 0x1F);
+         float b_prev_1 = static_cast<float>(rgb_prev_1       & 0x1F);
+
+         float r_prev_2 = static_cast<float>(rgb_prev_2 >> 11 & 0x1F);
+         float g_prev_2 = static_cast<float>(rgb_prev_2 >>  6 & 0x1F);
+         float b_prev_2 = static_cast<float>(rgb_prev_2       & 0x1F);
+
+         float r_prev_3 = static_cast<float>(rgb_prev_3 >> 11 & 0x1F);
+         float g_prev_3 = static_cast<float>(rgb_prev_3 >>  6 & 0x1F);
+         float b_prev_3 = static_cast<float>(rgb_prev_3       & 0x1F);
+
+         float r_prev_4 = static_cast<float>(rgb_prev_4 >> 11 & 0x1F);
+         float g_prev_4 = static_cast<float>(rgb_prev_4 >>  6 & 0x1F);
+         float b_prev_4 = static_cast<float>(rgb_prev_4       & 0x1F);
+#else
+         float r_curr = static_cast<float>(rgb_curr >> 16 & 0x1F);
+         float g_curr = static_cast<float>(rgb_curr >>  8 & 0x1F);
+         float b_curr = static_cast<float>(rgb_curr       & 0x1F);
+
+         float r_prev_1 = static_cast<float>(rgb_prev_1 >> 16 & 0x1F);
+         float g_prev_1 = static_cast<float>(rgb_prev_1 >>  8 & 0x1F);
+         float b_prev_1 = static_cast<float>(rgb_prev_1       & 0x1F);
+
+         float r_prev_2 = static_cast<float>(rgb_prev_2 >> 16 & 0x1F);
+         float g_prev_2 = static_cast<float>(rgb_prev_2 >>  8 & 0x1F);
+         float b_prev_2 = static_cast<float>(rgb_prev_2       & 0x1F);
+
+         float r_prev_3 = static_cast<float>(rgb_prev_3 >> 16 & 0x1F);
+         float g_prev_3 = static_cast<float>(rgb_prev_3 >>  8 & 0x1F);
+         float b_prev_3 = static_cast<float>(rgb_prev_3       & 0x1F);
+
+         float r_prev_4 = static_cast<float>(rgb_prev_4 >> 16 & 0x1F);
+         float g_prev_4 = static_cast<float>(rgb_prev_4 >>  8 & 0x1F);
+         float b_prev_4 = static_cast<float>(rgb_prev_4       & 0x1F);
+#endif
+         /* Mix colours for current frame and convert back to video_pixel_t
+          * > Response time effect implemented via an exponential
+          *   drop-off algorithm, taken from the 'Gameboy Classic Shader'
+          *   by Harlequin:
+          *      https://github.com/libretro/glsl-shaders/blob/master/handheld/shaders/gameboy/shader-files/gb-pass0.glsl */
+         r_curr += (r_prev_1 - r_curr) * *response;
+         r_curr += (r_prev_2 - r_curr) * *(response + 1);
+         r_curr += (r_prev_3 - r_curr) * *(response + 2);
+         r_curr += (r_prev_4 - r_curr) * *(response + 3);
+         gambatte::video_pixel_t r_mix = static_cast<gambatte::video_pixel_t>(r_curr + 0.5f) & 0x1F;
+
+         g_curr += (g_prev_1 - g_curr) * *response;
+         g_curr += (g_prev_2 - g_curr) * *(response + 1);
+         g_curr += (g_prev_3 - g_curr) * *(response + 2);
+         g_curr += (g_prev_4 - g_curr) * *(response + 3);
+         gambatte::video_pixel_t g_mix = static_cast<gambatte::video_pixel_t>(g_curr + 0.5f) & 0x1F;
+
+         b_curr += (b_prev_1 - b_curr) * *response;
+         b_curr += (b_prev_2 - b_curr) * *(response + 1);
+         b_curr += (b_prev_3 - b_curr) * *(response + 2);
+         b_curr += (b_prev_4 - b_curr) * *(response + 3);
+         gambatte::video_pixel_t b_mix = static_cast<gambatte::video_pixel_t>(b_curr + 0.5f) & 0x1F;
+
+         /* Repack colours for current frame */
+#ifdef VIDEO_RGB565
+         *(curr + x) = r_mix << 11 | g_mix << 6 | b_mix;
+#else
+         *(curr + x) = r_mix << 16 | g_mix << 8 | b_mix;
+#endif
+      }
+
+      curr   += VIDEO_PITCH;
+      prev_1 += VIDEO_PITCH;
+      prev_2 += VIDEO_PITCH;
+      prev_3 += VIDEO_PITCH;
+      prev_4 += VIDEO_PITCH;
+   }
+}
+
+static void blend_frames_lcd_ghost_fast(void)
+{
+   gambatte::video_pixel_t *curr = video_buf;
+   float *prev_r                 = video_buf_acc_r;
+   float *prev_g                 = video_buf_acc_g;
+   float *prev_b                 = video_buf_acc_b;
+   size_t x, y;
+
+   for (y = 0; y < VIDEO_HEIGHT; y++)
+   {
+      for (x = 0; x < VIDEO_WIDTH; x++)
+      {
+         /* Get colours from current + previous frames */
+         gambatte::video_pixel_t rgb_curr   = *(curr + x);
+         float r_prev                       = *(prev_r + x);
+         float g_prev                       = *(prev_g + x);
+         float b_prev                       = *(prev_b + x);
+
+         /* Unpack current colours and convert to float */
+#ifdef VIDEO_RGB565
+         float r_curr = static_cast<float>(rgb_curr >> 11 & 0x1F);
+         float g_curr = static_cast<float>(rgb_curr >>  6 & 0x1F);
+         float b_curr = static_cast<float>(rgb_curr       & 0x1F);
+#else
+         float r_curr = static_cast<float>(rgb_curr >> 16 & 0x1F);
+         float g_curr = static_cast<float>(rgb_curr >>  8 & 0x1F);
+         float b_curr = static_cast<float>(rgb_curr       & 0x1F);
+#endif
+         /* Mix colours for current frame */
+         float r_mix = (r_curr * (1.0f - LCD_RESPONSE_TIME_FAKE)) + (LCD_RESPONSE_TIME_FAKE * r_prev);
+         float g_mix = (g_curr * (1.0f - LCD_RESPONSE_TIME_FAKE)) + (LCD_RESPONSE_TIME_FAKE * g_prev);
+         float b_mix = (b_curr * (1.0f - LCD_RESPONSE_TIME_FAKE)) + (LCD_RESPONSE_TIME_FAKE * b_prev);
+
+         /* Store colours for next frame */
+         *(prev_r + x) = r_mix;
+         *(prev_g + x) = g_mix;
+         *(prev_b + x) = b_mix;
+
+         /* Convert, repack and assign colours for current frame */
+#ifdef VIDEO_RGB565
+         *(curr + x) =   (static_cast<gambatte::video_pixel_t>(r_mix + 0.5f) & 0x1F) << 11
+                       | (static_cast<gambatte::video_pixel_t>(g_mix + 0.5f) & 0x1F) << 6
+                       | (static_cast<gambatte::video_pixel_t>(b_mix + 0.5f) & 0x1F);
+#else
+         *(curr + x) =   (static_cast<gambatte::video_pixel_t>(r_mix + 0.5f) & 0x1F) << 16
+                       | (static_cast<gambatte::video_pixel_t>(g_mix + 0.5f) & 0x1F) << 8
+                       | (static_cast<gambatte::video_pixel_t>(b_mix + 0.5f) & 0x1F);
+#endif
+      }
+
+      curr   += VIDEO_PITCH;
+      prev_r += VIDEO_PITCH;
+      prev_g += VIDEO_PITCH;
+      prev_b += VIDEO_PITCH;
+   }
+}
+
+static bool allocate_video_buf_prev(gambatte::video_pixel_t** buf)
+{
+   if (!*buf)
+   {
+      *buf = (gambatte::video_pixel_t*)malloc(VIDEO_BUFF_SIZE);
+      if (!*buf)
+         return false;
+   }
+   memset(*buf, 0, VIDEO_BUFF_SIZE);
+   return true;
+}
+
+static bool allocate_video_buf_acc(void)
+{
+   size_t i;
+   size_t buf_size = 256 * NUM_GAMEBOYS * VIDEO_HEIGHT * sizeof(float);
+
+   if (!video_buf_acc_r)
+   {
+      video_buf_acc_r = (float*)malloc(buf_size);
+      if (!video_buf_acc_r)
+         return false;
+   }
+
+   if (!video_buf_acc_g)
+   {
+      video_buf_acc_g = (float*)malloc(buf_size);
+      if (!video_buf_acc_g)
+         return false;
+   }
+
+   if (!video_buf_acc_b)
+   {
+      video_buf_acc_b = (float*)malloc(buf_size);
+      if (!video_buf_acc_b)
+         return false;
+   }
+
+   /* Cannot use memset() on arrays of floats... */
+   for (i = 0; i < (256 * NUM_GAMEBOYS * VIDEO_HEIGHT); i++)
+   {
+      video_buf_acc_r[i] = 0.0f;
+      video_buf_acc_g[i] = 0.0f;
+      video_buf_acc_b[i] = 0.0f;
+   }
+   return true;
+}
+
+static void init_frame_blending(void)
+{
+   blend_frames = NULL;
+
+   /* Allocate interframe blending buffers, as required
+    * NOTE: In all cases, any used buffers are 'reset'
+    * to avoid drawing garbage on the next frame */
+   switch (frame_blend_type)
+   {
+      case FRAME_BLEND_MIX:
+      case FRAME_BLEND_MIX_FAST:
+         /* Simple 50:50 blending requires a single buffer */
+         if (!allocate_video_buf_prev(&video_buf_prev_1))
+            return;
+         break;
+      case FRAME_BLEND_LCD_GHOSTING:
+         /* 'Accurate' LCD ghosting requires four buffers */
+         if (!allocate_video_buf_prev(&video_buf_prev_1))
+            return;
+         if (!allocate_video_buf_prev(&video_buf_prev_2))
+            return;
+         if (!allocate_video_buf_prev(&video_buf_prev_3))
+            return;
+         if (!allocate_video_buf_prev(&video_buf_prev_4))
+            return;
+         break;
+      case FRAME_BLEND_LCD_GHOSTING_FAST:
+         /* 'Fast' LCD ghosting requires three (RGB)
+          * 'accumulator' buffers */
+         if (!allocate_video_buf_acc())
+            return;
+         break;
+      case FRAME_BLEND_NONE:
+      default:
+         /* Error condition - cannot happen
+          * > Just leave blend_frames() function set to NULL */
+         return;
+   }
+
+   /* Set LCD ghosting response time factors,
+    * if required */
+   if ((frame_blend_type == FRAME_BLEND_LCD_GHOSTING) &&
+       !frame_blend_response_set)
+   {
+      /* For the default response time of 0.333,
+       * only four previous samples are required
+       * since the response factor for the fifth
+       * is:
+       *    pow(LCD_RESPONSE_TIME, 5.0f) -> 0.00409
+       * ...which is less than half a percent, and
+       * therefore irrelevant.
+       * If the response time were significantly
+       * increased, we may need to rethink this
+       * (but more samples == greater performance
+       * overheads) */
+      frame_blend_response[0] = LCD_RESPONSE_TIME;
+      frame_blend_response[1] = std::pow(LCD_RESPONSE_TIME, 2.0f);
+      frame_blend_response[2] = std::pow(LCD_RESPONSE_TIME, 3.0f);
+      frame_blend_response[3] = std::pow(LCD_RESPONSE_TIME, 4.0f);
+
+      frame_blend_response_set = true;
+   }
+
+   /* Assign frame blending function */
+   switch (frame_blend_type)
+   {
+      case FRAME_BLEND_MIX:
+         blend_frames = blend_frames_mix;
+         return;
+      case FRAME_BLEND_MIX_FAST:
+         blend_frames = blend_frames_mix_fast;
+         return;
+      case FRAME_BLEND_LCD_GHOSTING:
+         blend_frames = blend_frames_lcd_ghost;
+         return;
+      case FRAME_BLEND_LCD_GHOSTING_FAST:
+         blend_frames = blend_frames_lcd_ghost_fast;
+         return;
+      case FRAME_BLEND_NONE:
+      default:
+         /* Error condition - cannot happen
+          * > Just leave blend_frames() function set to NULL */
+         return;
+   }
+}
+
+static void deinit_frame_blending(void)
+{
+   if (video_buf_prev_1)
+   {
+      free(video_buf_prev_1);
+      video_buf_prev_1 = NULL;
+   }
+
+   if (video_buf_prev_2)
+   {
+      free(video_buf_prev_2);
+      video_buf_prev_2 = NULL;
+   }
+
+   if (video_buf_prev_3)
+   {
+      free(video_buf_prev_3);
+      video_buf_prev_3 = NULL;
+   }
+
+   if (video_buf_prev_4)
+   {
+      free(video_buf_prev_4);
+      video_buf_prev_4 = NULL;
+   }
+
+   if (video_buf_acc_r)
+   {
+      free(video_buf_acc_r);
+      video_buf_acc_r = NULL;
+   }
+
+   if (video_buf_acc_g)
+   {
+      free(video_buf_acc_g);
+      video_buf_acc_g = NULL;
+   }
+
+   if (video_buf_acc_b)
+   {
+      free(video_buf_acc_b);
+      video_buf_acc_b = NULL;
+   }
+}
+
+static void check_frame_blend_variable(void)
+{
+   struct retro_variable var;
+   enum frame_blend_method old_frame_blend_type = frame_blend_type;
+
+   frame_blend_type = FRAME_BLEND_NONE;
+
+   var.key = "gambatte_mix_frames";
+   var.value = 0;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "mix"))
+         frame_blend_type = FRAME_BLEND_MIX;
+      else if (!strcmp(var.value, "mix_fast"))
+         frame_blend_type = FRAME_BLEND_MIX_FAST;
+      else if (!strcmp(var.value, "lcd_ghosting"))
+         frame_blend_type = FRAME_BLEND_LCD_GHOSTING;
+      else if (!strcmp(var.value, "lcd_ghosting_fast"))
+         frame_blend_type = FRAME_BLEND_LCD_GHOSTING_FAST;
+   }
+
+   if (frame_blend_type == FRAME_BLEND_NONE)
+      blend_frames = NULL;
+   else if (frame_blend_type != old_frame_blend_type)
+      init_frame_blending();
+}
+
+/***************************/
+/* Interframe blending END */
+/***************************/
 
 bool file_present_in_system(std::string fname)
 {
@@ -223,7 +734,13 @@ static struct retro_system_timing g_timing;
 
 void retro_get_system_av_info(struct retro_system_av_info *info)
 {
-   retro_game_geometry geom = { 160*NUM_GAMEBOYS, 144, 160*NUM_GAMEBOYS, 144, 160.0f/144.0f };
+   retro_game_geometry geom = {
+      VIDEO_WIDTH,
+      VIDEO_HEIGHT,
+      VIDEO_WIDTH,
+      VIDEO_HEIGHT,
+      (float)GB_SCREEN_WIDTH / (float)VIDEO_HEIGHT
+   };
    info->geometry = geom;
    info->timing   = g_timing;
 }
@@ -274,13 +791,10 @@ void retro_init(void)
 #endif
 
 #ifdef _3DS
-   video_buf = (gambatte::video_pixel_t*)
-               linearMemAlign(sizeof(gambatte::video_pixel_t) * 256 * NUM_GAMEBOYS * 144, 128);
+   video_buf = (gambatte::video_pixel_t*)linearMemAlign(VIDEO_BUFF_SIZE, 128);
 #else
-   video_buf = (gambatte::video_pixel_t*)
-               malloc(sizeof(gambatte::video_pixel_t) * 256 * NUM_GAMEBOYS * 144);
+   video_buf = (gambatte::video_pixel_t*)malloc(VIDEO_BUFF_SIZE);
 #endif
-   video_pitch = 256 * NUM_GAMEBOYS;
 
    check_system_specs();
    
@@ -321,6 +835,7 @@ void retro_deinit(void)
    free(video_buf);
 #endif
    video_buf = NULL;
+   deinit_frame_blending();
    libretro_supports_bitmasks = false;
 }
 
@@ -376,8 +891,6 @@ void retro_reset()
       memcpy(gb.rtcdata_ptr(), rtc, gb.rtcdata_size());
       delete[] rtc;
    }
-
-   memset(prev_colours, 0, sizeof(gambatte::video_pixel_t) * 160 * NUM_GAMEBOYS * 144);
 }
 
 static size_t serialize_size = 0;
@@ -614,22 +1127,8 @@ static void check_variables(void)
    else
       up_down_allowed = false;
 
-   unsigned prev_mix_frames_mode = mix_frames_mode;
-   mix_frames_mode = 0;
-   var.key   = "gambatte_mix_frames";
-   var.value = NULL;
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (!strcmp(var.value, "accurate"))
-         mix_frames_mode = 1;
-      else if (!strcmp(var.value, "fast"))
-         mix_frames_mode = 2;
-   }
-   // Must reset previous colours when turning 'mix frames'
-   // on, otherwise first rendered frame may contain garbage
-   if ((prev_mix_frames_mode == 0) && (mix_frames_mode != 0)) {
-      memset(prev_colours, 0, sizeof(gambatte::video_pixel_t) * 160 * NUM_GAMEBOYS * 144);
-   }
+   /* Interframe blending option has its own handler */
+   check_frame_blend_variable();
 
 #ifdef HAVE_NETWORK
 
@@ -1103,107 +1602,6 @@ static void render_audio(const int16_t *samples, unsigned frames)
    blipper_push_samples(resampler_r, samples + 1, frames, 2);
 }
 
-static void mix_frames_fast(void)
-{
-   // Simple frame blending: mixes current frame 50:50 with
-   // previous one.
-   // Uses fast bit twiddling method, suitable for very low
-   // end devices (NB: rounding errors will cause darkening
-   // of colours - this is fairly innocuous, but may annoy
-   // some users)
-   unsigned offset = 0;
-   unsigned colour_index = 0;
-   for (unsigned i = 0; i < 144; i++)
-   {
-      for (unsigned j = 0; j < 160 * NUM_GAMEBOYS; j++)
-      {
-         // Get colours from current frame + previous frame
-         unsigned buff_index = offset + j;
-         gambatte::video_pixel_t rgb = video_buf[buff_index];
-         gambatte::video_pixel_t rgb_prev = prev_colours[colour_index];
-         
-         // Store current colours for next frame
-         prev_colours[colour_index] = rgb;
-         colour_index++;
-         
-         // Mix colours for current frame
-         // Do this in one shot to minimise unnecessary variables...
-         // > Unpack current/previous frame colours and divide by 2
-         // > Mix and repack colours for current frame
-#ifdef VIDEO_RGB565
-         video_buf[buff_index] =   (((rgb >> 11 & 0x1F) >> 1) + ((rgb_prev >> 11 & 0x1F) >> 1)) << 11
-                                 | (((rgb >>  6 & 0x1F) >> 1) + ((rgb_prev >>  6 & 0x1F) >> 1)) << 6
-                                 | (((rgb       & 0x1F) >> 1) + ((rgb_prev       & 0x1F) >> 1));
-#else
-         video_buf[buff_index] =   (((rgb >> 16 & 0x1F) >> 1) + ((rgb_prev >> 16 & 0x1F) >> 1)) << 16
-                                 | (((rgb >>  8 & 0x1F) >> 1) + ((rgb_prev >>  8 & 0x1F) >> 1)) << 8
-                                 | (((rgb       & 0x1F) >> 1) + ((rgb_prev       & 0x1F) >> 1));
-#endif
-      }
-      offset += video_pitch;
-   }
-}
-
-static void mix_frames_accurate(void)
-{
-   // Simple frame blending: mixes current frame 50:50 with
-   // previous one.
-   // Uses slow and accurate floating point conversion
-   // method. Not suitable for very low end devices, but
-   // should leave colour levels intact.
-   // NB: We're repeating some code here, just for performance
-   // reasons (i.e. putting an 'if' statement inside the inner
-   // loop to select between fast and accurate methods makes the
-   // fast method just a tiny bit too slow...)
-   unsigned offset = 0;
-   unsigned colour_index = 0;
-   for (unsigned i = 0; i < 144; i++)
-   {
-      for (unsigned j = 0; j < 160 * NUM_GAMEBOYS; j++)
-      {
-         // Get colours from current frame + previous frame
-         unsigned buff_index = offset + j;
-         gambatte::video_pixel_t rgb = video_buf[buff_index];
-         gambatte::video_pixel_t rgb_prev = prev_colours[colour_index];
-         
-         // Store current colours for next frame
-         prev_colours[colour_index] = rgb;
-         colour_index++;
-         
-         // Unpack current/previous frame colours and convert to float
-#ifdef VIDEO_RGB565
-         float r = static_cast<float>(rgb >> 11 & 0x1F);
-         float g = static_cast<float>(rgb >>  6 & 0x1F);
-         float b = static_cast<float>(rgb       & 0x1F);
-         
-         float r_prev = static_cast<float>(rgb_prev >> 11 & 0x1F);
-         float g_prev = static_cast<float>(rgb_prev >>  6 & 0x1F);
-         float b_prev = static_cast<float>(rgb_prev       & 0x1F);
-#else
-         float r = static_cast<float>(rgb >> 16 & 0x1F);
-         float g = static_cast<float>(rgb >>  8 & 0x1F);
-         float b = static_cast<float>(rgb       & 0x1F);
-         
-         float r_prev = static_cast<float>(rgb_prev >> 16 & 0x1F);
-         float g_prev = static_cast<float>(rgb_prev >>  8 & 0x1F);
-         float b_prev = static_cast<float>(rgb_prev       & 0x1F);
-#endif
-         // Mix colours for current frame and convert back to unsigned
-         unsigned r_mix = static_cast<unsigned>(((r * 0.5) + (r_prev * 0.5)) + 0.5) & 0x1F;
-         unsigned g_mix = static_cast<unsigned>(((g * 0.5) + (g_prev * 0.5)) + 0.5) & 0x1F;
-         unsigned b_mix = static_cast<unsigned>(((b * 0.5) + (b_prev * 0.5)) + 0.5) & 0x1F;
-         
-         // Repack colours for current frame
-#ifdef VIDEO_RGB565
-         video_buf[buff_index] = r_mix << 11 | g_mix << 6 | b_mix;
-#else
-         video_buf[buff_index] = r_mix << 16 | g_mix << 8 | b_mix;
-#endif
-      }
-      offset += video_pitch;
-   }
-}
-
 void retro_run()
 {
    static uint64_t samples_count = 0;
@@ -1214,11 +1612,7 @@ void retro_run()
    uint64_t expected_frames = samples_count / 35112;
    if (frames_count < expected_frames) // Detect frame dupes.
    {
-#ifdef VIDEO_RGB565
-      video_cb(NULL, 160*NUM_GAMEBOYS, 144, 512*NUM_GAMEBOYS);
-#else
-      video_cb(NULL, 160*NUM_GAMEBOYS, 144, 1024*NUM_GAMEBOYS);
-#endif
+      video_cb(NULL, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_PITCH * sizeof(gambatte::video_pixel_t));
       frames_count++;
       return;
    }
@@ -1230,7 +1624,7 @@ void retro_run()
    } static sound_buf;
    unsigned samples = 2064;
 
-   while (gb.runFor(video_buf, video_pitch, sound_buf.u32, samples) == -1)
+   while (gb.runFor(video_buf, VIDEO_PITCH, sound_buf.u32, samples) == -1)
    {
 #ifdef CC_RESAMPLER
       CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
@@ -1250,7 +1644,7 @@ void retro_run()
       samples = 2064;
    }
 #ifdef DUAL_MODE
-   while (gb2.runFor(video_buf+160, video_pitch, sound_buf.u32, samples) == -1) {}
+   while (gb2.runFor(video_buf + GB_SCREEN_WIDTH, VIDEO_PITCH, sound_buf.u32, samples) == -1) {}
 #endif
 
    samples_count += samples;
@@ -1261,26 +1655,11 @@ void retro_run()
    render_audio(sound_buf.i16, samples);
 #endif
 
-   switch (mix_frames_mode)
-   {
-      case 1:
-         mix_frames_accurate();
-         break;
-      case 2:
-         mix_frames_fast();
-         break;
-      default:
-         // Do nothing
-         // (defensive coding - could remove this...)
-         break;
-   }
+   /* Perform interframe blending, if required */
+   if (blend_frames)
+      blend_frames();
 
-#ifdef VIDEO_RGB565
-   video_cb(video_buf, 160*NUM_GAMEBOYS, 144, 512*NUM_GAMEBOYS);
-#else
-   video_cb(video_buf, 160*NUM_GAMEBOYS, 144, 1024*NUM_GAMEBOYS);
-#endif
-
+   video_cb(video_buf, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_PITCH * sizeof(gambatte::video_pixel_t));
 
 #ifndef CC_RESAMPLER
    unsigned read_avail = blipper_read_avail(resampler_l);
