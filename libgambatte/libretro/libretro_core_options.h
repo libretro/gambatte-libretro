@@ -291,12 +291,14 @@ struct retro_core_option_definition option_defs_us[] = {
    },
    {
       "gambatte_mix_frames",
-      "Mix Frames",
-      "Enable simulation of LCD ghosting effects by blending the current and previous frames. 'Accurate' blends pixel values with high precision. 'Fast' uses an approximation, which causes slight color darkening/shifting but allows full speed operation on very low-end hardware. Frame mixing is required when playing games that rely on LCD ghosting for transparency effects (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...).",
+      "Interframe Blending",
+      "Simulates LCD ghosting effects. 'Simple' performs a 50:50 mix of the current and previous frames. 'LCD Ghosting' mimics natural LCD response times by combining multiple buffered frames. 'Simple' blending is required when playing games that rely on LCD ghosting for transparency effects (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...).",
       {
-         { "disabled", NULL },
-         { "accurate", "Accurate" },
-         { "fast",     "Fast" },
+         { "disabled",          NULL },
+         { "mix",               "Simple (Accurate)" },
+         { "mix_fast",          "Simple (Fast)" },
+         { "lcd_ghosting",      "LCD Ghosting (Accurate)" },
+         { "lcd_ghosting_fast", "LCD Ghosting (Fast)" },
          { NULL, NULL },
       },
       "disabled"
