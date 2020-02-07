@@ -993,30 +993,47 @@ bool retro_load_game(const struct retro_game_info *info)
 
    check_variables();
 
-   unsigned sramlen = gb.savedata_size();
+   unsigned sramlen       = gb.savedata_size();
    const uint64_t rom     = RETRO_MEMDESC_CONST;
    const uint64_t mainram = RETRO_MEMDESC_SYSTEM_RAM;
+   struct retro_memory_map mmaps;
 
-   struct retro_memory_descriptor descs[] =
+   struct retro_memory_descriptor descs[10] =
    {
-      { mainram, gb.rambank0_ptr(),  0, 0xC000,               0, 0, 0x1000,                        NULL },
-      { mainram, gb.rambank1_ptr(),  0, 0xD000,               0, 0, 0x1000,                        NULL },
-      { mainram, gb.zeropage_ptr(),  0, 0xFF80,               0, 0, 0x0080,                        NULL },
-      {       0, gb.vram_ptr(),      0, 0x8000,               0, 0, 0x2000,                        NULL },
-      {       0, gb.oamram_ptr(),    0, 0xFE00,      0xFFFFFF00, 0, 0x00A0,                        NULL },
-      {     rom, gb.rombank0_ptr(),  0, 0x0000,               0, 0, 0x4000,                        NULL },
-      {     rom, gb.rombank1_ptr(),  0, 0x4000,               0, 0, 0x4000,                        NULL },
-      {       0, gb.savedata_ptr(),  0, 0xA000, (size_t)~0x1FFF, 0, sramlen,                       NULL },
-      { mainram, gb.rambank2_ptr(),  0, 0x10000,     0xFFFF0000, 0, gb.isCgb() ? 0x6000 : 0,       NULL },
-      {       0, gb.oamram_ptr(), 0x100, 0xFF00,     0xFFFFFF00, 0, 0x0080,                        NULL },
+      { mainram, gb.rambank0_ptr(),     0, 0xC000,          0, 0, 0x1000, NULL },
+      { mainram, gb.rambank1_ptr(),     0, 0xD000,          0, 0, 0x1000, NULL },
+      { mainram, gb.zeropage_ptr(),     0, 0xFF80,          0, 0, 0x0080, NULL },
+      {       0, gb.vram_ptr(),         0, 0x8000,          0, 0, 0x2000, NULL },
+      {       0, gb.oamram_ptr(),       0, 0xFE00, 0xFFFFFFE0, 0, 0x00A0, NULL },
+      {     rom, gb.rombank0_ptr(),     0, 0x0000,          0, 0, 0x4000, NULL },
+      {     rom, gb.rombank1_ptr(),     0, 0x4000,          0, 0, 0x4000, NULL },
+      {       0, gb.oamram_ptr(),   0x100, 0xFF00,          0, 0, 0x0080, NULL },
+      {       0, 0,                     0,      0,          0, 0,      0,    0 },
+      {       0, 0,                     0,      0,          0, 0,      0,    0 }
    };
-   
-   struct retro_memory_map mmaps =
+
+   unsigned i = 8;
+   if (sramlen)
    {
-      descs,
-      sizeof(descs) / sizeof(descs[0])
-   };
-   
+      descs[i].ptr    = gb.savedata_ptr();
+      descs[i].start  = 0xA000;
+      descs[i].select = (size_t)~0x1FFF;
+      descs[i].len    = sramlen;
+      i++;
+   }
+
+   if (gb.isCgb())
+   {
+      descs[i].flags  = mainram;
+      descs[i].ptr    = gb.rambank2_ptr();
+      descs[i].start  = 0x10000;
+      descs[i].select = 0xFFFFA000;
+      descs[i].len    = 0x6000;
+      i++;
+   }
+
+   mmaps.descriptors     = descs;
+   mmaps.num_descriptors = i;   
    environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &mmaps);
    
    bool yes = true;
