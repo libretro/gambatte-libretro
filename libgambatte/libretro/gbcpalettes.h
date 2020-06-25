@@ -31,21 +31,21 @@ namespace {
 // Game Boy Palettes
 //
 static const unsigned short gbdmg[] = { // Original Game Boy
-	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B),
-	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B),
-	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B)
+	PACK15_4(0x819A32, 0x61873E, 0x365D48, 0x2A453C),
+	PACK15_4(0x819A32, 0x61873E, 0x365D48, 0x2A453C),
+	PACK15_4(0x819A32, 0x61873E, 0x365D48, 0x2A453C)
 };
 
 static const unsigned short gbpoc[] = { // Game Boy Pocket
-	PACK15_4(0xC6CFA5, 0x8C966B, 0x4A5139, 0x181C18),
-	PACK15_4(0xC6CFA5, 0x8C966B, 0x4A5139, 0x181C18),
-	PACK15_4(0xC6CFA5, 0x8C966B, 0x4A5139, 0x181C18)
+	PACK15_4(0x949B8B, 0x7C8870, 0x525F4B, 0x394038),
+	PACK15_4(0x949B8B, 0x7C8870, 0x525F4B, 0x394038),
+	PACK15_4(0x949B8B, 0x7C8870, 0x525F4B, 0x394038)
 };
 
 static const unsigned short gblit[] = { // Game Boy Light
-	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B),
-	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B),
-	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B)
+	PACK15_4(0x01CBDF, 0x01B6D5, 0x269BAD, 0x00778D),
+	PACK15_4(0x01CBDF, 0x01B6D5, 0x269BAD, 0x00778D),
+	PACK15_4(0x01CBDF, 0x01B6D5, 0x269BAD, 0x00778D)
 };
 
 //
@@ -1039,9 +1039,9 @@ struct GbcPaletteEntry { const char *title; const unsigned short *p; };
 
 // Note: These entries must be in alphabetical order
 static const GbcPaletteEntry gbcDirPalettes[] = {
-	{ "GB - DMG", gbdmg },    // Pea green
-	{ "GB - Light", gblit },  // Aquamarine
-	{ "GB - Pocket", gbpoc }, // Pristine greyscale
+	{ "GB - DMG", gbdmg },    // Original Game Boy
+	{ "GB - Light", gblit },  // Original Game Boy Light
+	{ "GB - Pocket", gbpoc }, // Original Game Boy Pocket
 	{ "GBC - Blue", p518 },       // Left
 	{ "GBC - Brown", p012 },      // Up
 	{ "GBC - Dark Blue", p50D },  // A + Left
