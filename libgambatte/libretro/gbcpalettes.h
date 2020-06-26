@@ -31,9 +31,9 @@ namespace {
 // Game Boy Palettes
 //
 static const unsigned short gbdmg[] = { // Original Game Boy
-	PACK15_4(0x819A32, 0x61873E, 0x365D48, 0x2A453C),
-	PACK15_4(0x819A32, 0x61873E, 0x365D48, 0x2A453C),
-	PACK15_4(0x819A32, 0x61873E, 0x365D48, 0x2A453C)
+	PACK15_4(0x578200, 0x317400, 0x005121, 0x00420C),
+	PACK15_4(0x578200, 0x317400, 0x005121, 0x00420C),
+	PACK15_4(0x578200, 0x317400, 0x005121, 0x00420C)
 };
 
 static const unsigned short gbpoc[] = { // Game Boy Pocket
