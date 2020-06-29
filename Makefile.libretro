@@ -561,9 +561,9 @@ ifneq (,$(findstring msvc,$(platform)))
 		LDFLAGS += -DEBUG
 	endif
 
-CFLAGS += -Od -Zi -DDEBUG -D_DEBUG
-CXXFLAGS += -Od -Zi -DDEBUG -D_DEBUG
-	else
+	CFLAGS += -Od -Zi -DDEBUG -D_DEBUG
+	CXXFLAGS += -Od -Zi -DDEBUG -D_DEBUG
+else
 	CFLAGS += -O0 -g -DDEBUG
 	CXXFLAGS += -O0 -g -DDEBUG
 endif
@@ -603,15 +603,15 @@ CORE_DIR := libgambatte/src
 
 include Makefile.common
 
-OBJS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
+OBJECTS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
 
-DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DINLINE=inline -DVIDEO_RGB565
+DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DVIDEO_RGB565
 
 ifeq ($(HAVE_NETWORK), 1)
    DEFINES += -DHAVE_NETWORK
 endif
 
-CFLAGS += $(CODE_DEFINES) $(fpic) $(DEFINES)
+CFLAGS   += $(fpic) $(DEFINES)
 CXXFLAGS += $(fpic) $(DEFINES)
 
 OBJOUT   = -o
@@ -649,34 +649,30 @@ ifndef ($(NOUNIVERSAL))
 endif
 endif
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJECTS)
 ifeq ($(STATIC_LINKING), 1)
 ifneq (,$(findstring msvc,$(platform)))
 	$(LD) $(LINKOUT)$@ $(OBJECTS)
 else
-	$(AR) rcs $@ $(OBJS)
+	$(AR) rcs $@ $(OBJECTS)
 endif
 else
-	$(LD) $(fpic) $(SHARED) $(LINKOUT) $@ $(OBJS) $(LDFLAGS) $(LIBS)
+	$(LD) $(fpic) $(SHARED) $(INCLUDES) $(LFLAGS) $(LINKOUT)$@ $(OBJECTS) $(LDFLAGS) $(LIBS)
 endif
 
-CFLAGS += $(INCFLAGS)
+CFLAGS   += $(INCFLAGS)
 CXXFLAGS += $(INCFLAGS)
 
 %.o: %.cpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(OBJOUT)$@ $<
+	$(CXX) $(CXXFLAGS) -c $(OBJOUT)$@ $<
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $(OBJOUT) $@ $<
-
-clean-objs:
-	rm -f $(OBJS)
+	$(CC) $(CFLAGS) -c $(OBJOUT)$@ $<
 
 clean:
-	rm -f $(OBJS)
-	rm -f $(TARGET)
+	rm -f $(OBJECTS) $(TARGET)
 
-.PHONY: clean clean-objs
+.PHONY: clean
 endif
 
 install: $(TARGET)
