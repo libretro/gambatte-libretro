@@ -1,4 +1,4 @@
-/* Copyright  (C) 2010-2017 The RetroArch team
+/* Copyright  (C) 2010-2020 The RetroArch team
  *
  * ---------------------------------------------------------------------------------------
  * The following license statement only applies to this file (retro_miscellaneous.h).
@@ -39,7 +39,7 @@
 #include <Xtl.h>
 #endif
 
-#if defined(__CELLOS_LV2__)
+#if defined(__CELLOS_LV2__) && !defined(__PSL1GHT__)
 #include <sys/fs_external.h>
 #endif
 
@@ -75,9 +75,9 @@ static INLINE bool bits_any_set(uint32_t* ptr, uint32_t count)
 }
 
 #ifndef PATH_MAX_LENGTH
-#if defined(__CELLOS_LV2__)
+#if defined(__CELLOS_LV2__) && !defined(__PSL1GHT__)
 #define PATH_MAX_LENGTH CELL_FS_MAX_FS_PATH_LENGTH
-#elif defined(_XBOX1) || defined(_3DS) || defined(PSP) || defined(GEKKO)|| defined(WIIU)
+#elif defined(_XBOX1) || defined(_3DS) || defined(PSP) || defined(PS2) || defined(GEKKO)|| defined(WIIU) || defined(ORBIS)
 #define PATH_MAX_LENGTH 512
 #else
 #define PATH_MAX_LENGTH 4096
@@ -106,8 +106,8 @@ static INLINE bool bits_any_set(uint32_t* ptr, uint32_t count)
 #define BIT16_GET(a, bit)    (((a) >> ((bit) & 15)) & 1)
 #define BIT16_CLEAR_ALL(a)   ((a) = 0)
 
-#define BIT32_SET(a, bit)    ((a) |=  (1 << ((bit) & 31)))
-#define BIT32_CLEAR(a, bit)  ((a) &= ~(1 << ((bit) & 31)))
+#define BIT32_SET(a, bit)    ((a) |=  (UINT32_C(1) << ((bit) & 31)))
+#define BIT32_CLEAR(a, bit)  ((a) &= ~(UINT32_C(1) << ((bit) & 31)))
 #define BIT32_GET(a, bit)    (((a) >> ((bit) & 31)) & 1)
 #define BIT32_CLEAR_ALL(a)   ((a) = 0)
 
@@ -116,8 +116,8 @@ static INLINE bool bits_any_set(uint32_t* ptr, uint32_t count)
 #define BIT64_GET(a, bit)    (((a) >> ((bit) & 63)) & 1)
 #define BIT64_CLEAR_ALL(a)   ((a) = 0)
 
-#define BIT128_SET(a, bit)   ((a).data[(bit) >> 5] |=  (1 << ((bit) & 31)))
-#define BIT128_CLEAR(a, bit) ((a).data[(bit) >> 5] &= ~(1 << ((bit) & 31)))
+#define BIT128_SET(a, bit)   ((a).data[(bit) >> 5] |=  (UINT32_C(1) << ((bit) & 31)))
+#define BIT128_CLEAR(a, bit) ((a).data[(bit) >> 5] &= ~(UINT32_C(1) << ((bit) & 31)))
 #define BIT128_GET(a, bit)   (((a).data[(bit) >> 5] >> ((bit) & 31)) & 1)
 #define BIT128_CLEAR_ALL(a)  memset(&(a), 0, sizeof(a))
 
@@ -154,5 +154,29 @@ typedef struct
 {
    uint32_t data[8];
 } retro_bits_t;
+
+#ifdef _WIN32
+#  ifdef _WIN64
+#    define PRI_SIZET PRIu64
+#  else
+#    if _MSC_VER == 1800
+#      define PRI_SIZET PRIu32
+#    else
+#      define PRI_SIZET "u"
+#    endif
+#  endif
+#elif PS2
+#  define PRI_SIZET "u"
+#else
+#  if (SIZE_MAX == 0xFFFF)
+#    define PRI_SIZET "hu"
+#  elif (SIZE_MAX == 0xFFFFFFFF)
+#    define PRI_SIZET "u"
+#  elif (SIZE_MAX == 0xFFFFFFFFFFFFFFFF)
+#    define PRI_SIZET "lu"
+#  else
+#    error PRI_SIZET: unknown SIZE_MAX
+#  endif
+#endif
 
 #endif
