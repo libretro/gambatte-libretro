@@ -548,7 +548,7 @@ else
    CC ?= gcc
    CXX ?= g++
    SHARED := -shared -static-libgcc -static-libstdc++ -Wl,-no-undefined -Wl,-version-script=$(version_script)
-   LDFLAGS := -lws2_32
+   LDFLAGS += -lws2_32
 endif
 
 ifeq ($(DEBUG), 1)
@@ -659,7 +659,7 @@ else
 	$(AR) rcs $@ $(OBJECTS)
 endif
 else
-	$(LD) $(fpic) $(SHARED) $(LDFLAGS) $(INCLUDES) $(LFLAGS) $(LINKOUT)$@ $(OBJECTS) $(LIBS)
+	$(LD) $(fpic) $(SHARED) $(INCLUDES) $(LFLAGS) $(LINKOUT)$@ $(OBJECTS) $(LIBS) $(LDFLAGS)
 endif
 
 CFLAGS   += $(INCFLAGS)
