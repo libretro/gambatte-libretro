@@ -134,6 +134,8 @@ else ifneq (,$(findstring ios,$(platform)))
    TARGET := $(TARGET_NAME)_libretro_ios.dylib
    fpic := -fPIC
    SHARED := -dynamiclib
+   LDFLAGS += -stdlib=libc++
+   CXXFLAGS += $(LDFLAGS)
    ifeq ($(IOSSDK),)
       IOSSDK := $(shell xcodebuild -version -sdk iphoneos Path)
    endif
@@ -309,7 +311,7 @@ else ifeq ($(platform), libnx)
             -fPIE -I$(LIBNX)/include/ -ffunction-sections -fdata-sections -ftls-model=local-exec -Wl,--allow-multiple-definition -specs=$(LIBNX)/switch.specs
     CFLAGS += $(INCDIRS)
     CFLAGS  += $(INCLUDE)  -D__SWITCH__ -DHAVE_LIBNX
-    CXXFLAGS := $(ASFLAGS) $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
+    CXXFLAGS += $(ASFLAGS) $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
     CFLAGS += -std=gnu11
     STATIC_LINKING = 1
 
@@ -657,7 +659,7 @@ else
 	$(AR) rcs $@ $(OBJECTS)
 endif
 else
-	$(LD) $(fpic) $(SHARED) $(INCLUDES) $(LFLAGS) $(LINKOUT)$@ $(OBJECTS) $(LDFLAGS) $(LIBS)
+	$(LD) $(fpic) $(SHARED) $(LDFLAGS) $(INCLUDES) $(LFLAGS) $(LINKOUT)$@ $(OBJECTS) $(LIBS)
 endif
 
 CFLAGS   += $(INCFLAGS)
