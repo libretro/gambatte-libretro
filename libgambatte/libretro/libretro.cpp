@@ -1099,7 +1099,7 @@ static void check_variables(void)
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
       if (!strcmp(var.value, "above screen"))
-         colorCorrectionBrightness = 1.2f;
+         colorCorrectionBrightness = 1.0f;
       else if (!strcmp(var.value, "below screen"))
          colorCorrectionBrightness = 0.0f;
    }

@@ -23,15 +23,16 @@
 #include <cmath>
 
 /* GBC colour correction factors */
-#define GBC_CC_R  0.87
-#define GBC_CC_G  0.66
-#define GBC_CC_B  0.79
-#define GBC_CC_RG 0.115
-#define GBC_CC_RB 0.14
-#define GBC_CC_GR 0.18
-#define GBC_CC_GB 0.07
-#define GBC_CC_BR -0.05
-#define GBC_CC_BG 0.225
+#define GBC_CC_LUM 0.94f
+#define GBC_CC_R   0.82f
+#define GBC_CC_G   0.665f
+#define GBC_CC_B   0.73f
+#define GBC_CC_RG  0.125f
+#define GBC_CC_RB  0.195f
+#define GBC_CC_GR  0.24f
+#define GBC_CC_GB  0.075f
+#define GBC_CC_BR  -0.06f
+#define GBC_CC_BG  0.21f
 
 namespace gambatte
 {
@@ -210,7 +211,7 @@ namespace gambatte
          else
          {
             // Use Pokefan531's "gold standard" GBC colour correction
-            // (https://forums.libretro.com/t/real-gba-and-ds-phat-colors/1540/174)
+            // (https://forums.libretro.com/t/real-gba-and-ds-phat-colors/1540/190)
             // NB: The results produced by this implementation are ever so slightly
             // different from the output of the gbc-colour shader. This is due to the
             // fact that we have to tolerate rounding errors here that are simply not
@@ -228,9 +229,9 @@ namespace gambatte
             float gFloat = std::pow(static_cast<float>(g) * rgbMaxInv, adjustedGamma);
             float bFloat = std::pow(static_cast<float>(b) * rgbMaxInv, adjustedGamma);
             // Perform colour mangling
-            float rCorrect = (GBC_CC_R  * rFloat) + (GBC_CC_GR * gFloat) + (GBC_CC_BR * bFloat);
-            float gCorrect = (GBC_CC_RG * rFloat) + (GBC_CC_G  * gFloat) + (GBC_CC_BG * bFloat);
-            float bCorrect = (GBC_CC_RB * rFloat) + (GBC_CC_GB * gFloat) + (GBC_CC_B  * bFloat);
+            float rCorrect = GBC_CC_LUM * ((GBC_CC_R  * rFloat) + (GBC_CC_GR * gFloat) + (GBC_CC_BR * bFloat));
+            float gCorrect = GBC_CC_LUM * ((GBC_CC_RG * rFloat) + (GBC_CC_G  * gFloat) + (GBC_CC_BG * bFloat));
+            float bCorrect = GBC_CC_LUM * ((GBC_CC_RB * rFloat) + (GBC_CC_GB * gFloat) + (GBC_CC_B  * bFloat));
             // Range check...
             rCorrect = rCorrect > 0.0f ? rCorrect : 0.0f;
             gCorrect = gCorrect > 0.0f ? gCorrect : 0.0f;
