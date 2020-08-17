@@ -37,9 +37,9 @@ static const unsigned short gbdmg[] = { // Original Game Boy
 };
 
 static const unsigned short gbpoc[] = { // Game Boy Pocket
-	PACK15_4(0x949B8B, 0x7C8870, 0x525F4B, 0x394038),
-	PACK15_4(0x949B8B, 0x7C8870, 0x525F4B, 0x394038),
-	PACK15_4(0x949B8B, 0x7C8870, 0x525F4B, 0x394038)
+	PACK15_4(0xA7B19A, 0x86927C, 0x535f49, 0x2A3325),
+	PACK15_4(0xA7B19A, 0x86927C, 0x535f49, 0x2A3325),
+	PACK15_4(0xA7B19A, 0x86927C, 0x535f49, 0x2A3325)
 };
 
 static const unsigned short gblit[] = { // Game Boy Light
