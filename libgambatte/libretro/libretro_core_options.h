@@ -295,8 +295,7 @@ struct retro_core_option_definition option_defs_us[] = {
       "Simulates LCD ghosting effects. 'Simple' performs a 50:50 mix of the current and previous frames. 'LCD Ghosting' mimics natural LCD response times by combining multiple buffered frames. 'Simple' blending is required when playing games that rely on LCD ghosting for transparency effects (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...).",
       {
          { "disabled",          NULL },
-         { "mix",               "Simple (Accurate)" },
-         { "mix_fast",          "Simple (Fast)" },
+         { "mix",               "Simple" },
          { "lcd_ghosting",      "LCD Ghosting (Accurate)" },
          { "lcd_ghosting_fast", "LCD Ghosting (Fast)" },
          { NULL, NULL },
