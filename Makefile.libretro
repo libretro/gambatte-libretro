@@ -329,7 +329,7 @@ else ifeq ($(platform), gcw0)
    fpic := -fPIC
    SHARED := -shared -Wl,-version-script=$(version_script)
    PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
-   CFLAGS += -fomit-frame-pointer -march=mips32 -mtune=mips32r2 -mhard-float
+   CFLAGS += -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32r2 -mhard-float
    CXXFLAGS += $(CFLAGS)
 
 # Windows MSVC 2003 Xbox 1
