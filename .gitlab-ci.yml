@@ -1,6 +1,6 @@
 .core-defs:
   variables:
-    JNI_PATH: libgambatte/libretro/jni
+    JNI_PATH: libgambatte/libretro
     CORENAME: gambatte
 
 include:
