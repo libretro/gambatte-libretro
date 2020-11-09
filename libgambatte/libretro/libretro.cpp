@@ -128,34 +128,13 @@ static void blend_frames_mix(void)
          /* Store colours for next frame */
          *(prev + x) = rgb_curr;
 
-         /* Unpack colours */
+         /* Mix colours
+          * > "Mixing Packed RGB Pixels Efficiently"
+          *   http://blargg.8bitalley.com/info/rgb_mixing.html */
 #ifdef VIDEO_RGB565
-         gambatte::video_pixel_t r_curr = rgb_curr >> 11 & 0x1F;
-         gambatte::video_pixel_t g_curr = rgb_curr >>  6 & 0x1F;
-         gambatte::video_pixel_t b_curr = rgb_curr       & 0x1F;
-
-         gambatte::video_pixel_t r_prev = rgb_prev >> 11 & 0x1F;
-         gambatte::video_pixel_t g_prev = rgb_prev >>  6 & 0x1F;
-         gambatte::video_pixel_t b_prev = rgb_prev       & 0x1F;
+         *(curr + x) = (rgb_curr + rgb_prev + ((rgb_curr ^ rgb_prev) & 0x821)) >> 1;
 #else
-         gambatte::video_pixel_t r_curr = rgb_curr >> 16 & 0x1F;
-         gambatte::video_pixel_t g_curr = rgb_curr >>  8 & 0x1F;
-         gambatte::video_pixel_t b_curr = rgb_curr       & 0x1F;
-
-         gambatte::video_pixel_t r_prev = rgb_prev >> 16 & 0x1F;
-         gambatte::video_pixel_t g_prev = rgb_prev >>  8 & 0x1F;
-         gambatte::video_pixel_t b_prev = rgb_prev       & 0x1F;
-#endif
-			/* Mix colours */
-			gambatte::video_pixel_t r_mix  = (r_curr >> 1) + (r_prev >> 1) + (((r_curr & 0x1) + (r_prev & 0x1)) >> 1);
-			gambatte::video_pixel_t g_mix  = (g_curr >> 1) + (g_prev >> 1) + (((g_curr & 0x1) + (g_prev & 0x1)) >> 1);
-			gambatte::video_pixel_t b_mix  = (b_curr >> 1) + (b_prev >> 1) + (((b_curr & 0x1) + (b_prev & 0x1)) >> 1);
-
-         /* Repack colours for current frame */
-#ifdef VIDEO_RGB565
-         *(curr + x) = r_mix << 11 | g_mix << 6 | b_mix;
-#else
-         *(curr + x) = r_mix << 16 | g_mix << 8 | b_mix;
+         *(curr + x) = (rgb_curr + rgb_prev + ((rgb_curr ^ rgb_prev) & 0x10101)) >> 1;
 #endif
       }
 
