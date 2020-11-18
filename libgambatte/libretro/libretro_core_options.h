@@ -302,6 +302,26 @@ struct retro_core_option_definition option_defs_us[] = {
       },
       "disabled"
    },
+   {
+      "gambatte_rumble_level",
+      "Gamepad Rumble Strength",
+      "Enables haptic feedback effects for supported games (Pokemon Pinball, Perfect Dark...).",
+      {
+         { "0",   NULL },
+         { "1",   NULL },
+         { "2",   NULL },
+         { "3",   NULL },
+         { "4",   NULL },
+         { "5",   NULL },
+         { "6",   NULL },
+         { "7",   NULL },
+         { "8",   NULL },
+         { "9",   NULL },
+         { "10",  NULL },
+         { NULL, NULL },
+      },
+      "10"
+   },
 #ifdef HAVE_NETWORK
    {
       "gambatte_show_gb_link_settings",

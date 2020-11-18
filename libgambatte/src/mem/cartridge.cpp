@@ -24,6 +24,8 @@
 #include <string.h>
 #include <algorithm>
 
+extern void cartridge_set_rumble(unsigned active);
+
 namespace gambatte
 {
 
@@ -417,6 +419,7 @@ namespace gambatte
       unsigned short rombank;
       unsigned char rambank;
       bool enableRam;
+      bool hasRumble;
       static unsigned adjustedRombank(const unsigned bank) { return bank; }
       void setRambank() const {
          memptrs.setRambank(enableRam ? MemPtrs::READ_EN | MemPtrs::WRITE_EN : 0,
@@ -424,29 +427,41 @@ namespace gambatte
       }
       void setRombank() const { memptrs.setRombank(adjustedRombank(rombank) & (rombanks(memptrs) - 1));}
       public:
-      explicit Mbc5(MemPtrs &memptrs)
+      explicit Mbc5(MemPtrs &memptrs, bool rumble)
          : memptrs(memptrs),
          rombank(1),
          rambank(0),
-         enableRam(false)
+         enableRam(false),
+         hasRumble(rumble)
       {
       }
       virtual void romWrite(const unsigned P, const unsigned data) {
-         switch (P >> 13 & 3) {
-            case 0:
+         switch (P >> 12 & 0x7) {
+            case 0x0:
+            case 0x1:
                enableRam = (data & 0xF) == 0xA;
                setRambank();
                break;
-            case 1:
+            case 0x2:
+            case 0x3:
                rombank = P < 0x3000 ? (rombank & 0x100) | data
                   : (data << 8 & 0x100) | (rombank & 0xFF);
                setRombank();
                break;
-            case 2:
-               rambank = data & 0xF;
+            case 0x4:
+            case 0x5:
+               if(hasRumble && ((P >> 12 & 0x7) == 4))
+               {
+                  cartridge_set_rumble((data >> 3) & 1);
+                  rambank = (data & ~8) & 0x0f;
+               }
+               else
+               {
+                  rambank = data & 0x0f;
+               }
                setRambank();
                break;
-            case 3:
+            default:
                break;
          }
       }
@@ -527,6 +542,7 @@ namespace gambatte
       unsigned rombanks = 2;
       bool cgb = false;
       enum Cartridgetype { PLAIN, MBC1, MBC2, MBC3, MBC5, HUC1, HUC3 } type = PLAIN;
+      bool rumble = false;
 
       {
          unsigned i;
@@ -558,9 +574,9 @@ namespace gambatte
             case 0x19: printf("MBC5 ROM loaded.\n"); type = MBC5; break;
             case 0x1A: printf("MBC5 ROM+RAM loaded.\n"); type = MBC5; break;
             case 0x1B: printf("MBC5 ROM+RAM+BATTERY loaded.\n"); type = MBC5; break;
-            case 0x1C: printf("MBC5+RUMBLE ROM not supported.\n"); type = MBC5; break;
-            case 0x1D: printf("MBC5+RUMBLE+RAM ROM not suported.\n"); type = MBC5; break;
-            case 0x1E: printf("MBC5+RUMBLE+RAM+BATTERY ROM not supported.\n"); type = MBC5; break;
+            case 0x1C: printf("MBC5+RUMBLE ROM loaded.\n"); type = MBC5; rumble = true; break;
+            case 0x1D: printf("MBC5+RUMBLE+RAM ROM loaded.\n"); type = MBC5; rumble = true; break;
+            case 0x1E: printf("MBC5+RUMBLE+RAM+BATTERY ROM loaded.\n"); type = MBC5; rumble = true; break;
             case 0x20: printf("MBC6 ROM not supported.\n"); return -1;
             case 0x22: printf("MBC7 ROM not supported.\n"); return -1;
             case 0xFC: printf("Pocket Camera ROM not supported.\n"); return -1;
@@ -630,7 +646,7 @@ namespace gambatte
                      break;
          case MBC2: mbc.reset(new Mbc2(memptrs_)); break;
          case MBC3: mbc.reset(new Mbc3(memptrs_, hasRtc(memptrs_.romdata()[0x147]) ? &rtc_ : 0)); break;
-         case MBC5: mbc.reset(new Mbc5(memptrs_)); break;
+         case MBC5: mbc.reset(new Mbc5(memptrs_, rumble)); break;
          case HUC1: mbc.reset(new HuC1(memptrs_)); break;
          case HUC3:
             huc3_.set(true);

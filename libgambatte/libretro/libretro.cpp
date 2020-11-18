@@ -513,6 +513,75 @@ static void check_frame_blend_variable(void)
 /* Interframe blending END */
 /***************************/
 
+/************************/
+/* Rumble support START */
+/************************/
+
+static struct retro_rumble_interface rumble = {0};
+static uint16_t rumble_strength_last        = 0;
+static uint16_t rumble_strength_up          = 0;
+static uint16_t rumble_strength_down        = 0;
+static uint16_t rumble_level                = 0;
+static bool rumble_active                   = false;
+
+void cartridge_set_rumble(unsigned active)
+{
+   if (!rumble.set_rumble_state ||
+       !rumble_level)
+      return;
+
+   if (active)
+      rumble_strength_up++;
+   else
+      rumble_strength_down++;
+
+   rumble_active = true;
+}
+
+static void apply_rumble(void)
+{
+   uint16_t strength;
+
+   if (!rumble.set_rumble_state ||
+       !rumble_level)
+      return;
+
+   strength = (rumble_strength_up > 0) ?
+         (rumble_strength_up * rumble_level) /
+               (rumble_strength_up + rumble_strength_down) : 0;
+
+   rumble_strength_up   = 0;
+   rumble_strength_down = 0;
+
+   if (strength == rumble_strength_last)
+      return;
+
+   rumble.set_rumble_state(0, RETRO_RUMBLE_WEAK, strength);
+   rumble.set_rumble_state(0, RETRO_RUMBLE_STRONG, strength);
+
+   rumble_strength_last = strength;
+}
+
+static void deactivate_rumble(void)
+{
+   rumble_strength_up   = 0;
+   rumble_strength_down = 0;
+   rumble_active        = false;
+
+   if (!rumble.set_rumble_state ||
+       (rumble_strength_last == 0))
+      return;
+
+   rumble.set_rumble_state(0, RETRO_RUMBLE_WEAK, 0);
+   rumble.set_rumble_state(0, RETRO_RUMBLE_STRONG, 0);
+
+   rumble_strength_last = 0;
+}
+
+/**********************/
+/* Rumble support END */
+/**********************/
+
 bool file_present_in_system(std::string fname)
 {
    const char *systemdirtmp = NULL;
@@ -769,6 +838,10 @@ void retro_deinit(void)
    video_buf = NULL;
    deinit_frame_blending();
    libretro_supports_bitmasks = false;
+
+   deactivate_rumble();
+   memset(&rumble, 0, sizeof(struct retro_rumble_interface));
+   rumble_level = 0;
 }
 
 void retro_set_environment(retro_environment_t cb)
@@ -1045,10 +1118,10 @@ static void check_variables(void)
       darkFilterLevel = static_cast<unsigned>(atoi(var.value));
    }
    gb.setDarkFilterLevel(darkFilterLevel);
-   
-   var.key   = "gambatte_up_down_allowed";
-   var.value = NULL;
 
+   up_down_allowed = false;
+   var.key         = "gambatte_up_down_allowed";
+   var.value       = NULL;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
       if (!strcmp(var.value, "enabled"))
@@ -1056,8 +1129,18 @@ static void check_variables(void)
       else
          up_down_allowed = false;
    }
-   else
-      up_down_allowed = false;
+
+   rumble_level = 0;
+   var.key      = "gambatte_rumble_level";
+   var.value    = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      rumble_level = atoi(var.value);
+      rumble_level = (rumble_level > 10) ? 10 : rumble_level;
+      rumble_level = (rumble_level > 0)  ? ((0x1999 * rumble_level) + 0x5) : 0;
+   }
+   if (rumble_level == 0)
+      deactivate_rumble();
 
    /* Interframe blending option has its own handler */
    check_frame_blend_variable();
@@ -1352,6 +1435,11 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
 
+   if (environ_cb(RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE, &rumble))
+      log_cb(RETRO_LOG_INFO, "Rumble environment supported.\n");
+   else
+      log_cb(RETRO_LOG_INFO, "Rumble environment not supported.\n");
+
    struct retro_input_descriptor desc[] = {
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },
@@ -1599,6 +1687,10 @@ void retro_run()
    blipper_read(resampler_r, sound_buf.i16 + 1, read_avail, 2);
    audio_batch_cb(sound_buf.i16, read_avail);
 #endif
+
+   /* Apply any 'pending' rumble effects */
+   if (rumble_active)
+      apply_rumble();
 
    frames_count++;
 
