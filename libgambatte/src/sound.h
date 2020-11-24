@@ -71,6 +71,7 @@ public:
 	void setNr44(unsigned data) { ch4_.setNr4(data); }
 
 	void setSoVolume(unsigned nr50);
+	void setSoChanVolume(unsigned percent, unsigned ch);
 	void mapSo(unsigned nr51);
 	unsigned getStatus() const;
 
@@ -83,6 +84,7 @@ private:
 	std::size_t bufferPos_;
 	unsigned long lastUpdate_;
 	unsigned long soVol_;
+	unsigned long soChVol_[4];
 	uint_least32_t rsum_;
 	bool enabled_;
 

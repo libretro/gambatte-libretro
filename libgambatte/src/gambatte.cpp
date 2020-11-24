@@ -219,6 +219,10 @@ void *GB::zeropage_ptr() const {
 void *GB::oamram_ptr() const {
  return p_->cpu.oamram_ptr();
 }
+
+PSG *GB::getPSG() const {
+  return p_->cpu.mem_.psg_ptr();
+}
 #endif
 
 }

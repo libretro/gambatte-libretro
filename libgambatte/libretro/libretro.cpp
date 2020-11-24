@@ -1144,6 +1144,17 @@ static void check_variables(void)
 
    /* Interframe blending option has its own handler */
    check_frame_blend_variable();
+   
+   char sound_channel_volume_base_str[] = "gambatte_channel_1_volume";
+   var.key = sound_channel_volume_base_str;
+   for (unsigned c = 0; c < 4; c++) {
+       sound_channel_volume_base_str[17] = c+'1';
+       if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+       {
+           gb.getPSG()->setSoChanVolume(unsigned(atoi(var.value)), c);
+       }
+   }
+   
 
 #ifdef HAVE_NETWORK
 
