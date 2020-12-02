@@ -62,6 +62,7 @@ public:
    void *rombank1_ptr() const { return cart_.romdata(0) + 0x4000; }
    void *zeropage_ptr() const { return (void*)(ioamhram_ + 0x0180); }
    void *oamram_ptr() const { return (void*)ioamhram_; }
+   PSG *psg_ptr() const { return (PSG*)&psg_; }
 #else
    void loadSavedata() { cart_.loadSavedata(); }
    void saveSavedata() { cart_.saveSavedata(); }
