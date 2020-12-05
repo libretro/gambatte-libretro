@@ -31,21 +31,33 @@ include:
     file: '/android-jni.yml'
 
   ################################## CONSOLES ################################
-  # Nintendo Switch
+  # PlayStation Portable
   - project: 'libretro-infrastructure/ci-templates'
-    file: '/libnx-static.yml'
+    file: '/psp-static.yml'
 
   # PlayStation Vita
   - project: 'libretro-infrastructure/ci-templates'
     file: '/vita-static.yml'
 
-  # PlayStation Portable
+  # Nintendo 3DS
   - project: 'libretro-infrastructure/ci-templates'
-    file: '/psp-static.yml'
+    file: '/ctr-static.yml'
+
+  # Nintendo GameCube
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/ngc-static.yml'
+
+  # Nintendo Wii
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/wii-static.yml'
+
+  # Nintendo Switch
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/libnx-static.yml'
 
   # OpenDingux
   - project: 'libretro-infrastructure/ci-templates'
-    file: '/dingux-i386.yml'
+    file: '/dingux-mips32.yml'
 
 # Stages for building
 stages:
@@ -102,10 +114,10 @@ android-x86:
     - .core-defs
 
 ################################### CONSOLES #################################
-# Nintendo Switch
-libretro-build-libnx-aarch64:
+# PlayStation Portable
+libretro-build-psp:
   extends:
-    - .libretro-libnx-static-retroarch-master
+    - .libretro-psp-static-retroarch-master
     - .core-defs
 
 # PlayStation Vita
@@ -114,14 +126,32 @@ libretro-build-vita:
     - .libretro-vita-static-retroarch-master
     - .core-defs
 
-# PlayStation Portable
-libretro-build-psp:
+# Nintendo 3DS
+libretro-build-ctr:
   extends:
-    - .libretro-psp-static-retroarch-master
+    - .libretro-ctr-static-retroarch-master
+    - .core-defs
+
+# Nintendo GameCube
+libretro-build-ngc:
+  extends:
+    - .libretro-ngc-static-retroarch-master
+    - .core-defs
+
+# Nintendo Wii
+libretro-build-wii:
+  extends:
+    - .libretro-wii-static-retroarch-master
+    - .core-defs
+
+# Nintendo Switch
+libretro-build-libnx-aarch64:
+  extends:
+    - .libretro-libnx-static-retroarch-master
     - .core-defs
 
 # OpenDingux
-libretro-build-dingux-i386:
+libretro-build-dingux-mips32:
   extends:
-    - .libretro-dingux-i386-make-default
+    - .libretro-dingux-mips32-make-default
     - .core-defs
