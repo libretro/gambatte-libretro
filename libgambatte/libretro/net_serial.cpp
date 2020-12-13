@@ -184,7 +184,7 @@ bool NetSerial::startClientSocket()
 			return false;
 		}
 
-		memmove((char*)server_hostname->h_addr, (char*)&server_addr.sin_addr.s_addr, server_hostname->h_length);
+		memmove((char*)&server_addr.sin_addr.s_addr, (char*)server_hostname->h_addr, server_hostname->h_length);
 		if (connect(fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
 			log_cb(RETRO_LOG_ERROR, "Error connecting to server: %s\n", strerror(errno));
 			close(fd);
