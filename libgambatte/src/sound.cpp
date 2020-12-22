@@ -103,10 +103,27 @@ namespace gambatte
       uint_least32_t *const buf = buffer_ + bufferPos_;
 
       std::memset(buf, 0, cycles * sizeof(uint_least32_t));
-      ch1_.update(buf, (soChVol_[0] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch2_.update(buf, (soChVol_[1] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch3_.update(buf, (soChVol_[2] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch4_.update(buf, (soChVol_[3] * soVol_ * 0x1999999A) >> 32, cycles);
+      
+      /* apply volume scaling if set by the user */
+      if (soChVol_[0]<10)
+        ch1_.update(buf, ((uint_fast64_t)0x1999999A * soChVol_[0] * soVol_) >> 32, cycles);
+      else
+        ch1_.update(buf, soVol_, cycles);
+
+      if (soChVol_[1]<10)  
+        ch2_.update(buf, ((uint_fast64_t)0x1999999A * soChVol_[1] * soVol_) >> 32, cycles);
+      else
+        ch2_.update(buf, soVol_, cycles);
+
+      if (soChVol_[2]<10)
+        ch3_.update(buf, ((uint_fast64_t)0x1999999A * soChVol_[2] * soVol_) >> 32, cycles);
+      else
+        ch3_.update(buf, soVol_, cycles);
+      
+      if (soChVol_[3]<10)
+        ch4_.update(buf, ((uint_fast64_t)0x1999999A * soChVol_[3] * soVol_) >> 32, cycles);
+      else
+        ch4_.update(buf, soVol_, cycles);
    }
 
    void PSG::generateSamples(unsigned long const cycleCounter, bool const doubleSpeed)
