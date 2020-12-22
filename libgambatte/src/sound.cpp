@@ -103,10 +103,10 @@ namespace gambatte
       uint_least32_t *const buf = buffer_ + bufferPos_;
 
       std::memset(buf, 0, cycles * sizeof(uint_least32_t));
-      ch1_.update(buf, (soChVol_[0] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch2_.update(buf, (soChVol_[1] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch3_.update(buf, (soChVol_[2] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch4_.update(buf, (soChVol_[3] * soVol_ * 0x1999999A) >> 32, cycles);
+      ch1_.update(buf, (soChVol_[0] * soVol_ * 0x1999999AULL) >> 32, cycles);
+      ch2_.update(buf, (soChVol_[1] * soVol_ * 0x1999999AULL) >> 32, cycles);
+      ch3_.update(buf, (soChVol_[2] * soVol_ * 0x1999999AULL) >> 32, cycles);
+      ch4_.update(buf, (soChVol_[3] * soVol_ * 0x1999999AULL) >> 32, cycles);
    }
 
    void PSG::generateSamples(unsigned long const cycleCounter, bool const doubleSpeed)
