@@ -51,11 +51,6 @@ namespace gambatte
       ,  rsum_(0x8000) // initialize to 0x8000 to prevent borrows from high word, xor away later
       ,  enabled_(false)
    {
-       // init as full volume
-       setSoChanVolume(100, 0);
-       setSoChanVolume(100, 1);
-       setSoChanVolume(100, 2);
-       setSoChanVolume(100, 3);
    }
 
    void PSG::init(const bool cgb)
@@ -103,10 +98,10 @@ namespace gambatte
       uint_least32_t *const buf = buffer_ + bufferPos_;
 
       std::memset(buf, 0, cycles * sizeof(uint_least32_t));
-      ch1_.update(buf, (soChVol_[0] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch2_.update(buf, (soChVol_[1] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch3_.update(buf, (soChVol_[2] * soVol_ * 0x1999999A) >> 32, cycles);
-      ch4_.update(buf, (soChVol_[3] * soVol_ * 0x1999999A) >> 32, cycles);
+      ch1_.update(buf, soVol_, cycles);
+      ch2_.update(buf, soVol_, cycles);
+      ch3_.update(buf, soVol_, cycles);
+      ch4_.update(buf, soVol_, cycles);
    }
 
    void PSG::generateSamples(unsigned long const cycleCounter, bool const doubleSpeed)
@@ -184,14 +179,6 @@ namespace gambatte
    {
       soVol_ = (((nr50      & 0x7) + 1) * so1Mul 
             +  ((nr50 >> 4 & 0x7) + 1) * so2Mul) * 64;
-   }
-   
-   void PSG::setSoChanVolume(const unsigned percent, const unsigned ch)
-   {
-      if( ch > 3 || percent > 100 )
-        return; // invalid arg
-        
-      soChVol_[ch] = int(percent / 10);
    }
 
    void PSG::mapSo(const unsigned nr51)
