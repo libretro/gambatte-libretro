@@ -24,7 +24,6 @@
 #include "serial_io.h"
 #endif
 #include "gbint.h"
-#include "sound.h"
 #include <string>
 #include <cstddef>
 
@@ -141,7 +140,6 @@ public:
    void *rombank1_ptr() const;
    void *zeropage_ptr() const;
    void *oamram_ptr() const;
-   PSG *getPSG() const;
 #endif
 
 private:
