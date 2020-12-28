@@ -50,10 +50,10 @@ include:
   # Nintendo Wii
   - project: 'libretro-infrastructure/ci-templates'
     file: '/wii-static.yml'
-    
+
   # Nintendo WiiU
-#  - project: 'libretro-infrastructure/ci-templates'
- #   file: '/wiiu-static.yml'
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/wiiu-static.yml'
     
   # Nintendo Switch
   - project: 'libretro-infrastructure/ci-templates'
@@ -149,10 +149,10 @@ libretro-build-wii:
     - .core-defs
 
 # Nintendo WiiU
-#libretro-build-wiiu:
-  #extends:
-   # - .libretro-wiiu-static-retroarch-master
-   # - .core-defs
+libretro-build-wiiu:
+  extends:
+    - .libretro-wiiu-static-retroarch-master
+    - .core-defs
 
 # Nintendo Switch
 libretro-build-libnx-aarch64:
