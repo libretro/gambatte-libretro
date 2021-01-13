@@ -66,14 +66,16 @@ ifneq (,$(findstring unix,$(platform)))
 
    # Raspberry Pi
    ifneq (,$(findstring rpi,$(platform)))
-      CFLAGS += -fomit-frame-pointer -ffast-math -marm
+      CFLAGS += -fomit-frame-pointer -ffast-math
       CXXFLAGS += $(CFLAGS)
       ifneq (,$(findstring rpi1,$(platform)))
-         CFLAGS += -march=armv6j -mfpu=vfp -mfloat-abi=hard
+         CFLAGS += -march=armv6j -mfpu=vfp -mfloat-abi=hard -marm
       else ifneq (,$(findstring rpi2,$(platform)))
-         CFLAGS += -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
+         CFLAGS += -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -marm
       else ifneq (,$(findstring rpi3,$(platform)))
-         CFLAGS += -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+         CFLAGS += -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -marm
+      else ifneq (,$(findstring rpi4,$(platform)))
+         CFLAGS += -mcpu=cortex-a72 -mtune=cortex-a72
       endif
    endif
 
@@ -106,6 +108,22 @@ else ifeq ($(platform), classic_armv7_a7)
 	    LDFLAGS += -static-libgcc -static-libstdc++
 	  endif
 	endif
+#######################################
+
+# (armv8 a35, hard point, neon based) ###
+# PlayStation Classic 
+else ifeq ($(platform), classic_armv8_a35)
+	TARGET := $(TARGET_NAME)_libretro.so
+	fpic := -fPIC
+	SHARED := -shared -Wl,--version-script=$(version_script)  -Wl,--no-undefined -fPIC
+	CFLAGS += -Ofast \
+	-fuse-linker-plugin \
+	-fno-stack-protector -fno-ident -fomit-frame-pointer \
+	-fmerge-all-constants -ffast-math -funroll-all-loops \
+	-marm -mcpu=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard
+	CXXFLAGS += $(CFLAGS)
+	HAVE_NETWORK=1
+	LDFLAGS += -marm -mcpu=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -Ofast -flto -fuse-linker-plugin
 #######################################
 
 # OS X
