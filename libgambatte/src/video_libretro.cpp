@@ -95,6 +95,12 @@ namespace gambatte
             0x52AA, //01010 010101 01010
             0x0000};//00000 000000 00000
          setDmgPaletteColor(i, dmgColors[i&3]);
+#elif defined(VIDEO_ABGR1555)
+         uint16_t dmgColors[4]={0xEFFF, //11111 111111 11111
+            0x56B5, //10101 10101 10101
+            0x294A, //01010 01010 01010
+            0x0000};//00000 000000 00000
+         setDmgPaletteColor(i, dmgColors[i&3]);
 #else
          setDmgPaletteColor(i, (3 - (i & 3)) * 85 * 0x010101);
 #endif
@@ -281,6 +287,8 @@ namespace gambatte
       
 #ifdef VIDEO_RGB565
       return rFinal << 11 | gFinal << 6 | bFinal;
+#elif defined(VIDEO_ABGR1555)
+      return bFinal << 10 | gFinal << 5 | rFinal;
 #else
       return rFinal << 16 | gFinal << 8 | bFinal;
 #endif

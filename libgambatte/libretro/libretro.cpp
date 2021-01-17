@@ -133,6 +133,8 @@ static void blend_frames_mix(void)
           *   http://blargg.8bitalley.com/info/rgb_mixing.html */
 #ifdef VIDEO_RGB565
          *(curr + x) = (rgb_curr + rgb_prev + ((rgb_curr ^ rgb_prev) & 0x821)) >> 1;
+#elif defined(VIDEO_ABGR1555)
+         *(curr + x) = (rgb_curr + rgb_prev + ((rgb_curr ^ rgb_prev) & 0x521)) >> 1;
 #else
          *(curr + x) = (rgb_curr + rgb_prev + ((rgb_curr ^ rgb_prev) & 0x10101)) >> 1;
 #endif
@@ -191,6 +193,26 @@ static void blend_frames_lcd_ghost(void)
          float r_prev_4 = static_cast<float>(rgb_prev_4 >> 11 & 0x1F);
          float g_prev_4 = static_cast<float>(rgb_prev_4 >>  6 & 0x1F);
          float b_prev_4 = static_cast<float>(rgb_prev_4       & 0x1F);
+#elif defined(VIDEO_ABGR1555)
+         float r_curr = static_cast<float>(rgb_curr       & 0x1F);
+         float g_curr = static_cast<float>(rgb_curr >>  5 & 0x1F);
+         float b_curr = static_cast<float>(rgb_curr >> 10 & 0x1F);
+
+         float r_prev_1 = static_cast<float>(rgb_prev_1       & 0x1F);
+         float g_prev_1 = static_cast<float>(rgb_prev_1 >>  5 & 0x1F);
+         float b_prev_1 = static_cast<float>(rgb_prev_1 >> 10 & 0x1F);
+
+         float r_prev_2 = static_cast<float>(rgb_prev_2       & 0x1F);
+         float g_prev_2 = static_cast<float>(rgb_prev_2 >>  5 & 0x1F);
+         float b_prev_2 = static_cast<float>(rgb_prev_2 >> 10 & 0x1F);
+
+         float r_prev_3 = static_cast<float>(rgb_prev_3       & 0x1F);
+         float g_prev_3 = static_cast<float>(rgb_prev_3 >>  5 & 0x1F);
+         float b_prev_3 = static_cast<float>(rgb_prev_3 >> 10 & 0x1F);
+
+         float r_prev_4 = static_cast<float>(rgb_prev_4       & 0x1F);
+         float g_prev_4 = static_cast<float>(rgb_prev_4 >>  5 & 0x1F);
+         float b_prev_4 = static_cast<float>(rgb_prev_4 >> 10 & 0x1F);
 #else
          float r_curr = static_cast<float>(rgb_curr >> 16 & 0x1F);
          float g_curr = static_cast<float>(rgb_curr >>  8 & 0x1F);
@@ -238,6 +260,8 @@ static void blend_frames_lcd_ghost(void)
          /* Repack colours for current frame */
 #ifdef VIDEO_RGB565
          *(curr + x) = r_mix << 11 | g_mix << 6 | b_mix;
+#elif defined(VIDEO_ABGR1555)
+         *(curr + x) = b_mix << 10 | g_mix << 5 | b_mix;
 #else
          *(curr + x) = r_mix << 16 | g_mix << 8 | b_mix;
 #endif
@@ -274,6 +298,10 @@ static void blend_frames_lcd_ghost_fast(void)
          float r_curr = static_cast<float>(rgb_curr >> 11 & 0x1F);
          float g_curr = static_cast<float>(rgb_curr >>  6 & 0x1F);
          float b_curr = static_cast<float>(rgb_curr       & 0x1F);
+#elif defined(VIDEO_ABGR1555)
+         float r_curr = static_cast<float>(rgb_curr       & 0x1F);
+         float g_curr = static_cast<float>(rgb_curr >>  5 & 0x1F);
+         float b_curr = static_cast<float>(rgb_curr >> 10 & 0x1F);
 #else
          float r_curr = static_cast<float>(rgb_curr >> 16 & 0x1F);
          float g_curr = static_cast<float>(rgb_curr >>  8 & 0x1F);
@@ -294,6 +322,10 @@ static void blend_frames_lcd_ghost_fast(void)
          *(curr + x) =   (static_cast<gambatte::video_pixel_t>(r_mix + 0.5f) & 0x1F) << 11
                        | (static_cast<gambatte::video_pixel_t>(g_mix + 0.5f) & 0x1F) << 6
                        | (static_cast<gambatte::video_pixel_t>(b_mix + 0.5f) & 0x1F);
+#elif defined(ABGR1555)
+         *(curr + x) =   (static_cast<gambatte::video_pixel_t>(r_mix + 0.5f) & 0x1F)
+                       | (static_cast<gambatte::video_pixel_t>(g_mix + 0.5f) & 0x1F) << 5
+                       | (static_cast<gambatte::video_pixel_t>(b_mix + 0.5f) & 0x1F) << 10;
 #else
          *(curr + x) =   (static_cast<gambatte::video_pixel_t>(r_mix + 0.5f) & 0x1F) << 16
                        | (static_cast<gambatte::video_pixel_t>(g_mix + 0.5f) & 0x1F) << 8
@@ -1042,9 +1074,13 @@ static void load_custom_palette(void)
          continue;
       }
 #ifdef VIDEO_RGB565
-      rgb32=(rgb32&0x0000F8)>>3 |//red
+      rgb32=(rgb32&0x0000F8)>>3 |//blue
             (rgb32&0x00FC00)>>5 |//green
-            (rgb32&0xF80000)>>8;//blue
+            (rgb32&0xF80000)>>8;//red
+#elif defined(VIDEO_ABGR1555)
+      rgb32=(rgb32&0x0000F8)<<7 |//blue
+            (rgb32&0xF800)>>6 |//green
+            (rgb32&0xF80000)>>19;//red
 #endif
 
       if (startswith(line, "Background0="))
@@ -1455,7 +1491,7 @@ bool retro_load_game(const struct retro_game_info *info)
 
    environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
 
-#ifdef VIDEO_RGB565
+#if defined(VIDEO_RGB565) || defined(VIDEO_ABGR1555)
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
    {
