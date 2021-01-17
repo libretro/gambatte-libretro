@@ -28,7 +28,7 @@
 #include <cstddef>
 
 namespace gambatte {
-#ifdef VIDEO_RGB565
+#if defined(VIDEO_RGB565) || defined(VIDEO_ABGR1555)
 typedef uint16_t video_pixel_t;
 #else
 typedef uint_least32_t video_pixel_t;
