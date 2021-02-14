@@ -468,10 +468,13 @@ namespace {
       unsigned ly = lyCounter.ly();
       int timeToNextLy = lyCounter.time() - cc;
 
-      if (ly == 153) {
-         if (timeToNextLy -  (448 << lyCounter.isDoubleSpeed()) > 0) {
-            timeToNextLy -= (448 << lyCounter.isDoubleSpeed());
-         } else {
+      if (ly == 153)
+      {
+         unsigned is_doublespeed = (unsigned)lyCounter.isDoubleSpeed();
+         if (timeToNextLy -  (448 << is_doublespeed) > 0)
+            timeToNextLy -= (448 << is_doublespeed);
+         else
+         {
             ly = 0;
             timeToNextLy += lyCounter.lineTime();
          }
@@ -590,27 +593,26 @@ void LCD::lycRegChange(const unsigned data, const unsigned long cc)
    eventTimes_.setm<LYC_IRQ>(lycIrq_.time());
 
    int const timeToNextLy = ppu_.lyCounter().time() - cc;
+   unsigned is_doublespeed = (unsigned)isDoubleSpeed();
 
    if ((statReg_ & 0x40) && data < 154
          && (ppu_.lyCounter().ly() < 144
              ? !(statReg_ & 0x08) || cc < m0TimeOfCurrentLine(cc) || timeToNextLy <= 4 << ppu_.cgb()
-             : !(statReg_ & 0x10) || (ppu_.lyCounter().ly() == 153 && timeToNextLy <= 4 && ppu_.cgb() && !isDoubleSpeed())))
+             : !(statReg_ & 0x10) || (ppu_.lyCounter().ly() == 153 && timeToNextLy <= 4 && ppu_.cgb() && !(bool)is_doublespeed)))
    {
       LyCnt lycCmp = getLycCmpLy(ppu_.lyCounter(), cc);
 
       if (lycCmp.timeToNextLy <= 4 << ppu_.cgb())
       {
-         lycCmp.ly = old != lycCmp.ly || (lycCmp.timeToNextLy <= 4 && ppu_.cgb() && !isDoubleSpeed())
+         lycCmp.ly = old != lycCmp.ly || (lycCmp.timeToNextLy <= 4 && ppu_.cgb() && !(bool)is_doublespeed)
                ? (lycCmp.ly == 153 ? 0 : lycCmp.ly + 1)
                : 0xFF; // simultaneous ly/lyc inc. lyc flag never goes low -> no trigger.
       }
 
       if (data == lycCmp.ly)
       {
-         if (ppu_.cgb() && !isDoubleSpeed())
-         {
+         if (ppu_.cgb() && !(bool)is_doublespeed)
             eventTimes_.setm<ONESHOT_LCDSTATIRQ>(cc + 5);
-         }
          else
             eventTimes_.flagIrq(2);
       }
@@ -626,29 +628,30 @@ unsigned LCD::getStat(const unsigned lycReg, const unsigned long cc)
       if (cc >= eventTimes_.nextEventTime())
          update(cc);
 
-      int const timeToNextLy = ppu_.lyCounter().time() - cc;
+      int const timeToNextLy  = ppu_.lyCounter().time() - cc;
+      unsigned is_doublespeed = (unsigned)isDoubleSpeed();
 
       if (ppu_.lyCounter().ly() > 143)
       {
-         if (ppu_.lyCounter().ly() < 153 || timeToNextLy > 4 - isDoubleSpeed() * 4)
+         if (ppu_.lyCounter().ly() < 153 || timeToNextLy > 4 - is_doublespeed * 4)
             stat = 1;
       }
       else
       {
-         unsigned const lineCycles = 456 - (timeToNextLy >> isDoubleSpeed());
+         unsigned const lineCycles = 456 - (timeToNextLy >> is_doublespeed);
 
          if (lineCycles < 80)
          {
             if (!ppu_.inactivePeriodAfterDisplayEnable(cc))
                stat = 2;
          }
-         else if (cc + isDoubleSpeed() - ppu_.cgb() + 2 < m0TimeOfCurrentLine(cc))
+         else if (cc + is_doublespeed - ppu_.cgb() + 2 < m0TimeOfCurrentLine(cc))
             stat = 3;
       }
 
       LyCnt const lycCmp = getLycCmpLy(ppu_.lyCounter(), cc);
 
-      if (lycReg == lycCmp.ly && lycCmp.timeToNextLy > 4 - isDoubleSpeed() * 4)
+      if (lycReg == lycCmp.ly && lycCmp.timeToNextLy > 4 - is_doublespeed * 4)
          stat |= 4;
    }
 
@@ -679,7 +682,7 @@ inline void LCD::doMode2IrqEvent()
       eventTimes_.setm<MODE2_IRQ>(nextTime);
    }
    else
-      eventTimes_.setm<MODE2_IRQ>(eventTimes_(MODE2_IRQ) + (70224 << isDoubleSpeed()));
+      eventTimes_.setm<MODE2_IRQ>(eventTimes_(MODE2_IRQ) + (70224 << (unsigned)isDoubleSpeed()));
 }
 
 inline void LCD::event()
@@ -692,7 +695,7 @@ inline void LCD::event()
             case MODE1_IRQ:
                eventTimes_.flagIrq((m1IrqStatReg_ & 0x18) == 0x10 ? 3 : 1);
                m1IrqStatReg_ = statReg_;
-               eventTimes_.setm<MODE1_IRQ>(eventTimes_(MODE1_IRQ) + (70224 << isDoubleSpeed()));
+               eventTimes_.setm<MODE1_IRQ>(eventTimes_(MODE1_IRQ) + (70224 << (unsigned)isDoubleSpeed()));
                break;
 
             case LYC_IRQ:

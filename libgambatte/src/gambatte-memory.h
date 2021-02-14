@@ -75,11 +75,12 @@ public:
 	unsigned long nextEventTime() const { return intreq_.minEventTime(); }
 	bool isActive() const { return intreq_.eventTime(intevent_end) != disabled_time; }
 
-	long cyclesSinceBlit(unsigned long cc) const {
+	long cyclesSinceBlit(unsigned long cc) const
+   {
 		if (cc < intreq_.eventTime(intevent_blit))
 			return -1;
-
-		return (cc - intreq_.eventTime(intevent_blit)) >> isDoubleSpeed();
+      unsigned is_doublespeed = (unsigned)isDoubleSpeed();
+		return (cc - intreq_.eventTime(intevent_blit)) >> is_doublespeed;
 	}
 
 	void halt() { intreq_.halt(); }

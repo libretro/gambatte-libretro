@@ -818,24 +818,27 @@ static void plotPixelIfNoSprite(PPUPriv &p) {
 		plotPixel(p);
 }
 
-static unsigned long nextM2Time(PPUPriv const &p) {
-	unsigned long nextm2 = p.lyCounter.isDoubleSpeed()
+static unsigned long nextM2Time(PPUPriv const &p)
+{
+   unsigned is_doublespeed = (unsigned)p.lyCounter.isDoubleSpeed();
+	unsigned long nextm2    = (bool)is_doublespeed
 		? p.lyCounter.time() + (weMasterCheckPriorToLyIncLineCycle(true ) + m2_ds_offset) * 2 - 456 * 2
 		: p.lyCounter.time() +  weMasterCheckPriorToLyIncLineCycle(p.cgb)                     - 456    ;
 	if (p.lyCounter.ly() == 143)
-		nextm2 += (456 * 10 + 456 - weMasterCheckPriorToLyIncLineCycle(p.cgb)) << p.lyCounter.isDoubleSpeed();
+		nextm2 += (456 * 10 + 456 - weMasterCheckPriorToLyIncLineCycle(p.cgb)) << is_doublespeed;
 
 	return nextm2;
 }
 
 static void xpos168(PPUPriv &p) {
-	p.lastM0Time = p.now - (p.cycles << p.lyCounter.isDoubleSpeed());
+   unsigned is_doublespeed    = (unsigned)p.lyCounter.isDoubleSpeed();
+	p.lastM0Time               = p.now - (p.cycles << is_doublespeed);
 
 	unsigned long const nextm2 = nextM2Time(p);
 
 	p.cycles = p.now >= nextm2
-		?  long((p.now - nextm2) >> p.lyCounter.isDoubleSpeed())
-		: -long((nextm2 - p.now) >> p.lyCounter.isDoubleSpeed());
+		?  long((p.now - nextm2) >> is_doublespeed)
+		: -long((nextm2 - p.now) >> is_doublespeed);
 
 	nextCall(0, p.lyCounter.ly() == 143 ? M2_Ly0::f0_ : M2_LyNon0::f0_, p);
 }
@@ -1148,7 +1151,8 @@ static unsigned predictCyclesUntilXposNextLine(
 		winDrawState = win_draw_start | (lcdcWinEn(p) ? win_draw_started : 0);
 	}
 
-	unsigned const cycles = (nextM2Time(p) - p.now) >> p.lyCounter.isDoubleSpeed();
+   unsigned is_doublespeed = (unsigned)p.lyCounter.isDoubleSpeed();
+	unsigned const cycles   = (nextM2Time(p) - p.now) >> is_doublespeed;
 
 	return p.lyCounter.ly() == 143
 	     ?    M2_Ly0::predictCyclesUntilXpos_f0(p, winDrawState, targetx, cycles)
@@ -1331,9 +1335,11 @@ namespace StartWindowDraw {
 
 namespace LoadSprites {
 	static unsigned predictCyclesUntilXpos_fn(PPUPriv const &p,
-			int const fno, int const targetx, unsigned cycles) {
+			int const fno, int const targetx, unsigned cycles)
+   {
 		unsigned nextSprite = p.nextSprite;
-		if (lcdcObjEn(p) | p.cgb) {
+		if (lcdcObjEn(p) | p.cgb)
+      {
 			cycles += 6 - fno;
 			nextSprite += 1;
 		}
@@ -1599,13 +1605,14 @@ static void loadSpriteList(PPUPriv &p, SaveState const &ss) {
 }
 
 void PPU::loadState(SaveState const &ss, unsigned char const *const oamram) {
-	PPUState const *const m3loopState = decodeM3LoopState(ss.ppu.state);
+	PPUState const *
+      const m3loopState   = decodeM3LoopState(ss.ppu.state);
 	long const videoCycles = std::min(ss.ppu.videoCycles, 70223UL);
-	bool const ds = p_.cgb & ss.mem.ioamhram.get()[0x14D] >> 7;
-	long const vcycs = videoCycles - ds * m2_ds_offset < 0
+	bool const ds          = p_.cgb & ss.mem.ioamhram.get()[0x14D] >> 7;
+	long const vcycs       = videoCycles - ds * m2_ds_offset < 0
 	                 ? videoCycles - ds * m2_ds_offset + 70224
 	                 : videoCycles - ds * m2_ds_offset;
-	long const lineCycles = static_cast<unsigned long>(vcycs) % 456;
+	long const lineCycles  = static_cast<unsigned long>(vcycs) % 456;
 
 	p_.now = ss.cpu.cycleCounter;
 	p_.lcdc = ss.mem.ioamhram.get()[0x140];
@@ -1679,25 +1686,27 @@ void PPU::resetCc(unsigned long const oldCc, unsigned long const newCc) {
 	p_.spriteMapper.resetCycleCounter(oldCc, newCc);
 }
 
-void PPU::speedChange(unsigned long const cycleCounter) {
+void PPU::speedChange(unsigned long const cycleCounter)
+{
+   unsigned is_doublespeed         = (unsigned)p_.lyCounter.isDoubleSpeed();
 	unsigned long const videoCycles = lcdcEn(p_) ? p_.lyCounter.frameCycles(p_.now) : 0;
 
 	p_.spriteMapper.preSpeedChange(cycleCounter);
-	p_.lyCounter.setDoubleSpeed(!p_.lyCounter.isDoubleSpeed());
+	p_.lyCounter.setDoubleSpeed(!(bool)is_doublespeed);
 	p_.lyCounter.reset(videoCycles, p_.now);
 	p_.spriteMapper.postSpeedChange(cycleCounter);
 
 	if (&M2_Ly0::f0_ == p_.nextCallPtr || &M2_LyNon0::f0_ == p_.nextCallPtr) {
-		if (p_.lyCounter.isDoubleSpeed()) {
+		if ((bool)is_doublespeed)
 			p_.cycles -= m2_ds_offset;
-		} else
+      else
 			p_.cycles += m2_ds_offset;
 	}
 }
 
 unsigned long PPU::predictedNextXposTime(unsigned xpos) const {
 	return p_.now
-	    + (p_.nextCallPtr->predictCyclesUntilXpos_f(p_, xpos, -p_.cycles) << p_.lyCounter.isDoubleSpeed());
+	    + (p_.nextCallPtr->predictCyclesUntilXpos_f(p_, xpos, -p_.cycles) << (unsigned)p_.lyCounter.isDoubleSpeed());
 }
 
 void PPU::setLcdc(unsigned const lcdc, unsigned long const cc) {
@@ -1731,10 +1740,11 @@ void PPU::setLcdc(unsigned const lcdc, unsigned long const cc) {
 }
 
 void PPU::update(unsigned long const cc) {
-	int const cycles = (cc - p_.now) >> p_.lyCounter.isDoubleSpeed();
+   unsigned is_doublespeed = (unsigned)p_.lyCounter.isDoubleSpeed();
+	int const cycles        = (cc - p_.now) >> is_doublespeed;
 
-	p_.now += cycles << p_.lyCounter.isDoubleSpeed();
-	p_.cycles += cycles;
+	p_.now                 += cycles << is_doublespeed;
+	p_.cycles              += cycles;
 
 	if (p_.cycles >= 0) {
 		p_.framebuf.setFbline(p_.lyCounter.ly());

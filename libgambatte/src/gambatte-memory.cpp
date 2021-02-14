@@ -140,12 +140,12 @@ void Memory::loadState(SaveState const &state) {
 }
 
 void Memory::setEndtime(unsigned long cc, unsigned long inc) {
-	if (intreq_.eventTime(intevent_blit) <= cc) {
+   unsigned is_doublespeed = (unsigned)isDoubleSpeed();
+	if (intreq_.eventTime(intevent_blit) <= cc)
 		intreq_.setEventTime<intevent_blit>(intreq_.eventTime(intevent_blit)
-		                                   + (70224 << isDoubleSpeed()));
-	}
+		                                   + (70224 << is_doublespeed));
 
-	intreq_.setEventTime<intevent_end>(cc + (inc << isDoubleSpeed()));
+	intreq_.setEventTime<intevent_end>(cc + (inc << is_doublespeed));
 }
 
 #ifdef HAVE_NETWORK
@@ -246,18 +246,21 @@ unsigned long Memory::event(unsigned long cc) {
 		break;
 	case intevent_blit:
 		{
-			bool const lcden = ioamhram_[0x140] & lcdc_en;
-			unsigned long blitTime = intreq_.eventTime(intevent_blit);
+			bool const lcden        = ioamhram_[0x140] & lcdc_en;
+			unsigned long blitTime  = intreq_.eventTime(intevent_blit);
+         unsigned is_doublespeed = (unsigned)isDoubleSpeed();
 
-			if (lcden | blanklcd_) {
+			if (lcden | blanklcd_)
+         {
 				lcd_.updateScreen(blanklcd_, cc);
 				intreq_.setEventTime<intevent_blit>(disabled_time);
 				intreq_.setEventTime<intevent_end>(disabled_time);
 
 				while (cc >= intreq_.minEventTime())
 					cc = event(cc);
-			} else
-				blitTime += 70224 << isDoubleSpeed();
+			}
+         else
+				blitTime += 70224 << is_doublespeed;
 
 			blanklcd_ = lcden ^ 1;
 			intreq_.setEventTime<intevent_blit>(blitTime);
@@ -273,7 +276,7 @@ unsigned long Memory::event(unsigned long cc) {
 		break;
 	case intevent_dma:
 		{
-			bool const doubleSpeed = isDoubleSpeed();
+			unsigned const doubleSpeed = (unsigned const)isDoubleSpeed();
 			unsigned dmaSrc = dmaSource_;
 			unsigned dmaDest = dmaDestination_;
 			unsigned dmaLength = ((ioamhram_[0x155] & 0x7F) + 0x1) * 0x10;
@@ -375,26 +378,27 @@ unsigned long Memory::event(unsigned long cc) {
 }
 
 unsigned long Memory::stop(unsigned long cc) {
-	cc += 4 + 4 * isDoubleSpeed();
+   unsigned is_doublespeed = (unsigned)isDoubleSpeed();
+	cc += 4 + 4 * is_doublespeed;
 
-	if (ioamhram_[0x14D] & isCgb()) {
-		psg_.generateSamples(cc, isDoubleSpeed());
-		lcd_.speedChange(cc);
-		ioamhram_[0x14D] ^= 0x81;
-		intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
-			? lcd_.nextMode1IrqTime()
-			: cc + (70224 << isDoubleSpeed()));
+   if (ioamhram_[0x14D] & isCgb())
+   {
+      psg_.generateSamples(cc, is_doublespeed);
+      lcd_.speedChange(cc);
+      ioamhram_[0x14D] ^= 0x81;
+      intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
+            ? lcd_.nextMode1IrqTime()
+            : cc + (70224 << is_doublespeed));
 
-		if (intreq_.eventTime(intevent_end) > cc) {
-			intreq_.setEventTime<intevent_end>(cc
-				+ (  isDoubleSpeed()
-				   ? (intreq_.eventTime(intevent_end) - cc) << 1
-				   : (intreq_.eventTime(intevent_end) - cc) >> 1));
-		}
-	}
+      if (intreq_.eventTime(intevent_end) > cc)
+         intreq_.setEventTime<intevent_end>(cc
+               + (  (bool)is_doublespeed
+                  ? (intreq_.eventTime(intevent_end) - cc) << 1
+                  : (intreq_.eventTime(intevent_end) - cc) >> 1));
+   }
 
 	intreq_.halt();
-	intreq_.setEventTime<intevent_unhalt>(cc + 0x20000 + isDoubleSpeed() * 8);
+	intreq_.setEventTime<intevent_unhalt>(cc + 0x20000 + is_doublespeed * 8);
 	return cc;
 }
 
@@ -914,8 +918,11 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		psg_.waveRamWrite(p & 0xF, data);
 		break;
 	case 0x40:
-		if (ioamhram_[0x140] != data) {
-			if ((ioamhram_[0x140] ^ data) & lcdc_en) {
+		if (ioamhram_[0x140] != data)
+      {
+         unsigned is_doublespeed = (unsigned)isDoubleSpeed();
+			if ((ioamhram_[0x140] ^ data) & lcdc_en)
+         {
 				unsigned const lyc = lcd_.getStat(ioamhram_[0x145], cc)
 				                     & lcdstat_lycflag;
 				bool const hdmaEnabled = lcd_.hdmaIsEnabled();
@@ -924,25 +931,28 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 				ioamhram_[0x144] = 0;
 				ioamhram_[0x141] &= 0xF8;
 
-				if (data & lcdc_en) {
+				if (data & lcdc_en)
+            {
 					intreq_.setEventTime<intevent_blit>(blanklcd_
 						? lcd_.nextMode1IrqTime()
 						: lcd_.nextMode1IrqTime()
-						  + (70224 << isDoubleSpeed()));
-				} else {
-					ioamhram_[0x141] |= lyc;
+						  + (70224 << is_doublespeed));
+				}
+            else
+            {
+					ioamhram_[0x141]        |= lyc;
 					intreq_.setEventTime<intevent_blit>(
-						cc + (456 * 4 << isDoubleSpeed()));
+						cc + (456 * 4 << is_doublespeed));
 
 					if (hdmaEnabled)
 						flagHdmaReq(intreq_);
 				}
-			} else
+			}
+         else
 				lcd_.lcdcChange(data, cc);
 
 			ioamhram_[0x140] = data;
 		}
-
 		return;
 	case 0x41:
 		lcd_.lcdstatChange(data, cc);

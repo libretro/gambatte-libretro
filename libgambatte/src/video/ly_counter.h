@@ -34,7 +34,7 @@ public:
 	}
 
 	unsigned lineCycles(unsigned long cc) const {
-		return 456u - ((time_ - cc) >> isDoubleSpeed());
+		return 456u - ((time_ - cc) >> (unsigned)isDoubleSpeed());
 	}
 
 	unsigned lineTime() const { return lineTime_; }

@@ -40,7 +40,7 @@ void LyCounter::doEvent() {
 }
 
 unsigned long LyCounter::nextLineCycle(unsigned const lineCycle, unsigned long const cc) const {
-	unsigned long tmp = time_ + (lineCycle << ds_);
+	unsigned long tmp = time_ + (lineCycle << (unsigned)ds_);
 	if (tmp - cc > lineTime_)
 		tmp -= lineTime_;
 
@@ -48,21 +48,21 @@ unsigned long LyCounter::nextLineCycle(unsigned const lineCycle, unsigned long c
 }
 
 unsigned long LyCounter::nextFrameCycle(unsigned long const frameCycle, unsigned long const cc) const {
-	unsigned long tmp = time_ + (((153U - ly()) * 456U + frameCycle) << ds_);
-	if (tmp - cc > 70224U << ds_)
-		tmp -= 70224U << ds_;
+	unsigned long tmp = time_ + (((153U - ly()) * 456U + frameCycle) << (unsigned)ds_);
+	if (tmp - cc > 70224U << (unsigned)ds_)
+		tmp -= 70224U << (unsigned)ds_;
 
 	return tmp;
 }
 
 void LyCounter::reset(unsigned long videoCycles, unsigned long lastUpdate) {
 	ly_ = videoCycles / 456;
-	time_ = lastUpdate + ((456 - (videoCycles - ly_ * 456ul)) << isDoubleSpeed());
+	time_ = lastUpdate + ((456 - (videoCycles - ly_ * 456ul)) << (unsigned)isDoubleSpeed());
 }
 
 void LyCounter::setDoubleSpeed(bool ds) {
 	ds_ = ds;
-	lineTime_ = 456U << ds;
+	lineTime_ = 456U << (unsigned)ds;
 }
 
 }

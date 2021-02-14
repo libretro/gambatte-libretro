@@ -550,7 +550,6 @@ export LIB := $(LIB);$(WindowsSDKLibDir)
 TARGET := $(TARGET_NAME)_libretro.dll
 PSS_STYLE :=2
 LDFLAGS += -DLL
-CFLAGS += -D_CRT_SECURE_NO_DEPRECATE
 LIBS =
 # Windows MSVC 2003 x86
 else ifeq ($(platform), windows_msvc2003_x86)
@@ -570,7 +569,6 @@ export LIB := $(LIB);$(WindowsSdkDir);$(INETSDK)/Lib
 TARGET := $(TARGET_NAME)_libretro.dll
 PSS_STYLE :=2
 LDFLAGS += -DLL
-CFLAGS += -D_CRT_SECURE_NO_DEPRECATE
 LIBS =
 # Windows
 else
@@ -584,43 +582,32 @@ endif
 
 ifeq ($(DEBUG), 1)
 ifneq (,$(findstring msvc,$(platform)))
-	ifeq ($(STATIC_LINKING),1)
-		CFLAGS += -MTd
-		CXXFLAGS += -MTd
-		LDFLAGS += -DEBUG
-	else
-		CFLAGS += -MDd
-		CXXFLAGS += -MDd
-		LDFLAGS += -DEBUG
-	endif
-
-	CFLAGS += -Od -Zi -DDEBUG -D_DEBUG
-	CXXFLAGS += -Od -Zi -DDEBUG -D_DEBUG
+   CFLAGS += -MTd
+   CXXFLAGS += -MTd
+   LDFLAGS += -DEBUG
+	CFLAGS += -Od -Zi -D_DEBUG
+	CXXFLAGS += -Od -Zi -D_DEBUG
 else
-	CFLAGS += -O0 -g -DDEBUG
-	CXXFLAGS += -O0 -g -DDEBUG
+	CFLAGS += -O0 -g
+	CXXFLAGS += -O0 -g
 endif
+   CFLAGS   += -DDEBUG
+   CXXFLAGS += -DDEBUG
 else
 ifneq (,$(findstring msvc,$(platform)))
-	ifeq ($(STATIC_LINKING),1)
-		CFLAGS += -MT
-		CXXFLAGS += -MT
-	else
-		CFLAGS += -MD
-		CXXFLAGS += -MD
-	endif
-
-CFLAGS += -O2 -DNDEBUG
-CXXFLAGS += -O2 -DNDEBUG
-else
-	CFLAGS += -O2 -DNDEBUG
-	CXXFLAGS += -O2 -DNDEBUG
+   CFLAGS   += -MT
+   CXXFLAGS += -MT
 endif
+   CFLAGS   += -O2 -DNDEBUG
+   CXXFLAGS += -O2 -DNDEBUG
 endif
 
 ifeq (,$(findstring msvc,$(platform)))
 CXXFLAGS += -fno-exceptions -fno-rtti
 CXXFLAGS += -std=c++98
+else
+CFLAGS += -D_CRT_SECURE_NO_DEPRECATE
+CXXFLAGS += -D_CRT_SECURE_NO_DEPRECATE
 endif
 
 CFLAGS   += -DHAVE_STDINT_H

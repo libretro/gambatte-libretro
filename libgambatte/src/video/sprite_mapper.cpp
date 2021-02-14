@@ -79,8 +79,10 @@ void SpriteMapper::OamReader::update(unsigned long const cc) {
 			unsigned const lulc = toPosCycles(lu_, lyCounter_);
 			unsigned pos = std::min(lulc, 80u);
 			unsigned distance = 80;
+         unsigned is_doublespeed = (unsigned)lyCounter_.isDoubleSpeed();
 
-			if ((cc - lu_) >> lyCounter_.isDoubleSpeed() < 456) {
+			if ((cc - lu_) >> is_doublespeed < 456)
+         {
 				unsigned cclc = toPosCycles(cc, lyCounter_);
 				distance = std::min(cclc, 80u) - pos + (cclc < lulc ? 80 : 0);
 			}
@@ -132,10 +134,12 @@ void SpriteMapper::OamReader::loadState(SaveState const &ss, unsigned char const
 	change(lu_);
 }
 
-void SpriteMapper::OamReader::enableDisplay(unsigned long cc) {
+void SpriteMapper::OamReader::enableDisplay(unsigned long cc)
+{
 	std::memset(buf_, 0x00, sizeof buf_);
 	std::fill(szbuf_, szbuf_ + 40, false);
-	lu_ = cc + (80 << lyCounter_.isDoubleSpeed());
+   unsigned is_doublespeed = (unsigned)lyCounter_.isDoubleSpeed();
+	lu_ = cc + (80 << is_doublespeed);
 	lastChange_ = 80;
 }
 
@@ -161,7 +165,7 @@ void SpriteMapper::mapSprites() {
 	clearMap();
 
 	for (unsigned i = 0x00; i < 0x50; i += 2) {
-		int const spriteHeight = 8 << largeSprites(i >> 1);
+		int const spriteHeight = 8 << (unsigned)largeSprites(i >> 1);
 		unsigned const bottomPos = posbuf()[i] - (17u - spriteHeight);
 
 		if (bottomPos < 143u + spriteHeight) {
