@@ -513,6 +513,9 @@ static void deinit_frame_blending(void)
       free(video_buf_acc_b);
       video_buf_acc_b = NULL;
    }
+
+   frame_blend_type         = FRAME_BLEND_NONE;
+   frame_blend_response_set = false;
 }
 
 static void check_frame_blend_variable(void)
