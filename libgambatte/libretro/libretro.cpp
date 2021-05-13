@@ -41,7 +41,10 @@ static retro_environment_t environ_cb;
 static gambatte::video_pixel_t* video_buf;
 static gambatte::GB gb;
 
-static bool libretro_supports_bitmasks = false;
+static bool libretro_supports_bitmasks    = false;
+static bool libretro_supports_ff_override = false;
+static bool libretro_ff_enabled           = false;
+static bool libretro_ff_enabled_prev      = false;
 
 static bool show_gb_link_settings = true;
 
@@ -617,6 +620,31 @@ static void deactivate_rumble(void)
 /* Rumble support END */
 /**********************/
 
+/* Fast forward override */
+void set_fastforward_override(bool fastforward)
+{
+   struct retro_fastforwarding_override ff_override;
+
+   if (!libretro_supports_ff_override)
+      return;
+
+   ff_override.ratio        = -1.0f;
+   ff_override.notification = true;
+
+   if (fastforward)
+   {
+      ff_override.fastforward    = true;
+      ff_override.inhibit_toggle = true;
+   }
+   else
+   {
+      ff_override.fastforward    = false;
+      ff_override.inhibit_toggle = false;
+   }
+
+   environ_cb(RETRO_ENVIRONMENT_SET_FASTFORWARDING_OVERRIDE, &ff_override);
+}
+
 bool file_present_in_system(std::string fname)
 {
    const char *systemdirtmp = NULL;
@@ -716,11 +744,17 @@ class SNESInput : public gambatte::InputGetter
             int16_t ret = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
             for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
                res |= (ret & (1 << input::btn_map[i].snes)) ? input::btn_map[i].gb : 0;
+
+            libretro_ff_enabled = libretro_supports_ff_override &&
+                  (ret & (1 << RETRO_DEVICE_ID_JOYPAD_R2));
          }
          else
          {
             for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
                res |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes) ? input::btn_map[i].gb : 0;
+
+            libretro_ff_enabled = libretro_supports_ff_override &&
+                  input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2);
          }
 
          if (!up_down_allowed)
@@ -732,6 +766,13 @@ class SNESInput : public gambatte::InputGetter
             if (res & gambatte::InputGetter::LEFT)
                if (res & gambatte::InputGetter::RIGHT)
                   res &= ~(gambatte::InputGetter::LEFT | gambatte::InputGetter::RIGHT);
+         }
+
+         /* Handle fast forward button */
+         if (libretro_ff_enabled != libretro_ff_enabled_prev)
+         {
+            set_fastforward_override(libretro_ff_enabled);
+            libretro_ff_enabled_prev = libretro_ff_enabled;
          }
 
          return res;
@@ -854,9 +895,13 @@ void retro_init(void)
    else
       use_official_bootloader = false;
 
+   libretro_supports_bitmasks = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_INPUT_BITMASKS, NULL))
       libretro_supports_bitmasks = true;
 
+   libretro_supports_ff_override = false;
+   if (environ_cb(RETRO_ENVIRONMENT_SET_FASTFORWARDING_OVERRIDE, NULL))
+      libretro_supports_ff_override = true;
 }
 
 void retro_deinit(void)
@@ -872,7 +917,14 @@ void retro_deinit(void)
 #endif
    video_buf = NULL;
    deinit_frame_blending();
-   libretro_supports_bitmasks = false;
+
+   if (libretro_ff_enabled)
+      set_fastforward_override(false);
+
+   libretro_supports_bitmasks    = false;
+   libretro_supports_ff_override = false;
+   libretro_ff_enabled           = false;
+   libretro_ff_enabled_prev      = false;
 
    deactivate_rumble();
    memset(&rumble, 0, sizeof(struct retro_rumble_interface));
@@ -1480,19 +1532,34 @@ bool retro_load_game(const struct retro_game_info *info)
       log_cb(RETRO_LOG_INFO, "Rumble environment not supported.\n");
 
    struct retro_input_descriptor desc[] = {
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,  "D-Pad Down" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT, "D-Pad Right" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B,     "B" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A,     "A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,   "D-Pad Left" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,     "D-Pad Up" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,   "D-Pad Down" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT,  "D-Pad Right" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B,      "B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A,      "A" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Select" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START, "Start" },
-
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,  "Start" },
       { 0 },
    };
 
-   environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
+   struct retro_input_descriptor desc_ff[] = {
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,   "D-Pad Left" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,     "D-Pad Up" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,   "D-Pad Down" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT,  "D-Pad Right" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B,      "B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A,      "A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Select" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,  "Start" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2,     "Fast Forward" },
+      { 0 },
+   };
+
+   if (libretro_supports_ff_override)
+      environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc_ff);
+   else
+      environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
 
 #if defined(VIDEO_RGB565) || defined(VIDEO_ABGR1555)
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;

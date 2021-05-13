@@ -282,6 +282,7 @@ enum retro_language
    RETRO_LANGUAGE_PERSIAN             = 20,
    RETRO_LANGUAGE_HEBREW              = 21,
    RETRO_LANGUAGE_ASTURIAN            = 22,
+   RETRO_LANGUAGE_FINNISH             = 23,
    RETRO_LANGUAGE_LAST,
 
    /* Ensure sizeof(enum) == sizeof(int) */
@@ -712,6 +713,9 @@ enum retro_mod
                                             * state of rumble motors in controllers.
                                             * A strong and weak motor is supported, and they can be
                                             * controlled indepedently.
+                                            * Should be called from either retro_init() or retro_load_game().
+                                            * Should not be called from retro_set_environment().
+                                            * Returns false if rumble functionality is unavailable.
                                             */
 #define RETRO_ENVIRONMENT_GET_INPUT_DEVICE_CAPABILITIES 24
                                            /* uint64_t * --
@@ -1319,6 +1323,69 @@ enum retro_mod
                                             * Should not be used for trivial messages, which should simply be
                                             * logged via RETRO_ENVIRONMENT_GET_LOG_INTERFACE (or as a
                                             * fallback, stderr).
+                                            */
+
+#define RETRO_ENVIRONMENT_GET_INPUT_MAX_USERS 61
+                                           /* unsigned * --
+                                            * Unsigned value is the number of active input devices
+                                            * provided by the frontend. This may change between
+                                            * frames, but will remain constant for the duration
+                                            * of each frame.
+                                            * If callback returns true, a core need not poll any
+                                            * input device with an index greater than or equal to
+                                            * the number of active devices.
+                                            * If callback returns false, the number of active input
+                                            * devices is unknown. In this case, all input devices
+                                            * should be considered active.
+                                            */
+
+#define RETRO_ENVIRONMENT_SET_AUDIO_BUFFER_STATUS_CALLBACK 62
+                                           /* const struct retro_audio_buffer_status_callback * --
+                                            * Lets the core know the occupancy level of the frontend
+                                            * audio buffer. Can be used by a core to attempt frame
+                                            * skipping in order to avoid buffer under-runs.
+                                            * A core may pass NULL to disable buffer status reporting
+                                            * in the frontend.
+                                            */
+
+#define RETRO_ENVIRONMENT_SET_MINIMUM_AUDIO_LATENCY 63
+                                           /* const unsigned * --
+                                            * Sets minimum frontend audio latency in milliseconds.
+                                            * Resultant audio latency may be larger than set value,
+                                            * or smaller if a hardware limit is encountered. A frontend
+                                            * is expected to honour requests up to 512 ms.
+                                            *
+                                            * - If value is less than current frontend
+                                            *   audio latency, callback has no effect
+                                            * - If value is zero, default frontend audio
+                                            *   latency is set
+                                            *
+                                            * May be used by a core to increase audio latency and
+                                            * therefore decrease the probability of buffer under-runs
+                                            * (crackling) when performing 'intensive' operations.
+                                            * A core utilising RETRO_ENVIRONMENT_SET_AUDIO_BUFFER_STATUS_CALLBACK
+                                            * to implement audio-buffer-based frame skipping may achieve
+                                            * optimal results by setting the audio latency to a 'high'
+                                            * (typically 6x or 8x) integer multiple of the expected
+                                            * frame time.
+                                            *
+                                            * WARNING: This can only be called from within retro_run().
+                                            * Calling this can require a full reinitialization of audio
+                                            * drivers in the frontend, so it is important to call it very
+                                            * sparingly, and usually only with the users explicit consent.
+                                            * An eventual driver reinitialize will happen so that audio
+                                            * callbacks happening after this call within the same retro_run()
+                                            * call will target the newly initialized driver.
+                                            */
+
+#define RETRO_ENVIRONMENT_SET_FASTFORWARDING_OVERRIDE 64
+                                           /* const struct retro_fastforwarding_override * --
+                                            * Used by a libretro core to override the current
+                                            * fastforwarding mode of the frontend.
+                                            * If NULL is passed to this function, the frontend
+                                            * will return true if fastforwarding override
+                                            * functionality is supported (no change in
+                                            * fastforwarding state will occur in this case).
                                             */
 
 /* VFS functionality */
@@ -2210,6 +2277,30 @@ struct retro_frame_time_callback
    retro_usec_t reference;
 };
 
+/* Notifies a libretro core of the current occupancy
+ * level of the frontend audio buffer.
+ *
+ * - active: 'true' if audio buffer is currently
+ *           in use. Will be 'false' if audio is
+ *           disabled in the frontend
+ *
+ * - occupancy: Given as a value in the range [0,100],
+ *              corresponding to the occupancy percentage
+ *              of the audio buffer
+ *
+ * - underrun_likely: 'true' if the frontend expects an
+ *                    audio buffer underrun during the
+ *                    next frame (indicates that a core
+ *                    should attempt frame skipping)
+ *
+ * It will be called right before retro_run() every frame. */
+typedef void (RETRO_CALLCONV *retro_audio_buffer_status_callback_t)(
+      bool active, unsigned occupancy, bool underrun_likely);
+struct retro_audio_buffer_status_callback
+{
+   retro_audio_buffer_status_callback_t callback;
+};
+
 /* Pass this to retro_video_refresh_t if rendering to hardware.
  * Passing NULL to retro_video_refresh_t is still a frame dupe as normal.
  * */
@@ -2658,7 +2749,7 @@ struct retro_input_descriptor
 struct retro_system_info
 {
    /* All pointers are owned by libretro implementation, and pointers must
-    * remain valid until retro_deinit() is called. */
+    * remain valid until it is unloaded. */
 
    const char *library_name;      /* Descriptive name of library. Should not
                                    * contain any version numbers, etc. */
@@ -2855,6 +2946,47 @@ struct retro_framebuffer
    unsigned memory_flags;           /* Flags telling core how the memory has been mapped.
                                        RETRO_MEMORY_TYPE_* flags.
                                        Set by frontend in GET_CURRENT_SOFTWARE_FRAMEBUFFER. */
+};
+
+/* Used by a libretro core to override the current
+ * fastforwarding mode of the frontend */
+struct retro_fastforwarding_override
+{
+   /* Specifies the runtime speed multiplier that
+    * will be applied when 'fastforward' is true.
+    * For example, a value of 5.0 when running 60 FPS
+    * content will cap the fast-forward rate at 300 FPS.
+    * Note that the target multiplier may not be achieved
+    * if the host hardware has insufficient processing
+    * power.
+    * Setting a value of 0.0 (or greater than 0.0 but
+    * less than 1.0) will result in an uncapped
+    * fast-forward rate (limited only by hardware
+    * capacity).
+    * If the value is negative, it will be ignored
+    * (i.e. the frontend will use a runtime speed
+    * multiplier of its own choosing) */
+   float ratio;
+
+   /* If true, fastforwarding mode will be enabled.
+    * If false, fastforwarding mode will be disabled. */
+   bool fastforward;
+
+   /* If true, and if supported by the frontend, an
+    * on-screen notification will be displayed while
+    * 'fastforward' is true.
+    * If false, and if supported by the frontend, any
+    * on-screen fast-forward notifications will be
+    * suppressed */
+   bool notification;
+
+   /* If true, the core will have sole control over
+    * when fastforwarding mode is enabled/disabled;
+    * the frontend will not be able to change the
+    * state set by 'fastforward' until either
+    * 'inhibit_toggle' is set to false, or the core
+    * is unloaded */
+   bool inhibit_toggle;
 };
 
 /* Callbacks */
