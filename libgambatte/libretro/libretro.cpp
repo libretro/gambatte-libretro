@@ -48,7 +48,20 @@ static bool libretro_ff_enabled_prev      = false;
 
 static bool show_gb_link_settings = true;
 
-static bool up_down_allowed = false;
+/* Minimum (and default) turbo pulse train
+ * is 2 frames ON, 2 frames OFF */
+#define TURBO_PERIOD_MIN      4
+#define TURBO_PERIOD_MAX      120
+#define TURBO_PULSE_WIDTH_MIN 2
+#define TURBO_PULSE_WIDTH_MAX 15
+
+static unsigned libretro_input_state = 0;
+static bool up_down_allowed          = false;
+static unsigned turbo_period         = TURBO_PERIOD_MIN;
+static unsigned turbo_pulse_width    = TURBO_PULSE_WIDTH_MIN;
+static unsigned turbo_a_counter      = 0;
+static unsigned turbo_b_counter      = 0;
+
 static bool rom_loaded = false;
 
 //Dual mode runs two GBCs side by side.
@@ -732,50 +745,93 @@ namespace input
    };
 }
 
+static void update_input_state(void)
+{
+   unsigned i;
+   unsigned res = 0;
+   bool turbo_a = false;
+   bool turbo_b = false;
+
+   if (libretro_supports_bitmasks)
+   {
+      int16_t ret = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
+      for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
+         res |= (ret & (1 << input::btn_map[i].snes)) ? input::btn_map[i].gb : 0;
+
+      libretro_ff_enabled = libretro_supports_ff_override &&
+            (ret & (1 << RETRO_DEVICE_ID_JOYPAD_R2));
+
+      turbo_a = (ret & (1 << RETRO_DEVICE_ID_JOYPAD_X));
+      turbo_b = (ret & (1 << RETRO_DEVICE_ID_JOYPAD_Y));
+   }
+   else
+   {
+      for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
+         res |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes) ? input::btn_map[i].gb : 0;
+
+      libretro_ff_enabled = libretro_supports_ff_override &&
+            input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2);
+
+      turbo_a = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X);
+      turbo_b = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y);
+   }
+
+   if (!up_down_allowed)
+   {
+      if (res & gambatte::InputGetter::UP)
+         if (res & gambatte::InputGetter::DOWN)
+            res &= ~(gambatte::InputGetter::UP | gambatte::InputGetter::DOWN);
+
+      if (res & gambatte::InputGetter::LEFT)
+         if (res & gambatte::InputGetter::RIGHT)
+            res &= ~(gambatte::InputGetter::LEFT | gambatte::InputGetter::RIGHT);
+   }
+
+   /* Handle fast forward button */
+   if (libretro_ff_enabled != libretro_ff_enabled_prev)
+   {
+      set_fastforward_override(libretro_ff_enabled);
+      libretro_ff_enabled_prev = libretro_ff_enabled;
+   }
+
+   /* Handle turbo buttons */
+   if (turbo_a)
+   {
+      res |= (turbo_a_counter < turbo_pulse_width) ?
+            gambatte::InputGetter::A : 0;
+
+      turbo_a_counter++;
+      if (turbo_a_counter >= turbo_period)
+         turbo_a_counter = 0;
+   }
+   else
+      turbo_a_counter = 0;
+
+   if (turbo_b)
+   {
+      res |= (turbo_b_counter < turbo_pulse_width) ?
+            gambatte::InputGetter::B : 0;
+
+      turbo_b_counter++;
+      if (turbo_b_counter >= turbo_period)
+         turbo_b_counter = 0;
+   }
+   else
+      turbo_b_counter = 0;
+
+   libretro_input_state = res;
+}
+
+/* gb_input is called multiple times per frame.
+ * Determine input state once per frame using
+ * update_input_state(), and simply return
+ * cached value here */
 class SNESInput : public gambatte::InputGetter
 {
    public:
       unsigned operator()()
       {
-         unsigned i;
-         unsigned res = 0;
-         if (libretro_supports_bitmasks)
-         {
-            int16_t ret = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
-            for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
-               res |= (ret & (1 << input::btn_map[i].snes)) ? input::btn_map[i].gb : 0;
-
-            libretro_ff_enabled = libretro_supports_ff_override &&
-                  (ret & (1 << RETRO_DEVICE_ID_JOYPAD_R2));
-         }
-         else
-         {
-            for (i = 0; i < sizeof(input::btn_map) / sizeof(input::map); i++)
-               res |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, input::btn_map[i].snes) ? input::btn_map[i].gb : 0;
-
-            libretro_ff_enabled = libretro_supports_ff_override &&
-                  input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2);
-         }
-
-         if (!up_down_allowed)
-         {
-            if (res & gambatte::InputGetter::UP)
-               if (res & gambatte::InputGetter::DOWN)
-                  res &= ~(gambatte::InputGetter::UP | gambatte::InputGetter::DOWN);
-
-            if (res & gambatte::InputGetter::LEFT)
-               if (res & gambatte::InputGetter::RIGHT)
-                  res &= ~(gambatte::InputGetter::LEFT | gambatte::InputGetter::RIGHT);
-         }
-
-         /* Handle fast forward button */
-         if (libretro_ff_enabled != libretro_ff_enabled_prev)
-         {
-            set_fastforward_override(libretro_ff_enabled);
-            libretro_ff_enabled_prev = libretro_ff_enabled;
-         }
-
-         return res;
+         return libretro_input_state;
       }
 } static gb_input;
 
@@ -925,6 +981,13 @@ void retro_deinit(void)
    libretro_supports_ff_override = false;
    libretro_ff_enabled           = false;
    libretro_ff_enabled_prev      = false;
+
+   libretro_input_state = 0;
+   up_down_allowed      = false;
+   turbo_period         = TURBO_PERIOD_MIN;
+   turbo_pulse_width    = TURBO_PULSE_WIDTH_MIN;
+   turbo_a_counter      = 0;
+   turbo_b_counter      = 0;
 
    deactivate_rumble();
    memset(&rumble, 0, sizeof(struct retro_rumble_interface));
@@ -1219,6 +1282,28 @@ static void check_variables(void)
          up_down_allowed = true;
       else
          up_down_allowed = false;
+   }
+
+   turbo_period      = TURBO_PERIOD_MIN;
+   turbo_pulse_width = TURBO_PULSE_WIDTH_MIN;
+   var.key           = "gambatte_turbo_period";
+   var.value         = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      turbo_period = atoi(var.value);
+      turbo_period = (turbo_period < TURBO_PERIOD_MIN) ?
+            TURBO_PERIOD_MIN : turbo_period;
+      turbo_period = (turbo_period > TURBO_PERIOD_MAX) ?
+            TURBO_PERIOD_MAX : turbo_period;
+
+      turbo_pulse_width = turbo_period >> 1;
+      turbo_pulse_width = (turbo_pulse_width < TURBO_PULSE_WIDTH_MIN) ?
+            TURBO_PULSE_WIDTH_MIN : turbo_pulse_width;
+      turbo_pulse_width = (turbo_pulse_width > TURBO_PULSE_WIDTH_MAX) ?
+            TURBO_PULSE_WIDTH_MAX : turbo_pulse_width;
+
+      turbo_a_counter = 0;
+      turbo_b_counter = 0;
    }
 
    rumble_level = 0;
@@ -1538,6 +1623,8 @@ bool retro_load_game(const struct retro_game_info *info)
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT,  "D-Pad Right" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B,      "B" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A,      "A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,      "Turbo B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,      "Turbo A" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Select" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,  "Start" },
       { 0 },
@@ -1550,6 +1637,8 @@ bool retro_load_game(const struct retro_game_info *info)
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT,  "D-Pad Right" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B,      "B" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A,      "A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,      "Turbo B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,      "Turbo A" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Select" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,  "Start" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2,     "Fast Forward" },
@@ -1734,6 +1823,7 @@ void retro_run()
    static uint64_t frames_count = 0;
 
    input_poll_cb();
+   update_input_state();
 
    uint64_t expected_frames = samples_count / 35112;
    if (frames_count < expected_frames) // Detect frame dupes.
