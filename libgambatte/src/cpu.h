@@ -86,7 +86,7 @@ public:
 #if 0
 	bool loaded() const { return mem_.loaded(); }
 #endif
-	void setSoundBuffer(uint_least32_t *buf) { mem_.setSoundBuffer(buf); }
+	void setSoundBuffer(uint_least32_t *buf, std::size_t size) { mem_.setSoundBuffer(buf, size); }
 	std::size_t fillSoundBuffer() { return mem_.fillSoundBuffer(cycleCounter_); }
 	bool isCgb() const { return mem_.isCgb(); }
 

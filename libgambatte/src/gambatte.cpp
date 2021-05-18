@@ -43,10 +43,10 @@ GB::~GB() {
 }
 
 long GB::runFor(gambatte::video_pixel_t *const videoBuf, const int pitch,
-			gambatte::uint_least32_t *const soundBuf, unsigned &samples) {
+			gambatte::uint_least32_t *const soundBuf, std::size_t soundBufSize, unsigned &samples) {
 	
 	p_->cpu.setVideoBuffer(videoBuf, pitch);
-	p_->cpu.setSoundBuffer(soundBuf);
+	p_->cpu.setSoundBuffer(soundBuf, soundBufSize);
 	const long cyclesSinceBlit = p_->cpu.runFor(samples * 2);
 	samples = p_->cpu.fillSoundBuffer();
 	

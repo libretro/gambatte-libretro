@@ -41,7 +41,7 @@ public:
 	void generateSamples(unsigned long cycleCounter, bool doubleSpeed);
 	void resetCounter(unsigned long newCc, unsigned long oldCc, bool doubleSpeed);
    std::size_t fillBuffer();
-	void setBuffer(uint_least32_t *buf) { buffer_ = buf; bufferPos_ = 0; }
+	void setBuffer(uint_least32_t *buf, std::size_t size) { buffer_ = buf; bufferSize_ = size; bufferPos_ = 0; }
 
 	bool isEnabled() const { return enabled_; }
 	void setEnabled(bool value) { enabled_ = value; }
@@ -80,6 +80,7 @@ private:
 	Channel3 ch3_;
 	Channel4 ch4_;
 	uint_least32_t *buffer_;
+	std::size_t bufferSize_;
 	std::size_t bufferPos_;
 	unsigned long lastUpdate_;
 	unsigned long soVol_;

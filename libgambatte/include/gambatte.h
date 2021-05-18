@@ -54,6 +54,8 @@ public:
 	  *
 	  * There are 35112 stereo sound samples in a video frame.
 	  * May run for uptil 2064 stereo samples too long.
+	  * EDIT: Due to internal emulator bugs, may in fact run for
+	  *       an arbitrary number of samples...
 	  * A stereo sample consists of two native endian 2s complement 16-bit PCM samples,
 	  * with the left sample preceding the right one. Usually casting soundBuf to/from
 	  * short* is OK and recommended. The reason for not using a short* in the interface
@@ -67,11 +69,12 @@ public:
 	  * @param videoBuf 160x144 RGB32 (native endian) video frame buffer or 0
 	  * @param pitch distance in number of pixels (not bytes) from the start of one line to the next in videoBuf.
 	  * @param soundBuf buffer with space >= samples + 2064
+	  * @param soundBufSize actual size of soundBuf buffer
 	  * @param samples in: number of stereo samples to produce, out: actual number of samples produced
 	  * @return sample number at which the video frame was produced. -1 means no frame was produced.
 	  */
 	long runFor(gambatte::video_pixel_t *videoBuf, int pitch,
-			gambatte::uint_least32_t *soundBuf, unsigned &samples);
+			gambatte::uint_least32_t *soundBuf, std::size_t soundBufSize, unsigned &samples);
 	
 	/** Reset to initial state.
 	  * Equivalent to reloading a ROM image, or turning a Game Boy Color off and on again.
