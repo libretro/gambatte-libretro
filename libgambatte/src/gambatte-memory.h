@@ -120,7 +120,7 @@ public:
 	void setSerialIO(SerialIO* serial_io) { serial_io_ = serial_io; }
 #endif
 	void setEndtime(unsigned long cc, unsigned long inc);
-	void setSoundBuffer(uint_least32_t *buf) { psg_.setBuffer(buf); }
+	void setSoundBuffer(uint_least32_t *buf, std::size_t size) { psg_.setBuffer(buf, size); }
 	std::size_t fillSoundBuffer(unsigned long cc);
 
 	void setVideoBuffer(video_pixel_t *videoBuf, std::ptrdiff_t pitch) {

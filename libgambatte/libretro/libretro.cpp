@@ -90,6 +90,21 @@ bool use_official_bootloader = false;
 #define VIDEO_BUFF_SIZE (256 * NUM_GAMEBOYS * VIDEO_HEIGHT * sizeof(gambatte::video_pixel_t))
 #define VIDEO_PITCH (256 * NUM_GAMEBOYS)
 
+/* There are 35112 stereo sound samples in a video frame */
+#define SOUND_SAMPLES_PER_FRAME 35112
+/* We request 2064 samples from each call of GB::runFor() */
+#define SOUND_SAMPLES_PER_RUN   2064
+/* GB::runFor() nominally generates up to
+ * (SOUND_SAMPLES_PER_RUN + 2064) samples, which
+ * defines our sound buffer size
+ * NOTE: This is in fact a lie - in the upstream code,
+ * GB::runFor() can generate more than
+ * (SOUND_SAMPLES_PER_RUN + 2064) samples, causing a
+ * buffer overflow. It has been necessary to add an
+ * internal hard cap/bail out in the event that
+ * excess samples are detected... */
+#define SOUND_BUFF_SIZE         (SOUND_SAMPLES_PER_RUN + 2064)
+
 /*****************************/
 /* Interframe blending START */
 /*****************************/
@@ -903,7 +918,7 @@ void retro_init(void)
 #endif
 
    double fps = 4194304.0 / 70224.0;
-   double sample_rate = fps * 35112;
+   double sample_rate = fps * SOUND_SAMPLES_PER_FRAME;
 
 #ifdef CC_RESAMPLER
    CC_init();
@@ -1825,7 +1840,7 @@ void retro_run()
    input_poll_cb();
    update_input_state();
 
-   uint64_t expected_frames = samples_count / 35112;
+   uint64_t expected_frames = samples_count / SOUND_SAMPLES_PER_FRAME;
    if (frames_count < expected_frames) // Detect frame dupes.
    {
       video_cb(NULL, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_PITCH * sizeof(gambatte::video_pixel_t));
@@ -1835,12 +1850,12 @@ void retro_run()
 
    union
    {
-      gambatte::uint_least32_t u32[2064 + 2064];
-      int16_t i16[2 * (2064 + 2064)];
+      gambatte::uint_least32_t u32[SOUND_BUFF_SIZE];
+      int16_t i16[2 * SOUND_BUFF_SIZE];
    } static sound_buf;
-   unsigned samples = 2064;
+   unsigned samples = SOUND_SAMPLES_PER_RUN;
 
-   while (gb.runFor(video_buf, VIDEO_PITCH, sound_buf.u32, samples) == -1)
+   while (gb.runFor(video_buf, VIDEO_PITCH, sound_buf.u32, SOUND_BUFF_SIZE, samples) == -1)
    {
 #ifdef CC_RESAMPLER
       CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
@@ -1857,7 +1872,7 @@ void retro_run()
 
 #endif
       samples_count += samples;
-      samples = 2064;
+      samples = SOUND_SAMPLES_PER_RUN;
    }
 #ifdef DUAL_MODE
    while (gb2.runFor(video_buf + GB_SCREEN_WIDTH, VIDEO_PITCH, sound_buf.u32, samples) == -1) {}

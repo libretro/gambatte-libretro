@@ -45,6 +45,7 @@ namespace gambatte
 
    PSG::PSG()
       :  buffer_(0)
+      ,  bufferSize_(0)
       ,  bufferPos_(0)
       ,  lastUpdate_(0)
       ,  soVol_(0)
@@ -96,7 +97,6 @@ namespace gambatte
    void PSG::accumulateChannels(const unsigned long cycles)
    {
       uint_least32_t *const buf = buffer_ + bufferPos_;
-
       std::memset(buf, 0, cycles * sizeof(uint_least32_t));
       ch1_.update(buf, soVol_, cycles);
       ch2_.update(buf, soVol_, cycles);
@@ -106,7 +106,11 @@ namespace gambatte
 
    void PSG::generateSamples(unsigned long const cycleCounter, bool const doubleSpeed)
    {
-      unsigned long const cycles = (cycleCounter - lastUpdate_) >> (1 + doubleSpeed);
+      unsigned long cycles = (cycleCounter - lastUpdate_) >> (1 + doubleSpeed);
+
+      if (cycles + bufferPos_ > bufferSize_)
+         cycles = (bufferSize_ > bufferPos_) ? (bufferSize_ - bufferPos_) : 0;
+
       lastUpdate_ += cycles << (1 + doubleSpeed);
 
       if (cycles)
