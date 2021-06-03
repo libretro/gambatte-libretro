@@ -572,463 +572,331 @@ static const unsigned short sgb4H[] = {
 };
 
 //
-// Palettes by TheWolfBunny
+// Palettes by TheWolfBunny64 (TheWolfBunny on DeviantArt)
 // https://www.deviantart.com/thewolfbunny/gallery/69987002/game-boy-palettes
 //
-static const unsigned short twb_756_production[] = {
-	PACK15_4(0xBBC4E4, 0x82899F, 0x4A4E5B, 0x121316),
-	PACK15_4(0xBBC4E4, 0x82899F, 0x4A4E5B, 0x121316),
-	PACK15_4(0xBBC4E4, 0x82899F, 0x4A4E5B, 0x121316)
+static const unsigned short twb64_001_aqours_blue[] = {
+	PACK15_4(0x00A0E9, 0x007AB2, 0x004B6D, 0x001C29),
+	PACK15_4(0x00A0E9, 0x007AB2, 0x004B6D, 0x001C29),
+	PACK15_4(0x00A0E9, 0x007AB2, 0x004B6D, 0x001C29)
 };
 
-static const unsigned short twb_akb48_pink[] = {
-	PACK15_4(0xF596B4, 0xAB697D, 0x623C48, 0x180F12),
-	PACK15_4(0xF596B4, 0xAB697D, 0x623C48, 0x180F12),
-	PACK15_4(0xF596B4, 0xAB697D, 0x623C48, 0x180F12)
-};
-
-static const unsigned short twb_angry_volcano[] = {
-	PACK15_4(0xF8B800, 0xF83800, 0xA81000, 0x1C0000),
-	PACK15_4(0xF8B800, 0xF83800, 0xA81000, 0x1C0000),
-	PACK15_4(0xF8B800, 0xF83800, 0xA81000, 0x1C0000)
-};
-
-static const unsigned short twb_anime_expo[] = {
+static const unsigned short twb64_002_anime_expo_ver[] = {
 	PACK15_4(0xE5EAEB, 0x9BA3A6, 0x656E72, 0x242A2D),
 	PACK15_4(0xE5EAEB, 0x9BA3A6, 0x656E72, 0x242A2D),
 	PACK15_4(0xE5EAEB, 0x9BA3A6, 0x656E72, 0x242A2D)
 };
 
-static const unsigned short twb_aqours_blue[] = {
-	PACK15_4(0x009FE8, 0x006FA2, 0x003F5C, 0x000F17),
-	PACK15_4(0x009FE8, 0x006FA2, 0x003F5C, 0x000F17),
-	PACK15_4(0x009FE8, 0x006FA2, 0x003F5C, 0x000F17)
+static const unsigned short twb64_003_spongebob_yellow[] = {
+	PACK15_4(0xF8E867, 0xBDB14E, 0x746D30, 0x2B2812),
+	PACK15_4(0xF8E867, 0xBDB14E, 0x746D30, 0x2B2812),
+	PACK15_4(0xF8E867, 0xBDB14E, 0x746D30, 0x2B2812)
 };
 
-static const unsigned short twb_aquatic_iro[] = {
-	PACK15_4(0xA0D8EF, 0x2CA9E1, 0x3E62AD, 0x192F60),
-	PACK15_4(0xA0D8EF, 0x2CA9E1, 0x3E62AD, 0x192F60),
-	PACK15_4(0xA0D8EF, 0x2CA9E1, 0x3E62AD, 0x192F60)
+static const unsigned short twb64_004_patrick_star_pink[] = {
+	PACK15_4(0xFF7F8C, 0xC3616B, 0x783B41, 0x2D1618),
+	PACK15_4(0xFF7F8C, 0xC3616B, 0x783B41, 0x2D1618),
+	PACK15_4(0xFF7F8C, 0xC3616B, 0x783B41, 0x2D1618)
 };
 
-static const unsigned short twb_bandai_namco[] = {
-	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000),
-	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000),
-	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000)
+static const unsigned short twb64_005_neon_red[] = {
+	PACK15_4(0xFF3C28, 0xC32D1E, 0x781C12, 0x2D0A07),
+	PACK15_4(0xFF3C28, 0xC32D1E, 0x781C12, 0x2D0A07),
+	PACK15_4(0xFF3C28, 0xC32D1E, 0x781C12, 0x2D0A07)
 };
 
-static const unsigned short twb_blossom_pink[] = {
-	PACK15_4(0xF09898, 0xA86A6A, 0x603C3C, 0x180F0F),
-	PACK15_4(0xF09898, 0xA86A6A, 0x603C3C, 0x180F0F),
-	PACK15_4(0xF09898, 0xA86A6A, 0x603C3C, 0x180F0F)
+static const unsigned short twb64_006_neon_blue[] = {
+	PACK15_4(0x0AB9E6, 0x078DAF, 0x04576C, 0x012028),
+	PACK15_4(0x0AB9E6, 0x078DAF, 0x04576C, 0x012028),
+	PACK15_4(0x0AB9E6, 0x078DAF, 0x04576C, 0x012028)
 };
 
-static const unsigned short twb_bubbles_blue[] = {
-	PACK15_4(0x88D0F0, 0x5F91A8, 0x365360, 0x0D1418),
-	PACK15_4(0x88D0F0, 0x5F91A8, 0x365360, 0x0D1418),
-	PACK15_4(0x88D0F0, 0x5F91A8, 0x365360, 0x0D1418)
+static const unsigned short twb64_007_neon_yellow[] = {
+	PACK15_4(0xE6FF00, 0xAFC300, 0x6C7800, 0x282D00),
+	PACK15_4(0xE6FF00, 0xAFC300, 0x6C7800, 0x282D00),
+	PACK15_4(0xE6FF00, 0xAFC300, 0x6C7800, 0x282D00)
 };
 
-static const unsigned short twb_builder_yellow[] = {
-	PACK15_4(0xFACD00, 0xAF8F00, 0x645200, 0x191400),
-	PACK15_4(0xFACD00, 0xAF8F00, 0x645200, 0x191400),
-	PACK15_4(0xFACD00, 0xAF8F00, 0x645200, 0x191400)
+static const unsigned short twb64_008_neon_green[] = {
+	PACK15_4(0x1EDC00, 0x16A800, 0x0E6700, 0x052600),
+	PACK15_4(0x1EDC00, 0x16A800, 0x0E6700, 0x052600),
+	PACK15_4(0x1EDC00, 0x16A800, 0x0E6700, 0x052600)
 };
 
-static const unsigned short twb_buttercup_green[] = {
-	PACK15_4(0xB8E088, 0x809C5F, 0x495936, 0x12160D),
-	PACK15_4(0xB8E088, 0x809C5F, 0x495936, 0x12160D),
-	PACK15_4(0xB8E088, 0x809C5F, 0x495936, 0x12160D)
+static const unsigned short twb64_009_neon_pink[] = {
+	PACK15_4(0xFF3278, 0xC3265B, 0x781738, 0x2D0815),
+	PACK15_4(0xFF3278, 0xC3265B, 0x781738, 0x2D0815),
+	PACK15_4(0xFF3278, 0xC3265B, 0x781738, 0x2D0815)
 };
 
-static const unsigned short twb_camouflage[] = {
-	PACK15_4(0xBCAB90, 0xAC7E54, 0x79533D, 0x373538),
-	PACK15_4(0xBCAB90, 0xAC7E54, 0x79533D, 0x373538),
-	PACK15_4(0xBCAB90, 0xAC7E54, 0x79533D, 0x373538)
+static const unsigned short twb64_010_mario_red[] = {
+	PACK15_4(0xE10F00, 0xAC0B00, 0x690700, 0x270200),
+	PACK15_4(0xE10F00, 0xAC0B00, 0x690700, 0x270200),
+	PACK15_4(0xE10F00, 0xAC0B00, 0x690700, 0x270200)
 };
 
-static const unsigned short twb_cardcaptor_pink[] = {
-	PACK15_4(0xF2F4F7, 0xEAC3D6, 0xE10E82, 0x460428),
-	PACK15_4(0xF2F4F7, 0xEAC3D6, 0xE10E82, 0x460428),
-	PACK15_4(0xF2F4F7, 0xEAC3D6, 0xE10E82, 0x460428)
+static const unsigned short twb64_011_nick_orange[] = {
+	PACK15_4(0xFF6700, 0xC34E00, 0x783000, 0x2D1200),
+	PACK15_4(0xFF6700, 0xC34E00, 0x783000, 0x2D1200),
+	PACK15_4(0xFF6700, 0xC34E00, 0x783000, 0x2D1200)
 };
 
-static const unsigned short twb_christmas[] = {
-	PACK15_4(0xCBB96A, 0x20A465, 0xA03232, 0x100505),
-	PACK15_4(0xCBB96A, 0x20A465, 0xA03232, 0x100505),
-	PACK15_4(0xCBB96A, 0x20A465, 0xA03232, 0x100505)
+static const unsigned short twb64_012_virtual_boy_ver[] = {
+	PACK15_4(0xFF0000, 0xAA0000, 0x550000, 0x000000),
+	PACK15_4(0xFF0000, 0xAA0000, 0x550000, 0x000000),
+	PACK15_4(0xFF0000, 0xAA0000, 0x550000, 0x000000)
 };
 
-static const unsigned short twb_crunchyroll_orange[] = {
-	PACK15_4(0xF78C25, 0xAC6219, 0x62380E, 0x180E03),
-	PACK15_4(0xF78C25, 0xAC6219, 0x62380E, 0x180E03),
-	PACK15_4(0xF78C25, 0xAC6219, 0x62380E, 0x180E03)
+static const unsigned short twb64_013_golden_wild[] = {
+	PACK15_4(0xB99F65, 0x8D794D, 0x574A2F, 0x201C11),
+	PACK15_4(0xB99F65, 0x8D794D, 0x574A2F, 0x201C11),
+	PACK15_4(0xB99F65, 0x8D794D, 0x574A2F, 0x201C11)
 };
 
-static const unsigned short twb_digivice[] = {
-	PACK15_4(0x8C8C73, 0x646453, 0x38382E, 0x000000),
-	PACK15_4(0x8C8C73, 0x646453, 0x38382E, 0x000000),
-	PACK15_4(0x8C8C73, 0x646453, 0x38382E, 0x000000)
+static const unsigned short twb64_014_builder_yellow[] = {
+	PACK15_4(0xFACD00, 0xBF9C00, 0x756000, 0x2C2400),
+	PACK15_4(0xFACD00, 0xBF9C00, 0x756000, 0x2C2400),
+	PACK15_4(0xFACD00, 0xBF9C00, 0x756000, 0x2C2400)
 };
 
-static const unsigned short twb_do_the_dew[] = {
-	PACK15_4(0xFFFFFF, 0xA1D23F, 0xD82A34, 0x29673C),
-	PACK15_4(0xFFFFFF, 0xA1D23F, 0xD82A34, 0x29673C),
-	PACK15_4(0xFFFFFF, 0xA1D23F, 0xD82A34, 0x29673C)
+static const unsigned short twb64_015_classic_blurple[] = {
+	PACK15_4(0x7289DA, 0x5768A6, 0x354066, 0x141826),
+	PACK15_4(0x7289DA, 0x5768A6, 0x354066, 0x141826),
+	PACK15_4(0x7289DA, 0x5768A6, 0x354066, 0x141826)
 };
 
-static const unsigned short twb_eevee_brown[] = {
-	PACK15_4(0xC88D32, 0x8C6223, 0x503814, 0x140E05),
-	PACK15_4(0xC88D32, 0x8C6223, 0x503814, 0x140E05),
-	PACK15_4(0xC88D32, 0x8C6223, 0x503814, 0x140E05)
+static const unsigned short twb64_016_765_production_ver[] = {
+	PACK15_4(0xBBC4E4, 0x8F95AE, 0x585C6B, 0x212228),
+	PACK15_4(0xBBC4E4, 0x8F95AE, 0x585C6B, 0x212228),
+	PACK15_4(0xBBC4E4, 0x8F95AE, 0x585C6B, 0x212228)
 };
 
-static const unsigned short twb_fruity_orange[] = {
-	PACK15_4(0xF3BF88, 0xF08300, 0x9F563A, 0x241A08),
-	PACK15_4(0xF3BF88, 0xF08300, 0x9F563A, 0x241A08),
-	PACK15_4(0xF3BF88, 0xF08300, 0x9F563A, 0x241A08)
-};
-
-static const unsigned short twb_game_com[] = {
-	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000),
-	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000),
-	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000)
-};
-
-static const unsigned short twb_game_grump_orange[] = {
-	PACK15_4(0xE9762F, 0xA35220, 0x5D2F12, 0x170B04),
-	PACK15_4(0xE9762F, 0xA35220, 0x5D2F12, 0x170B04),
-	PACK15_4(0xE9762F, 0xA35220, 0x5D2F12, 0x170B04)
-};
-
-static const unsigned short twb_gameking[] = {
-	PACK15_4(0x8CCE94, 0x6B9C63, 0x506541, 0x184221),
-	PACK15_4(0x8CCE94, 0x6B9C63, 0x506541, 0x184221),
-	PACK15_4(0x8CCE94, 0x6B9C63, 0x506541, 0x184221)
-};
-
-static const unsigned short twb_game_master[] = {
-	PACK15_4(0x829FA6, 0x5A787E, 0x384A50, 0x2D2D2B),
-	PACK15_4(0x829FA6, 0x5A787E, 0x384A50, 0x2D2D2B),
-	PACK15_4(0x829FA6, 0x5A787E, 0x384A50, 0x2D2D2B)
-};
-
-static const unsigned short twb_ghostly_aoi[] = {
-	PACK15_4(0x84A2D4, 0x5A79BA, 0x19448E, 0x0F2350),
-	PACK15_4(0x84A2D4, 0x5A79BA, 0x19448E, 0x0F2350),
-	PACK15_4(0x84A2D4, 0x5A79BA, 0x19448E, 0x0F2350)
-};
-
-static const unsigned short twb_golden_wild[] = {
-	PACK15_4(0xB99F65, 0x816F46, 0x4A3F28, 0x120F0A),
-	PACK15_4(0xB99F65, 0x816F46, 0x4A3F28, 0x120F0A),
-	PACK15_4(0xB99F65, 0x816F46, 0x4A3F28, 0x120F0A)
-};
-
-static const unsigned short twb_green_banana[] = {
-	PACK15_4(0x60D808, 0x489800, 0x386838, 0x204800),
-	PACK15_4(0x60D808, 0x489800, 0x386838, 0x204800),
-	PACK15_4(0x60D808, 0x489800, 0x386838, 0x204800)
-};
-
-static const unsigned short twb_greenscale[] = {
-	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C),
-	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C),
-	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C)
-};
-
-static const unsigned short twb_halloween[] = {
-	PACK15_4(0xFFCC00, 0xF68C00, 0x9540A5, 0x0E0610),
-	PACK15_4(0xFFCC00, 0xF68C00, 0x9540A5, 0x0E0610),
-	PACK15_4(0xFFCC00, 0xF68C00, 0x9540A5, 0x0E0610)
-};
-
-static const unsigned short twb_hero_yellow[] = {
-	PACK15_4(0xFFF100, 0xB2A800, 0x666000, 0x191800),
-	PACK15_4(0xFFF100, 0xB2A800, 0x666000, 0x191800),
-	PACK15_4(0xFFF100, 0xB2A800, 0x666000, 0x191800)
-};
-
-static const unsigned short twb_hokage_orange[] = {
-	PACK15_4(0xEA8352, 0xA35B39, 0x5D3420, 0x170D08),
-	PACK15_4(0xEA8352, 0xA35B39, 0x5D3420, 0x170D08),
-	PACK15_4(0xEA8352, 0xA35B39, 0x5D3420, 0x170D08)
-};
-
-static const unsigned short twb_labo_fawn[] = {
-	PACK15_4(0xD7AA73, 0x967650, 0x56442E, 0x15110B),
-	PACK15_4(0xD7AA73, 0x967650, 0x56442E, 0x15110B),
-	PACK15_4(0xD7AA73, 0x967650, 0x56442E, 0x15110B)
-};
-
-static const unsigned short twb_legendary_super_saiyan[] = {
-	PACK15_4(0xA5DB5A, 0x73993E, 0x425724, 0x101509),
-	PACK15_4(0xA5DB5A, 0x73993E, 0x425724, 0x101509),
-	PACK15_4(0xA5DB5A, 0x73993E, 0x425724, 0x101509)
-};
-
-static const unsigned short twb_lemon_lime_green[] = {
-	PACK15_4(0xF1C545, 0x51A631, 0x336632, 0x142813),
-	PACK15_4(0xF1C545, 0x51A631, 0x336632, 0x142813),
-	PACK15_4(0xF1C545, 0x51A631, 0x336632, 0x142813)
-};
-
-static const unsigned short twb_lime_midori[] = {
-	PACK15_4(0xE0EBAF, 0xAACF53, 0x7B8D42, 0x475950),
-	PACK15_4(0xE0EBAF, 0xAACF53, 0x7B8D42, 0x475950),
-	PACK15_4(0xE0EBAF, 0xAACF53, 0x7B8D42, 0x475950)
-};
-
-static const unsigned short twb_mania_plus_green[] = {
-	PACK15_4(0x79C14E, 0x548736, 0x304D1F, 0x0C1307),
-	PACK15_4(0x79C14E, 0x548736, 0x304D1F, 0x0C1307),
-	PACK15_4(0x79C14E, 0x548736, 0x304D1F, 0x0C1307)
-};
-
-static const unsigned short twb_microvision[] = {
-	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030),
-	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030),
-	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030)
-};
-
-static const unsigned short twb_million_live_gold[] = {
-	PACK15_4(0xCDB261, 0x8F7C43, 0x524726, 0x141109),
-	PACK15_4(0xCDB261, 0x8F7C43, 0x524726, 0x141109),
-	PACK15_4(0xCDB261, 0x8F7C43, 0x524726, 0x141109)
-};
-
-static const unsigned short twb_miraitowa_blue[] = {
-	PACK15_4(0x25BDEF, 0x1984A7, 0x0E4B5F, 0x031217),
-	PACK15_4(0x25BDEF, 0x1984A7, 0x0E4B5F, 0x031217),
-	PACK15_4(0x25BDEF, 0x1984A7, 0x0E4B5F, 0x031217)
-};
-
-static const unsigned short twb_nascar[] = {
-	PACK15_4(0xFFD659, 0xE4002B, 0x007AC2, 0x000000),
-	PACK15_4(0xFFD659, 0xE4002B, 0x007AC2, 0x000000),
-	PACK15_4(0xFFD659, 0xE4002B, 0x007AC2, 0x000000)
-};
-
-static const unsigned short twb_neo_geo_pocket[] = {
-	PACK15_4(0xF0F0F0, 0xB0B0B0, 0x707070, 0x101010),
-	PACK15_4(0xF0F0F0, 0xB0B0B0, 0x707070, 0x101010),
-	PACK15_4(0xF0F0F0, 0xB0B0B0, 0x707070, 0x101010)
-};
-
-static const unsigned short twb_neon_blue[] = {
-	PACK15_4(0x0AB9E6, 0x0781A1, 0x044A5C, 0x011217),
-	PACK15_4(0x0AB9E6, 0x0781A1, 0x044A5C, 0x011217),
-	PACK15_4(0x0AB9E6, 0x0781A1, 0x044A5C, 0x011217)
-};
-
-static const unsigned short twb_neon_green[] = {
-	PACK15_4(0x1EDC00, 0x159A00, 0x0C5800, 0x031600),
-	PACK15_4(0x1EDC00, 0x159A00, 0x0C5800, 0x031600),
-	PACK15_4(0x1EDC00, 0x159A00, 0x0C5800, 0x031600)
-};
-
-static const unsigned short twb_neon_pink[] = {
-	PACK15_4(0xFF3278, 0xB22354, 0x661430, 0x19050C),
-	PACK15_4(0xFF3278, 0xB22354, 0x661430, 0x19050C),
-	PACK15_4(0xFF3278, 0xB22354, 0x661430, 0x19050C)
-};
-
-static const unsigned short twb_neon_red[] = {
-	PACK15_4(0xFF3C28, 0xB22A1C, 0x661810, 0x190604),
-	PACK15_4(0xFF3C28, 0xB22A1C, 0x661810, 0x190604),
-	PACK15_4(0xFF3C28, 0xB22A1C, 0x661810, 0x190604)
-};
-
-static const unsigned short twb_neon_yellow[] = {
-	PACK15_4(0xE6FF00, 0xA1B200, 0x5C6600, 0x171900),
-	PACK15_4(0xE6FF00, 0xA1B200, 0x5C6600, 0x171900),
-	PACK15_4(0xE6FF00, 0xA1B200, 0x5C6600, 0x171900)
-};
-
-static const unsigned short twb_nick_orange[] = {
-	PACK15_4(0xFF6700, 0xB24800, 0x662900, 0x190A00),
-	PACK15_4(0xFF6700, 0xB24800, 0x662900, 0x190A00),
-	PACK15_4(0xFF6700, 0xB24800, 0x662900, 0x190A00)
-};
-
-static const unsigned short twb_nijigasaki_orange[] = {
-	PACK15_4(0xFAB920, 0xAF8116, 0x644A0C, 0x191203),
-	PACK15_4(0xFAB920, 0xAF8116, 0x644A0C, 0x191203),
-	PACK15_4(0xFAB920, 0xAF8116, 0x644A0C, 0x191203)
-};
-
-static const unsigned short twb_odyssey_gold[] = {
-	PACK15_4(0xC2A000, 0x877000, 0x4D4000, 0x131000),
-	PACK15_4(0xC2A000, 0x877000, 0x4D4000, 0x131000),
-	PACK15_4(0xC2A000, 0x877000, 0x4D4000, 0x131000)
-};
-
-static const unsigned short twb_patrick_star_pink[] = {
-	PACK15_4(0xFF7F8C, 0xB25862, 0x663238, 0x190C0E),
-	PACK15_4(0xFF7F8C, 0xB25862, 0x663238, 0x190C0E),
-	PACK15_4(0xFF7F8C, 0xB25862, 0x663238, 0x190C0E)
-};
-
-static const unsigned short twb_pikachu_yellow[] = {
-	PACK15_4(0xFFDC00, 0xB29A00, 0x665800, 0x191600),
-	PACK15_4(0xFFDC00, 0xB29A00, 0x665800, 0x191600),
-	PACK15_4(0xFFDC00, 0xB29A00, 0x665800, 0x191600)
-};
-
-static const unsigned short twb_pocket_tales[] = {
-	PACK15_4(0xD0D860, 0x88A000, 0x385000, 0x000000),
-	PACK15_4(0xD0D860, 0x88A000, 0x385000, 0x000000),
-	PACK15_4(0xD0D860, 0x88A000, 0x385000, 0x000000)
-};
-
-static const unsigned short twb_pokemon_mini[] = {
-	PACK15_4(0xA9BDA9, 0x788F78, 0x505F50, 0x243724),
-	PACK15_4(0xA9BDA9, 0x788F78, 0x505F50, 0x243724),
-	PACK15_4(0xA9BDA9, 0x788F78, 0x505F50, 0x243724)
-};
-
-static const unsigned short twb_pretty_guardian_gold[] = {
-	PACK15_4(0xB4AA82, 0x7D765B, 0x484434, 0x12110D),
-	PACK15_4(0xB4AA82, 0x7D765B, 0x484434, 0x12110D),
-	PACK15_4(0xB4AA82, 0x7D765B, 0x484434, 0x12110D)
-};
-
-static const unsigned short twb_sees_blue[] = {
-	PACK15_4(0x009AFF, 0x006BB2, 0x003D66, 0x000F19),
-	PACK15_4(0x009AFF, 0x006BB2, 0x003D66, 0x000F19),
-	PACK15_4(0x009AFF, 0x006BB2, 0x003D66, 0x000F19)
-};
-
-static const unsigned short twb_saint_snow_red[] = {
-	PACK15_4(0xCA3935, 0x8D2725, 0x501615, 0x140505),
-	PACK15_4(0xCA3935, 0x8D2725, 0x501615, 0x140505),
-	PACK15_4(0xCA3935, 0x8D2725, 0x501615, 0x140505)
-};
-
-static const unsigned short twb_scooby_doo_mystery[] = {
-	PACK15_4(0xC7DE31, 0xF79321, 0x73308F, 0x263232),
-	PACK15_4(0xC7DE31, 0xF79321, 0x73308F, 0x263232),
-	PACK15_4(0xC7DE31, 0xF79321, 0x73308F, 0x263232)
-};
-
-static const unsigned short twb_shiny_sky_blue[] = {
-	PACK15_4(0x8CB6DF, 0x627F9C, 0x384859, 0x0E1216),
-	PACK15_4(0x8CB6DF, 0x627F9C, 0x384859, 0x0E1216),
-	PACK15_4(0x8CB6DF, 0x627F9C, 0x384859, 0x0E1216)
-};
-
-static const unsigned short twb_sidem_green[] = {
-	PACK15_4(0x02AC71, 0x01784F, 0x00442D, 0x00110B),
-	PACK15_4(0x02AC71, 0x01784F, 0x00442D, 0x00110B),
-	PACK15_4(0x02AC71, 0x01784F, 0x00442D, 0x00110B)
-};
-
-static const unsigned short twb_slime_blue[] = {
-	PACK15_4(0x2F8CCC, 0x20628E, 0x123851, 0x040E14),
-	PACK15_4(0x2F8CCC, 0x20628E, 0x123851, 0x040E14),
-	PACK15_4(0x2F8CCC, 0x20628E, 0x123851, 0x040E14)
-};
-
-static const unsigned short twb_spongebob_yellow[] = {
-	PACK15_4(0xF8E867, 0xADA248, 0x635C29, 0x18170A),
-	PACK15_4(0xF8E867, 0xADA248, 0x635C29, 0x18170A),
-	PACK15_4(0xF8E867, 0xADA248, 0x635C29, 0x18170A)
-};
-
-static const unsigned short twb_stone_orange[] = {
-	PACK15_4(0xF6821E, 0xAC5B15, 0x62340C, 0x180D03),
-	PACK15_4(0xF6821E, 0xAC5B15, 0x62340C, 0x180D03),
-	PACK15_4(0xF6821E, 0xAC5B15, 0x62340C, 0x180D03)
-};
-
-static const unsigned short twb_straw_hat_red[] = {
-	PACK15_4(0xF8523C, 0xAD392A, 0x632018, 0x180806),
-	PACK15_4(0xF8523C, 0xAD392A, 0x632018, 0x180806),
-	PACK15_4(0xF8523C, 0xAD392A, 0x632018, 0x180806)
-};
-
-static const unsigned short twb_superball_ivory[] = {
+static const unsigned short twb64_017_superball_ivory[] = {
 	PACK15_4(0xEEF0BC, 0xBCBC8A, 0x828250, 0x646432),
 	PACK15_4(0xEEF0BC, 0xBCBC8A, 0x828250, 0x646432),
 	PACK15_4(0xEEF0BC, 0xBCBC8A, 0x828250, 0x646432)
 };
 
-static const unsigned short twb_super_saiyan_blue[] = {
-	PACK15_4(0x05BCCC, 0x03838E, 0x024B51, 0x001214),
-	PACK15_4(0x05BCCC, 0x03838E, 0x024B51, 0x001214),
-	PACK15_4(0x05BCCC, 0x03838E, 0x024B51, 0x001214)
+static const unsigned short twb64_018_crunchyroll_orange[] = {
+	PACK15_4(0xF47522, 0xBA519A, 0x723710, 0x2B1406),
+	PACK15_4(0xF47522, 0xBA519A, 0x723710, 0x2B1406),
+	PACK15_4(0xF47522, 0xBA519A, 0x723710, 0x2B1406)
 };
 
-static const unsigned short twb_super_saiyan_rose[] = {
-	PACK15_4(0xF4AFB2, 0xAA7A7C, 0x614647, 0x181111),
-	PACK15_4(0xF4AFB2, 0xAA7A7C, 0x614647, 0x181111),
-	PACK15_4(0xF4AFB2, 0xAA7A7C, 0x614647, 0x181111)
+static const unsigned short twb64_019_muse_pink[] = {
+	PACK15_4(0xE4007F, 0xAE0061, 0x6B003B, 0x280016),
+	PACK15_4(0xE4007F, 0xAE0061, 0x6B003B, 0x280016),
+	PACK15_4(0xE4007F, 0xAE0061, 0x6B003B, 0x280016)
 };
 
-static const unsigned short twb_supervision[] = {
-	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C),
-	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C),
-	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C)
+static const unsigned short twb64_020_nijigasaki_yellow[] = {
+	PACK15_4(0xFAB920, 0xBF8D18, 0x75570F, 0x2C2005),
+	PACK15_4(0xFAB920, 0xBF8D18, 0x75570F, 0x2C2005),
+	PACK15_4(0xFAB920, 0xBF8D18, 0x75570F, 0x2C2005)
 };
 
-static const unsigned short twb_survey_corps_brown[] = {
-	PACK15_4(0xAB7D57, 0x77573C, 0x443222, 0x110C08),
-	PACK15_4(0xAB7D57, 0x77573C, 0x443222, 0x110C08),
-	PACK15_4(0xAB7D57, 0x77573C, 0x443222, 0x110C08)
+static const unsigned short twb64_021_gamate_ver[] = {
+	PACK15_4(0x6BA64A, 0x437A63, 0x255955, 0x12424C),
+	PACK15_4(0x6BA64A, 0x437A63, 0x255955, 0x12424C),
+	PACK15_4(0x6BA64A, 0x437A63, 0x255955, 0x12424C)
 };
 
-static const unsigned short twb_tea_midori[] = {
-	PACK15_4(0xD6E9CA, 0x88CB7F, 0x028760, 0x333631),
-	PACK15_4(0xD6E9CA, 0x88CB7F, 0x028760, 0x333631),
-	PACK15_4(0xD6E9CA, 0x88CB7F, 0x028760, 0x333631)
+static const unsigned short twb64_022_greenscale_ver[] = {
+	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C),
+	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C),
+	PACK15_4(0x9CBE0C, 0x6E870A, 0x2C6234, 0x0C360C)
 };
 
-static const unsigned short twb_ti_83[] = {
-	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810),
-	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810),
-	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810)
+static const unsigned short twb64_023_odyssey_gold[] = {
+	PACK15_4(0xC2A000, 0x947A00, 0x5B4B00, 0x221C00),
+	PACK15_4(0xC2A000, 0x947A00, 0x5B4B00, 0x221C00),
+	PACK15_4(0xC2A000, 0x947A00, 0x5B4B00, 0x221C00)
 };
 
-static const unsigned short twb_tokyo_midtown[] = {
-	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000),
-	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000),
-	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000)
+static const unsigned short twb64_024_super_saiyan_god[] = {
+	PACK15_4(0xDA0363, 0xA6024B, 0x66012E, 0x260011),
+	PACK15_4(0xDA0363, 0xA6024B, 0x66012E, 0x260011),
+	PACK15_4(0xDA0363, 0xA6024B, 0x66012E, 0x260011)
 };
 
-static const unsigned short twb_travel_wood[] = {
+static const unsigned short twb64_025_super_saiyan_blue[] = {
+	PACK15_4(0x05BCCC, 0x038F9C, 0x025860, 0x002124),
+	PACK15_4(0x05BCCC, 0x038F9C, 0x025860, 0x002124),
+	PACK15_4(0x05BCCC, 0x038F9C, 0x025860, 0x002124)
+};
+
+static const unsigned short twb64_026_bizarre_pink[] = {
+	PACK15_4(0xEB008B, 0xB3006A, 0x6E0041, 0x290018),
+	PACK15_4(0xEB008B, 0xB3006A, 0x6E0041, 0x290018),
+	PACK15_4(0xEB008B, 0xB3006A, 0x6E0041, 0x290018)
+};
+
+static const unsigned short twb64_027_nintendo_switch_lite_ver[] = {
+	PACK15_4(0xEFBE2D, 0x00B2B3, 0x646464, 0x3C3C3C),
+	PACK15_4(0xEFBE2D, 0x00B2B3, 0x646464, 0x3C3C3C),
+	PACK15_4(0xEFBE2D, 0x00B2B3, 0x646464, 0x3C3C3C)
+};
+
+static const unsigned short twb64_028_game_com_ver[] = {
+	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000),
+	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000),
+	PACK15_4(0xA7BF6B, 0x6F8F4F, 0x0F4F2F, 0x000000)
+};
+
+static const unsigned short twb64_029_sanrio_pink[] = {
+	PACK15_4(0xF9C2D0, 0xF485A1, 0xE74B5A, 0x83534D),
+	PACK15_4(0xF9C2D0, 0xF485A1, 0xE74B5A, 0x83534D),
+	PACK15_4(0xF9C2D0, 0xF485A1, 0xE74B5A, 0x83534D)
+};
+
+static const unsigned short twb64_030_bandai_namco_ver[] = {
+	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000),
+	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000),
+	PACK15_4(0xFFBF00, 0xFF5C00, 0xE60000, 0x000000)
+};
+
+static const unsigned short twb64_031_cosmo_green[] = {
+	PACK15_4(0x4EBD59, 0x3B9044, 0x245829, 0x0D210F),
+	PACK15_4(0x4EBD59, 0x3B9044, 0x245829, 0x0D210F),
+	PACK15_4(0x4EBD59, 0x3B9044, 0x245829, 0x0D210F)
+};
+
+static const unsigned short twb64_032_wanda_pink[] = {
+	PACK15_4(0xD84C9F, 0xA53A79, 0x65234A, 0x260D1C),
+	PACK15_4(0xD84C9F, 0xA53A79, 0x65234A, 0x260D1C),
+	PACK15_4(0xD84C9F, 0xA53A79, 0x65234A, 0x260D1C)
+};
+
+static const unsigned short twb64_033_links_awakening_dx_ver[] = {
+	PACK15_4(0xF8F8B0, 0x78C078, 0x688840, 0x583820),
+	PACK15_4(0xF8F8B0, 0x78C078, 0x688840, 0x583820),
+	PACK15_4(0xF8F8B0, 0x78C078, 0x688840, 0x583820)
+};
+
+static const unsigned short twb64_034_travel_wood[] = {
 	PACK15_4(0xF8D8B0, 0xA08058, 0x705030, 0x482810),
 	PACK15_4(0xF8D8B0, 0xA08058, 0x705030, 0x482810),
 	PACK15_4(0xF8D8B0, 0xA08058, 0x705030, 0x482810)
 };
 
-static const unsigned short twb_virtual_boy[] = {
-	PACK15_4(0xE30000, 0x950000, 0x560000, 0x000000),
-	PACK15_4(0xE30000, 0x950000, 0x560000, 0x000000),
-	PACK15_4(0xE30000, 0x950000, 0x560000, 0x000000)
+static const unsigned short twb64_035_pokemon_ver[] = {
+	PACK15_4(0xF8E8F8, 0xF0B088, 0x807098, 0x181010),
+	PACK15_4(0xF8E8F8, 0xF0B088, 0x807098, 0x181010),
+	PACK15_4(0xF8E8F8, 0xF0B088, 0x807098, 0x181010)
 };
 
-static const unsigned short twb_vmu[] = {
-	PACK15_4(0x88CCA8, 0x46A290, 0x286244, 0x081480),
-	PACK15_4(0x88CCA8, 0x46A290, 0x286244, 0x081480),
-	PACK15_4(0x88CCA8, 0x46A290, 0x286244, 0x081480)
+static const unsigned short twb64_036_game_grump_orange[] = {
+	PACK15_4(0xE9762F, 0xB25A23, 0x6D3716, 0x291408),
+	PACK15_4(0xE9762F, 0xB25A23, 0x6D3716, 0x291408),
+	PACK15_4(0xE9762F, 0xB25A23, 0x6D3716, 0x291408)
 };
 
-static const unsigned short twb_wisteria_murasaki[] = {
-	PACK15_4(0xDBD0E6, 0xA59ACA, 0x7058A3, 0x2E2930),
-	PACK15_4(0xDBD0E6, 0xA59ACA, 0x7058A3, 0x2E2930),
-	PACK15_4(0xDBD0E6, 0xA59ACA, 0x7058A3, 0x2E2930)
+static const unsigned short twb64_037_scooby_doo_mystery_ver[] = {
+	PACK15_4(0xC6DE31, 0xF79321, 0x8F59A5, 0x2A1A31),
+	PACK15_4(0xC6DE31, 0xF79321, 0x8F59A5, 0x2A1A31),
+	PACK15_4(0xC6DE31, 0xF79321, 0x8F59A5, 0x2A1A31)
 };
 
-static const unsigned short twb_wonderswan[] = {
-	PACK15_4(0xFEFEFE, 0xC2C2C2, 0x686868, 0x1D1D1D),
-	PACK15_4(0xFEFEFE, 0xC2C2C2, 0x686868, 0x1D1D1D),
-	PACK15_4(0xFEFEFE, 0xC2C2C2, 0x686868, 0x1D1D1D)
+static const unsigned short twb64_038_pokemon_mini_ver[] = {
+	PACK15_4(0xA5BEA5, 0x7E917E, 0x4D594D, 0x1D211D),
+	PACK15_4(0xA5BEA5, 0x7E917E, 0x4D594D, 0x1D211D),
+	PACK15_4(0xA5BEA5, 0x7E917E, 0x4D594D, 0x1D211D)
 };
 
-static const unsigned short twb_yellow_banana[] = {
-	PACK15_4(0xF8D808, 0xD89800, 0xA86838, 0x704800),
-	PACK15_4(0xF8D808, 0xD89800, 0xA86838, 0x704800),
-	PACK15_4(0xF8D808, 0xD89800, 0xA86838, 0x704800)
+static const unsigned short twb64_039_supervision_ver[] = {
+	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C),
+	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C),
+	PACK15_4(0x7CC67C, 0x54A68C, 0x2C6264, 0x0C322C)
+};
+
+static const unsigned short twb64_040_dmg_ver[] = {
+	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B),
+	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B),
+	PACK15_4(0x7F860F, 0x577C44, 0x365D48, 0x2A453B)
+};
+
+static const unsigned short twb64_041_pocket_ver[] = {
+	PACK15_4(0xC4CFA1, 0x8B956D, 0x4D533C, 0x1F1F1F),
+	PACK15_4(0xC4CFA1, 0x8B956D, 0x4D533C, 0x1F1F1F),
+	PACK15_4(0xC4CFA1, 0x8B956D, 0x4D533C, 0x1F1F1F)
+};
+
+static const unsigned short twb64_042_light_ver[] = {
+	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B),
+	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B),
+	PACK15_4(0x00B581, 0x009A71, 0x00694A, 0x004F3B)
+};
+
+static const unsigned short twb64_043_miraitowa_blue[] = {
+	PACK15_4(0x25BDEF, 0x1C90B6, 0x115870, 0x06212A),
+	PACK15_4(0x25BDEF, 0x1C90B6, 0x115870, 0x06212A),
+	PACK15_4(0x25BDEF, 0x1C90B6, 0x115870, 0x06212A)
+};
+
+static const unsigned short twb64_044_someity_pink[] = {
+	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117),
+	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117),
+	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117)
+};
+
+static const unsigned short twb64_045_pikachu_yellow[] = {
+	PACK15_4(0xFFDC00, 0xC3A800, 0x786700, 0x2D2600),
+	PACK15_4(0xFFDC00, 0xC3A800, 0x786700, 0x2D2600),
+	PACK15_4(0xFFDC00, 0xC3A800, 0x786700, 0x2D2600)
+};
+
+static const unsigned short twb64_046_eevee_brown[] = {
+	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117),
+	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117),
+	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117)
+};
+
+static const unsigned short twb64_047_microvision_ver[] = {
+	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030),
+	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030),
+	PACK15_4(0xA0A0A0, 0x787878, 0x505050, 0x303030)
+};
+
+static const unsigned short twb64_048_ti83_ver[] = {
+	PACK15_4(0x9CAA8C, 0x77826B, 0x495051, 0x1B1D18),
+	PACK15_4(0x9CAA8C, 0x77826B, 0x495051, 0x1B1D18),
+	PACK15_4(0x9CAA8C, 0x77826B, 0x495051, 0x1B1D18)
+};
+
+static const unsigned short twb64_049_aegis_cherry[] = {
+	PACK15_4(0xDD3B64, 0xA92D4C, 0x681B2F, 0x270A11),
+	PACK15_4(0xDD3B64, 0xA92D4C, 0x681B2F, 0x270A11),
+	PACK15_4(0xDD3B64, 0xA92D4C, 0x681B2F, 0x270A11)
+};
+
+static const unsigned short twb64_050_labo_fawn[] = {
+	PACK15_4(0xD7AA73, 0xA48257, 0x655036, 0x251E14),
+	PACK15_4(0xD7AA73, 0xA48257, 0x655036, 0x251E14),
+	PACK15_4(0xD7AA73, 0xA48257, 0x655036, 0x251E14)
+};
+
+static const unsigned short twb64_051_million_live_gold[] = {
+	PACK15_4(0xCDB261, 0x9C884A, 0x60532D, 0x241F11),
+	PACK15_4(0xCDB261, 0x9C884A, 0x60532D, 0x241F11),
+	PACK15_4(0xCDB261, 0x9C884A, 0x60532D, 0x241F11)
+};
+
+static const unsigned short twb64_052_tokyo_midtown_ver[] = {
+	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000),
+	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000),
+	PACK15_4(0x8FAD15, 0x4B8C2B, 0x44693D, 0x000000)
+};
+
+static const unsigned short twb64_053_vmu_ver[] = {
+	PACK15_4(0x88CCA8, 0x689C80, 0x40604F, 0x081480),
+	PACK15_4(0x88CCA8, 0x689C80, 0x40604F, 0x081480),
+	PACK15_4(0x88CCA8, 0x689C80, 0x40604F, 0x081480)
+};
+
+static const unsigned short twb64_054_game_master_ver[] = {
+	PACK15_4(0x829FA6, 0x63797E, 0x3D4A4E, 0x161C1D),
+	PACK15_4(0x829FA6, 0x63797E, 0x3D4A4E, 0x161C1D),
+	PACK15_4(0x829FA6, 0x63797E, 0x3D4A4E, 0x161C1D)
 };
 
 #undef PACK15_4
@@ -1089,82 +957,60 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "Special 1", pExt1 },
 	{ "Special 2", pExt2 },
 	{ "Special 3", pExt3 },
-	{ "TWB01 - 756 Production", twb_756_production },
-	{ "TWB02 - AKB48 Pink", twb_akb48_pink },
-	{ "TWB03 - Angry Volcano", twb_angry_volcano },
-	{ "TWB04 - Anime Expo", twb_anime_expo },
-	{ "TWB05 - Aqours Blue", twb_aqours_blue },
-	{ "TWB06 - Aquatic Iro", twb_aquatic_iro },
-	{ "TWB07 - Bandai Namco", twb_bandai_namco },
-	{ "TWB08 - Blossom Pink", twb_blossom_pink },
-	{ "TWB09 - Bubbles Blue", twb_bubbles_blue },
-	{ "TWB10 - Builder Yellow", twb_builder_yellow },
-	{ "TWB11 - Buttercup Green", twb_buttercup_green },
-	{ "TWB12 - Camouflage", twb_camouflage },
-	{ "TWB13 - Cardcaptor Pink", twb_cardcaptor_pink },
-	{ "TWB14 - Christmas", twb_christmas },
-	{ "TWB15 - Crunchyroll Orange", twb_crunchyroll_orange },
-	{ "TWB16 - Digivice", twb_digivice },
-	{ "TWB17 - Do The Dew", twb_do_the_dew },
-	{ "TWB18 - Eevee Brown", twb_eevee_brown },
-	{ "TWB19 - Fruity Orange", twb_fruity_orange },
-	{ "TWB20 - Game.com", twb_game_com },
-	{ "TWB21 - Game Grump Orange", twb_game_grump_orange },
-	{ "TWB22 - GameKing", twb_gameking },
-	{ "TWB23 - Game Master", twb_game_master },
-	{ "TWB24 - Ghostly Aoi", twb_ghostly_aoi },
-	{ "TWB25 - Golden Wild", twb_golden_wild },
-	{ "TWB26 - Green Banana", twb_green_banana },
-	{ "TWB27 - Greenscale", twb_greenscale },
-	{ "TWB28 - Halloween", twb_halloween },
-	{ "TWB29 - Hero Yellow", twb_hero_yellow },
-	{ "TWB30 - Hokage Orange", twb_hokage_orange },
-	{ "TWB31 - Labo Fawn", twb_labo_fawn },
-	{ "TWB32 - Legendary Super Saiyan", twb_legendary_super_saiyan },
-	{ "TWB33 - Lemon Lime Green", twb_lemon_lime_green },
-	{ "TWB34 - Lime Midori", twb_lime_midori },
-	{ "TWB35 - Mania Plus Green", twb_mania_plus_green },
-	{ "TWB36 - Microvision", twb_microvision },
-	{ "TWB37 - Million Live Gold", twb_million_live_gold },
-	{ "TWB38 - Miraitowa Blue", twb_miraitowa_blue },
-	{ "TWB39 - NASCAR", twb_nascar },
-	{ "TWB40 - Neo Geo Pocket", twb_neo_geo_pocket },
-	{ "TWB41 - Neon Blue", twb_neon_blue },
-	{ "TWB42 - Neon Green", twb_neon_green },
-	{ "TWB43 - Neon Pink", twb_neon_pink },
-	{ "TWB44 - Neon Red", twb_neon_red },
-	{ "TWB45 - Neon Yellow", twb_neon_yellow },
-	{ "TWB46 - Nick Orange", twb_nick_orange },
-	{ "TWB47 - Nijigasaki Orange", twb_nijigasaki_orange },
-	{ "TWB48 - Odyssey Gold", twb_odyssey_gold },
-	{ "TWB49 - Patrick Star Pink", twb_patrick_star_pink },
-	{ "TWB50 - Pikachu Yellow", twb_pikachu_yellow },
-	{ "TWB51 - Pocket Tales", twb_pocket_tales },
-	{ "TWB52 - Pokemon mini", twb_pokemon_mini },
-	{ "TWB53 - Pretty Guardian Gold", twb_pretty_guardian_gold },
-	{ "TWB54 - S.E.E.S. Blue", twb_sees_blue },
-	{ "TWB55 - Saint Snow Red", twb_saint_snow_red },
-	{ "TWB56 - Scooby-Doo Mystery", twb_scooby_doo_mystery },
-	{ "TWB57 - Shiny Sky Blue", twb_shiny_sky_blue },
-	{ "TWB58 - Sidem Green", twb_sidem_green },
-	{ "TWB59 - Slime Blue", twb_slime_blue },
-	{ "TWB60 - Spongebob Yellow", twb_spongebob_yellow },
-	{ "TWB61 - Stone Orange", twb_stone_orange },
-	{ "TWB62 - Straw Hat Red", twb_straw_hat_red },
-	{ "TWB63 - Superball Ivory", twb_superball_ivory },
-	{ "TWB64 - Super Saiyan Blue", twb_super_saiyan_blue },
-	{ "TWB65 - Super Saiyan Rose", twb_super_saiyan_rose },
-	{ "TWB66 - Supervision", twb_supervision },
-	{ "TWB67 - Survey Corps Brown", twb_survey_corps_brown },
-	{ "TWB68 - Tea Midori", twb_tea_midori },
-	{ "TWB69 - TI-83", twb_ti_83 },
-	{ "TWB70 - Tokyo Midtown", twb_tokyo_midtown },
-	{ "TWB71 - Travel Wood", twb_travel_wood },
-	{ "TWB72 - Virtual Boy", twb_virtual_boy },
-	{ "TWB73 - VMU", twb_vmu },
-	{ "TWB74 - Wisteria Murasaki", twb_wisteria_murasaki },
-	{ "TWB75 - WonderSwan", twb_wonderswan },
-	{ "TWB76 - Yellow Banana", twb_yellow_banana },
+	{ "TWB64 001 - Aqours Blue", twb64_001_aqours_blue },
+	{ "TWB64 002 - Anime Expo Ver.", twb64_002_anime_expo_ver },
+	{ "TWB64 003 - SpongeBob Yellow", twb64_003_spongebob_yellow },
+        { "TWB64 004 - Patrick Star Pink", twb64_004_patrick_star_pink },
+        { "TWB64 005 - Neon Red", twb64_005_neon_red },
+        { "TWB64 006 - Neon Blue", twb64_006_neon_blue },
+        { "TWB64 007 - Neon Yellow", twb64_007_neon_yellow },
+        { "TWB64 008 - Neon Green", twb64_008_neon_green },
+        { "TWB64 009 - Neon Pink", twb64_009_neon_pink },
+        { "TWB64 010 - Mario Red", twb64_010_mario_red },
+        { "TWB64 011 - Nick Orange", twb64_011_nick_orange },
+        { "TWB64 012 - Virtual Boy Ver.", twb64_012_virtual_boy_ver },
+        { "TWB64 013 - Golden Wild", twb64_013_golden_wild },
+        { "TWB64 014 - Builder Yellow", twb64_014_builder_yellow },
+        { "TWB64 015 - Classic Blurple", twb64_015_classic_blurple },
+        { "TWB64 016 - 765 Production Ver.", twb64_016_765_production_ver },
+        { "TWB64 017 - Superball Ivory", twb64_017_superball_ivory },
+        { "TWB64 018 - Crunchyroll Orange", twb64_018_crunchyroll_orange },
+        { "TWB64 019 - Muse Pink", twb64_019_muse_pink },
+        { "TWB64 020 - Nijigasaki Yellow", twb64_020_nijigasaki_yellow },
+        { "TWB64 021 - Gamate Ver.", twb64_021_gamate_ver },
+        { "TWB64 022 - Greenscale Ver.", twb64_022_greenscale_ver },
+        { "TWB64 023 - Odyssey Gold", twb64_023_odyssey_gold },
+        { "TWB64 024 - Super Saiyan God", twb64_024_super_saiyan_god },
+        { "TWB64 025 - Super Saiyan Blue", twb64_025_super_saiyan_blue },
+        { "TWB64 026 - Bizarre Pink", twb64_026_bizarre_pink },
+        { "TWB64 027 - Nintendo Switch Lite Ver.", twb64_027_nintendo_switch_lite_ver },
+        { "TWB64 028 - Game.com Ver.", twb64_028_game_com_ver },
+        { "TWB64 029 - Sanrio Pink", twb64_029_sanrio_pink },
+        { "TWB64 030 - BANDAI NAMCO Ver.", twb64_030_bandai_namco_ver },
+        { "TWB64 031 - Cosmo Green", twb64_031_cosmo_green },
+        { "TWB64 032 - Wanda Pink", twb64_032_wanda_pink },
+        { "TWB64 033 - Link's Awakening DX Ver.", twb64_033_links_awakening_dx_ver },
+        { "TWB64 034 - Travel Wood", twb64_034_travel_wood },
+        { "TWB64 035 - Pokemon Ver.", twb64_035_pokemon_ver },
+        { "TWB64 036 - Game Grump Orange", twb64_036_game_grump_orange },
+        { "TWB64 037 - Scooby-Doo Mystery Ver.", twb64_037_scooby_doo_mystery_ver },
+        { "TWB64 038 - Pokemon mini Ver.", twb64_038_pokemon_mini_ver },
+        { "TWB64 039 - Supervision Ver.", twb64_039_supervision_ver },
+        { "TWB64 040 - DMG Ver.", twb64_040_dmg_ver },
+        { "TWB64 041 - Pocket Ver.", twb64_041_pocket_ver },
+        { "TWB64 042 - Light Ver.", twb64_042_light_ver },
+        { "TWB64 043 - Miraitowa Blue", twb64_043_miraitowa_blue },
+        { "TWB64 044 - Someity Pink", twb64_044_someity_pink },
+        { "TWB64 045 - Pikachu Yellow", twb64_045_pikachu_yellow },
+        { "TWB64 046 - Eevee Brown", twb64_046_eevee_brown },
+        { "TWB64 047 - Microvision Ver.", twb64_047_microvision_ver },
+        { "TWB64 048 - TI-83 Ver.", twb64_048_ti83_ver },
+        { "TWB64 049 - Aegis Cherry", twb64_049_aegis_cherry },
+        { "TWB64 050 - Labo Fawn", twb64_050_labo_fawn },
+        { "TWB64 051 - MILLION LIVE GOLD!", twb64_051_million_live_gold },
+        { "TWB64 052 - Tokyo Midtown Ver.", twb64_052_tokyo_midtown_ver },
+        { "TWB64 053 - VMU Ver.", twb64_053_vmu_ver },
+        { "TWB64 054 - Game Master Ver.", twb64_054_game_master_ver },
 };
 
 static const GbcPaletteEntry gbcTitlePalettes[] = {
