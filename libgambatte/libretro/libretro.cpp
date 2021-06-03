@@ -38,6 +38,11 @@ static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
+
+static uint8_t *rom_buf              = NULL;
+static const uint8_t *rom_data       = NULL;
+static size_t rom_size               = 0;
+
 static gambatte::video_pixel_t* video_buf;
 static gambatte::GB gb;
 
@@ -1134,6 +1139,7 @@ static bool startswith(const std::string s1, const std::string prefix)
 static int gb_colorization_enable = 0;
 
 static std::string rom_path;
+static std::string g_rom_name;
 static char internal_game_name[17];
 
 static void load_custom_palette(void)
@@ -1149,7 +1155,7 @@ static void load_custom_palette(void)
    }
 
    std::string system_directory(system_directory_c);
-   std::string custom_palette_path = system_directory + "/palettes/" + basename(rom_path) + ".pal";
+   std::string custom_palette_path = system_directory + "/palettes/" + g_rom_name + ".pal";
    std::ifstream palette_file(custom_palette_path.c_str()); // try to open the palette file in read-only mode
 
    if (!palette_file.is_open())
@@ -1618,6 +1624,7 @@ static unsigned pow2ceil(unsigned n) {
 
 bool retro_load_game(const struct retro_game_info *info)
 {
+   const struct retro_game_info_ext *info_ext = NULL;
    bool can_dupe = false;
    environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
    if (!can_dupe)
@@ -1680,7 +1687,7 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
 #endif
-   
+
    bool has_gbc_bootloader = file_present_in_system("gbc_bios.bin");
 
    unsigned flags = 0;
@@ -1690,9 +1697,9 @@ bool retro_load_game(const struct retro_game_info *info)
    {
       if (!strcmp(var.value, "GB"))
       {
-          flags |= gambatte::GB::FORCE_DMG;
+         flags |= gambatte::GB::FORCE_DMG;
       }
-      
+
       if (!strcmp(var.value, "GBC"))
       {
          if (has_gbc_bootloader && use_official_bootloader)
@@ -1707,15 +1714,47 @@ bool retro_load_game(const struct retro_game_info *info)
       }
    }
 
-   if (gb.load(info->data, info->size, flags) != 0)
+   /* Quicknes requires a persistent ROM data buffer */
+   rom_buf  = NULL;
+   rom_data = NULL;
+   rom_size = 0;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_GAME_INFO_EXT, &info_ext) &&
+         info_ext->persistent_data)
+   {
+      rom_data   = (const uint8_t*)info_ext->data;
+      rom_size   = info_ext->size;
+      g_rom_name = std::string(info_ext->name);
+   }
+
+   /* If frontend does not support persistent
+    * content data, must create a copy */
+   if (!rom_data)
+   {
+      if (!info)
+         return false;
+
+      rom_size = info->size;
+      rom_buf  = (uint8_t*)malloc(rom_size);
+
+      if (!rom_buf)
+         return false;
+
+      memcpy(rom_buf, (const uint8_t*)info->data, rom_size);
+      rom_data = (const uint8_t*)rom_buf;
+      rom_path   = info->path ? info->path : "";
+      g_rom_name = basename(rom_path);
+   }
+
+
+   if (gb.load(rom_data, rom_size, flags) != 0)
       return false;
 #ifdef DUAL_MODE
-   if (gb2.load(info->data, info->size, flags) != 0)
+   if (gb2.load(rom_data, rom_size, flags) != 0)
       return false;
 #endif
 
-   rom_path = info->path ? info->path : "";
-   strncpy(internal_game_name, (const char*)info->data + 0x134, sizeof(internal_game_name) - 1);
+   strncpy(internal_game_name, (const char*)rom_data + 0x134, sizeof(internal_game_name) - 1);
    internal_game_name[sizeof(internal_game_name)-1]='\0';
 
    log_cb(RETRO_LOG_INFO, "[Gambatte]: Got internal game name: %s.\n", internal_game_name);
@@ -1764,7 +1803,7 @@ bool retro_load_game(const struct retro_game_info *info)
    mmaps.descriptors     = descs;
    mmaps.num_descriptors = i;   
    environ_cb(RETRO_ENVIRONMENT_SET_MEMORY_MAPS, &mmaps);
-   
+
    bool yes = true;
    environ_cb(RETRO_ENVIRONMENT_SET_SUPPORT_ACHIEVEMENTS, &yes);
 
@@ -1772,12 +1811,21 @@ bool retro_load_game(const struct retro_game_info *info)
    return true;
 }
 
-
-bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t) { return false; }
-
-void retro_unload_game()
+bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t)
 {
-   rom_loaded = false;
+   return false;
+}
+
+void retro_unload_game(void)
+{
+   if (rom_buf)
+      free(rom_buf);
+
+   rom_buf               = NULL;
+   rom_data              = NULL;
+   rom_size              = 0;
+
+   rom_loaded            = false;
 }
 
 unsigned retro_get_region() { return RETRO_REGION_NTSC; }
