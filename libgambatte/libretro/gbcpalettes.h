@@ -899,6 +899,18 @@ static const unsigned short twb64_054_game_master_ver[] = {
 	PACK15_4(0x829FA6, 0x63797E, 0x3D4A4E, 0x161C1D)
 };
 
+static const unsigned short twb64_055_android_green[] = {
+	PACK15_4(0x3DDC84, 0x2EA864, 0x1C673E, 0x0A2617),
+	PACK15_4(0x3DDC84, 0x2EA864, 0x1C673E, 0x0A2617),
+	PACK15_4(0x3DDC84, 0x2EA864, 0x1C673E, 0x0A2617)
+};
+
+static const unsigned short twb64_056_ticketmaster_azure[] = {
+	PACK15_4(0x026CDF, 0x0152AA, 0x003268, 0x001327),
+	PACK15_4(0x026CDF, 0x0152AA, 0x003268, 0x001327),
+	PACK15_4(0x026CDF, 0x0152AA, 0x003268, 0x001327)
+};
+
 #undef PACK15_4
 #undef PACK15_1
 #undef TO5BIT
@@ -1011,6 +1023,8 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
         { "TWB64 052 - Tokyo Midtown Ver.", twb64_052_tokyo_midtown_ver },
         { "TWB64 053 - VMU Ver.", twb64_053_vmu_ver },
         { "TWB64 054 - Game Master Ver.", twb64_054_game_master_ver },
+        { "TWB64 055 - Android Green", twb64_055_android_green },
+        { "TWB64 056 - Ticketmaster Azure", twb64_056_ticketmaster_azure },
 };
 
 static const GbcPaletteEntry gbcTitlePalettes[] = {
