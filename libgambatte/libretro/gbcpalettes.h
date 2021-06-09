@@ -17,8 +17,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <cstring>
-#include <algorithm>
+#include <array/rhmap.h>
 
 namespace {
 
@@ -234,7 +233,7 @@ static const unsigned short p405[] = {
 static const unsigned short p406[] = {
 	PACK15_4(0xFFFFFF, 0xFF9C00, 0xFF0000, 0x000000),
 	PACK15_4(0xFFFFFF, 0xFF9C00, 0xFF0000, 0x000000),
-	PACK15_4(0xFFFFFF, 0x5ABDFF, 0xFF0000, 0x0000FF )
+	PACK15_4(0xFFFFFF, 0x5ABDFF, 0xFF0000, 0x0000FF)
 };
 
 static const unsigned short p407[] = {
@@ -846,9 +845,9 @@ static const unsigned short twb64_045_pikachu_yellow[] = {
 };
 
 static const unsigned short twb64_046_eevee_brown[] = {
-	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117),
-	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117),
-	PACK15_4(0xE50A84, 0xAF0764, 0x6B043E, 0x280117)
+	PACK15_4(0xC88D32, 0x986B26, 0x5E4217, 0x231808),
+	PACK15_4(0xC88D32, 0x986B26, 0x5E4217, 0x231808),
+	PACK15_4(0xC88D32, 0x986B26, 0x5E4217, 0x231808)
 };
 
 static const unsigned short twb64_047_microvision_ver[] = {
@@ -1781,7 +1780,6 @@ static const unsigned short twb64_200_tokyo_skytree_cloudy_blue[] = {
 
 struct GbcPaletteEntry { const char *title; const unsigned short *p; };
 
-// Note: These entries must be in alphabetical order
 static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "GB - DMG", gbdmg },    // Original Game Boy
 	{ "GB - Light", gblit },  // Original Game Boy Light
@@ -1836,203 +1834,203 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 001 - Aqours Blue", twb64_001_aqours_blue },
 	{ "TWB64 002 - Anime Expo Ver.", twb64_002_anime_expo_ver },
 	{ "TWB64 003 - SpongeBob Yellow", twb64_003_spongebob_yellow },
-        { "TWB64 004 - Patrick Star Pink", twb64_004_patrick_star_pink },
-        { "TWB64 005 - Neon Red", twb64_005_neon_red },
-        { "TWB64 006 - Neon Blue", twb64_006_neon_blue },
-        { "TWB64 007 - Neon Yellow", twb64_007_neon_yellow },
-        { "TWB64 008 - Neon Green", twb64_008_neon_green },
-        { "TWB64 009 - Neon Pink", twb64_009_neon_pink },
-        { "TWB64 010 - Mario Red", twb64_010_mario_red },
-        { "TWB64 011 - Nick Orange", twb64_011_nick_orange },
-        { "TWB64 012 - Virtual Boy Ver.", twb64_012_virtual_boy_ver },
-        { "TWB64 013 - Golden Wild", twb64_013_golden_wild },
-        { "TWB64 014 - Builder Yellow", twb64_014_builder_yellow },
-        { "TWB64 015 - Classic Blurple", twb64_015_classic_blurple },
-        { "TWB64 016 - 765 Production Ver.", twb64_016_765_production_ver },
-        { "TWB64 017 - Superball Ivory", twb64_017_superball_ivory },
-        { "TWB64 018 - Crunchyroll Orange", twb64_018_crunchyroll_orange },
-        { "TWB64 019 - Muse Pink", twb64_019_muse_pink },
-        { "TWB64 020 - Nijigasaki Yellow", twb64_020_nijigasaki_yellow },
-        { "TWB64 021 - Gamate Ver.", twb64_021_gamate_ver },
-        { "TWB64 022 - Greenscale Ver.", twb64_022_greenscale_ver },
-        { "TWB64 023 - Odyssey Gold", twb64_023_odyssey_gold },
-        { "TWB64 024 - Super Saiyan God", twb64_024_super_saiyan_god },
-        { "TWB64 025 - Super Saiyan Blue", twb64_025_super_saiyan_blue },
-        { "TWB64 026 - Bizarre Pink", twb64_026_bizarre_pink },
-        { "TWB64 027 - Nintendo Switch Lite Ver.", twb64_027_nintendo_switch_lite_ver },
-        { "TWB64 028 - Game.com Ver.", twb64_028_game_com_ver },
-        { "TWB64 029 - Sanrio Pink", twb64_029_sanrio_pink },
-        { "TWB64 030 - BANDAI NAMCO Ver.", twb64_030_bandai_namco_ver },
-        { "TWB64 031 - Cosmo Green", twb64_031_cosmo_green },
-        { "TWB64 032 - Wanda Pink", twb64_032_wanda_pink },
-        { "TWB64 033 - Link's Awakening DX Ver.", twb64_033_links_awakening_dx_ver },
-        { "TWB64 034 - Travel Wood", twb64_034_travel_wood },
-        { "TWB64 035 - Pokemon Ver.", twb64_035_pokemon_ver },
-        { "TWB64 036 - Game Grump Orange", twb64_036_game_grump_orange },
-        { "TWB64 037 - Scooby-Doo Mystery Ver.", twb64_037_scooby_doo_mystery_ver },
-        { "TWB64 038 - Pokemon mini Ver.", twb64_038_pokemon_mini_ver },
-        { "TWB64 039 - Supervision Ver.", twb64_039_supervision_ver },
-        { "TWB64 040 - DMG Ver.", twb64_040_dmg_ver },
-        { "TWB64 041 - Pocket Ver.", twb64_041_pocket_ver },
-        { "TWB64 042 - Light Ver.", twb64_042_light_ver },
-        { "TWB64 043 - Miraitowa Blue", twb64_043_miraitowa_blue },
-        { "TWB64 044 - Someity Pink", twb64_044_someity_pink },
-        { "TWB64 045 - Pikachu Yellow", twb64_045_pikachu_yellow },
-        { "TWB64 046 - Eevee Brown", twb64_046_eevee_brown },
-        { "TWB64 047 - Microvision Ver.", twb64_047_microvision_ver },
-        { "TWB64 048 - TI-83 Ver.", twb64_048_ti83_ver },
-        { "TWB64 049 - Aegis Cherry", twb64_049_aegis_cherry },
-        { "TWB64 050 - Labo Fawn", twb64_050_labo_fawn },
-        { "TWB64 051 - MILLION LIVE GOLD!", twb64_051_million_live_gold },
-        { "TWB64 052 - Tokyo Midtown Ver.", twb64_052_tokyo_midtown_ver },
-        { "TWB64 053 - VMU Ver.", twb64_053_vmu_ver },
-        { "TWB64 054 - Game Master Ver.", twb64_054_game_master_ver },
-        { "TWB64 055 - Android Green", twb64_055_android_green },
-        { "TWB64 056 - Ticketmaster Azure", twb64_056_ticketmaster_azure },
-        { "TWB64 057 - Google Red", twb64_057_google_red },
-        { "TWB64 058 - Google Blue", twb64_057_google_blue },
-        { "TWB64 059 - Google Yellow", twb64_059_google_yellow },
-        { "TWB64 060 - Google Green", twb64_060_google_green },
-        { "TWB64 061 - WonderSwan Ver.", twb64_061_wonderswan_ver },
-        { "TWB64 062 - Neo Geo Pocket Ver.", twb64_062_neo_geo_pocket_ver },
-        { "TWB64 063 - Dew Green", twb64_063_dew_green },
-        { "TWB64 064 - Coca-Cola Red", twb64_064_coca_cola_red },
-        { "TWB64 065 - GameKing Ver.", twb64_065_gameking_ver },
-        { "TWB64 066 - Do The Dew Ver.", twb64_066_do_the_dew_ver },
-        { "TWB64 067 - Digivice Ver.", twb64_067_digivice_ver },
-        { "TWB64 068 - Bikini Bottom Ver.", twb64_068_bikini_bottom_ver },
-        { "TWB64 069 - Blossom Pink", twb64_069_blossom_pink },
-        { "TWB64 070 - Bubbles Blue", twb64_070_bubbles_blue },
-        { "TWB64 071 - Buttercup Green", twb64_071_buttercup_green },
-        { "TWB64 072 - NASCAR Ver.", twb64_072_nascar_ver },
-        { "TWB64 073 - Lemon-Lime Green", twb64_073_lemon_lime_green },
-        { "TWB64 074 - Mega Man V Ver.", twb64_074_mega_man_v_ver },
-        { "TWB64 075 - Tamagotchi Ver.", twb64_075_tamagotchi_ver },
-        { "TWB64 076 - Phantom Red", twb64_076_phantom_red },
-        { "TWB64 077 - Halloween Ver.", twb64_077_halloween_ver },
-        { "TWB64 078 - Christmas Ver.", twb64_078_christmas_ver },
-        { "TWB64 079 - Cardcaptor Pink", twb64_079_cardcaptor_pink },
-        { "TWB64 080 - Pretty Guardian Gold", twb64_080_pretty_guardian_gold },
-        { "TWB64 081 - Camoflauge Ver.", twb64_081_camoflauge_ver },
-        { "TWB64 082 - Legendary Super Saiyan", twb64_082_legendary_super_saiyan },
-        { "TWB64 083 - Super Saiyan Rose", twb64_083_super_saiyan_rose },
-        { "TWB64 084 - Super Saiyan", twb64_084_super_saiyan },
-        { "TWB64 085 - Mastered Ultra Instinct", twb64_085_mastered_ultra_instinct },
-        { "TWB64 086 - Saint Snow Red", twb64_086_saint_snow_red },
-        { "TWB64 087 - Yellow Banana", twb64_087_yellow_banana },
-        { "TWB64 088 - Green Banana", twb64_088_green_banana },
-        { "TWB64 089 - Super Saiyan 3", twb64_089_super_saiyan_3 },
-        { "TWB64 090 - Super Saiyan Blue Evolved", twb64_090_super_saiyan_blue_evolved },
-        { "TWB64 091 - Pocket Tales Ver.", twb64_091_pocket_tales_ver },
-        { "TWB64 092 - Investigation Yellow", twb64_092_investigation_yellow },
-        { "TWB64 093 - S.E.E.S. Blue", twb64_093_sees_blue },
-        { "TWB64 094 - Game Awards Cyan", twb64_094_game_awards_cyan },
-        { "TWB64 095 - Hokage Orange", twb64_095_hokage_orange },
-        { "TWB64 096 - Straw Hat Red", twb64_096_straw_hat_red },
-        { "TWB64 097 - Sword Art Cyan", twb64_097_sword_art_cyan },
-        { "TWB64 098 - Deku Alpha Emerald", twb64_098_deku_alpha_emerald },
-        { "TWB64 099 - Blue Stripes Ver.", twb64_099_blue_stripes_ver },
-        { "TWB64 100 - Stone Orange", twb64_100_stone_orange },
-        { "TWB64 101 - 765PRO Pink", twb64_101_765pro_pink },
-        { "TWB64 102 - CINDERELLA Blue", twb64_102_cinderella_blue },
-        { "TWB64 103 - MILLION Yellow!", twb64_103_million_yellow },
-        { "TWB64 104 - SideM Green", twb64_104_sidem_green },
-        { "TWB64 105 - SHINY Sky Blue", twb64_105_shiny_sky_blue },
-        { "TWB64 106 - Angry Volcano Ver.", twb64_106_angry_volcano_ver },
-        { "TWB64 107 - Yo-kai Pink", twb64_107_yokai_pink },
-        { "TWB64 108 - Yo-kai Green", twb64_108_yokai_green },
-        { "TWB64 109 - Yo-kai Blue", twb64_109_yokai_blue },
-        { "TWB64 110 - Yo-kai Purple", twb64_110_yokai_purple },
-        { "TWB64 111 - Aquatic Iro", twb64_111_aquatic_iro },
-        { "TWB64 112 - Tea Midori", twb64_112_tea_midori },
-        { "TWB64 113 - Sakura Pink", twb64_113_sakura_pink },
-        { "TWB64 114 - Wisteria Murasaki", twb64_114_wisteria_murasaki },
-        { "TWB64 115 - Oni Aka", twb64_115_oni_aka },
-        { "TWB64 116 - Golden Kiiro", twb64_116_golden_kiiro },
-        { "TWB64 117 - Silver Shiro", twb64_117_silver_shiro },
-        { "TWB64 118 - Fruity Orange", twb64_118_fruity_orange },
-        { "TWB64 119 - AKB48 Pink", twb64_119_akb48_pink },
-        { "TWB64 120 - Miku Blue", twb64_120_miku_blue },
-        { "TWB64 121 - Fairy Tail Red", twb64_121_fairy_tail_red },
-        { "TWB64 122 - Survey Corps Brown", twb64_122_survey_corps_brown },
-        { "TWB64 123 - Island Green", twb64_123_island_green },
-        { "TWB64 124 - Mania Plus Green", twb64_124_mania_plus_green },
-        { "TWB64 125 - Ninja Turtle Green", twb64_125_ninja_turtle_green },
-        { "TWB64 126 - Slime Blue", twb64_126_slime_blue },
-        { "TWB64 127 - Lime Midori", twb64_127_lime_midori },
-        { "TWB64 128 - Ghostly Aoi", twb64_128_ghostly_aoi },
-        { "TWB64 129 - Retro Bogeda", twb64_129_retro_bogeda },
-        { "TWB64 130 - Royal Blue", twb64_130_royal_blue },
-        { "TWB64 131 - Neon Purple", twb64_131_neon_purple },
-        { "TWB64 132 - Neon Orange", twb64_132_neon_orange },
-        { "TWB64 133 - Moonlight Vision", twb64_133_moonlight_vision },
-        { "TWB64 134 - Tokyo Red", twb64_134_tokyo_red },
-        { "TWB64 135 - Paris Gold", twb64_135_paris_gold },
-        { "TWB64 136 - Beijing Blue", twb64_136_beijing_blue },
-        { "TWB64 137 - Pac-Man Yellow", twb64_137_pacman_yellow },
-        { "TWB64 138 - Irish Green", twb64_138_irish_green },
-        { "TWB64 139 - Kakarot Orange", twb64_139_kakarot_orange },
-        { "TWB64 140 - Dragon Ball Orange", twb64_140_dragon_ball_orange },
-        { "TWB64 141 - Christmas Gold", twb64_141_christmas_gold },
-        { "TWB64 142 - Pepsi Blue", twb64_142_pepsi_blue },
-        { "TWB64 143 - Bubblun Green", twb64_143_bubblun_green },
-        { "TWB64 144 - Bobblun Blue", twb64_144_bobblun_blue },
-        { "TWB64 145 - Baja Blast Storm", twb64_145_baja_blast_storm },
-        { "TWB64 146 - Olympic Gold", twb64_146_olympic_gold },
-        { "TWB64 147 - Value Orange", twb64_147_value_orange },
-        { "TWB64 148 - Liella Purple!", twb64_148_liella_purple },
-        { "TWB64 149 - Olympic Silver", twb64_149_olympic_silver },
-        { "TWB64 150 - Olympic Bronze", twb64_150_olympic_bronze },
-        { "TWB64 151 - ANA Sky Blue", twb64_151_ana_sky_blue },
-        { "TWB64 152 - Nijigasaki Orange", twb64_152_nijigasaki_orange },
-        { "TWB64 153 - HoloBlue", twb64_153_holoblue },
-        { "TWB64 154 - Wrestling Red", twb64_154_wrestling_red },
-        { "TWB64 155 - Yoshi Egg Green", twb64_155_nijigasaki_orange },
-        { "TWB64 156 - Pokedex Red", twb64_156_pokedex_red },
-        { "TWB64 157 - Disney Dream Blue", twb64_157_disney_dream_blue },
-        { "TWB64 158 - Xbox Green", twb64_158_xbox_green },
-        { "TWB64 159 - Sonic Mega Blue", twb64_159_sonic_mega_blue },
-        { "TWB64 160 - G4 Orange", twb64_160_g4_orange },
-        { "TWB64 161 - Scarlett Green", twb64_161_scarlett_green },
-        { "TWB64 162 - Glitchy Blue", twb64_162_glitchy_blue },
-        { "TWB64 163 - Classic LCD", twb64_163_classic_lcd },
-        { "TWB64 164 - 3DS Virtual Console Ver.", twb64_164_3ds_virtual_console_ver },
-        { "TWB64 165 - PocketStation Ver.", twb64_165_pocketstation_ver },
-        { "TWB64 166 - Game and Gold", twb64_166_game_and_gold },
-        { "TWB64 167 - Smurfy Blue", twb64_167_smurfy_blue },
-        { "TWB64 168 - Swampy Ogre Green", twb64_168_swampy_ogre_green },
-        { "TWB64 169 - Sailor Spinach Green", twb64_169_sailor_spinach_green },
-        { "TWB64 170 - Shenron Green", twb64_170_shenron_green },
-        { "TWB64 171 - Berserk Blood", twb64_171_berserk_blood },
-        { "TWB64 172 - Super Star Pink", twb64_172_super_star_pink },
-        { "TWB64 173 - Gamebuino Classic Ver.", twb64_173_gamebuino_classic_ver },
-        { "TWB64 174 - Barbie Pink", twb64_174_barbie_pink },
-        { "TWB64 175 - Star Command Green", twb64_175_star_command_green },
-        { "TWB64 176 - Nokia 3310 Ver.", twb64_176_nokia_3310_ver },
-        { "TWB64 177 - Clover Green", twb64_177_clover_green },
-        { "TWB64 178 - Crash Orange", twb64_178_crash_orange },
-        { "TWB64 179 - Famicom Disk Yellow", twb64_179_famicom_disk_yellow },
-        { "TWB64 180 - Team Rocket Red", twb64_180_team_rocket_red },
-        { "TWB64 181 - SEIKO Timer Yellow", twb64_181_seiko_timer_yellow },
-        { "TWB64 182 - PINK109", twb64_182_pink109 },
-        { "TWB64 183 - Doraemon Blue", twb64_183_doraemon_blue },
-        { "TWB64 184 - Fury Blue", twb64_184_fury_blue },
-        { "TWB64 185 - Rockstar Orange", twb64_185_rockstar_orange },
-        { "TWB64 186 - Puyo Puyo Green", twb64_186_puyo_puyo_green },
-        { "TWB64 187 - Susan G. Pink", twb64_187_susan_g_pink },
-        { "TWB64 188 - Pizza Hut Red", twb64_188_pizza_hut_red },
-        { "TWB64 189 - Plumbob Green", twb64_189_plumbob_green },
-        { "TWB64 190 - Grand Ivory", twb64_190_grand_ivory },
-        { "TWB64 191 - Demon's Gold", twb64_191_demons_gold },
-        { "TWB64 192 - SEGA Tokyo Blue", twb64_192_sega_tokyo_blue },
-        { "TWB64 193 - Champion Blue", twb64_193_champion_blue },
-        { "TWB64 194 - DK Barrel Brown", twb64_194_dk_barrel_brown },
-        { "TWB64 195 - Evangelion Green", twb64_195_evangelion_green },
-        { "TWB64 196 - Equestrian Purple", twb64_196_equestrian_purple },
-        { "TWB64 197 - Autobot Red", twb64_197_autobot_red },
-        { "TWB64 198 - niconico sea green", twb64_198_niconico_sea_green },
-        { "TWB64 199 - Duracell Copper", twb64_199_duracell_copper },
-        { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", twb64_200_tokyo_skytree_cloudy_blue },
+	{ "TWB64 004 - Patrick Star Pink", twb64_004_patrick_star_pink },
+	{ "TWB64 005 - Neon Red", twb64_005_neon_red },
+	{ "TWB64 006 - Neon Blue", twb64_006_neon_blue },
+	{ "TWB64 007 - Neon Yellow", twb64_007_neon_yellow },
+	{ "TWB64 008 - Neon Green", twb64_008_neon_green },
+	{ "TWB64 009 - Neon Pink", twb64_009_neon_pink },
+	{ "TWB64 010 - Mario Red", twb64_010_mario_red },
+	{ "TWB64 011 - Nick Orange", twb64_011_nick_orange },
+	{ "TWB64 012 - Virtual Boy Ver.", twb64_012_virtual_boy_ver },
+	{ "TWB64 013 - Golden Wild", twb64_013_golden_wild },
+	{ "TWB64 014 - Builder Yellow", twb64_014_builder_yellow },
+	{ "TWB64 015 - Classic Blurple", twb64_015_classic_blurple },
+	{ "TWB64 016 - 765 Production Ver.", twb64_016_765_production_ver },
+	{ "TWB64 017 - Superball Ivory", twb64_017_superball_ivory },
+	{ "TWB64 018 - Crunchyroll Orange", twb64_018_crunchyroll_orange },
+	{ "TWB64 019 - Muse Pink", twb64_019_muse_pink },
+	{ "TWB64 020 - Nijigasaki Yellow", twb64_020_nijigasaki_yellow },
+	{ "TWB64 021 - Gamate Ver.", twb64_021_gamate_ver },
+	{ "TWB64 022 - Greenscale Ver.", twb64_022_greenscale_ver },
+	{ "TWB64 023 - Odyssey Gold", twb64_023_odyssey_gold },
+	{ "TWB64 024 - Super Saiyan God", twb64_024_super_saiyan_god },
+	{ "TWB64 025 - Super Saiyan Blue", twb64_025_super_saiyan_blue },
+	{ "TWB64 026 - Bizarre Pink", twb64_026_bizarre_pink },
+	{ "TWB64 027 - Nintendo Switch Lite Ver.", twb64_027_nintendo_switch_lite_ver },
+	{ "TWB64 028 - Game.com Ver.", twb64_028_game_com_ver },
+	{ "TWB64 029 - Sanrio Pink", twb64_029_sanrio_pink },
+	{ "TWB64 030 - BANDAI NAMCO Ver.", twb64_030_bandai_namco_ver },
+	{ "TWB64 031 - Cosmo Green", twb64_031_cosmo_green },
+	{ "TWB64 032 - Wanda Pink", twb64_032_wanda_pink },
+	{ "TWB64 033 - Link's Awakening DX Ver.", twb64_033_links_awakening_dx_ver },
+	{ "TWB64 034 - Travel Wood", twb64_034_travel_wood },
+	{ "TWB64 035 - Pokemon Ver.", twb64_035_pokemon_ver },
+	{ "TWB64 036 - Game Grump Orange", twb64_036_game_grump_orange },
+	{ "TWB64 037 - Scooby-Doo Mystery Ver.", twb64_037_scooby_doo_mystery_ver },
+	{ "TWB64 038 - Pokemon mini Ver.", twb64_038_pokemon_mini_ver },
+	{ "TWB64 039 - Supervision Ver.", twb64_039_supervision_ver },
+	{ "TWB64 040 - DMG Ver.", twb64_040_dmg_ver },
+	{ "TWB64 041 - Pocket Ver.", twb64_041_pocket_ver },
+	{ "TWB64 042 - Light Ver.", twb64_042_light_ver },
+	{ "TWB64 043 - Miraitowa Blue", twb64_043_miraitowa_blue },
+	{ "TWB64 044 - Someity Pink", twb64_044_someity_pink },
+	{ "TWB64 045 - Pikachu Yellow", twb64_045_pikachu_yellow },
+	{ "TWB64 046 - Eevee Brown", twb64_046_eevee_brown },
+	{ "TWB64 047 - Microvision Ver.", twb64_047_microvision_ver },
+	{ "TWB64 048 - TI-83 Ver.", twb64_048_ti83_ver },
+	{ "TWB64 049 - Aegis Cherry", twb64_049_aegis_cherry },
+	{ "TWB64 050 - Labo Fawn", twb64_050_labo_fawn },
+	{ "TWB64 051 - MILLION LIVE GOLD!", twb64_051_million_live_gold },
+	{ "TWB64 052 - Tokyo Midtown Ver.", twb64_052_tokyo_midtown_ver },
+	{ "TWB64 053 - VMU Ver.", twb64_053_vmu_ver },
+	{ "TWB64 054 - Game Master Ver.", twb64_054_game_master_ver },
+	{ "TWB64 055 - Android Green", twb64_055_android_green },
+	{ "TWB64 056 - Ticketmaster Azure", twb64_056_ticketmaster_azure },
+	{ "TWB64 057 - Google Red", twb64_057_google_red },
+	{ "TWB64 058 - Google Blue", twb64_058_google_blue },
+	{ "TWB64 059 - Google Yellow", twb64_059_google_yellow },
+	{ "TWB64 060 - Google Green", twb64_060_google_green },
+	{ "TWB64 061 - WonderSwan Ver.", twb64_061_wonderswan_ver },
+	{ "TWB64 062 - Neo Geo Pocket Ver.", twb64_062_neo_geo_pocket_ver },
+	{ "TWB64 063 - Dew Green", twb64_063_dew_green },
+	{ "TWB64 064 - Coca-Cola Red", twb64_064_coca_cola_red },
+	{ "TWB64 065 - GameKing Ver.", twb64_065_gameking_ver },
+	{ "TWB64 066 - Do The Dew Ver.", twb64_066_do_the_dew_ver },
+	{ "TWB64 067 - Digivice Ver.", twb64_067_digivice_ver },
+	{ "TWB64 068 - Bikini Bottom Ver.", twb64_068_bikini_bottom_ver },
+	{ "TWB64 069 - Blossom Pink", twb64_069_blossom_pink },
+	{ "TWB64 070 - Bubbles Blue", twb64_070_bubbles_blue },
+	{ "TWB64 071 - Buttercup Green", twb64_071_buttercup_green },
+	{ "TWB64 072 - NASCAR Ver.", twb64_072_nascar_ver },
+	{ "TWB64 073 - Lemon-Lime Green", twb64_073_lemon_lime_green },
+	{ "TWB64 074 - Mega Man V Ver.", twb64_074_mega_man_v_ver },
+	{ "TWB64 075 - Tamagotchi Ver.", twb64_075_tamagotchi_ver },
+	{ "TWB64 076 - Phantom Red", twb64_076_phantom_red },
+	{ "TWB64 077 - Halloween Ver.", twb64_077_halloween_ver },
+	{ "TWB64 078 - Christmas Ver.", twb64_078_christmas_ver },
+	{ "TWB64 079 - Cardcaptor Pink", twb64_079_cardcaptor_pink },
+	{ "TWB64 080 - Pretty Guardian Gold", twb64_080_pretty_guardian_gold },
+	{ "TWB64 081 - Camoflauge Ver.", twb64_081_camoflauge_ver },
+	{ "TWB64 082 - Legendary Super Saiyan", twb64_082_legendary_super_saiyan },
+	{ "TWB64 083 - Super Saiyan Rose", twb64_083_super_saiyan_rose },
+	{ "TWB64 084 - Super Saiyan", twb64_084_super_saiyan },
+	{ "TWB64 085 - Mastered Ultra Instinct", twb64_085_mastered_ultra_instinct },
+	{ "TWB64 086 - Saint Snow Red", twb64_086_saint_snow_red },
+	{ "TWB64 087 - Yellow Banana", twb64_087_yellow_banana },
+	{ "TWB64 088 - Green Banana", twb64_088_green_banana },
+	{ "TWB64 089 - Super Saiyan 3", twb64_089_super_saiyan_3 },
+	{ "TWB64 090 - Super Saiyan Blue Evolved", twb64_090_super_saiyan_blue_evolved },
+	{ "TWB64 091 - Pocket Tales Ver.", twb64_091_pocket_tales_ver },
+	{ "TWB64 092 - Investigation Yellow", twb64_092_investigation_yellow },
+	{ "TWB64 093 - S.E.E.S. Blue", twb64_093_sees_blue },
+	{ "TWB64 094 - Game Awards Cyan", twb64_094_game_awards_cyan },
+	{ "TWB64 095 - Hokage Orange", twb64_095_hokage_orange },
+	{ "TWB64 096 - Straw Hat Red", twb64_096_straw_hat_red },
+	{ "TWB64 097 - Sword Art Cyan", twb64_097_sword_art_cyan },
+	{ "TWB64 098 - Deku Alpha Emerald", twb64_098_deku_alpha_emerald },
+	{ "TWB64 099 - Blue Stripes Ver.", twb64_099_blue_stripes_ver },
+	{ "TWB64 100 - Stone Orange", twb64_100_stone_orange },
+	{ "TWB64 101 - 765PRO Pink", twb64_101_765pro_pink },
+	{ "TWB64 102 - CINDERELLA Blue", twb64_102_cinderella_blue },
+	{ "TWB64 103 - MILLION Yellow!", twb64_103_million_yellow },
+	{ "TWB64 104 - SideM Green", twb64_104_sidem_green },
+	{ "TWB64 105 - SHINY Sky Blue", twb64_105_shiny_sky_blue },
+	{ "TWB64 106 - Angry Volcano Ver.", twb64_106_angry_volcano_ver },
+	{ "TWB64 107 - Yo-kai Pink", twb64_107_yokai_pink },
+	{ "TWB64 108 - Yo-kai Green", twb64_108_yokai_green },
+	{ "TWB64 109 - Yo-kai Blue", twb64_109_yokai_blue },
+	{ "TWB64 110 - Yo-kai Purple", twb64_110_yokai_purple },
+	{ "TWB64 111 - Aquatic Iro", twb64_111_aquatic_iro },
+	{ "TWB64 112 - Tea Midori", twb64_112_tea_midori },
+	{ "TWB64 113 - Sakura Pink", twb64_113_sakura_pink },
+	{ "TWB64 114 - Wisteria Murasaki", twb64_114_wisteria_murasaki },
+	{ "TWB64 115 - Oni Aka", twb64_115_oni_aka },
+	{ "TWB64 116 - Golden Kiiro", twb64_116_golden_kiiro },
+	{ "TWB64 117 - Silver Shiro", twb64_117_silver_shiro },
+	{ "TWB64 118 - Fruity Orange", twb64_118_fruity_orange },
+	{ "TWB64 119 - AKB48 Pink", twb64_119_akb48_pink },
+	{ "TWB64 120 - Miku Blue", twb64_120_miku_blue },
+	{ "TWB64 121 - Fairy Tail Red", twb64_121_fairy_tail_red },
+	{ "TWB64 122 - Survey Corps Brown", twb64_122_survey_corps_brown },
+	{ "TWB64 123 - Island Green", twb64_123_island_green },
+	{ "TWB64 124 - Mania Plus Green", twb64_124_mania_plus_green },
+	{ "TWB64 125 - Ninja Turtle Green", twb64_125_ninja_turtle_green },
+	{ "TWB64 126 - Slime Blue", twb64_126_slime_blue },
+	{ "TWB64 127 - Lime Midori", twb64_127_lime_midori },
+	{ "TWB64 128 - Ghostly Aoi", twb64_128_ghostly_aoi },
+	{ "TWB64 129 - Retro Bogeda", twb64_129_retro_bogeda },
+	{ "TWB64 130 - Royal Blue", twb64_130_royal_blue },
+	{ "TWB64 131 - Neon Purple", twb64_131_neon_purple },
+	{ "TWB64 132 - Neon Orange", twb64_132_neon_orange },
+	{ "TWB64 133 - Moonlight Vision", twb64_133_moonlight_vision },
+	{ "TWB64 134 - Tokyo Red", twb64_134_tokyo_red },
+	{ "TWB64 135 - Paris Gold", twb64_135_paris_gold },
+	{ "TWB64 136 - Beijing Blue", twb64_136_beijing_blue },
+	{ "TWB64 137 - Pac-Man Yellow", twb64_137_pacman_yellow },
+	{ "TWB64 138 - Irish Green", twb64_138_irish_green },
+	{ "TWB64 139 - Kakarot Orange", twb64_139_kakarot_orange },
+	{ "TWB64 140 - Dragon Ball Orange", twb64_140_dragon_ball_orange },
+	{ "TWB64 141 - Christmas Gold", twb64_141_christmas_gold },
+	{ "TWB64 142 - Pepsi Blue", twb64_142_pepsi_blue },
+	{ "TWB64 143 - Bubblun Green", twb64_143_bubblun_green },
+	{ "TWB64 144 - Bobblun Blue", twb64_144_bobblun_blue },
+	{ "TWB64 145 - Baja Blast Storm", twb64_145_baja_blast_storm },
+	{ "TWB64 146 - Olympic Gold", twb64_146_olympic_gold },
+	{ "TWB64 147 - Value Orange", twb64_147_value_orange },
+	{ "TWB64 148 - Liella Purple!", twb64_148_liella_purple },
+	{ "TWB64 149 - Olympic Silver", twb64_149_olympic_silver },
+	{ "TWB64 150 - Olympic Bronze", twb64_150_olympic_bronze },
+	{ "TWB64 151 - ANA Sky Blue", twb64_151_ana_sky_blue },
+	{ "TWB64 152 - Nijigasaki Orange", twb64_152_nijigasaki_orange },
+	{ "TWB64 153 - HoloBlue", twb64_153_holoblue },
+	{ "TWB64 154 - Wrestling Red", twb64_154_wrestling_red },
+	{ "TWB64 155 - Yoshi Egg Green", twb64_155_yoshi_egg_green },
+	{ "TWB64 156 - Pokedex Red", twb64_156_pokedex_red },
+	{ "TWB64 157 - Disney Dream Blue", twb64_157_disney_dream_blue },
+	{ "TWB64 158 - Xbox Green", twb64_158_xbox_green },
+	{ "TWB64 159 - Sonic Mega Blue", twb64_159_sonic_mega_blue },
+	{ "TWB64 160 - G4 Orange", twb64_160_g4_orange },
+	{ "TWB64 161 - Scarlett Green", twb64_161_scarlett_green },
+	{ "TWB64 162 - Glitchy Blue", twb64_162_glitchy_blue },
+	{ "TWB64 163 - Classic LCD", twb64_163_classic_lcd },
+	{ "TWB64 164 - 3DS Virtual Console Ver.", twb64_164_3ds_virtual_console_ver },
+	{ "TWB64 165 - PocketStation Ver.", twb64_165_pocketstation_ver },
+	{ "TWB64 166 - Game and Gold", twb64_166_game_and_gold },
+	{ "TWB64 167 - Smurfy Blue", twb64_167_smurfy_blue },
+	{ "TWB64 168 - Swampy Ogre Green", twb64_168_swampy_ogre_green },
+	{ "TWB64 169 - Sailor Spinach Green", twb64_169_sailor_spinach_green },
+	{ "TWB64 170 - Shenron Green", twb64_170_shenron_green },
+	{ "TWB64 171 - Berserk Blood", twb64_171_berserk_blood },
+	{ "TWB64 172 - Super Star Pink", twb64_172_super_star_pink },
+	{ "TWB64 173 - Gamebuino Classic Ver.", twb64_173_gamebuino_classic_ver },
+	{ "TWB64 174 - Barbie Pink", twb64_174_barbie_pink },
+	{ "TWB64 175 - Star Command Green", twb64_175_star_command_green },
+	{ "TWB64 176 - Nokia 3310 Ver.", twb64_176_nokia_3310_ver },
+	{ "TWB64 177 - Clover Green", twb64_177_clover_green },
+	{ "TWB64 178 - Crash Orange", twb64_178_crash_orange },
+	{ "TWB64 179 - Famicom Disk Yellow", twb64_179_famicom_disk_yellow },
+	{ "TWB64 180 - Team Rocket Red", twb64_180_team_rocket_red },
+	{ "TWB64 181 - SEIKO Timer Yellow", twb64_181_seiko_timer_yellow },
+	{ "TWB64 182 - PINK109", twb64_182_pink109 },
+	{ "TWB64 183 - Doraemon Blue", twb64_183_doraemon_blue },
+	{ "TWB64 184 - Fury Blue", twb64_184_fury_blue },
+	{ "TWB64 185 - Rockstar Orange", twb64_185_rockstar_orange },
+	{ "TWB64 186 - Puyo Puyo Green", twb64_186_puyo_puyo_green },
+	{ "TWB64 187 - Susan G. Pink", twb64_187_susan_g_pink },
+	{ "TWB64 188 - Pizza Hut Red", twb64_188_pizza_hut_red },
+	{ "TWB64 189 - Plumbob Green", twb64_189_plumbob_green },
+	{ "TWB64 190 - Grand Ivory", twb64_190_grand_ivory },
+	{ "TWB64 191 - Demon's Gold", twb64_191_demons_gold },
+	{ "TWB64 192 - SEGA Tokyo Blue", twb64_192_sega_tokyo_blue },
+	{ "TWB64 193 - Champion Blue", twb64_193_champion_blue },
+	{ "TWB64 194 - DK Barrel Brown", twb64_194_dk_barrel_brown },
+	{ "TWB64 195 - Evangelion Green", twb64_195_evangelion_green },
+	{ "TWB64 196 - Equestrian Purple", twb64_196_equestrian_purple },
+	{ "TWB64 197 - Autobot Red", twb64_197_autobot_red },
+	{ "TWB64 198 - Niconico Sea Green", twb64_198_niconico_sea_green },
+	{ "TWB64 199 - Duracell Copper", twb64_199_duracell_copper },
+	{ "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", twb64_200_tokyo_skytree_cloudy_blue },
 };
 
 static const GbcPaletteEntry gbcTitlePalettes[] = {
@@ -2226,36 +2224,54 @@ static const GbcPaletteEntry sgbTitlePalettes[] = {
 	{ "ZELDA", sgb1E },
 };
 
-static inline std::size_t gbcDirPalettesSize() { return (sizeof gbcDirPalettes) / (sizeof gbcDirPalettes[0]); }
-static inline const struct GbcPaletteEntry * gbcDirPalettesEnd() { return gbcDirPalettes + gbcDirPalettesSize(); }
-static inline std::size_t gbcTitlePalettesSize() { return (sizeof gbcTitlePalettes) / (sizeof gbcTitlePalettes[0]); }
-static inline const struct GbcPaletteEntry * gbcTitlePalettesEnd() { return gbcTitlePalettes + gbcTitlePalettesSize(); }
-static inline std::size_t sgbTitlePalettesSize() { return (sizeof sgbTitlePalettes) / (sizeof sgbTitlePalettes[0]); }
-static inline const struct GbcPaletteEntry * sgbTitlePalettesEnd() { return sgbTitlePalettes + sgbTitlePalettesSize(); }
+static const unsigned short **gbcDirPaletteMap   = NULL;
+static const unsigned short **gbcTitlePaletteMap = NULL;
+static const unsigned short **sgbTitlePaletteMap = NULL;
 
-struct GbcPaletteEntryLess {
-	bool operator()(const GbcPaletteEntry &lhs, const char *const rhstitle) const {
-		return std::strcmp(lhs.title, rhstitle) < 0;
-	}
-};
+static void initPaletteMaps(void)
+{
+	unsigned i;
 
-static const unsigned short * findGbcDirPal(const char *const title) {
-	const GbcPaletteEntry *const r = std::lower_bound(gbcDirPalettes, gbcDirPalettesEnd(), title, GbcPaletteEntryLess());
-	return r < gbcDirPalettesEnd() && !std::strcmp(r->title, title) ? r->p : 0;
+	// gbcDirPalettes
+	for (i = 0; i < (sizeof gbcDirPalettes) / (sizeof gbcDirPalettes[0]); i++)
+		RHMAP_SET_STR(gbcDirPaletteMap, gbcDirPalettes[i].title, gbcDirPalettes[i].p);
+
+	// gbcTitlePalettes
+	for (i = 0; i < (sizeof gbcTitlePalettes) / (sizeof gbcTitlePalettes[0]); i++)
+		RHMAP_SET_STR(gbcTitlePaletteMap, gbcTitlePalettes[i].title, gbcTitlePalettes[i].p);
+
+	// sgbTitlePalettes
+	for (i = 0; i < (sizeof sgbTitlePalettes) / (sizeof sgbTitlePalettes[0]); i++)
+		RHMAP_SET_STR(sgbTitlePaletteMap, sgbTitlePalettes[i].title, sgbTitlePalettes[i].p);
 }
 
-static const unsigned short * findGbcTitlePal(const char *const title) {
-	const GbcPaletteEntry *const r = std::lower_bound(gbcTitlePalettes, gbcTitlePalettesEnd(), title, GbcPaletteEntryLess());
-	return r < gbcTitlePalettesEnd() && !std::strcmp(r->title, title) ? r->p : 0;
+static void freePaletteMaps(void)
+{
+	RHMAP_FREE(gbcDirPaletteMap);
+	RHMAP_FREE(gbcTitlePaletteMap);
+	RHMAP_FREE(sgbTitlePaletteMap);
 }
 
-static const unsigned short * findSgbTitlePal(const char *const title) {
-	const GbcPaletteEntry *const r = std::lower_bound(sgbTitlePalettes, sgbTitlePalettesEnd(), title, GbcPaletteEntryLess());
-	return r < sgbTitlePalettesEnd() && !std::strcmp(r->title, title) ? r->p : 0;
+static const unsigned short *findGbcDirPal(const char *const title)
+{
+	return RHMAP_GET_STR(gbcDirPaletteMap, title);
 }
 
-static const unsigned short * findGbcPal(const char *const title) {
-	if (const unsigned short *const pal = findGbcDirPal(title))
+static const unsigned short *findGbcTitlePal(const char *const title)
+{
+	return RHMAP_GET_STR(gbcTitlePaletteMap, title);
+}
+
+static const unsigned short *findSgbTitlePal(const char *const title)
+{
+	return RHMAP_GET_STR(sgbTitlePaletteMap, title);
+}
+
+static const unsigned short *findGbcPal(const char *const title)
+{
+	const unsigned short *const pal = findGbcDirPal(title);
+
+	if (pal)
 		return pal;
 	
 	return findGbcTitlePal(title);
