@@ -375,6 +375,12 @@ static const unsigned short pExt3[] = {
 	PACK15_4(0xF8F8F8, 0xD7543C, 0x7D3023, 0x000000)
 };
 
+static const unsigned short pExt4[] = {
+	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810),
+	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810),
+	PACK15_4(0x9CA684, 0x727C5A, 0x464A35, 0x181810)
+};
+
 //
 // Super Game Boy Palettes
 //
@@ -1831,6 +1837,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "Special 1", pExt1 },
 	{ "Special 2", pExt2 },
 	{ "Special 3", pExt3 },
+	{ "Special 4 (TI-83 Legacy)", pExt4 },
 	{ "TWB64 001 - Aqours Blue", twb64_001_aqours_blue },
 	{ "TWB64 002 - Anime Expo Ver.", twb64_002_anime_expo_ver },
 	{ "TWB64 003 - SpongeBob Yellow", twb64_003_spongebob_yellow },
