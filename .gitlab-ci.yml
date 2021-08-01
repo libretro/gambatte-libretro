@@ -282,6 +282,12 @@ libretro-build-rs90-odbeta-mips32:
   extends:
     - .libretro-rs90-odbeta-mips32-make-default
     - .core-defs
+    
+# RetroFW
+libretro-build-retrofw-mips32:
+  extends:
+    - .libretro-retrofw-mips32-make-default
+    - .core-defs
 
 #################################### MISC ##################################
 # Emscripten
