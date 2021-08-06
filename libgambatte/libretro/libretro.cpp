@@ -41,10 +41,11 @@ static retro_environment_t environ_cb;
 static gambatte::video_pixel_t* video_buf;
 static gambatte::GB gb;
 
-static bool libretro_supports_bitmasks    = false;
-static bool libretro_supports_ff_override = false;
-static bool libretro_ff_enabled           = false;
-static bool libretro_ff_enabled_prev      = false;
+static bool libretro_supports_option_categories = false;
+static bool libretro_supports_bitmasks          = false;
+static bool libretro_supports_ff_override       = false;
+static bool libretro_ff_enabled                 = false;
+static bool libretro_ff_enabled_prev            = false;
 
 static bool show_gb_link_settings = true;
 
@@ -996,10 +997,11 @@ void retro_deinit(void)
    if (libretro_ff_enabled)
       set_fastforward_override(false);
 
-   libretro_supports_bitmasks    = false;
-   libretro_supports_ff_override = false;
-   libretro_ff_enabled           = false;
-   libretro_ff_enabled_prev      = false;
+   libretro_supports_option_categories = false;
+   libretro_supports_bitmasks          = false;
+   libretro_supports_ff_override       = false;
+   libretro_ff_enabled                 = false;
+   libretro_ff_enabled_prev            = false;
 
    libretro_input_state = 0;
    up_down_allowed      = false;
@@ -1018,7 +1020,24 @@ void retro_set_environment(retro_environment_t cb)
    struct retro_vfs_interface_info vfs_iface_info;
    environ_cb = cb;
 
-   libretro_set_core_options(environ_cb);
+   /* Set core options */
+   libretro_supports_option_categories = false;
+   libretro_set_core_options(environ_cb,
+         &libretro_supports_option_categories);
+
+   /* If frontend supports core option categories,
+    * gambatte_show_gb_link_settings is unused and
+    * should be hidden */
+   if (libretro_supports_option_categories)
+   {
+      struct retro_core_option_display option_display;
+
+      option_display.visible = false;
+      option_display.key     = "gambatte_show_gb_link_settings";
+
+      environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY,
+            &option_display);
+   }
 
    vfs_iface_info.required_interface_version = 1;
    vfs_iface_info.iface                      = NULL;
@@ -1481,12 +1500,16 @@ static void check_variables(void)
          break;
    }
 
-   /* Show/hide core options */
+   /* Show/hide core options
+    * > If frontend supports core option categories,
+    *   then gambatte_show_gb_link_settings is ignored
+    *   and no options should be hidden */
 
    var.key = "gambatte_show_gb_link_settings";
    var.value = NULL;
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   if (!libretro_supports_option_categories &&
+       environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
       bool show_gb_link_settings_prev = show_gb_link_settings;
 
