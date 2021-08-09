@@ -13,9 +13,10 @@
 
 /*
  ********************************
- * VERSION: 1.3
+ * VERSION: 2.0
  ********************************
  *
+ * - 2.0: Add support for core options v2 interface
  * - 1.3: Move translations to libretro_core_options_intl.h
  *        - libretro_core_options_intl.h includes BOM and utf-8
  *          fix for MSVC 2010-2013
@@ -48,11 +49,23 @@ extern "C" {
  * - Will be used as a fallback for any missing entries in
  *   frontend language definition */
 
-struct retro_core_option_definition option_defs_us[] = {
+struct retro_core_option_v2_category option_cats_us[] = {
+   {
+      "gb_link",
+      "Game Boy Link",
+      "Configure networked 'Game Boy Link' (multiplayer) options."
+   },
+   { NULL, NULL, NULL },
+};
+
+struct retro_core_option_v2_definition option_defs_us[] = {
    {
       "gambatte_gb_colorization",
       "GB Colorization",
+      NULL,
       "Enables colorization of Game Boy games. 'Auto' selects the 'best' (most colorful/appropriate) palette. 'GBC' selects game-specific Game Boy Color palette if defined, otherwise 'GBC - Dark Green'. 'SGB' selects game-specific Super Game Boy palette if defined, otherwise 'SGB - 1A', 'Internal' uses 'Internal Palette' core option. 'Custom' loads user-created palette from system directory.",
+      NULL,
+      NULL,
       {
          { "disabled", NULL },
          { "auto",     "Auto" },
@@ -67,7 +80,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_internal_palette",
       "Internal Palette",
+      NULL,
       "Selects palette used for colorizing Game Boy games when 'GB Colorization' is set to 'Internal', or when 'GB Colorization' is set to 'Auto' and game has no pre-defined SGB/GBC palette. 'GB' palettes mimic the display of original Game Boy hardware. 'GBC' palettes are identical to the built-in presets of the Game Boy Color. 'SGB' palettes are identical to the built-in presets of the Super Game Boy.",
+      NULL,
+      NULL,
       {
          { "GB - DMG",                 NULL },
          { "GB - Pocket",              NULL },
@@ -129,7 +145,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_palette_twb64_1",
       "> TWB64 - Pack 1 Palette",
+      NULL,
       "Selects internal colorization palette when 'Internal Palette' is set to 'TWB64 - Pack 1'.",
+      NULL,
+      NULL,
       {
          { "TWB64 001 - Aqours Blue",               NULL },
          { "TWB64 002 - Anime Expo Ver.",           NULL },
@@ -238,7 +257,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_palette_twb64_2",
       "> TWB64 - Pack 2 Palette",
+      NULL,
       "Selects internal colorization palette when 'Internal Palette' is set to 'TWB64 - Pack 2'.",
+      NULL,
+      NULL,
       {
          { "TWB64 101 - 765PRO Pink",               NULL },
          { "TWB64 102 - CINDERELLA Blue",           NULL },
@@ -347,7 +369,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gbc_color_correction",
       "Color Correction",
+      NULL,
       "Adjusts output colors to match the display of real Game Boy Color hardware. 'GBC Only' ensures that correction will only be applied when playing Game Boy Color games, or when using a Game Boy Color palette to colorize a Game Boy game. 'Always' applies color correction to all content, and will produce unexpected/suboptimal results when using 'GB' or 'SGB' internal color palettes.",
+      NULL,
+      NULL,
       {
          { "GBC only", "GBC Only" },
          { "always",   "Always" },
@@ -359,7 +384,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gbc_color_correction_mode",
       "Color Correction Mode",
+      NULL,
       "Specifies method used when performing color correction. 'Accurate' produces output almost indistinguishable from a real Game Boy Color LCD panel. 'Fast' merely darkens colors and reduces saturation, and may be used on low-end hardware if the 'Accurate' method is too slow.",
+      NULL,
+      NULL,
       {
          { "accurate", "Accurate" },
          { "fast",     "Fast" },
@@ -370,7 +398,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gbc_frontlight_position",
       "Color Correction - Frontlight Position",
+      NULL,
       "Simulates the physical response of the Game Boy Color LCD panel when illuminated from different angles. 'Central' represents standard color reproduction. 'Above Screen' increases brightness. 'Below Screen' reduces brightness. This setting only applies when 'Color Correction Mode' is set to 'Accurate'.",
+      NULL,
+      NULL,
       {
          { "central",      "Central" },
          { "above screen", "Above Screen" },
@@ -382,7 +413,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_dark_filter_level",
       "Dark Filter Level (percent)",
+      NULL,
       "Enable luminosity-based brightness reduction. May be used to avoid glare/eye strain when playing games with white backgrounds, which are intended for display on a non-backlit Game Boy Color and can therefore appear uncomfortably bright when viewed on a modern backlit screen.",
+      NULL,
+      NULL,
       {
          { "0",  NULL },
          { "5",  NULL },
@@ -402,7 +436,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_hwmode",
       "Emulated Hardware (restart)",
+      NULL,
       "Specify which type of hardware to emulate. 'Auto' is recommended. Selecting 'GBA' unlocks extra features in certain 'GBA enhanced' Game Boy Color games (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...).",
+      NULL,
+      NULL,
       {
          { "Auto", NULL },
          { "GB",   NULL },
@@ -415,7 +452,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_bootloader",
       "Use Official Bootloader (restart)",
+      NULL,
       "Enable support for official Game Boy and Game Boy Color bootloaders, with corresponding start-up logo animations.",
+      NULL,
+      NULL,
       {
          { "enabled",  NULL },
          { "disabled", NULL },
@@ -426,7 +466,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_mix_frames",
       "Interframe Blending",
+      NULL,
       "Simulates LCD ghosting effects. 'Simple' performs a 50:50 mix of the current and previous frames. 'LCD Ghosting' mimics natural LCD response times by combining multiple buffered frames. 'Simple' blending is required when playing games that rely on LCD ghosting for transparency effects (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...).",
+      NULL,
+      NULL,
       {
          { "disabled",          NULL },
          { "mix",               "Simple" },
@@ -439,7 +482,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_up_down_allowed",
       "Allow Opposing Directions",
+      NULL,
       "Enabling this will allow pressing / quickly alternating / holding both left and right (or up and down) directions at the same time. This may cause movement-based glitches.",
+      NULL,
+      NULL,
       {
          { "disabled", NULL },
          { "enabled",  NULL },
@@ -450,7 +496,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_turbo_period",
       "Turbo Button Period",
+      NULL,
       "Specify the repeat interval (in frames) when holding down the Turbo A/B buttons.",
+      NULL,
+      NULL,
       {
          { "4",   NULL },
          { "5",   NULL },
@@ -576,7 +625,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_rumble_level",
       "Gamepad Rumble Strength",
+      NULL,
       "Enables haptic feedback effects for supported games (Pokemon Pinball, Perfect Dark...).",
+      NULL,
+      NULL,
       {
          { "0",  NULL },
          { "1",  NULL },
@@ -597,7 +649,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_show_gb_link_settings",
       "Show Game Boy Link Settings",
+      NULL,
       "Enable configuration of networked 'Game Boy Link' (multiplayer) options. NOTE: Quick Menu must be toggled for this setting to take effect.",
+      NULL,
+      NULL,
       {
          { "enabled",  NULL },
          { "disabled", NULL },
@@ -608,7 +663,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_mode",
       "Game Boy Link Mode",
+      "Link Mode",
       "When enabling networked 'Game Boy Link' functionality, specify whether current instance should run as a server or client.",
+      NULL,
+      "gb_link",
       {
          { "Not Connected",  NULL },
          { "Network Server", NULL },
@@ -620,7 +678,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_port",
       "Network Link Port",
+      "Port",
       "Specify port used for 'Game Boy Link' network communication.",
+      NULL,
+      "gb_link",
       {
          { "56400", NULL },
          { "56401", NULL },
@@ -650,7 +711,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_1",
       "Network Link Server Address Pt. 01: x__.___.___.___",
+      "Server Address Pt. 01: x__.___.___.___",
       "1st digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "1st digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -669,7 +733,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_2",
       "Network Link Server Address Pt. 02: _x_.___.___.___",
+      "Server Address Pt. 02: _x_.___.___.___",
       "2nd digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "2nd digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -688,7 +755,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_3",
       "Network Link Server Address Pt. 03: __x.___.___.___",
+      "Server Address Pt. 03: __x.___.___.___",
       "3rd digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "3rd digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -707,7 +777,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_4",
       "Network Link Server Address Pt. 04: ___.x__.___.___",
+      "Server Address Pt. 04: ___.x__.___.___",
       "4th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "4th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -726,7 +799,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_5",
       "Network Link Server Address Pt. 05: ___._x_.___.___",
+      "Server Address Pt. 05: ___._x_.___.___",
       "5th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "5th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -745,7 +821,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_6",
       "Network Link Server Address Pt. 06: ___.__x.___.___",
+      "Server Address Pt. 06: ___.__x.___.___",
       "6th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "6th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -764,7 +843,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_7",
       "Network Link Server Address Pt. 07: ___.___.x__.___",
+      "Server Address Pt. 07: ___.___.x__.___",
       "7th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "7th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -783,7 +865,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_8",
       "Network Link Server Address Pt. 08: ___.___._x_.___",
+      "Server Address Pt. 08: ___.___._x_.___",
       "8th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "8th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -802,7 +887,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_9",
       "Network Link Server Address Pt. 09: ___.___.__x.___",
+      "Server Address Pt. 09: ___.___.__x.___",
       "9th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "9th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -821,7 +909,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_10",
       "Network Link Server Address Pt. 10: ___.___.___.x__",
+      "Server Address Pt. 10: ___.___.___.x__",
       "10th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "10th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -840,7 +931,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_11",
       "Network Link Server Address Pt. 11: ___.___.___._x_",
+      "Server Address Pt. 11: ___.___.___._x_",
       "11th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "11th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -859,7 +953,10 @@ struct retro_core_option_definition option_defs_us[] = {
    {
       "gambatte_gb_link_network_server_ip_12",
       "Network Link Server Address Pt. 12: ___.___.___.__x",
+      "Server Address Pt. 12: ___.___.___.__x",
       "12th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
+      "12th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "gb_link",
       {
          { "0", NULL },
          { "1", NULL },
@@ -876,7 +973,12 @@ struct retro_core_option_definition option_defs_us[] = {
       "0"
    },
 #endif
-   { NULL, NULL, NULL, {{0}}, NULL },
+   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
+};
+
+struct retro_core_options_v2 options_us = {
+   option_cats_us,
+   option_defs_us
 };
 
 /*
@@ -886,26 +988,26 @@ struct retro_core_option_definition option_defs_us[] = {
 */
 
 #ifndef HAVE_NO_LANGEXTRA
-struct retro_core_option_definition *option_defs_intl[RETRO_LANGUAGE_LAST] = {
-   option_defs_us, /* RETRO_LANGUAGE_ENGLISH */
-   NULL,           /* RETRO_LANGUAGE_JAPANESE */
-   NULL,           /* RETRO_LANGUAGE_FRENCH */
-   NULL,           /* RETRO_LANGUAGE_SPANISH */
-   NULL,           /* RETRO_LANGUAGE_GERMAN */
-   NULL,           /* RETRO_LANGUAGE_ITALIAN */
-   NULL,           /* RETRO_LANGUAGE_DUTCH */
-   NULL,           /* RETRO_LANGUAGE_PORTUGUESE_BRAZIL */
-   NULL,           /* RETRO_LANGUAGE_PORTUGUESE_PORTUGAL */
-   NULL,           /* RETRO_LANGUAGE_RUSSIAN */
-   NULL,           /* RETRO_LANGUAGE_KOREAN */
-   NULL,           /* RETRO_LANGUAGE_CHINESE_TRADITIONAL */
-   NULL,           /* RETRO_LANGUAGE_CHINESE_SIMPLIFIED */
-   NULL,           /* RETRO_LANGUAGE_ESPERANTO */
-   NULL,           /* RETRO_LANGUAGE_POLISH */
-   NULL,           /* RETRO_LANGUAGE_VIETNAMESE */
-   NULL,           /* RETRO_LANGUAGE_ARABIC */
-   NULL,           /* RETRO_LANGUAGE_GREEK */
-   NULL,           /* RETRO_LANGUAGE_TURKISH */
+struct retro_core_options_v2 *options_intl[RETRO_LANGUAGE_LAST] = {
+   &options_us, /* RETRO_LANGUAGE_ENGLISH */
+   NULL,        /* RETRO_LANGUAGE_JAPANESE */
+   NULL,        /* RETRO_LANGUAGE_FRENCH */
+   NULL,        /* RETRO_LANGUAGE_SPANISH */
+   NULL,        /* RETRO_LANGUAGE_GERMAN */
+   NULL,        /* RETRO_LANGUAGE_ITALIAN */
+   NULL,        /* RETRO_LANGUAGE_DUTCH */
+   NULL,        /* RETRO_LANGUAGE_PORTUGUESE_BRAZIL */
+   NULL,        /* RETRO_LANGUAGE_PORTUGUESE_PORTUGAL */
+   NULL,        /* RETRO_LANGUAGE_RUSSIAN */
+   NULL,        /* RETRO_LANGUAGE_KOREAN */
+   NULL,        /* RETRO_LANGUAGE_CHINESE_TRADITIONAL */
+   NULL,        /* RETRO_LANGUAGE_CHINESE_SIMPLIFIED */
+   NULL,        /* RETRO_LANGUAGE_ESPERANTO */
+   NULL,        /* RETRO_LANGUAGE_POLISH */
+   NULL,        /* RETRO_LANGUAGE_VIETNAMESE */
+   NULL,        /* RETRO_LANGUAGE_ARABIC */
+   NULL,        /* RETRO_LANGUAGE_GREEK */
+   NULL,        /* RETRO_LANGUAGE_TURKISH */
 };
 #endif
 
@@ -923,45 +1025,61 @@ struct retro_core_option_definition *option_defs_intl[RETRO_LANGUAGE_LAST] = {
  *   be as painless as possible for core devs)
  */
 
-static INLINE void libretro_set_core_options(retro_environment_t environ_cb)
+static INLINE void libretro_set_core_options(retro_environment_t environ_cb,
+      bool *categories_supported)
 {
-   unsigned version = 0;
+   unsigned version  = 0;
+#ifndef HAVE_NO_LANGEXTRA
+   unsigned language = 0;
+#endif
 
-   if (!environ_cb)
+   if (!environ_cb || !categories_supported)
       return;
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_CORE_OPTIONS_VERSION, &version) && (version >= 1))
+   *categories_supported = false;
+
+   if (!environ_cb(RETRO_ENVIRONMENT_GET_CORE_OPTIONS_VERSION, &version))
+      version = 0;
+
+   if (version >= 2)
    {
 #ifndef HAVE_NO_LANGEXTRA
-      struct retro_core_options_intl core_options_intl;
-      unsigned language = 0;
+      struct retro_core_options_v2_intl core_options_intl;
 
-      core_options_intl.us    = option_defs_us;
+      core_options_intl.us    = &options_us;
       core_options_intl.local = NULL;
 
       if (environ_cb(RETRO_ENVIRONMENT_GET_LANGUAGE, &language) &&
           (language < RETRO_LANGUAGE_LAST) && (language != RETRO_LANGUAGE_ENGLISH))
-         core_options_intl.local = option_defs_intl[language];
+         core_options_intl.local = options_intl[language];
 
-      environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_INTL, &core_options_intl);
+      *categories_supported = environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_V2_INTL,
+            &core_options_intl);
 #else
-      environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS, &option_defs_us);
+      *categories_supported = environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_V2,
+            &options_us);
 #endif
    }
    else
    {
-      size_t i;
+      size_t i, j;
       size_t option_index              = 0;
       size_t num_options               = 0;
+      struct retro_core_option_definition
+            *option_v1_defs_us         = NULL;
+#ifndef HAVE_NO_LANGEXTRA
+      size_t num_options_intl          = 0;
+      struct retro_core_option_v2_definition
+            *option_defs_intl          = NULL;
+      struct retro_core_option_definition
+            *option_v1_defs_intl       = NULL;
+      struct retro_core_options_intl
+            core_options_v1_intl;
+#endif
       struct retro_variable *variables = NULL;
       char **values_buf                = NULL;
 
-      /* Determine number of options
-       * > Note: We are going to skip a number of irrelevant
-       *   core options when building the retro_variable array,
-       *   but we'll allocate space for all of them. The difference
-       *   in resource usage is negligible, and this allows us to
-       *   keep the code 'cleaner' */
+      /* Determine total number of options */
       while (true)
       {
          if (option_defs_us[num_options].key)
@@ -970,92 +1088,194 @@ static INLINE void libretro_set_core_options(retro_environment_t environ_cb)
             break;
       }
 
-      /* Allocate arrays */
-      variables  = (struct retro_variable *)calloc(num_options + 1, sizeof(struct retro_variable));
-      values_buf = (char **)calloc(num_options, sizeof(char *));
-
-      if (!variables || !values_buf)
-         goto error;
-
-      /* Copy parameters from option_defs_us array */
-      for (i = 0; i < num_options; i++)
+      if (version >= 1)
       {
-         const char *key                        = option_defs_us[i].key;
-         const char *desc                       = option_defs_us[i].desc;
-         const char *default_value              = option_defs_us[i].default_value;
-         struct retro_core_option_value *values = option_defs_us[i].values;
-         size_t buf_len                         = 3;
-         size_t default_index                   = 0;
+         /* Allocate US array */
+         option_v1_defs_us = (struct retro_core_option_definition *)
+               calloc(num_options + 1, sizeof(struct retro_core_option_definition));
 
-         values_buf[i] = NULL;
-
-         /* Skip options that are irrelevant when using the
-          * old style core options interface */
-         if (strcmp(key, "gambatte_show_gb_link_settings") == 0)
-            continue;
-
-         if (desc)
+         /* Copy parameters from option_defs_us array */
+         for (i = 0; i < num_options; i++)
          {
-            size_t num_values = 0;
+            struct retro_core_option_v2_definition *option_def_us = &option_defs_us[i];
+            struct retro_core_option_value *option_values         = option_def_us->values;
+            struct retro_core_option_definition *option_v1_def_us = &option_v1_defs_us[i];
+            struct retro_core_option_value *option_v1_values      = option_v1_def_us->values;
 
-            /* Determine number of values */
+            option_v1_def_us->key           = option_def_us->key;
+            option_v1_def_us->desc          = option_def_us->desc;
+            option_v1_def_us->info          = option_def_us->info;
+            option_v1_def_us->default_value = option_def_us->default_value;
+
+            /* Values must be copied individually... */
+            while (option_values->value)
+            {
+               option_v1_values->value = option_values->value;
+               option_v1_values->label = option_values->label;
+
+               option_values++;
+               option_v1_values++;
+            }
+         }
+
+#ifndef HAVE_NO_LANGEXTRA
+         if (environ_cb(RETRO_ENVIRONMENT_GET_LANGUAGE, &language) &&
+             (language < RETRO_LANGUAGE_LAST) && (language != RETRO_LANGUAGE_ENGLISH) &&
+             options_intl[language])
+            option_defs_intl = options_intl[language]->definitions;
+
+         if (option_defs_intl)
+         {
+            /* Determine number of intl options */
             while (true)
             {
-               if (values[num_values].value)
-               {
-                  /* Check if this is the default value */
-                  if (default_value)
-                     if (strcmp(values[num_values].value, default_value) == 0)
-                        default_index = num_values;
-
-                  buf_len += strlen(values[num_values].value);
-                  num_values++;
-               }
+               if (option_defs_intl[num_options_intl].key)
+                  num_options_intl++;
                else
                   break;
             }
 
-            /* Build values string */
-            if (num_values > 0)
+            /* Allocate intl array */
+            option_v1_defs_intl = (struct retro_core_option_definition *)
+                  calloc(num_options_intl + 1, sizeof(struct retro_core_option_definition));
+
+            /* Copy parameters from option_defs_intl array */
+            for (i = 0; i < num_options_intl; i++)
             {
-               size_t j;
+               struct retro_core_option_v2_definition *option_def_intl = &option_defs_intl[i];
+               struct retro_core_option_value *option_values           = option_def_intl->values;
+               struct retro_core_option_definition *option_v1_def_intl = &option_v1_defs_intl[i];
+               struct retro_core_option_value *option_v1_values        = option_v1_def_intl->values;
 
-               buf_len += num_values - 1;
-               buf_len += strlen(desc);
+               option_v1_def_intl->key           = option_def_intl->key;
+               option_v1_def_intl->desc          = option_def_intl->desc;
+               option_v1_def_intl->info          = option_def_intl->info;
+               option_v1_def_intl->default_value = option_def_intl->default_value;
 
-               values_buf[i] = (char *)calloc(buf_len, sizeof(char));
-               if (!values_buf[i])
-                  goto error;
-
-               strcpy(values_buf[i], desc);
-               strcat(values_buf[i], "; ");
-
-               /* Default value goes first */
-               strcat(values_buf[i], values[default_index].value);
-
-               /* Add remaining values */
-               for (j = 0; j < num_values; j++)
+               /* Values must be copied individually... */
+               while (option_values->value)
                {
-                  if (j != default_index)
-                  {
-                     strcat(values_buf[i], "|");
-                     strcat(values_buf[i], values[j].value);
-                  }
+                  option_v1_values->value = option_values->value;
+                  option_v1_values->label = option_values->label;
+
+                  option_values++;
+                  option_v1_values++;
                }
             }
          }
 
-         variables[option_index].key   = key;
-         variables[option_index].value = values_buf[i];
-         option_index++;
+         core_options_v1_intl.us    = option_v1_defs_us;
+         core_options_v1_intl.local = option_v1_defs_intl;
+
+         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_INTL, &core_options_v1_intl);
+#else
+         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS, option_v1_defs_us);
+#endif
+      }
+      else
+      {
+         /* Allocate arrays */
+         variables  = (struct retro_variable *)calloc(num_options + 1,
+               sizeof(struct retro_variable));
+         values_buf = (char **)calloc(num_options, sizeof(char *));
+
+         if (!variables || !values_buf)
+            goto error;
+
+         /* Copy parameters from option_defs_us array */
+         for (i = 0; i < num_options; i++)
+         {
+            const char *key                        = option_defs_us[i].key;
+            const char *desc                       = option_defs_us[i].desc;
+            const char *default_value              = option_defs_us[i].default_value;
+            struct retro_core_option_value *values = option_defs_us[i].values;
+            size_t buf_len                         = 3;
+            size_t default_index                   = 0;
+
+            values_buf[i] = NULL;
+
+            /* Skip options that are irrelevant when using the
+             * old style core options interface */
+            if (strcmp(key, "gambatte_show_gb_link_settings") == 0)
+               continue;
+
+            if (desc)
+            {
+               size_t num_values = 0;
+
+               /* Determine number of values */
+               while (true)
+               {
+                  if (values[num_values].value)
+                  {
+                     /* Check if this is the default value */
+                     if (default_value)
+                        if (strcmp(values[num_values].value, default_value) == 0)
+                           default_index = num_values;
+
+                     buf_len += strlen(values[num_values].value);
+                     num_values++;
+                  }
+                  else
+                     break;
+               }
+
+               /* Build values string */
+               if (num_values > 0)
+               {
+                  size_t j;
+
+                  buf_len += num_values - 1;
+                  buf_len += strlen(desc);
+
+                  values_buf[i] = (char *)calloc(buf_len, sizeof(char));
+                  if (!values_buf[i])
+                     goto error;
+
+                  strcpy(values_buf[i], desc);
+                  strcat(values_buf[i], "; ");
+
+                  /* Default value goes first */
+                  strcat(values_buf[i], values[default_index].value);
+
+                  /* Add remaining values */
+                  for (j = 0; j < num_values; j++)
+                  {
+                     if (j != default_index)
+                     {
+                        strcat(values_buf[i], "|");
+                        strcat(values_buf[i], values[j].value);
+                     }
+                  }
+               }
+            }
+
+            variables[option_index].key   = key;
+            variables[option_index].value = values_buf[i];
+            option_index++;
+         }
+
+         /* Set variables */
+         environ_cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
       }
 
-      /* Set variables */
-      environ_cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
-
 error:
-
       /* Clean up */
+
+      if (option_v1_defs_us)
+      {
+         free(option_v1_defs_us);
+         option_v1_defs_us = NULL;
+      }
+
+#ifndef HAVE_NO_LANGEXTRA
+      if (option_v1_defs_intl)
+      {
+         free(option_v1_defs_intl);
+         option_v1_defs_intl = NULL;
+      }
+#endif
+
       if (values_buf)
       {
          for (i = 0; i < num_options; i++)
