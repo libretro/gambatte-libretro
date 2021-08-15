@@ -14,6 +14,11 @@ ifeq ($(HAVE_NETWORK),1)
   COREFLAGS += -DHAVE_NETWORK
 endif
 
+GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
+ifneq ($(GIT_VERSION)," unknown")
+  COREFLAGS += -DGIT_VERSION=\"$(GIT_VERSION)\"
+endif
+
 include $(CLEAR_VARS)
 LOCAL_MODULE    := retro
 LOCAL_SRC_FILES := $(SOURCES_CXX) $(SOURCES_C)

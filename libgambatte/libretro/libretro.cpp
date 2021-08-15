@@ -869,10 +869,13 @@ static blipper_t *resampler_r;
 void retro_get_system_info(struct retro_system_info *info)
 {
    info->library_name = "Gambatte";
+#ifndef GIT_VERSION
+#define GIT_VERSION ""
+#endif
 #ifdef HAVE_NETWORK
-   info->library_version = "v0.5.0-netlink";
+   info->library_version = "v0.5.0-netlink" GIT_VERSION;
 #else
-   info->library_version = "v0.5.0";
+   info->library_version = "v0.5.0" GIT_VERSION;
 #endif
    info->need_fullpath = false;
    info->block_extract = false;
