@@ -1002,7 +1002,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "int"
    },
 #endif
-   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
+   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL, NULL },
 };
 
 struct retro_core_options_v2 options_us = {
