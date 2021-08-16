@@ -75,7 +75,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "custom",   "Custom" },
          { NULL, NULL },
       },
-      "disabled"
+      "disabled",
+      NULL
    },
    {
       "gambatte_gb_internal_palette",
@@ -140,7 +141,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 - Pack 2",           NULL },
          { NULL, NULL },
       },
-      "GB - DMG"
+      "GB - DMG",
+      NULL
    },
    {
       "gambatte_gb_palette_twb64_1",
@@ -252,7 +254,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 100 - Stone Orange",              NULL },
          { NULL, NULL },
       },
-      "TWB64 001 - Aqours Blue"
+      "TWB64 001 - Aqours Blue",
+      NULL
    },
    {
       "gambatte_gb_palette_twb64_2",
@@ -364,7 +367,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", NULL },
          { NULL, NULL },
       },
-      "TWB64 101 - 765PRO Pink"
+      "TWB64 101 - 765PRO Pink",
+      NULL
    },
    {
       "gambatte_gbc_color_correction",
@@ -379,7 +383,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "disabled", NULL },
          { NULL, NULL },
       },
-      "GBC only"
+      "GBC only",
+      NULL
    },
    {
       "gambatte_gbc_color_correction_mode",
@@ -393,7 +398,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "fast",     "Fast" },
          { NULL, NULL },
       },
-      "accurate"
+      "accurate",
+      NULL
    },
    {
       "gambatte_gbc_frontlight_position",
@@ -408,7 +414,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "below screen", "Below Screen" },
          { NULL, NULL },
       },
-      "central"
+      "central",
+      NULL
    },
    {
       "gambatte_dark_filter_level",
@@ -431,7 +438,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "50", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_hwmode",
@@ -447,7 +455,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "GBA",  NULL },
          { NULL, NULL },
       },
-      "Auto"
+      "Auto",
+      NULL
    },
    {
       "gambatte_gb_bootloader",
@@ -461,7 +470,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "disabled", NULL },
          { NULL, NULL },
       },
-      "enabled"
+      "enabled",
+      "bool"
    },
    {
       "gambatte_mix_frames",
@@ -477,7 +487,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "lcd_ghosting_fast", "LCD Ghosting (Fast)" },
          { NULL, NULL },
       },
-      "disabled"
+      "disabled",
+      NULL
    },
    {
       "gambatte_up_down_allowed",
@@ -491,7 +502,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "enabled",  NULL },
          { NULL, NULL },
       },
-      "disabled"
+      "disabled",
+      "bool"
    },
    {
       "gambatte_turbo_period",
@@ -620,7 +632,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "120", NULL },
          { NULL, NULL },
       },
-      "4"
+      "4",
+      "int"
    },
    {
       "gambatte_rumble_level",
@@ -643,7 +656,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "10", NULL },
          { NULL, NULL },
       },
-      "10"
+      "10",
+      "int"
    },
 #ifdef HAVE_NETWORK
    {
@@ -658,7 +672,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "disabled", NULL },
          { NULL, NULL },
       },
-      "disabled"
+      "disabled",
+      "bool"
    },
    {
       "gambatte_gb_link_mode",
@@ -673,7 +688,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "Network Client", NULL },
          { NULL, NULL },
       },
-      "Not Connected"
+      "Not Connected",
+      NULL
    },
    {
       "gambatte_gb_link_network_port",
@@ -706,7 +722,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "56420", NULL },
          { NULL, NULL },
       },
-      "56400"
+      "56400",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_1",
@@ -728,7 +745,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_2",
@@ -750,7 +768,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_3",
@@ -772,7 +791,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_4",
@@ -794,7 +814,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_5",
@@ -816,7 +837,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_6",
@@ -838,7 +860,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_7",
@@ -860,7 +883,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_8",
@@ -882,7 +906,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_9",
@@ -904,7 +929,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_10",
@@ -926,7 +952,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_11",
@@ -948,7 +975,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
    {
       "gambatte_gb_link_network_server_ip_12",
@@ -970,7 +998,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "9", NULL },
          { NULL, NULL },
       },
-      "0"
+      "0",
+      "int"
    },
 #endif
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
