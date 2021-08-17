@@ -649,6 +649,65 @@ static void deactivate_rumble(void)
 /* Rumble support END */
 /**********************/
 
+#ifdef HAVE_NETWORK
+/* Core options 'update display' callback */
+static bool update_option_visibility(void)
+{
+   struct retro_variable var = {0};
+   bool updated              = false;
+   unsigned i;
+
+   /* If frontend supports core option categories,
+    * then gambatte_show_gb_link_settings is ignored
+    * and no options should be hidden */
+   if (libretro_supports_option_categories)
+      return false;
+
+   var.key = "gambatte_show_gb_link_settings";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      bool show_gb_link_settings_prev = show_gb_link_settings;
+
+      show_gb_link_settings = true;
+      if (strcmp(var.value, "disabled") == 0)
+         show_gb_link_settings = false;
+
+      if (show_gb_link_settings != show_gb_link_settings_prev)
+      {
+         struct retro_core_option_display option_display;
+
+         option_display.visible = show_gb_link_settings;
+
+         option_display.key = "gambatte_gb_link_mode";
+         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
+
+         option_display.key = "gambatte_gb_link_network_port";
+         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
+
+         for (i = 0; i < 12; i++)
+         {
+            char key[64] = {0};
+
+            /* Should be using std::to_string() here, but some
+             * compilers don't support it... */
+            sprintf(key, "%s%u",
+                 "gambatte_gb_link_network_server_ip_", i + 1);
+
+            option_display.key = key;
+
+            environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
+         }
+
+         updated = true;
+      }
+   }
+
+   return updated;
+}
+#endif
+
 /* Fast forward override */
 void set_fastforward_override(bool fastforward)
 {
@@ -1028,6 +1087,7 @@ void retro_set_environment(retro_environment_t cb)
    libretro_set_core_options(environ_cb,
          &libretro_supports_option_categories);
 
+#ifdef HAVE_NETWORK
    /* If frontend supports core option categories,
     * gambatte_show_gb_link_settings is unused and
     * should be hidden */
@@ -1041,6 +1101,20 @@ void retro_set_environment(retro_environment_t cb)
       environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY,
             &option_display);
    }
+   /* If frontend does not support core option
+    * categories, core options may be shown/hidden
+    * at runtime. In this case, register 'update
+    * display' callback, so frontend can update
+    * core options menu without calling retro_run() */
+   else
+   {
+      struct retro_core_options_update_display_callback update_display_cb;
+      update_display_cb.callback = update_option_visibility;
+
+      environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_UPDATE_DISPLAY_CALLBACK,
+            &update_display_cb);
+   }
+#endif
 
    vfs_iface_info.required_interface_version = 1;
    vfs_iface_info.iface                      = NULL;
@@ -1503,50 +1577,8 @@ static void check_variables(void)
          break;
    }
 
-   /* Show/hide core options
-    * > If frontend supports core option categories,
-    *   then gambatte_show_gb_link_settings is ignored
-    *   and no options should be hidden */
-
-   var.key = "gambatte_show_gb_link_settings";
-   var.value = NULL;
-
-   if (!libretro_supports_option_categories &&
-       environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      bool show_gb_link_settings_prev = show_gb_link_settings;
-
-      show_gb_link_settings = true;
-      if (strcmp(var.value, "disabled") == 0)
-         show_gb_link_settings = false;
-
-      if (show_gb_link_settings != show_gb_link_settings_prev)
-      {
-         struct retro_core_option_display option_display;
-
-         option_display.visible = show_gb_link_settings;
-
-         option_display.key = "gambatte_gb_link_mode";
-         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
-
-         option_display.key = "gambatte_gb_link_network_port";
-         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
-
-         for (i = 0; i < 12; i++)
-         {
-            char key[64] = {0};
-
-            /* Should be using std::to_string() here, but some
-             * compilers don't support it... */
-            sprintf(key, "%s%u",
-                 "gambatte_gb_link_network_server_ip_", i + 1);
-
-            option_display.key = key;
-
-            environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
-         }
-      }
-   }
+   /* Show/hide core options */
+   update_option_visibility();
 
 #endif
 

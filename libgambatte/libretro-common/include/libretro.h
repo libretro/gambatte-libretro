@@ -1712,6 +1712,16 @@ enum retro_mod
                                             * the retro_core_options_v2_intl::local struct will be ignored.
                                             */
 
+#define RETRO_ENVIRONMENT_SET_CORE_OPTIONS_UPDATE_DISPLAY_CALLBACK 69
+                                           /* const struct retro_core_options_update_display_callback * --
+                                            * Allows a frontend to signal that a core must update
+                                            * the visibility of any dynamically hidden core options,
+                                            * and enables the frontend to detect visibility changes.
+                                            * Used by the frontend to update the menu display status
+                                            * of core options without requiring a call of retro_run().
+                                            * Must be called in retro_set_environment().
+                                            */
+
 /* VFS functionality */
 
 /* File paths:
@@ -3519,26 +3529,6 @@ struct retro_core_option_v2_definition
     * in the retro_core_option_value array, otherwise will be
     * ignored */
    const char *default_value;
-
-   /* Specify the type this option represents so the frontend
-    * can present the user an alternative input method besides
-    * a limited list of possible values.
-    * > If set to "int", all values need to be integers
-    *   and a frontend with support for numerical input will
-    *   allow input of any number betwen the lowest and
-    *   highest defined value.
-    * > If set to "float", all values need to be numbers
-    *   and a frontend with support for numerical input will
-    *   allow input of any number betwen the lowest and
-    *   highest defined value.
-    * > If set to "bool", there should be only two values
-    *   "true" and "false" (label can be anything)
-    *   The frontend can choose to show a checkbox for it.
-    * > If NULL or set to "enum", the frontend will show
-    *   the list of values and input will be limited to them.
-    * Future versions of the specs could allow this for more
-    * types or to be "TYPE:MORE:OPTIONS" */
-   const char *type_info;
 };
 
 struct retro_core_options_v2
@@ -3569,6 +3559,25 @@ struct retro_core_options_v2_intl
     * - Implementation for current frontend language
     * - May be NULL */
    struct retro_core_options_v2 *local;
+};
+
+/* Used by the frontend to monitor changes in core option
+ * visibility. May be called each time any core option
+ * value is set via the frontend.
+ * - On each invocation, the core must update the visibility
+ *   of any dynamically hidden options using the
+ *   RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY environment
+ *   callback.
+ * - On the first invocation, returns 'true' if the visibility
+ *   of any core option has changed since the last call of
+ *   retro_load_game() or retro_load_game_special().
+ * - On each subsequent invocation, returns 'true' if the
+ *   visibility of any core option has changed since the last
+ *   time the function was called. */
+typedef bool (RETRO_CALLCONV *retro_core_options_update_display_callback_t)(void);
+struct retro_core_options_update_display_callback
+{
+   retro_core_options_update_display_callback_t callback;
 };
 
 struct retro_game_info
