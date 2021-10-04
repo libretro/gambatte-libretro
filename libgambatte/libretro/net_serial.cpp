@@ -1,5 +1,6 @@
 #include "net_serial.h"
 #include "libretro.h"
+#include "gambatte_log.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,9 +18,9 @@
 #include <netdb.h>
 #endif
 
-extern retro_log_printf_t log_cb;
 //FILE* fpout;
 //FILE* fpin;
+
 NetSerial::NetSerial()
 : is_stopped_(true)
 , is_server_(false)
@@ -44,7 +45,7 @@ bool NetSerial::start(bool is_server, int port, const std::string& hostname)
 {
 	stop();
 
-	log_cb(RETRO_LOG_INFO, "Starting GameLink nework %s on %s:%d\n",
+	gambatte_log(RETRO_LOG_INFO, "Starting GameLink network %s on %s:%d\n",
 			is_server ? "server" : "client", hostname.c_str(), port);
 	is_server_ = is_server;
 	port_ = port;
@@ -56,7 +57,7 @@ bool NetSerial::start(bool is_server, int port, const std::string& hostname)
 void NetSerial::stop()
 {
 	if (!is_stopped_) {
-		log_cb(RETRO_LOG_INFO, "Stoping GameLink nework\n");
+		gambatte_log(RETRO_LOG_INFO, "Stopping GameLink network\n");
 		is_stopped_ = true;
 		if (sockfd_ >= 0) {
 			close(sockfd_);
@@ -109,23 +110,23 @@ bool NetSerial::startServerSocket()
 
 		int fd = socket(AF_INET, SOCK_STREAM, 0);
 		if (fd < 0) {
-			log_cb(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));
+			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));
 			return false;
 		}
 
 		if (bind(fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-			log_cb(RETRO_LOG_ERROR, "Error on binding: %s\n", strerror(errno));
+			gambatte_log(RETRO_LOG_ERROR, "Error on binding: %s\n", strerror(errno));
 			close(fd);
 			return false;
 		}
 
 		if (listen(fd, 1) < 0) {
-			log_cb(RETRO_LOG_ERROR, "Error listening: %s\n", strerror(errno));
+			gambatte_log(RETRO_LOG_ERROR, "Error listening: %s\n", strerror(errno));
 			close(fd);
 			return false;
 		}
 		server_fd_ = fd;
-		log_cb(RETRO_LOG_INFO, "GameLink network server started!\n");
+		gambatte_log(RETRO_LOG_INFO, "GameLink network server started!\n");
 	}
 
 	return true;
@@ -154,10 +155,10 @@ bool NetSerial::acceptClient()
 		socklen_t client_len = sizeof(client_addr);
 		sockfd_ = accept(server_fd_, (struct sockaddr*)&client_addr, &client_len);
 		if (sockfd_ < 0) {
-			log_cb(RETRO_LOG_ERROR, "Error on accept: %s\n", strerror(errno));
+			gambatte_log(RETRO_LOG_ERROR, "Error on accept: %s\n", strerror(errno));
 			return false;
 		}
-		log_cb(RETRO_LOG_INFO, "GameLink network server connected to client!\n");
+		gambatte_log(RETRO_LOG_INFO, "GameLink network server connected to client!\n");
 	}
 	return true;
 }
@@ -173,25 +174,25 @@ bool NetSerial::startClientSocket()
 
 		int fd = socket(AF_INET, SOCK_STREAM, 0);
 		if (fd < 0) {
-			log_cb(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));
+			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));
 			return false;
 		}
 
 		struct hostent* server_hostname = gethostbyname(hostname_.c_str());
 		if (server_hostname == NULL) {
-			log_cb(RETRO_LOG_ERROR, "Error, no such host: %s\n", hostname_.c_str());
+			gambatte_log(RETRO_LOG_ERROR, "Error, no such host: %s\n", hostname_.c_str());
 			close(fd);
 			return false;
 		}
 
 		memmove((char*)&server_addr.sin_addr.s_addr, (char*)server_hostname->h_addr, server_hostname->h_length);
 		if (connect(fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
-			log_cb(RETRO_LOG_ERROR, "Error connecting to server: %s\n", strerror(errno));
+			gambatte_log(RETRO_LOG_ERROR, "Error connecting to server: %s\n", strerror(errno));
 			close(fd);
 			return false;
 		}
 		sockfd_ = fd;
-		log_cb(RETRO_LOG_INFO, "GameLink network client connected to server!\n");
+		gambatte_log(RETRO_LOG_INFO, "GameLink network client connected to server!\n");
 	}
 	return true;
 }
@@ -220,7 +221,7 @@ unsigned char NetSerial::send(unsigned char data, bool fastCgb)
 	if (write(sockfd_, buffer, 2) <= 0)
 #endif
    {
-		log_cb(RETRO_LOG_ERROR, "Error writing to socket: %s\n", strerror(errno));
+		gambatte_log(RETRO_LOG_ERROR, "Error writing to socket: %s\n", strerror(errno));
 		close(sockfd_);
 		sockfd_ = -1;
 		return 0xFF;
@@ -233,7 +234,7 @@ unsigned char NetSerial::send(unsigned char data, bool fastCgb)
    if (read(sockfd_, buffer, 2) <= 0) 
 #endif
    {
-		log_cb(RETRO_LOG_ERROR, "Error reading from socket: %s\n", strerror(errno));
+		gambatte_log(RETRO_LOG_ERROR, "Error reading from socket: %s\n", strerror(errno));
 		close(sockfd_);
 		sockfd_ = -1;
 		return 0xFF;
@@ -271,7 +272,7 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 	if (ioctl(sockfd_, FIONREAD, &bytes_avail) < 0)
 #endif
    {
-		log_cb(RETRO_LOG_ERROR, "IOCTL Failed: %s\n", strerror(errno));
+		gambatte_log(RETRO_LOG_ERROR, "IOCTL Failed: %s\n", strerror(errno));
 		return false;
 	}
 
@@ -286,7 +287,7 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
    if (read(sockfd_, buffer, 2) <= 0) 
 #endif
    {
-		log_cb(RETRO_LOG_ERROR, "Error reading from socket: %s\n", strerror(errno));
+		gambatte_log(RETRO_LOG_ERROR, "Error reading from socket: %s\n", strerror(errno));
 		close(sockfd_);
 		sockfd_ = -1;
 		return false;
@@ -306,7 +307,7 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
    	if (write(sockfd_, buffer, 2) <= 0)
    #endif
    {
-		log_cb(RETRO_LOG_ERROR, "Error writing to socket: %s\n", strerror(errno));
+		gambatte_log(RETRO_LOG_ERROR, "Error writing to socket: %s\n", strerror(errno));
 		close(sockfd_);
 		sockfd_ = -1;
 		return false;

@@ -2,6 +2,7 @@
 
 #include <libretro.h>
 #include <libretro_core_options.h>
+#include "gambatte_log.h"
 #include "blipper.h"
 #include "gambatte.h"
 #include "gbcpalettes.h"
@@ -15,6 +16,16 @@
 #undef __STRICT_ANSI__
 #endif
 
+#ifndef PATH_MAX_LENGTH
+#if defined(_XBOX1) || defined(_3DS) || defined(PSP) || defined(PS2) || defined(GEKKO)|| defined(WIIU) || defined(ORBIS) || defined(__PSL1GHT__) || defined(__PS3__)
+#define PATH_MAX_LENGTH 512
+#else
+#define PATH_MAX_LENGTH 4096
+#endif
+#endif
+
+#include <string/stdstring.h>
+#include <file/file_path.h>
 #include <streams/file_stream.h>
 
 #include <cassert>
@@ -32,7 +43,6 @@ extern "C" void* linearMemAlign(size_t size, size_t alignment);
 extern "C" void linearFree(void* mem);
 #endif
 
-retro_log_printf_t log_cb;
 static retro_video_refresh_t video_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
@@ -709,7 +719,7 @@ static bool update_option_visibility(void)
 #endif
 
 /* Fast forward override */
-void set_fastforward_override(bool fastforward)
+static void set_fastforward_override(bool fastforward)
 {
    struct retro_fastforwarding_override ff_override;
 
@@ -733,75 +743,90 @@ void set_fastforward_override(bool fastforward)
    environ_cb(RETRO_ENVIRONMENT_SET_FASTFORWARDING_OVERRIDE, &ff_override);
 }
 
-bool file_present_in_system(std::string fname)
+static bool file_present_in_system(const char *fname)
 {
-   const char *systemdirtmp = NULL;
-   bool worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &systemdirtmp);
-   if (!worked)
+   const char *system_dir = NULL;
+   char full_path[PATH_MAX_LENGTH];
+
+   full_path[0] = '\0';
+
+   if (string_is_empty(fname))
       return false;
-   
-   std::string fullpath  = systemdirtmp;
-   fullpath             += "/";
-   fullpath             += fname;
-   
-   RFILE *fp             = filestream_open(fullpath.c_str(), RETRO_VFS_FILE_ACCESS_READ, 
-         RETRO_VFS_FILE_ACCESS_HINT_NONE);
-   
-   if (fp)
+
+   /* Get system directory */
+   if (!environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_dir) ||
+       !system_dir)
    {
-      filestream_close(fp);
-      return true;
+      gambatte_log(RETRO_LOG_WARN,
+            "No system directory defined, unable to look for '%s'.\n", fname);
+      return false;
    }
-   
-   return false;
+
+   fill_pathname_join(full_path, system_dir,
+         fname, sizeof(full_path));
+
+   return path_is_valid(full_path);
 }
 
-bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)
+static bool get_bootloader_from_file(void* userdata, bool isgbc, uint8_t* data, uint32_t buf_size)
 {
-   std::string path;
-   unsigned int size;
-   RFILE *fp                = NULL;
-   int64_t n                = 0;
-   bool worked              = false;
-   const char *systemdirtmp = NULL;
+   const char *system_dir = NULL;
+   const char *bios_name  = NULL;
+   RFILE *bios_file       = NULL;
+   int64_t bios_size      = 0;
+   int64_t bytes_read     = 0;
+   char bios_path[PATH_MAX_LENGTH];
+
+   bios_path[0] = '\0';
+
    if (!use_official_bootloader)
       return false;
 
-   // get path
-   worked = environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &systemdirtmp);
-   if (!worked)
+   /* Get system directory */
+   if (!environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_dir) ||
+       !system_dir)
+   {
+      gambatte_log(RETRO_LOG_WARN,
+            "No system directory defined, unable to look for bootloader.\n");
       return false;
+   }
 
-   path  = systemdirtmp;
-   path += "/"; //retroarch/libretro does not add a slash at the end of directory names
-   
+   /* Get BIOS type */
    if (isgbc)
    {
-      path += "gbc_bios.bin";
-      size = 0x900;
+      bios_name = "gbc_bios.bin";
+      bios_size = 0x900;
    }
    else
    {
-      path += "gb_bios.bin";
-      size = 0x100;
+      bios_name = "gb_bios.bin";
+      bios_size = 0x100;
    }
 
-   if (size > buf_size)
+   if (bios_size > buf_size)
       return false;
-   
-   // open file
-   fp = filestream_open(path.c_str(), RETRO_VFS_FILE_ACCESS_READ,
+
+   /* Get BIOS path */
+   fill_pathname_join(bios_path, system_dir,
+         bios_name, sizeof(bios_path));
+
+   /* Read BIOS file */
+   bios_file = filestream_open(bios_path,
+         RETRO_VFS_FILE_ACCESS_READ,
          RETRO_VFS_FILE_ACCESS_HINT_NONE);
 
-   if (!fp)
+   if (!bios_file)
       return false;
 
-   n = filestream_read(fp, data, size);
-   filestream_close(fp);
-   
-   if (n != size)
+   bytes_read = filestream_read(bios_file,
+         data, bios_size);
+   filestream_close(bios_file);
+
+   if (bytes_read != bios_size)
       return false;
-   
+
+   gambatte_log(RETRO_LOG_INFO, "Read bootloader: %s\n", bios_path);
+
    return true;
 }
 
@@ -962,16 +987,14 @@ static void check_system_specs(void)
    environ_cb(RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL, &level);
 }
 
-static void log_null(enum retro_log_level level, const char *fmt, ...) {}
-
 void retro_init(void)
 {
    struct retro_log_callback log;
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log))
-      log_cb = log.log;
+      gambatte_log_set_cb(log.log);
    else
-      log_cb = log_null;
+      gambatte_log_set_cb(NULL);
 
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
@@ -1209,28 +1232,6 @@ void retro_cheat_set(unsigned index, bool enabled, const char *code)
    }
 }
 
-   
-static std::string basename(std::string filename)
-{
-   // Remove directory if present.
-   // Do this before extension removal incase directory has a period character.
-   const size_t last_slash_idx = filename.find_last_of("\\/");
-   if (std::string::npos != last_slash_idx)
-      filename.erase(0, last_slash_idx + 1);
-
-   // Remove extension if present.
-   const size_t period_idx = filename.rfind('.');
-   if (std::string::npos != period_idx)
-      filename.erase(period_idx);
-
-   return filename;
-}
-
-static bool startswith(const std::string s1, const std::string prefix)
-{
-    return s1.compare(0, prefix.length(), prefix) == 0;
-}
-
 enum gb_colorization_enable_type
 {
    GB_COLORIZATION_DISABLED = 0,
@@ -1248,110 +1249,174 @@ static char internal_game_name[17];
 
 static void load_custom_palette(void)
 {
-   unsigned rgb32 = 0;
+   const char *system_dir = NULL;
+   const char *rom_file   = NULL;
+   char *rom_name         = NULL;
+   RFILE *palette_file    = NULL;
+   unsigned line_index    = 0;
+   bool path_valid        = false;
+   unsigned rgb32         = 0;
+   char palette_path[PATH_MAX_LENGTH];
 
-   const char *system_directory_c = NULL;
-   environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory_c);
-   if (!system_directory_c)
+   palette_path[0] = '\0';
+
+   /* Get system directory */
+   if (!environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_dir) ||
+       !system_dir)
    {
-      log_cb(RETRO_LOG_WARN, "[Gambatte]: no system directory defined, unable to look for custom palettes.\n");
+      gambatte_log(RETRO_LOG_WARN,
+            "No system directory defined, unable to look for custom palettes.\n");
       return;
    }
 
-   std::string system_directory(system_directory_c);
-   std::string custom_palette_path = system_directory + "/palettes/" + basename(rom_path) + ".pal";
-   std::ifstream palette_file(custom_palette_path.c_str()); // try to open the palette file in read-only mode
-
-   if (!palette_file.is_open())
+   /* Look for palette named after ROM file */
+   rom_file = path_basename(rom_path.c_str());
+   if (!string_is_empty(rom_file))
    {
-      // try again with the internal game name from the ROM header
-      custom_palette_path = system_directory + "/palettes/" + std::string(internal_game_name) + ".pal";
-      palette_file.open(custom_palette_path.c_str());
+      size_t len = (strlen(rom_file) + 1) * sizeof(char);
+      rom_name = (char*)malloc(len);
+      strlcpy(rom_name, rom_file, len);
+      path_remove_extension(rom_name);
+      if (!string_is_empty(rom_name))
+      {
+         fill_pathname_join_special_ext(palette_path,
+               system_dir, "palettes", rom_name, ".pal",
+               sizeof(palette_path));
+         path_valid = path_is_valid(palette_path);
+      }
+      free(rom_name);
+      rom_name = NULL;
    }
 
-   if (!palette_file.is_open())// && !findGbcTitlePal(internal_game_name))
+   if (!path_valid)
    {
-      // try again with default.pal
-     //- removed last line if colorization is enabled
-      custom_palette_path = system_directory + "/palettes/" + "default.pal";
-      palette_file.open(custom_palette_path.c_str());
+      /* Look for palette named after the internal game
+       * name in the ROM header */
+      fill_pathname_join_special_ext(palette_path,
+            system_dir, "palettes", internal_game_name, ".pal",
+            sizeof(palette_path));
+      path_valid = path_is_valid(palette_path);
    }
 
-   if (!palette_file.is_open())
-      return;  // unable to find any custom palette file
-
-#if 0
-   fprintf(RETRO_LOG_INFO, "[Gambatte]: using custom palette %s.\n", custom_palette_path.c_str());
-#endif
-   unsigned line_count = 0;
-   for (std::string line; getline(palette_file, line); ) // iterate over file lines
+   if (!path_valid)
    {
-      line_count++;
+      /* Look for default custom palette file (default.pal) */
+      fill_pathname_join_special_ext(palette_path,
+            system_dir, "palettes", "default", ".pal",
+            sizeof(palette_path));
+      path_valid = path_is_valid(palette_path);
+   }
 
-      if (line[0]=='[') // skip ini sections
-         continue;
+   if (!path_valid)
+      return; /* Unable to find any custom palette file */
 
-      if (line[0]==';') // skip ini comments
-         continue;
+   palette_file = filestream_open(palette_path,
+         RETRO_VFS_FILE_ACCESS_READ,
+         RETRO_VFS_FILE_ACCESS_HINT_NONE);
 
-      if (line[0]=='\n') // skip empty lines
-         continue;
+   if (!palette_file)
+   {
+      gambatte_log(RETRO_LOG_WARN,
+            "Failed to open custom palette: %s\n", palette_path);
+      return;
+   }
 
-      if (line.find("=") == std::string::npos)
+   gambatte_log(RETRO_LOG_INFO, "Using custom palette: %s\n", palette_path);
+
+   /* Iterate over palette file lines */
+   while (!filestream_eof(palette_file))
+   {
+      char *line            = filestream_getline(palette_file);
+      const char *value_str = NULL;
+
+      if (!line)
+         break;
+
+      if (string_is_empty(line) || /* Skip empty lines */
+          (*line == '[') ||        /* Skip ini sections */
+          (*line == ';'))          /* Skip ini comments */
+         goto palette_line_end;
+
+      /* Supposed to be a typo here... */
+      if (string_starts_with(line, "slectedScheme="))
+         goto palette_line_end;
+
+      /* Get substring after first '=' character */
+      value_str = strchr(line, '=');
+      if (!value_str ||
+          string_is_empty(++value_str))
       {
-         log_cb(RETRO_LOG_WARN, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
-         continue; // current line does not contain a palette color definition, so go to next line
+         gambatte_log(RETRO_LOG_WARN,
+               "Error in %s, line %u (color left as default)\n",
+               palette_path, line_index);
+         goto palette_line_end;
       }
 
-      // Supposed to be a typo here.
-      if (startswith(line, "slectedScheme="))
-         continue;
-
-      std::string line_value = line.substr(line.find("=") + 1); // extract the color value string
-      std::stringstream ss(line_value); // convert the color value to int
-      ss >> rgb32;
-      if (!ss)
+      /* Extract colour value */
+      rgb32 = string_to_unsigned(value_str);
+      if (rgb32 == 0)
       {
-         log_cb(RETRO_LOG_WARN, "[Gambatte]: unable to read palette color in %s, line %d (color left as default).\n",
-               custom_palette_path.c_str(), line_count);
-         continue;
+         /* string_to_unsigned() will return 0 if
+          * string is invalid, so perform a manual
+          * validity check... */
+         for (; *value_str != '\0'; value_str++)
+         {
+            if (*value_str != '0')
+            {
+               gambatte_log(RETRO_LOG_WARN,
+                     "Unable to read palette color in %s, line %u (color left as default)\n",
+                     palette_path, line_index);
+               goto palette_line_end;
+            }
+         }
       }
+
 #ifdef VIDEO_RGB565
-      rgb32=(rgb32&0x0000F8)>>3 |//blue
-            (rgb32&0x00FC00)>>5 |//green
-            (rgb32&0xF80000)>>8;//red
+      rgb32 = (rgb32 & 0x0000F8) >>  3 | /* blue */
+              (rgb32 & 0x00FC00) >>  5 | /* green */
+              (rgb32 & 0xF80000) >>  8;  /* red */
 #elif defined(VIDEO_ABGR1555)
-      rgb32=(rgb32&0x0000F8)<<7 |//blue
-            (rgb32&0xF800)>>6 |//green
-            (rgb32&0xF80000)>>19;//red
+      rgb32 = (rgb32 & 0x0000F8) <<  7 | /* blue */
+              (rgb32 & 0xF800)   >>  6 | /* green */
+              (rgb32 & 0xF80000) >> 19;  /* red */
 #endif
 
-      if (startswith(line, "Background0="))
+      if (     string_starts_with(line, "Background0="))
          gb.setDmgPaletteColor(0, 0, rgb32);
-      else if (startswith(line, "Background1="))
+      else if (string_starts_with(line, "Background1="))
          gb.setDmgPaletteColor(0, 1, rgb32);
-      else if (startswith(line, "Background2="))
+      else if (string_starts_with(line, "Background2="))
          gb.setDmgPaletteColor(0, 2, rgb32);       
-      else if (startswith(line, "Background3="))
+      else if (string_starts_with(line, "Background3="))
          gb.setDmgPaletteColor(0, 3, rgb32);
-      else if (startswith(line, "Sprite%2010="))
+      else if (string_starts_with(line, "Sprite%2010="))
          gb.setDmgPaletteColor(1, 0, rgb32);
-      else if (startswith(line, "Sprite%2011="))
+      else if (string_starts_with(line, "Sprite%2011="))
          gb.setDmgPaletteColor(1, 1, rgb32);
-      else if (startswith(line, "Sprite%2012="))
+      else if (string_starts_with(line, "Sprite%2012="))
          gb.setDmgPaletteColor(1, 2, rgb32);
-      else if (startswith(line, "Sprite%2013="))
+      else if (string_starts_with(line, "Sprite%2013="))
          gb.setDmgPaletteColor(1, 3, rgb32);
-      else if (startswith(line, "Sprite%2020="))
+      else if (string_starts_with(line, "Sprite%2020="))
          gb.setDmgPaletteColor(2, 0, rgb32);
-      else if (startswith(line, "Sprite%2021="))
+      else if (string_starts_with(line, "Sprite%2021="))
          gb.setDmgPaletteColor(2, 1, rgb32);
-      else if (startswith(line, "Sprite%2022="))
+      else if (string_starts_with(line, "Sprite%2022="))
          gb.setDmgPaletteColor(2, 2, rgb32);  
-      else if (startswith(line, "Sprite%2023="))
+      else if (string_starts_with(line, "Sprite%2023="))
          gb.setDmgPaletteColor(2, 3, rgb32);
-      else log_cb(RETRO_LOG_WARN, "[Gambatte]: error in %s, line %d (color left as default).\n", custom_palette_path.c_str(), line_count);
-   } // endfor
+      else
+         gambatte_log(RETRO_LOG_WARN,
+               "Error in %s, line %u (color left as default)\n",
+               palette_path, line_index);
+
+palette_line_end:
+      line_index++;
+      free(line);
+      line = NULL;
+   }
+
+   filestream_close(palette_file);
 }
 
 static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
@@ -1733,14 +1798,14 @@ bool retro_load_game(const struct retro_game_info *info)
    environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
    if (!can_dupe)
    {
-      log_cb(RETRO_LOG_ERROR, "[Gambatte]: Cannot dupe frames!\n");
+      gambatte_log(RETRO_LOG_ERROR, "Cannot dupe frames!\n");
       return false;
    }
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE, &rumble))
-      log_cb(RETRO_LOG_INFO, "Rumble environment supported.\n");
+      gambatte_log(RETRO_LOG_INFO, "Rumble environment supported.\n");
    else
-      log_cb(RETRO_LOG_INFO, "Rumble environment not supported.\n");
+      gambatte_log(RETRO_LOG_INFO, "Rumble environment not supported.\n");
 
    struct retro_input_descriptor desc[] = {
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,   "D-Pad Left" },
@@ -1780,14 +1845,14 @@ bool retro_load_game(const struct retro_game_info *info)
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
    {
-      log_cb(RETRO_LOG_ERROR, "[Gambatte]: RGB565 is not supported.\n");
+      gambatte_log(RETRO_LOG_ERROR, "RGB565 is not supported.\n");
       return false;
    }
 #else
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
    {
-      log_cb(RETRO_LOG_ERROR, "[Gambatte]: XRGB8888 is not supported.\n");
+      gambatte_log(RETRO_LOG_ERROR, "XRGB8888 is not supported.\n");
       return false;
    }
 #endif
@@ -1829,7 +1894,7 @@ bool retro_load_game(const struct retro_game_info *info)
    strncpy(internal_game_name, (const char*)info->data + 0x134, sizeof(internal_game_name) - 1);
    internal_game_name[sizeof(internal_game_name)-1]='\0';
 
-   log_cb(RETRO_LOG_INFO, "[Gambatte]: Got internal game name: %s.\n", internal_game_name);
+   gambatte_log(RETRO_LOG_INFO, "Got internal game name: %s.\n", internal_game_name);
 
    check_variables();
 

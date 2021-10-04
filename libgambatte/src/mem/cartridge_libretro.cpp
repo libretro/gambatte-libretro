@@ -5,8 +5,6 @@
 
 #include <libretro.h>
 
-extern retro_log_printf_t log_cb;
-
 namespace gambatte
 {
    static bool hasBattery(unsigned char headerByte0x147)
