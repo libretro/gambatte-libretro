@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
+#include "gambatte_log.h"
 
 extern void cartridge_set_rumble(unsigned active);
 
@@ -383,16 +384,16 @@ namespace gambatte
          switch (p >> 13 & 3) {
          case 0:
             ramflag_ = data;
-            //printf("[HuC3] set ramflag to %02X\n", data);
+            //gambatte_log(RETRO_LOG_DEBUG, "<HuC3> set ramflag to %02X\n", data);
             setRambank();
             break;
          case 1:
-            //printf("[HuC3] set rombank to %02X\n", data);
+            //gambatte_log(RETRO_LOG_DEBUG, "<HuC3> set rombank to %02X\n", data);
             rombank_ = data;
             setRombank();
             break;
          case 2:
-            //printf("[HuC3] set rambank to %02X\n", data);
+            //gambatte_log(RETRO_LOG_DEBUG, "<HuC3> set rambank to %02X\n", data);
             rambank_ = data;
             setRambank();
             break;
@@ -552,38 +553,38 @@ namespace gambatte
 
          switch (header[0x0147])
          {
-            case 0x00: printf("Plain ROM loaded.\n"); type = PLAIN; break;
-            case 0x01: printf("MBC1 ROM loaded.\n"); type = MBC1; break;
-            case 0x02: printf("MBC1 ROM+RAM loaded.\n"); type = MBC1; break;
-            case 0x03: printf("MBC1 ROM+RAM+BATTERY loaded.\n"); type = MBC1; break;
-            case 0x05: printf("MBC2 ROM loaded.\n"); type = MBC2; break;
-            case 0x06: printf("MBC2 ROM+BATTERY loaded.\n"); type = MBC2; break;
-            case 0x08: printf("Plain ROM with additional RAM loaded.\n"); type = MBC2; break;
-            case 0x09: printf("Plain ROM with additional RAM and Battery loaded.\n"); type = MBC2;break;
-            case 0x0B: printf("MM01 ROM not supported.\n"); return -1;
-            case 0x0C: printf("MM01 ROM not supported.\n"); return -1;
-            case 0x0D: printf("MM01 ROM not supported.\n"); return -1;
-            case 0x0F: printf("MBC3 ROM+TIMER+BATTERY loaded.\n"); type = MBC3; break;
-            case 0x10: printf("MBC3 ROM+TIMER+RAM+BATTERY loaded.\n"); type = MBC3; break;
-            case 0x11: printf("MBC3 ROM loaded.\n"); type = MBC3; break;
-            case 0x12: printf("MBC3 ROM+RAM loaded.\n"); type = MBC3; break;
-            case 0x13: printf("MBC3 ROM+RAM+BATTERY loaded.\n"); type = MBC3; break;
-            case 0x15: printf("MBC4 ROM not supported.\n"); return -1;
-            case 0x16: printf("MBC4 ROM not supported.\n"); return -1;
-            case 0x17: printf("MBC4 ROM not supported.\n"); return -1;
-            case 0x19: printf("MBC5 ROM loaded.\n"); type = MBC5; break;
-            case 0x1A: printf("MBC5 ROM+RAM loaded.\n"); type = MBC5; break;
-            case 0x1B: printf("MBC5 ROM+RAM+BATTERY loaded.\n"); type = MBC5; break;
-            case 0x1C: printf("MBC5+RUMBLE ROM loaded.\n"); type = MBC5; rumble = true; break;
-            case 0x1D: printf("MBC5+RUMBLE+RAM ROM loaded.\n"); type = MBC5; rumble = true; break;
-            case 0x1E: printf("MBC5+RUMBLE+RAM+BATTERY ROM loaded.\n"); type = MBC5; rumble = true; break;
-            case 0x20: printf("MBC6 ROM not supported.\n"); return -1;
-            case 0x22: printf("MBC7 ROM not supported.\n"); return -1;
-            case 0xFC: printf("Pocket Camera ROM not supported.\n"); return -1;
-            case 0xFD: printf("Bandai TAMA5 ROM not supported.\n"); return -1;
-            case 0xFE: printf("HuC3 ROM+RAM+BATTERY loaded.\n"); type = HUC3; break;
-            case 0xFF: printf("HuC1 ROM+BATTERY loaded.\n"); type = HUC1; break;
-            default: printf("Wrong data-format, corrupt or unsupported ROM.\n"); return -1;
+            case 0x00: gambatte_log(RETRO_LOG_INFO, "Plain ROM loaded.\n"); type = PLAIN; break;
+            case 0x01: gambatte_log(RETRO_LOG_INFO, "MBC1 ROM loaded.\n"); type = MBC1; break;
+            case 0x02: gambatte_log(RETRO_LOG_INFO, "MBC1 ROM+RAM loaded.\n"); type = MBC1; break;
+            case 0x03: gambatte_log(RETRO_LOG_INFO, "MBC1 ROM+RAM+BATTERY loaded.\n"); type = MBC1; break;
+            case 0x05: gambatte_log(RETRO_LOG_INFO, "MBC2 ROM loaded.\n"); type = MBC2; break;
+            case 0x06: gambatte_log(RETRO_LOG_INFO, "MBC2 ROM+BATTERY loaded.\n"); type = MBC2; break;
+            case 0x08: gambatte_log(RETRO_LOG_INFO, "Plain ROM with additional RAM loaded.\n"); type = MBC2; break;
+            case 0x09: gambatte_log(RETRO_LOG_INFO, "Plain ROM with additional RAM and Battery loaded.\n"); type = MBC2;break;
+            case 0x0B: gambatte_log(RETRO_LOG_INFO, "MM01 ROM not supported.\n"); return -1;
+            case 0x0C: gambatte_log(RETRO_LOG_INFO, "MM01 ROM not supported.\n"); return -1;
+            case 0x0D: gambatte_log(RETRO_LOG_INFO, "MM01 ROM not supported.\n"); return -1;
+            case 0x0F: gambatte_log(RETRO_LOG_INFO, "MBC3 ROM+TIMER+BATTERY loaded.\n"); type = MBC3; break;
+            case 0x10: gambatte_log(RETRO_LOG_INFO, "MBC3 ROM+TIMER+RAM+BATTERY loaded.\n"); type = MBC3; break;
+            case 0x11: gambatte_log(RETRO_LOG_INFO, "MBC3 ROM loaded.\n"); type = MBC3; break;
+            case 0x12: gambatte_log(RETRO_LOG_INFO, "MBC3 ROM+RAM loaded.\n"); type = MBC3; break;
+            case 0x13: gambatte_log(RETRO_LOG_INFO, "MBC3 ROM+RAM+BATTERY loaded.\n"); type = MBC3; break;
+            case 0x15: gambatte_log(RETRO_LOG_INFO, "MBC4 ROM not supported.\n"); return -1;
+            case 0x16: gambatte_log(RETRO_LOG_INFO, "MBC4 ROM not supported.\n"); return -1;
+            case 0x17: gambatte_log(RETRO_LOG_INFO, "MBC4 ROM not supported.\n"); return -1;
+            case 0x19: gambatte_log(RETRO_LOG_INFO, "MBC5 ROM loaded.\n"); type = MBC5; break;
+            case 0x1A: gambatte_log(RETRO_LOG_INFO, "MBC5 ROM+RAM loaded.\n"); type = MBC5; break;
+            case 0x1B: gambatte_log(RETRO_LOG_INFO, "MBC5 ROM+RAM+BATTERY loaded.\n"); type = MBC5; break;
+            case 0x1C: gambatte_log(RETRO_LOG_INFO, "MBC5+RUMBLE ROM loaded.\n"); type = MBC5; rumble = true; break;
+            case 0x1D: gambatte_log(RETRO_LOG_INFO, "MBC5+RUMBLE+RAM ROM loaded.\n"); type = MBC5; rumble = true; break;
+            case 0x1E: gambatte_log(RETRO_LOG_INFO, "MBC5+RUMBLE+RAM+BATTERY ROM loaded.\n"); type = MBC5; rumble = true; break;
+            case 0x20: gambatte_log(RETRO_LOG_INFO, "MBC6 ROM not supported.\n"); return -1;
+            case 0x22: gambatte_log(RETRO_LOG_INFO, "MBC7 ROM not supported.\n"); return -1;
+            case 0xFC: gambatte_log(RETRO_LOG_INFO, "Pocket Camera ROM not supported.\n"); return -1;
+            case 0xFD: gambatte_log(RETRO_LOG_INFO, "Bandai TAMA5 ROM not supported.\n"); return -1;
+            case 0xFE: gambatte_log(RETRO_LOG_INFO, "HuC3 ROM+RAM+BATTERY loaded.\n"); type = HUC3; break;
+            case 0xFF: gambatte_log(RETRO_LOG_INFO, "HuC1 ROM+BATTERY loaded.\n"); type = HUC1; break;
+            default: gambatte_log(RETRO_LOG_INFO, "Wrong data-format, corrupt or unsupported ROM.\n"); return -1;
          }
 
          switch (header[0x0149])
@@ -619,10 +620,10 @@ namespace gambatte
          }
       }
 
-      printf("rambanks: %u\n", rambanks);
+      gambatte_log(RETRO_LOG_INFO, "rambanks: %u\n", rambanks);
 
       rombanks = pow2ceil(romsize / 0x4000);
-      printf("rombanks: %u\n", static_cast<unsigned>(romsize / 0x4000));
+      gambatte_log(RETRO_LOG_INFO, "rombanks: %u\n", static_cast<unsigned>(romsize / 0x4000));
 
       ggUndoList_.clear();
       mbc.reset();

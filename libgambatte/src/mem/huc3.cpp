@@ -19,6 +19,7 @@
 #include "huc3.h"
 #include "../savestate.h"
 #include <stdio.h>
+#include "gambatte_log.h"
 
 namespace gambatte {
 
@@ -113,7 +114,7 @@ unsigned char HuC3Chip::read(unsigned p, unsigned long const cc) {
         }
     }
     if(ramflag_ < 0x0B || ramflag_ > 0x0D) {
-        printf("[HuC3] error, hit huc3 read with ramflag=%02X\n", ramflag_);
+        gambatte_log(RETRO_LOG_ERROR, "<HuC3> error, hit huc3 read with ramflag=%02X\n", ramflag_);
         return 0xFF;
     }
     if(ramflag_ == 0x0D) return 1;
