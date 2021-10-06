@@ -27,6 +27,7 @@
 #include <string/stdstring.h>
 #include <file/file_path.h>
 #include <streams/file_stream.h>
+#include <array/rhmap.h>
 
 #include <cassert>
 #include <cstdio>
@@ -53,6 +54,8 @@ static gambatte::GB gb;
 
 static bool libretro_supports_option_categories = false;
 static bool libretro_supports_bitmasks          = false;
+static bool libretro_supports_set_variable      = false;
+static unsigned libretro_msg_interface_version  = 0;
 static bool libretro_supports_ff_override       = false;
 static bool libretro_ff_enabled                 = false;
 static bool libretro_ff_enabled_prev            = false;
@@ -115,6 +118,270 @@ bool use_official_bootloader = false;
  * internal hard cap/bail out in the event that
  * excess samples are detected... */
 #define SOUND_BUFF_SIZE         (SOUND_SAMPLES_PER_RUN + 2064)
+
+/***************************/
+/* Palette Switching START */
+/***************************/
+
+static bool internal_palette_active    = false;
+static size_t internal_palette_index   = 0;
+static unsigned palette_switch_counter = 0;
+
+/* Period in frames between palette switches
+ * when holding RetroPad L/R */
+#define PALETTE_SWITCH_PERIOD 30
+
+/* Note: These must be updated if the internal
+ * palette options in libretro_core_options.h
+ * are changed
+ * > We could count the palettes at runtime,
+ *   but this adds unnecessary performance
+ *   overheads and seems futile given that
+ *   a number of other parameters must be
+ *   hardcoded anyway... */
+#define NUM_PALETTES_DEFAULT  51
+#define NUM_PALETTES_TWB64_1 100
+#define NUM_PALETTES_TWB64_2 100
+#define NUM_PALETTES_TOTAL   (NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2)
+
+struct retro_core_option_value *palettes_default_opt_values = NULL;
+struct retro_core_option_value *palettes_twb64_1_opt_values = NULL;
+struct retro_core_option_value *palettes_twb64_2_opt_values = NULL;
+
+static const char *internal_palette_labels[NUM_PALETTES_TOTAL] = {0};
+
+static size_t *palettes_default_index_map = NULL;
+static size_t *palettes_twb64_1_index_map = NULL;
+static size_t *palettes_twb64_2_index_map = NULL;
+
+static void parse_internal_palette_values(const char *key,
+      struct retro_core_option_v2_definition *opt_defs_intl,
+      size_t num_palettes, size_t palette_offset,
+      struct retro_core_option_value **opt_values,
+      size_t **index_map)
+{
+   size_t i;
+   struct retro_core_option_v2_definition *opt_defs     = option_defs_us;
+   struct retro_core_option_v2_definition *opt_def      = NULL;
+   size_t label_index                                   = 0;
+#ifndef HAVE_NO_LANGEXTRA
+   struct retro_core_option_v2_definition *opt_def_intl = NULL;
+#endif
+   /* Find option corresponding to key */
+   for (opt_def = opt_defs; !string_is_empty(opt_def->key); opt_def++)
+      if (string_is_equal(opt_def->key, key))
+         break;
+
+   /* Cache option values array for fast access
+    * when setting palette index */
+   *opt_values = opt_def->values;
+
+   /* Loop over all palette values for specified
+    * option and:
+    * - Generate palette index maps
+    * - Fetch palette labels for notification
+    *   purposes
+    * Note: We perform no error checking here,
+    * since we are operating on hardcoded structs
+    * over which the core has full control */
+   for (i = 0; i < num_palettes; i++)
+   {
+      const char *value       = opt_def->values[i].value;
+      const char *value_label = NULL;
+
+      /* Add entry to hash map
+       * > Note that we have to set index+1, since
+       *   a return value of 0 from RHMAP_GET_STR()
+       *   indicates that the key string was not found */
+      RHMAP_SET_STR((*index_map), value, i + 1);
+
+      /* Check if we have a localised palette label */
+#ifndef HAVE_NO_LANGEXTRA
+      if (opt_defs_intl)
+      {
+         /* Find localised option corresponding to key */
+         for (opt_def_intl = opt_defs_intl;
+              !string_is_empty(opt_def_intl->key);
+              opt_def_intl++)
+         {
+            if (string_is_equal(opt_def_intl->key, key))
+            {
+               size_t j = 0;
+
+               /* Search for current option value */
+               for (;;)
+               {
+                  const char *value_intl = opt_def_intl->values[j].value;
+
+                  if (string_is_empty(value_intl))
+                     break;
+
+                  if (string_is_equal(value, value_intl))
+                  {
+                     /* We have a match; fetch localised label */
+                     value_label = opt_def_intl->values[j].label;
+                     break;
+                  }
+
+                  j++;
+               }
+
+               break;
+            }
+         }
+      }
+#endif
+      /* If localised palette label is unset,
+       * use value itself from option_defs_us */
+      if (!value_label)
+         value_label = value;
+
+      /* Cache label for 'consolidated' palette index */
+      internal_palette_labels[palette_offset + label_index++] = value_label;
+   }
+}
+
+static void init_palette_switch(void)
+{
+   struct retro_core_option_v2_definition *opt_defs_intl = NULL;
+#ifndef HAVE_NO_LANGEXTRA
+   unsigned language                                     = 0;
+#endif
+
+   libretro_supports_set_variable = false;
+   if (environ_cb(RETRO_ENVIRONMENT_SET_VARIABLE, NULL))
+      libretro_supports_set_variable = true;
+
+   libretro_msg_interface_version = 0;
+   environ_cb(RETRO_ENVIRONMENT_GET_MESSAGE_INTERFACE_VERSION,
+         &libretro_msg_interface_version);
+
+   internal_palette_active = false;
+   internal_palette_index  = 0;
+   palette_switch_counter  = 0;
+
+#ifndef HAVE_NO_LANGEXTRA
+   if (environ_cb(RETRO_ENVIRONMENT_GET_LANGUAGE, &language) &&
+       (language < RETRO_LANGUAGE_LAST) &&
+       (language != RETRO_LANGUAGE_ENGLISH) &&
+       options_intl[language])
+      opt_defs_intl = options_intl[language]->definitions;
+#endif
+
+   /* Parse palette values for each palette group
+    * > Default palettes */
+   parse_internal_palette_values("gambatte_gb_internal_palette",
+         opt_defs_intl, NUM_PALETTES_DEFAULT,
+         0,
+         &palettes_default_opt_values,
+         &palettes_default_index_map);
+   /* > TWB64 Pack 1 palettes */
+   parse_internal_palette_values("gambatte_gb_palette_twb64_1",
+         opt_defs_intl, NUM_PALETTES_TWB64_1,
+         NUM_PALETTES_DEFAULT,
+         &palettes_twb64_1_opt_values,
+         &palettes_twb64_1_index_map);
+   /* > TWB64 Pack 2 palettes */
+   parse_internal_palette_values("gambatte_gb_palette_twb64_2",
+         opt_defs_intl, NUM_PALETTES_TWB64_2,
+         NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1,
+         &palettes_twb64_2_opt_values,
+         &palettes_twb64_2_index_map);
+}
+
+static void deinit_palette_switch(void)
+{
+   libretro_supports_set_variable = false;
+   libretro_msg_interface_version = 0;
+   internal_palette_active        = false;
+   internal_palette_index         = 0;
+   palette_switch_counter         = 0;
+   palettes_default_opt_values    = NULL;
+   palettes_twb64_1_opt_values    = NULL;
+   palettes_twb64_2_opt_values    = NULL;
+
+	RHMAP_FREE(palettes_default_index_map);
+	RHMAP_FREE(palettes_twb64_1_index_map);
+	RHMAP_FREE(palettes_twb64_2_index_map);
+}
+
+static void palette_switch_set_index(size_t palette_index)
+{
+   const char *palettes_default_value = NULL;
+   const char *palettes_twb64_key     = NULL;
+   const char *palettes_twb64_value   = NULL;
+   size_t opt_index                   = 0;
+   struct retro_variable var          = {0};
+
+   if (palette_index >= NUM_PALETTES_TOTAL)
+      palette_index = NUM_PALETTES_TOTAL - 1;
+
+   /* Check which palette group the specified
+    * index corresponds to */
+   if (palette_index < NUM_PALETTES_DEFAULT)
+   {
+      /* This is a palette from the default group */
+      opt_index = palette_index;
+      palettes_default_value = palettes_default_opt_values[opt_index].value;
+   }
+   else if (palette_index < NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1)
+   {
+      /* This is a palette from the TWB64 Pack 1 group */
+      palettes_default_value = "TWB64 - Pack 1";
+
+      opt_index              = palette_index - NUM_PALETTES_DEFAULT;
+      palettes_twb64_key     = "gambatte_gb_palette_twb64_1";
+      palettes_twb64_value   = palettes_twb64_1_opt_values[opt_index].value;
+   }
+   else
+   {
+      /* This is a palette from the TWB64 Pack 2 group */
+      palettes_default_value = "TWB64 - Pack 2";
+
+      opt_index              = palette_index - (NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1);
+      palettes_twb64_key     = "gambatte_gb_palette_twb64_2";
+      palettes_twb64_value   = palettes_twb64_2_opt_values[opt_index].value;
+   }
+
+   /* Notify frontend of option value changes */
+   var.key   = "gambatte_gb_internal_palette";
+   var.value = palettes_default_value;
+   environ_cb(RETRO_ENVIRONMENT_SET_VARIABLE, &var);
+
+   if (palettes_twb64_key)
+   {
+      var.key   = palettes_twb64_key;
+      var.value = palettes_twb64_value;
+      environ_cb(RETRO_ENVIRONMENT_SET_VARIABLE, &var);
+   }
+
+   /* Display notification message */
+   if (libretro_msg_interface_version >= 1)
+   {
+      struct retro_message_ext msg = {
+         internal_palette_labels[palette_index],
+         2000,
+         1,
+         RETRO_LOG_INFO,
+         RETRO_MESSAGE_TARGET_OSD,
+         RETRO_MESSAGE_TYPE_NOTIFICATION_ALT,
+         -1
+      };
+      environ_cb(RETRO_ENVIRONMENT_SET_MESSAGE_EXT, &msg);
+   }
+   else
+   {
+      struct retro_message msg = {
+         internal_palette_labels[palette_index],
+         120
+      };
+      environ_cb(RETRO_ENVIRONMENT_SET_MESSAGE, &msg);
+   }
+}
+
+/*************************/
+/* Palette Switching END */
+/*************************/
 
 /*****************************/
 /* Interframe blending START */
@@ -848,9 +1115,13 @@ namespace input
 static void update_input_state(void)
 {
    unsigned i;
-   unsigned res = 0;
-   bool turbo_a = false;
-   bool turbo_b = false;
+   unsigned res                = 0;
+   bool turbo_a                = false;
+   bool turbo_b                = false;
+   bool palette_prev           = false;
+   bool palette_next           = false;
+   bool palette_switch_enabled = (libretro_supports_set_variable &&
+         internal_palette_active);
 
    if (libretro_supports_bitmasks)
    {
@@ -863,6 +1134,12 @@ static void update_input_state(void)
 
       turbo_a = (ret & (1 << RETRO_DEVICE_ID_JOYPAD_X));
       turbo_b = (ret & (1 << RETRO_DEVICE_ID_JOYPAD_Y));
+
+      if (palette_switch_enabled)
+      {
+         palette_prev = (bool)(ret & (1 << RETRO_DEVICE_ID_JOYPAD_L));
+         palette_next = (bool)(ret & (1 << RETRO_DEVICE_ID_JOYPAD_R));
+      }
    }
    else
    {
@@ -874,6 +1151,12 @@ static void update_input_state(void)
 
       turbo_a = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X);
       turbo_b = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y);
+
+      if (palette_switch_enabled)
+      {
+         palette_prev = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L);
+         palette_next = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R);
+      }
    }
 
    if (!up_down_allowed)
@@ -918,6 +1201,38 @@ static void update_input_state(void)
    }
    else
       turbo_b_counter = 0;
+
+   /* Handle internal palette switching */
+   if (palette_prev || palette_next)
+   {
+      if (palette_switch_counter == 0)
+      {
+         size_t palette_index = internal_palette_index;
+
+         if (palette_prev)
+         {
+            if (palette_index > 0)
+               palette_index--;
+            else
+               palette_index = NUM_PALETTES_TOTAL - 1;
+         }
+         else /* palette_next */
+         {
+            if (palette_index < NUM_PALETTES_TOTAL - 1)
+               palette_index++;
+            else
+               palette_index = 0;
+         }
+
+         palette_switch_set_index(palette_index);
+      }
+
+      palette_switch_counter++;
+      if (palette_switch_counter >= PALETTE_SWITCH_PERIOD)
+         palette_switch_counter = 0;
+   }
+   else
+      palette_switch_counter = 0;
 
    libretro_input_state = res;
 }
@@ -1041,6 +1356,9 @@ void retro_init(void)
    // Initialise internal palette maps
    initPaletteMaps();
 
+   // Initialise palette switching functionality
+   init_palette_switch();
+
    struct retro_variable var = {0};
    var.key = "gambatte_gb_bootloader";
 
@@ -1078,6 +1396,7 @@ void retro_deinit(void)
    deinit_frame_blending();
 
    freePaletteMaps();
+   deinit_palette_switch();
 
    if (libretro_ff_enabled)
       set_fastforward_override(false);
@@ -1422,6 +1741,7 @@ palette_line_end:
 static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
 {
    const char *palette_title = NULL;
+   size_t index              = 0;
    struct retro_variable var = {0};
 
    // Read main internal palette setting
@@ -1431,29 +1751,54 @@ static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
       // Handle TWB64 packs
-      if (!strcmp(var.value, "TWB64 - Pack 1"))
+      if (string_is_equal(var.value, "TWB64 - Pack 1"))
       {
          var.key   = "gambatte_gb_palette_twb64_1";
          var.value = NULL;
 
          if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
             palette_title = var.value;
+
+         // Determine 'consolidated' pallete index
+         if (palette_title)
+            index = RHMAP_GET_STR(palettes_twb64_1_index_map, palette_title);
+         if (index > 0)
+            index--;
+         internal_palette_index = NUM_PALETTES_DEFAULT + index;
       }
-      else if (!strcmp(var.value, "TWB64 - Pack 2"))
+      else if (string_is_equal(var.value, "TWB64 - Pack 2"))
       {
          var.key   = "gambatte_gb_palette_twb64_2";
          var.value = NULL;
 
          if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
             palette_title = var.value;
+
+         // Determine 'consolidated' pallete index
+         if (palette_title)
+            index = RHMAP_GET_STR(palettes_twb64_2_index_map, palette_title);
+         if (index > 0)
+            index--;
+         internal_palette_index = NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + index;
       }
       else
+      {
          palette_title = var.value;
+
+         // Determine 'consolidated' pallete index
+         index = RHMAP_GET_STR(palettes_default_index_map, palette_title);
+         if (index > 0)
+            index--;
+         internal_palette_index = index;
+      }
    }
 
    // Ensure we have a valid palette title
    if (!palette_title)
-      palette_title = "GBC - Grayscale";
+   {
+      palette_title          = "GBC - Grayscale";
+      internal_palette_index = 8;
+   }
 
    // Search for requested palette
    *palette = findGbcDirPal(palette_title);
@@ -1464,8 +1809,9 @@ static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
    // black and white
    if (!(*palette))
    {
-      palette_title = "GBC - Grayscale";
-      *palette      = findGbcDirPal(palette_title);
+      palette_title          = "GBC - Grayscale";
+      *palette               = findGbcDirPal(palette_title);
+      internal_palette_index = 8;
       // No error check here - if this fails,
       // the core is entirely broken...
    }
@@ -1475,6 +1821,10 @@ static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
       *is_gbc = true;
    else
       *is_gbc = false;
+
+   // Record that an internal palette is
+   // currently in use
+   internal_palette_active = true;
 }
 
 static void check_variables(void)
@@ -1647,6 +1997,7 @@ static void check_variables(void)
 
 #endif
 
+   internal_palette_active = false;
    var.key = "gambatte_gb_colorization";
 
    if (!environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) || !var.value) {
@@ -1821,7 +2172,7 @@ bool retro_load_game(const struct retro_game_info *info)
       { 0 },
    };
 
-   struct retro_input_descriptor desc_ff[] = {
+   struct retro_input_descriptor desc_ff[] = { /* ff: fast forward */
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,   "D-Pad Left" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,     "D-Pad Up" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,   "D-Pad Down" },
@@ -1836,10 +2187,53 @@ bool retro_load_game(const struct retro_game_info *info)
       { 0 },
    };
 
+   struct retro_input_descriptor desc_ps[] = { /* ps: palette switching */
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,   "D-Pad Left" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,     "D-Pad Up" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,   "D-Pad Down" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT,  "D-Pad Right" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B,      "B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A,      "A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,      "Turbo B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,      "Turbo A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Select" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,  "Start" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L,      "Prev. Internal Palette" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R,      "Next Internal Palette" },
+      { 0 },
+   };
+
+   struct retro_input_descriptor desc_ff_ps[] = { /* ff: fast forward, ps: palette switching */
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,   "D-Pad Left" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,     "D-Pad Up" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,   "D-Pad Down" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT,  "D-Pad Right" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B,      "B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A,      "A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,      "Turbo B" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,      "Turbo A" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Select" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,  "Start" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L,      "Prev. Internal Palette" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R,      "Next Internal Palette" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2,     "Fast Forward" },
+      { 0 },
+   };
+
    if (libretro_supports_ff_override)
-      environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc_ff);
+   {
+      if (libretro_supports_set_variable)
+         environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc_ff_ps);
+      else
+         environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc_ff);
+   }
    else
-      environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
+   {
+      if (libretro_supports_set_variable)
+         environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc_ps);
+      else
+         environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
+   }
 
 #if defined(VIDEO_RGB565) || defined(VIDEO_ABGR1555)
    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
