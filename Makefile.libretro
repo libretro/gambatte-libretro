@@ -75,7 +75,7 @@ ifneq (,$(findstring unix,$(platform)))
 
    # Raspberry Pi
    ifneq (,$(findstring rpi,$(platform)))
-      CFLAGS += -fomit-frame-pointer -ffast-math
+      CFLAGS += -fomit-frame-pointer
       CXXFLAGS += $(CFLAGS)
       ifneq (,$(findstring rpi1,$(platform)))
          CFLAGS += -march=armv6j -mfpu=vfp -mfloat-abi=hard -marm
