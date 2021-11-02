@@ -1,8 +1,6 @@
 #include "net_serial.h"
 #include "libretro.h"
 #include "gambatte_log.h"
-#include <iostream>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -18,9 +16,6 @@
 #include <netdb.h>
 #endif
 
-//FILE* fpout;
-//FILE* fpin;
-
 NetSerial::NetSerial()
 : is_stopped_(true)
 , is_server_(false)
@@ -30,8 +25,6 @@ NetSerial::NetSerial()
 , sockfd_(-1)
 , lastConnectAttempt_(0)
 {
-//	fpout = fopen("/tmp/serial_out.txt", "w");
-//	fpin  = fopen("/tmp/serial_in.txt", "w");
 }
 
 NetSerial::~NetSerial()
@@ -39,8 +32,6 @@ NetSerial::~NetSerial()
 	stop();
 }
 
-//int master_txn_cnt = 0;
-//int slave_txn_cnt = 0;
 bool NetSerial::start(bool is_server, int port, const std::string& hostname)
 {
 	stop();
@@ -209,9 +200,6 @@ unsigned char NetSerial::send(unsigned char data, bool fastCgb)
 			return 0xFF;
 		}
 	}
-//	master_txn_cnt++;
-
-//	std::cout << "(" << master_txn_cnt << "," << slave_txn_cnt << ") Master send: " << (int)data << " at " << fastCgb << std::endl;
 
 	buffer[0] = data;
 	buffer[1] = fastCgb;
@@ -227,7 +215,6 @@ unsigned char NetSerial::send(unsigned char data, bool fastCgb)
 		return 0xFF;
 	}
 
-//	std::cout <<  "(" << master_txn_cnt << "," << slave_txn_cnt << ") Master waiting for response... " << std::endl;
 #ifdef _WIN32
 	if (recv(sockfd_, (char*) buffer, 2, 0) <= 0) 
 #else
@@ -239,13 +226,6 @@ unsigned char NetSerial::send(unsigned char data, bool fastCgb)
 		sockfd_ = -1;
 		return 0xFF;
 	}
-
-//	std::cout << "(" << master_txn_cnt << "," << slave_txn_cnt << ") Master received: " << (int)buffer[0] << " (speed " << (int)buffer[1] << ")" << std::endl;
-
-//	fwrite(&data, 1, 1, fpout);
-//	fwrite(buffer, 1, 1, fpin);
-//	fflush(fpout);
-//	fflush(fpin);
 
 	return buffer[0];
 }
@@ -297,7 +277,6 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 
 	in = buffer[0];
 	fastCgb = buffer[1];
-//	std::cout << "(" << master_txn_cnt << "," << slave_txn_cnt << ") Slave read: " << (int)in << " at " << fastCgb << ", responding with " << (int)out << std::endl;
 
 	buffer[0] = out;
 	buffer[1] = 128;
@@ -312,11 +291,6 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 		sockfd_ = -1;
 		return false;
 	}
-
-//	fwrite(&out, 1, 1, fpout);
-//	fwrite(&in, 1, 1, fpin);
-//	fflush(fpout);
-//	fflush(fpin);
 
 	return true;
 }

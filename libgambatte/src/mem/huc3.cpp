@@ -18,7 +18,6 @@
 
 #include "huc3.h"
 #include "../savestate.h"
-#include <stdio.h>
 #include "gambatte_log.h"
 
 namespace gambatte {

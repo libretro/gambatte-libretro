@@ -19,8 +19,6 @@
 #include "cartridge.h"
 #include "../savestate.h"
 #include <cstring>
-#include <fstream>
-#include <stdio.h>
 #include <string.h>
 #include <algorithm>
 #include "gambatte_log.h"
@@ -640,7 +638,7 @@ namespace gambatte
          case PLAIN: mbc.reset(new Mbc0(memptrs_)); break;
          case MBC1:
                      if (!rambanks && rombanks == 64 && multiCartCompat) {
-                        std::puts("Multi-ROM \"MBC1\" presumed");
+                        /*std::puts("Multi-ROM \"MBC1\" presumed");*/
                         mbc.reset(new Mbc1Multi64(memptrs_));
                      } else
                         mbc.reset(new Mbc1(memptrs_));
