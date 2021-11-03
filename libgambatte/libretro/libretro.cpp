@@ -1651,6 +1651,12 @@ static void load_custom_palette(void)
       if (!line)
          break;
 
+      /* Remove any leading/trailing whitespace
+       * > Additionally handles 'leftovers' from
+       *   CRLF line terminators if palette file
+       *   happens to be in DOS format */
+      string_trim_whitespace(line);
+
       if (string_is_empty(line) || /* Skip empty lines */
           (*line == '[') ||        /* Skip ini sections */
           (*line == ';'))          /* Skip ini comments */
