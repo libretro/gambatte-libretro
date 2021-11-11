@@ -1,41 +1,34 @@
-# Prepare source for Crowdin sync
+# Prepare source texts & upload them to Crowdin
 
-name: Crowdin Upload Preparation
+name: Crowdin Source Texts Upload
 
+# on change to the English texts
 on:
   push:
     branches:
       - master
     paths:
-      - 'libgambatte/libretro/libretro_core_options.h'
+      - "libgambatte/libretro/libretro_core_options.h"
 
 jobs:
-  prepare_source_file:
+  upload_source_file:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
       - name: Setup Python
         uses: actions/setup-python@v2
-        
+
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
 
-      - name: Crowdin Prep
+      - name: Upload Source
         shell: bash
+        env:
+          CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}
         run: |
-          python3 intl/crowdin_prep.py 'libgambatte/libretro'
-          
-      - name: Commit files
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add intl/*
-          git commit -m "Recreate translation source text files" -a
-
-      - name: GitHub Push
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          python3 intl/crowdin_prep.py "libgambatte/libretro"
+          python3 intl/crowdin_source_upload.py "$CROWDIN_API_KEY" "gambatte-libretro"

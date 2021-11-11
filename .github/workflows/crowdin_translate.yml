@@ -1,21 +1,23 @@
-# Recreate libretro_core_options_intl.h using translations form Crowdin
+# Download translations form Crowdin & Recreate libretro_core_options_intl.h
 
 name: Crowdin Translation Integration
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'intl/*/*'
+  schedule:
+    - cron: '0 0 * * *'  # every day at midnight
 
 jobs:
   create_intl_file:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
       - name: Setup Python
         uses: actions/setup-python@v2
-        
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -24,15 +26,17 @@ jobs:
 
       - name: Create intl file
         shell: bash
+        env:
+          CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}
         run: |
-          python3 intl/crowdin_intl.py 'libgambatte/libretro'
+          python3 intl/translation_workflow.py "$CROWDIN_API_KEY" "gambatte-libretro" "libgambatte/libretro"
 
       - name: Commit files
         run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "github-actions@github.com"
           git config --local user.name "github-actions[bot]"
-          git add libgambatte/libretro/libretro_core_options_intl.h
-          git commit -m "Recreate libretro_core_options_intl.h" -a
+          git add intl/translation_workflow.py "libgambatte/libretro/libretro_core_options_intl.h"
+          git commit -m "Fetch translations & Recreate libretro_core_options_intl.h"
 
       - name: GitHub Push
         uses: ad-m/github-push-action@v0.6.0
