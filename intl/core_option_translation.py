@@ -9,7 +9,7 @@ Both v1 and v2 structs are supported. It is, however, recommended to convert v1 
 'v1_to_v2_converter.py'.
 
 Usage:
-python3 path/to/core_opt_translation.py "path/to/where/libretro_core_options.h & libretro_core_options_intl.h/are"
+python3 path/to/core_option_translation.py "path/to/where/libretro_core_options.h & libretro_core_options_intl.h/are"
 
 This script will:
 1.) create key words for & extract the texts from libretro_core_options.h & save them into intl/_us/core_options.h
@@ -23,88 +23,62 @@ import json
 import urllib.request as req
 import shutil
 
-# for uploading translations to Crowdin, the Crowdin 'language id' is required
-LANG_CODE_TO_ID = {'_ar': 'ar',
-                   '_ast': 'ast',
-                   '_chs': 'zh-CN',
-                   '_cht': 'zh-TW',
-                   '_cs': 'cs',
-                   '_cy': 'cy',
-                   '_da': 'da',
-                   '_de': 'de',
-                   '_el': 'el',
-                   '_eo': 'eo',
-                   '_es': 'es-ES',
-                   '_fa': 'fa',
-                   '_fi': 'fi',
-                   '_fr': 'fr',
-                   '_gl': 'gl',
-                   '_he': 'he',
-                   '_hu': 'hu',
-                   '_id': 'id',
-                   '_it': 'it',
-                   '_ja': 'ja',
-                   '_ko': 'ko',
-                   '_nl': 'nl',
-                   '_pl': 'pl',
-                   '_pt_br': 'pt-BR',
-                   '_pt_pt': 'pt-PT',
-                   '_ru': 'ru',
-                   '_sk': 'sk',
-                   '_sv': 'sv-SE',
-                   '_tr': 'tr',
-                   '_uk': 'uk',
-                   '_vn': 'vi'}
-LANG_CODE_TO_R_LANG = {'_ar': 'RETRO_LANGUAGE_ARABIC',
-                       '_ast': 'RETRO_LANGUAGE_ASTURIAN',
-                       '_chs': 'RETRO_LANGUAGE_CHINESE_SIMPLIFIED',
-                       '_cht': 'RETRO_LANGUAGE_CHINESE_TRADITIONAL',
-                       '_cs': 'RETRO_LANGUAGE_CZECH',
-                       '_cy': 'RETRO_LANGUAGE_WELSH',
-                       '_da': 'RETRO_LANGUAGE_DANISH',
-                       '_de': 'RETRO_LANGUAGE_GERMAN',
-                       '_el': 'RETRO_LANGUAGE_GREEK',
-                       '_eo': 'RETRO_LANGUAGE_ESPERANTO',
-                       '_es': 'RETRO_LANGUAGE_SPANISH',
-                       '_fa': 'RETRO_LANGUAGE_PERSIAN',
-                       '_fi': 'RETRO_LANGUAGE_FINNISH',
-                       '_fr': 'RETRO_LANGUAGE_FRENCH',
-                       '_gl': 'RETRO_LANGUAGE_GALICIAN',
-                       '_he': 'RETRO_LANGUAGE_HEBREW',
-                       '_hu': 'RETRO_LANGUAGE_HUNGARIAN',
-                       '_id': 'RETRO_LANGUAGE_INDONESIAN',
-                       '_it': 'RETRO_LANGUAGE_ITALIAN',
-                       '_ja': 'RETRO_LANGUAGE_JAPANESE',
-                       '_ko': 'RETRO_LANGUAGE_KOREAN',
-                       '_nl': 'RETRO_LANGUAGE_DUTCH',
-                       '_pl': 'RETRO_LANGUAGE_POLISH',
-                       '_pt_br': 'RETRO_LANGUAGE_PORTUGUESE_BRAZIL',
-                       '_pt_pt': 'RETRO_LANGUAGE_PORTUGUESE_PORTUGAL',
-                       '_ru': 'RETRO_LANGUAGE_RUSSIAN',
-                       '_sk': 'RETRO_LANGUAGE_SLOVAK',
-                       '_sv': 'RETRO_LANGUAGE_SWEDISH',
-                       '_tr': 'RETRO_LANGUAGE_TURKISH',
-                       '_uk': 'RETRO_LANGUAGE_UKRAINIAN',
-                       '_us': 'RETRO_LANGUAGE_ENGLISH',
-                       '_vn': 'RETRO_LANGUAGE_VIETNAMESE'}
+# LANG_CODE_TO_R_LANG = {'_ar': 'RETRO_LANGUAGE_ARABIC',
+#                        '_ast': 'RETRO_LANGUAGE_ASTURIAN',
+#                        '_chs': 'RETRO_LANGUAGE_CHINESE_SIMPLIFIED',
+#                        '_cht': 'RETRO_LANGUAGE_CHINESE_TRADITIONAL',
+#                        '_cs': 'RETRO_LANGUAGE_CZECH',
+#                        '_cy': 'RETRO_LANGUAGE_WELSH',
+#                        '_da': 'RETRO_LANGUAGE_DANISH',
+#                        '_de': 'RETRO_LANGUAGE_GERMAN',
+#                        '_el': 'RETRO_LANGUAGE_GREEK',
+#                        '_eo': 'RETRO_LANGUAGE_ESPERANTO',
+#                        '_es': 'RETRO_LANGUAGE_SPANISH',
+#                        '_fa': 'RETRO_LANGUAGE_PERSIAN',
+#                        '_fi': 'RETRO_LANGUAGE_FINNISH',
+#                        '_fr': 'RETRO_LANGUAGE_FRENCH',
+#                        '_gl': 'RETRO_LANGUAGE_GALICIAN',
+#                        '_he': 'RETRO_LANGUAGE_HEBREW',
+#                        '_hu': 'RETRO_LANGUAGE_HUNGARIAN',
+#                        '_id': 'RETRO_LANGUAGE_INDONESIAN',
+#                        '_it': 'RETRO_LANGUAGE_ITALIAN',
+#                        '_ja': 'RETRO_LANGUAGE_JAPANESE',
+#                        '_ko': 'RETRO_LANGUAGE_KOREAN',
+#                        '_nl': 'RETRO_LANGUAGE_DUTCH',
+#                        '_oc': 'RETRO_LANGUAGE_OCCITAN',
+#                        '_pl': 'RETRO_LANGUAGE_POLISH',
+#                        '_pt_br': 'RETRO_LANGUAGE_PORTUGUESE_BRAZIL',
+#                        '_pt_pt': 'RETRO_LANGUAGE_PORTUGUESE_PORTUGAL',
+#                        '_ru': 'RETRO_LANGUAGE_RUSSIAN',
+#                        '_sk': 'RETRO_LANGUAGE_SLOVAK',
+#                        '_sv': 'RETRO_LANGUAGE_SWEDISH',
+#                        '_tr': 'RETRO_LANGUAGE_TURKISH',
+#                        '_uk': 'RETRO_LANGUAGE_UKRAINIAN',
+#                        '_us': 'RETRO_LANGUAGE_ENGLISH',
+#                        '_vn': 'RETRO_LANGUAGE_VIETNAMESE'}
 
 # these are handled by RetroArch directly - no need to include them in core translations
 ON_OFFS = {'"enabled"', '"disabled"', '"true"', '"false"', '"on"', '"off"'}
 
 
-def remove_special_chars(text: str, char_set=0) -> str:
+def remove_special_chars(text: str, char_set=0, allow_non_ascii=False) -> str:
     """Removes special characters from a text.
 
     :param text: String to be cleaned.
-    :param char_set: 0 -> remove all ASCII special chars except for '_' & 'space';
+    :param char_set: 0 -> remove all ASCII special chars except for '_' & 'space' (default)
                      1 -> remove invalid chars from file names
+    :param allow_non_ascii: False -> all non-ascii characters will be removed (default)
+                            True -> non-ascii characters will be passed through
     :return: Clean text.
     """
     command_chars = [chr(unicode) for unicode in tuple(range(0, 32)) + (127,)]
     special_chars = ([chr(unicode) for unicode in tuple(range(33, 48)) + tuple(range(58, 65)) + tuple(range(91, 95))
                       + (96,) + tuple(range(123, 127))],
-                     ('\\', '/', ':', '*', '?', '"', '<', '>', '|'))
-    res = text
+                     ('\\', '/', ':', '*', '?', '"', '<', '>', '|', '#', '%',
+                      '&', '{', '}', '$', '!', '¸', "'", '@', '+', '='))
+    res = text if allow_non_ascii \
+        else text.encode('ascii', errors='ignore').decode('unicode-escape')
+
     for cm in command_chars:
         res = res.replace(cm, '_')
     for sp in special_chars[char_set]:
@@ -284,7 +258,7 @@ def get_texts(text: str) -> dict:
                         set_value = set_key
                     # re.fullmatch(r'(?:[+-][0-9]+)+', value[1:-1])
                     if set_value not in just_string[lang] and not re.sub(r'[+-]', '', set_value[1:-1]).isdigit():
-                        clean_key = set_key.encode('ascii', errors='ignore').decode('unicode-escape')[1:-1]
+                        clean_key = set_key[1:-1]
                         clean_key = remove_special_chars(clean_key).upper().replace(' ', '_')
                         m_h = create_non_dupe(re.sub(r'__+', '_', f"OPTION_VAL_{clean_key}"), opt, hash_n_string[lang])
                         hash_n_string[lang][m_h] = set_value
@@ -418,14 +392,14 @@ def get_crowdin_client(dir_path: str) -> str:
     return jar_path
 
 
-def create_intl_file(intl_file_path: str, intl_dir_path: str, text: str, core_name: str, file_path: str) -> None:
+def create_intl_file(localisation_file_path: str, intl_dir_path: str, text: str, core_name: str, file_path: str) -> None:
     """Creates 'libretro_core_options_intl.h' from Crowdin translations.
 
-    :param intl_file_path: Path to 'libretro_core_options_intl.h'
+    :param localisation_file_path: Path to 'libretro_core_options_intl.h'
     :param intl_dir_path: Path to the intl directory.
     :param text: Content of the 'libretro_core_options.h' being translated.
     :param core_name: Name of the core. Needed to identify the files to pull the translations from.
-    :param file_path: Path to the '<core name>_us.h' file, containing the original English texts.
+    :param file_path: Path to the '<core name>.h' file, containing the original English texts.
     :return: None
     """
     msg_dict = {}
@@ -503,30 +477,44 @@ def create_intl_file(intl_file_path: str, intl_dir_path: str, text: str, core_na
         for msg in masked_msgs:
             msg_dict[msg.group(2)] = msg.group(1)
 
-    with open(intl_file_path, 'r', encoding='utf-8') as intl:  # libretro_core_options_intl.h
-        in_text = intl.read()
-        intl_start = re.search(re.escape('/*\n'
-                                         ' ********************************\n'
-                                         ' * Core Option Definitions\n'
-                                         ' ********************************\n'
-                                         '*/\n'), in_text)
-        if intl_start:
-            out_txt = in_text[:intl_start.end(0)]
-        else:
-            intl_start = re.search(re.escape('#ifdef __cplusplus\n'
-                                             'extern "C" {\n'
-                                             '#endif\n'), in_text)
-            out_txt = in_text[:intl_start.end(0)]
+    out_txt = "﻿#ifndef LIBRETRO_CORE_OPTIONS_INTL_H__\n" \
+              "#define LIBRETRO_CORE_OPTIONS_INTL_H__\n\n" \
+              "#if defined(_MSC_VER) && (_MSC_VER >= 1500 && _MSC_VER < 1900)\n" \
+              "/* https://support.microsoft.com/en-us/kb/980263 */\n" \
+              '#pragma execution_character_set("utf-8")\n' \
+              "#pragma warning(disable:4566)\n" \
+              "#endif\n\n" \
+              "#include <libretro.h>\n\n"
 
-    for folder in os.listdir(intl_dir_path):  # intl/_*
-        if os.path.isdir(os.path.join(intl_dir_path, folder)) and folder.startswith('_')\
-                and folder != '_us' and folder != '__pycache__':
-            translation_path = os.path.join(intl_dir_path, folder, core_name + '.h')  # <core_name>_<lang>.h
+    if os.path.isfile(localisation_file_path):
+        with open(localisation_file_path, 'r', encoding='utf-8') as intl:  # libretro_core_options_intl.h
+            in_text = intl.read()
+            intl_start = re.search(re.escape('/*\n'
+                                             ' ********************************\n'
+                                             ' * Core Option Definitions\n'
+                                             ' ********************************\n'
+                                             '*/\n'), in_text)
+            if intl_start:
+                out_txt = in_text[:intl_start.end(0)]
+            else:
+                intl_start = re.search(re.escape('#ifdef __cplusplus\n'
+                                                 'extern "C" {\n'
+                                                 '#endif\n'), in_text)
+                if intl_start:
+                    out_txt = in_text[:intl_start.end(0)]
+
+    for folder in os.scandir(intl_dir_path):  # intl/_*
+        if folder.is_dir() and folder.name.startswith('_')\
+                and folder.name != '_us' and folder.name != '__pycache__':
+            translation_path = os.path.join(folder.path, core_name + '.h')  # <core_name>_<lang>.h
+            if not os.path.isfile(translation_path):
+                continue
             # all structs: group(0) full struct, group(1) beginning, group(2) content
             struct_groups = cor.p_struct.finditer(text)
-            lang_up = folder.upper()
-            lang_low = folder.lower()
-            out_txt = out_txt + f'/* {LANG_CODE_TO_R_LANG[lang_low]} */\n\n'  # /* RETRO_LANGUAGE_NAME */
+            lang_up = folder.name.upper()
+            lang_low = folder.name.lower()
+            out_txt = out_txt + f'/* RETRO_LANGUAGE{lang_up} */\n\n'  # /* RETRO_LANGUAGE_NM */
+
             with open(translation_path, 'r+', encoding='utf-8') as f_in:  # <core name>.h
                 out_txt = out_txt + f_in.read() + '\n'
             for construct in struct_groups:
@@ -561,7 +549,7 @@ def create_intl_file(intl_file_path: str, intl_dir_path: str, text: str, core_na
                                         '};\n\n'
         #    shutil.rmtree(JOINER.join((intl_dir_path, folder)))
 
-    with open(intl_file_path, 'w', encoding='utf-8') as intl:
+    with open(localisation_file_path, 'w', encoding='utf-8') as intl:
         intl.write(out_txt + '\n#ifdef __cplusplus\n'
                              '}\n#endif\n'
                              '\n#endif')
@@ -571,7 +559,6 @@ def create_intl_file(intl_file_path: str, intl_dir_path: str, text: str, core_na
 # --------------------          MAIN          -------------------- #
 
 if __name__ == '__main__':
-    #
     try:
         if os.path.isfile(sys.argv[1]):
             _temp = os.path.dirname(sys.argv[1])
@@ -584,26 +571,24 @@ if __name__ == '__main__':
         TARGET_DIR_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         print("No path provided, assuming parent directory:\n" + TARGET_DIR_PATH)
 
+    NAME = 'core_options'
     DIR_PATH = os.path.dirname(os.path.realpath(__file__))
     H_FILE_PATH = os.path.join(TARGET_DIR_PATH, 'libretro_core_options.h')
     INTL_FILE_PATH = os.path.join(TARGET_DIR_PATH, 'libretro_core_options_intl.h')
 
-    _core_name = 'core_options'
-    try:
-        print('Getting texts from libretro_core_options.h')
-        with open(H_FILE_PATH, 'r+', encoding='utf-8') as _h_file:
-            _main_text = _h_file.read()
-        _hash_n_str = get_texts(_main_text)
-        _files = create_msg_hash(DIR_PATH, _core_name, _hash_n_str)
-        _source_jsons = h2json(_files)
-    except Exception as e:
-        print(e)
+    print('Getting texts from libretro_core_options.h')
+    with open(H_FILE_PATH, 'r+', encoding='utf-8') as _h_file:
+        _main_text = _h_file.read()
+    _hash_n_str = get_texts(_main_text)
+    _files = create_msg_hash(DIR_PATH, NAME, _hash_n_str)
+    _source_jsons = h2json(_files)
 
     print('Getting texts from libretro_core_options_intl.h')
-    with open(INTL_FILE_PATH, 'r+', encoding='utf-8') as _intl_file:
-        _intl_text = _intl_file.read()
-        _hash_n_str_intl = get_texts(_intl_text)
-        _intl_files = create_msg_hash(DIR_PATH, _core_name, _hash_n_str_intl)
-        _intl_jsons = h2json(_intl_files)
+    if os.path.isfile(INTL_FILE_PATH):
+        with open(INTL_FILE_PATH, 'r+', encoding='utf-8') as _intl_file:
+            _intl_text = _intl_file.read()
+            _hash_n_str_intl = get_texts(_intl_text)
+            _intl_files = create_msg_hash(DIR_PATH, NAME, _hash_n_str_intl)
+            _intl_jsons = h2json(_intl_files)
 
     print('\nAll done!')
