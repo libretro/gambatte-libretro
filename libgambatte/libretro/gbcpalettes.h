@@ -1918,7 +1918,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 078 - Christmas Ver.", twb64_078_christmas_ver },
 	{ "TWB64 079 - Cardcaptor Pink", twb64_079_cardcaptor_pink },
 	{ "TWB64 080 - Pretty Guardian Gold", twb64_080_pretty_guardian_gold },
-	{ "TWB64 081 - Camoflauge Ver.", twb64_081_camoflauge_ver },
+	{ "TWB64 081 - Camouflage Ver.", twb64_081_camoflauge_ver },
 	{ "TWB64 082 - Legendary Super Saiyan", twb64_082_legendary_super_saiyan },
 	{ "TWB64 083 - Super Saiyan Rose", twb64_083_super_saiyan_rose },
 	{ "TWB64 084 - Super Saiyan", twb64_084_super_saiyan },
