@@ -52,8 +52,8 @@ extern "C" {
 struct retro_core_option_v2_category option_cats_us[] = {
    {
       "gb_link",
-      "Game Boy Link",
-      "Configure networked 'Game Boy Link' (multiplayer) options."
+      "Game Link",
+      "Change networked Game Link (multiplayer) settings."
    },
    { NULL, NULL, NULL },
 };
@@ -412,7 +412,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "gambatte_dark_filter_level",
-      "Dark Filter Level (percent)",
+      "Dark Filter Level (%)",
       NULL,
       "Enable luminosity-based brightness reduction. May be used to avoid glare/eye strain when playing games with white backgrounds, which are intended for display on a non-backlit Game Boy Color and can therefore appear uncomfortably bright when viewed on a modern backlit screen.",
       NULL,
@@ -435,9 +435,9 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "gambatte_gb_hwmode",
-      "Emulated Hardware (restart)",
+      "Emulated Hardware (Restart Required)",
       NULL,
-      "Specify which type of hardware to emulate. 'Auto' is recommended. Selecting 'GBA' unlocks extra features in certain 'GBA enhanced' Game Boy Color games (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...).",
+      "Specify which type of hardware to emulate. 'Auto' is recommended. Selecting 'GBA' unlocks extra features in certain 'GBA Enhanced' Game Boy Color games (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...).",
       NULL,
       NULL,
       {
@@ -451,7 +451,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "gambatte_gb_bootloader",
-      "Use Official Bootloader (restart)",
+      "Use Official Bootloader (Restart Required)",
       NULL,
       "Enable support for official Game Boy and Game Boy Color bootloaders, with corresponding start-up logo animations.",
       NULL,
@@ -483,7 +483,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_up_down_allowed",
       "Allow Opposing Directions",
       NULL,
-      "Enabling this will allow pressing / quickly alternating / holding both left and right (or up and down) directions at the same time. This may cause movement-based glitches.",
+      "Enabling this will allow pressing/quickly alternating/holding both left and right (or up and down) directions at the same time. This may cause movement-based glitches.",
       NULL,
       NULL,
       {
@@ -648,9 +648,9 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 #ifdef HAVE_NETWORK
    {
       "gambatte_show_gb_link_settings",
-      "Show Game Boy Link Settings",
+      "Show Game Link Settings",
       NULL,
-      "Enable configuration of networked 'Game Boy Link' (multiplayer) options. NOTE: Quick Menu may need to be toggled for this setting to take effect.",
+      "Enable configuration of networked Game Link (multiplayer) options. NOTE: Quick Menu may need to be toggled for this setting to take effect.",
       NULL,
       NULL,
       {
@@ -662,9 +662,9 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "gambatte_gb_link_mode",
-      "Game Boy Link Mode",
+      "Game Link Mode",
       "Link Mode",
-      "When enabling networked 'Game Boy Link' functionality, specify whether current instance should run as a server or client.",
+      "When enabling networked Game Link functionality, specify whether current instance should run as a server or client.",
       NULL,
       "gb_link",
       {
@@ -679,7 +679,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_port",
       "Network Link Port",
       "Port",
-      "Specify port used for 'Game Boy Link' network communication.",
+      "Specify port used for Game Link network communication.",
       NULL,
       "gb_link",
       {
@@ -712,8 +712,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_1",
       "Network Link Server Address Pt. 01: x__.___.___.___",
       "Server Address Pt. 01: x__.___.___.___",
-      "1st digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "1st digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "1st digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "1st digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -734,8 +734,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_2",
       "Network Link Server Address Pt. 02: _x_.___.___.___",
       "Server Address Pt. 02: _x_.___.___.___",
-      "2nd digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "2nd digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "2nd digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "2nd digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -756,8 +756,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_3",
       "Network Link Server Address Pt. 03: __x.___.___.___",
       "Server Address Pt. 03: __x.___.___.___",
-      "3rd digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "3rd digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "3rd digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "3rd digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -778,8 +778,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_4",
       "Network Link Server Address Pt. 04: ___.x__.___.___",
       "Server Address Pt. 04: ___.x__.___.___",
-      "4th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "4th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "4th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "4th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -800,8 +800,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_5",
       "Network Link Server Address Pt. 05: ___._x_.___.___",
       "Server Address Pt. 05: ___._x_.___.___",
-      "5th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "5th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "5th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "5th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -822,8 +822,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_6",
       "Network Link Server Address Pt. 06: ___.__x.___.___",
       "Server Address Pt. 06: ___.__x.___.___",
-      "6th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "6th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "6th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "6th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -844,8 +844,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_7",
       "Network Link Server Address Pt. 07: ___.___.x__.___",
       "Server Address Pt. 07: ___.___.x__.___",
-      "7th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "7th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "7th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "7th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -866,8 +866,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_8",
       "Network Link Server Address Pt. 08: ___.___._x_.___",
       "Server Address Pt. 08: ___.___._x_.___",
-      "8th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "8th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "8th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "8th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -888,8 +888,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_9",
       "Network Link Server Address Pt. 09: ___.___.__x.___",
       "Server Address Pt. 09: ___.___.__x.___",
-      "9th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "9th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "9th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "9th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -910,8 +910,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_10",
       "Network Link Server Address Pt. 10: ___.___.___.x__",
       "Server Address Pt. 10: ___.___.___.x__",
-      "10th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "10th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "10th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "10th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -932,8 +932,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_11",
       "Network Link Server Address Pt. 11: ___.___.___._x_",
       "Server Address Pt. 11: ___.___.___._x_",
-      "11th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "11th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "11th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "11th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
@@ -954,8 +954,8 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_network_server_ip_12",
       "Network Link Server Address Pt. 12: ___.___.___.__x",
       "Server Address Pt. 12: ___.___.___.__x",
-      "12th digit of remote 'Game Boy Link' network server IP address. Only used when 'Game Boy Link Mode' is set to 'Network Client'.",
-      "12th digit of remote 'Game Boy Link' network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
+      "12th digit of remote Game Link network server IP address. Only used when 'Game Link Mode' is set to 'Network Client'.",
+      "12th digit of remote Game Link network server IP address. Only used when 'Link Mode' is set to 'Network Client'.",
       "gb_link",
       {
          { "0", NULL },
