@@ -4,7 +4,7 @@ name: Crowdin Translation Integration
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # every day at midnight
+    - cron: '50 10 * * *'  # 10:50 AM, UTC
 
 jobs:
   create_intl_file:
@@ -35,7 +35,7 @@ jobs:
         run: |
           git config --local user.email "github-actions@github.com"
           git config --local user.name "github-actions[bot]"
-          git add intl/translation_workflow.py "libgambatte/libretro/libretro_core_options_intl.h"
+          git add intl/download_workflow.py "libgambatte/libretro/libretro_core_options_intl.h"
           git commit -m "Fetch translations & Recreate libretro_core_options_intl.h"
 
       - name: GitHub Push
