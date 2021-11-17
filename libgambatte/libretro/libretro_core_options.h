@@ -230,7 +230,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 078 - Christmas Ver.",            NULL },
          { "TWB64 079 - Cardcaptor Pink",           NULL },
          { "TWB64 080 - Pretty Guardian Gold",      NULL },
-         { "TWB64 081 - Camoflauge Ver.",           NULL },
+         { "TWB64 081 - Camouflage Ver.",           NULL },
          { "TWB64 082 - Legendary Super Saiyan",    NULL },
          { "TWB64 083 - Super Saiyan Rose",         NULL },
          { "TWB64 084 - Super Saiyan",              NULL },
@@ -624,7 +624,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "gambatte_rumble_level",
-      "Gamepad Rumble Strength",
+      "Controller Rumble Strength",
       NULL,
       "Enables haptic feedback effects for supported games (Pokemon Pinball, Perfect Dark...).",
       NULL,
