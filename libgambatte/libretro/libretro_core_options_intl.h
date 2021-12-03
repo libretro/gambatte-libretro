@@ -3915,17 +3915,17 @@ struct retro_core_options_v2 options_ca = {
 
 /* RETRO_LANGUAGE_CHS */
 
-#define CATEGORY_GB_LINK_LABEL_CHS NULL
-#define CATEGORY_GB_LINK_INFO_0_CHS NULL
-#define GAMBATTE_GB_COLORIZATION_LABEL_CHS NULL
-#define GAMBATTE_GB_COLORIZATION_INFO_0_CHS NULL
+#define CATEGORY_GB_LINK_LABEL_CHS "游戏链接"
+#define CATEGORY_GB_LINK_INFO_0_CHS "更改网络游戏链接 (多人)"
+#define GAMBATTE_GB_COLORIZATION_LABEL_CHS "GB 调色"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_CHS "启用的GameBoy颜色化。'自动' 选择最佳' (最颜色/适当) 调色板。 'GBC' 如果定义则选择特定GameBoyColor色板，否则'GBC - 暗绿色'。 'SGB' 如果定义则选择特定SuperGameBoy色板，否则'SGB - 1A', '内部' 使用'内部调色板' 核心选项。 “自定义”从系统目录加载用户创建的调色板。"
 #define OPTION_VAL_AUTO_CHS "自动"
 #define OPTION_VAL_GBC_CHS NULL
 #define OPTION_VAL_SGB_CHS NULL
 #define OPTION_VAL_INTERNAL_CHS "内建"
 #define OPTION_VAL_CUSTOM_CHS "自定义"
-#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_CHS NULL
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_CHS NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_CHS "内部色板"
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_CHS "选择 'GB 色彩化' 时用于彩色游戏的调色板。'GB 色彩化' 设置为 '内部'， 或者当“GB 色彩化”设置为“自动”且游戏没有预定义的 SGB/GBC 调色板。 'GB'的调色板模拟GameBoy硬件的显示。'GBC' 色板与GameBoy颜色的内置预设相同。 'SGB'调色板与SuperGameBoy的内置预设相同。"
 #define OPTION_VAL_GB_DMG_CHS NULL
 #define OPTION_VAL_GB_POCKET_CHS NULL
 #define OPTION_VAL_GB_LIGHT_CHS NULL
@@ -10475,36 +10475,36 @@ struct retro_core_options_v2 options_da = {
 #define OPTION_VAL_TWB64_032_WANDA_PINK_DE NULL
 #define OPTION_VAL_TWB64_033_LINK_S_AWAKENING_DX_VER_DE NULL
 #define OPTION_VAL_TWB64_034_TRAVEL_WOOD_DE "TWB64 034 - Reiseholz"
-#define OPTION_VAL_TWB64_035_POKEMON_VER_DE NULL
-#define OPTION_VAL_TWB64_036_GAME_GRUMP_ORANGE_DE NULL
-#define OPTION_VAL_TWB64_037_SCOOBY_DOO_MYSTERY_VER_DE NULL
-#define OPTION_VAL_TWB64_038_POKEMON_MINI_VER_DE NULL
-#define OPTION_VAL_TWB64_039_SUPERVISION_VER_DE NULL
-#define OPTION_VAL_TWB64_040_DMG_VER_DE NULL
-#define OPTION_VAL_TWB64_041_POCKET_VER_DE NULL
-#define OPTION_VAL_TWB64_042_LIGHT_VER_DE NULL
-#define OPTION_VAL_TWB64_043_MIRAITOWA_BLUE_DE NULL
-#define OPTION_VAL_TWB64_044_SOMEITY_PINK_DE NULL
-#define OPTION_VAL_TWB64_045_PIKACHU_YELLOW_DE NULL
-#define OPTION_VAL_TWB64_046_EEVEE_BROWN_DE NULL
-#define OPTION_VAL_TWB64_047_MICROVISION_VER_DE NULL
-#define OPTION_VAL_TWB64_048_TI_83_VER_DE NULL
+#define OPTION_VAL_TWB64_035_POKEMON_VER_DE "TWB64 035 - Pokemon-Ver."
+#define OPTION_VAL_TWB64_036_GAME_GRUMP_ORANGE_DE "TWB64 036 - Game-Grump-Orange"
+#define OPTION_VAL_TWB64_037_SCOOBY_DOO_MYSTERY_VER_DE "TWB64 037 - Scooby-Doo-Mystery-Ver."
+#define OPTION_VAL_TWB64_038_POKEMON_MINI_VER_DE "TWB64 038 - Pokemon-mini-Ver."
+#define OPTION_VAL_TWB64_039_SUPERVISION_VER_DE "TWB64 039 - Supervision-Ver."
+#define OPTION_VAL_TWB64_040_DMG_VER_DE "TWB64 040 - DMG-Ver."
+#define OPTION_VAL_TWB64_041_POCKET_VER_DE "TWB64 041 - Pocket-Ver."
+#define OPTION_VAL_TWB64_042_LIGHT_VER_DE "TWB64 042 - Light-Ver."
+#define OPTION_VAL_TWB64_043_MIRAITOWA_BLUE_DE "TWB64 043 - Miraitowa-Blau"
+#define OPTION_VAL_TWB64_044_SOMEITY_PINK_DE "TWB64 044 - Someity-Pink"
+#define OPTION_VAL_TWB64_045_PIKACHU_YELLOW_DE "TWB64 045 - Pikachu-Gelb"
+#define OPTION_VAL_TWB64_046_EEVEE_BROWN_DE "TWB64 046 - Evoli-Braun"
+#define OPTION_VAL_TWB64_047_MICROVISION_VER_DE "TWB64 047 - Microvision-Ver."
+#define OPTION_VAL_TWB64_048_TI_83_VER_DE "TWB64 048 - TI-83-Ver."
 #define OPTION_VAL_TWB64_049_AEGIS_CHERRY_DE NULL
 #define OPTION_VAL_TWB64_050_LABO_FAWN_DE NULL
 #define OPTION_VAL_TWB64_051_MILLION_LIVE_GOLD_DE NULL
 #define OPTION_VAL_TWB64_052_TOKYO_MIDTOWN_VER_DE NULL
 #define OPTION_VAL_TWB64_053_VMU_VER_DE NULL
 #define OPTION_VAL_TWB64_054_GAME_MASTER_VER_DE NULL
-#define OPTION_VAL_TWB64_055_ANDROID_GREEN_DE NULL
-#define OPTION_VAL_TWB64_056_TICKETMASTER_AZURE_DE NULL
-#define OPTION_VAL_TWB64_057_GOOGLE_RED_DE NULL
-#define OPTION_VAL_TWB64_058_GOOGLE_BLUE_DE NULL
-#define OPTION_VAL_TWB64_059_GOOGLE_YELLOW_DE NULL
-#define OPTION_VAL_TWB64_060_GOOGLE_GREEN_DE NULL
+#define OPTION_VAL_TWB64_055_ANDROID_GREEN_DE "TWB64 055 - Android-Grün"
+#define OPTION_VAL_TWB64_056_TICKETMASTER_AZURE_DE "TWB64 056 - Ticketmaster-Azur"
+#define OPTION_VAL_TWB64_057_GOOGLE_RED_DE "TWB64 057 - Google-Rot"
+#define OPTION_VAL_TWB64_058_GOOGLE_BLUE_DE "TWB64 058 - Google-Blau"
+#define OPTION_VAL_TWB64_059_GOOGLE_YELLOW_DE "TWB64 059 - Google-Gelb"
+#define OPTION_VAL_TWB64_060_GOOGLE_GREEN_DE "TWB64 060 - Google-Grün"
 #define OPTION_VAL_TWB64_061_WONDERSWAN_VER_DE NULL
 #define OPTION_VAL_TWB64_062_NEO_GEO_POCKET_VER_DE NULL
 #define OPTION_VAL_TWB64_063_DEW_GREEN_DE NULL
-#define OPTION_VAL_TWB64_064_COCA_COLA_RED_DE NULL
+#define OPTION_VAL_TWB64_064_COCA_COLA_RED_DE "TWB64 064 - Coca-Cola-Rot"
 #define OPTION_VAL_TWB64_065_GAMEKING_VER_DE NULL
 #define OPTION_VAL_TWB64_066_DO_THE_DEW_VER_DE NULL
 #define OPTION_VAL_TWB64_067_DIGIVICE_VER_DE NULL
@@ -10643,11 +10643,11 @@ struct retro_core_options_v2 options_da = {
 #define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_DE NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_DE NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_DE NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_DE NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_DE "Farbkorrektur"
 #define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_DE NULL
-#define OPTION_VAL_GBC_ONLY_DE NULL
+#define OPTION_VAL_GBC_ONLY_DE "Nur GBC"
 #define OPTION_VAL_ALWAYS_DE "Immer"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_DE NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_DE "Farbkorrekturmodus"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_DE NULL
 #define OPTION_VAL_ACCURATE_DE NULL
 #define OPTION_VAL_FAST_DE "Schnell"
@@ -10658,7 +10658,7 @@ struct retro_core_options_v2 options_da = {
 #define OPTION_VAL_BELOW_SCREEN_DE NULL
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_DE NULL
 #define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_DE NULL
-#define GAMBATTE_GB_HWMODE_LABEL_DE NULL
+#define GAMBATTE_GB_HWMODE_LABEL_DE "Emulierte Hardware (Neustart erforderlich)"
 #define GAMBATTE_GB_HWMODE_INFO_0_DE NULL
 #define OPTION_VAL_GB_DE NULL
 #define OPTION_VAL_GBA_DE NULL
@@ -16844,7 +16844,7 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_SGB_FI NULL
 #define OPTION_VAL_INTERNAL_FI "Sisäinen"
 #define OPTION_VAL_CUSTOM_FI "Mukautettu"
-#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_FI NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_FI "Sisäinen paletti"
 #define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_FI NULL
 #define OPTION_VAL_GB_DMG_FI NULL
 #define OPTION_VAL_GB_POCKET_FI NULL
@@ -17118,18 +17118,18 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_BELOW_SCREEN_FI "Näytön alapuolella"
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_FI NULL
 #define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_FI NULL
-#define GAMBATTE_GB_HWMODE_LABEL_FI NULL
+#define GAMBATTE_GB_HWMODE_LABEL_FI "Emuloitu laitteisto (Uudelleenkäynnistys vaaditaan)"
 #define GAMBATTE_GB_HWMODE_INFO_0_FI NULL
 #define OPTION_VAL_GB_FI NULL
 #define OPTION_VAL_GBA_FI NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_FI NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_FI "Käytä virallista käynnistyslataajaa (uudelleenkäynnistys vaaditaan)"
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_FI NULL
 #define GAMBATTE_MIX_FRAMES_LABEL_FI NULL
 #define GAMBATTE_MIX_FRAMES_INFO_0_FI NULL
 #define OPTION_VAL_MIX_FI NULL
 #define OPTION_VAL_LCD_GHOSTING_FI NULL
 #define OPTION_VAL_LCD_GHOSTING_FAST_FI NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_FI NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_FI "Salli vastakkaiset suunnat"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_FI NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_FI NULL
 #define GAMBATTE_TURBO_PERIOD_INFO_0_FI NULL
@@ -24791,26 +24791,26 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_TWB64_134_TOKYO_RED_IT NULL
 #define OPTION_VAL_TWB64_135_PARIS_GOLD_IT NULL
 #define OPTION_VAL_TWB64_136_BEIJING_BLUE_IT NULL
-#define OPTION_VAL_TWB64_137_PAC_MAN_YELLOW_IT NULL
+#define OPTION_VAL_TWB64_137_PAC_MAN_YELLOW_IT "TWB64 137 - Pac-Man Giallo"
 #define OPTION_VAL_TWB64_138_IRISH_GREEN_IT NULL
-#define OPTION_VAL_TWB64_139_KAKAROT_ORANGE_IT NULL
-#define OPTION_VAL_TWB64_140_DRAGON_BALL_ORANGE_IT NULL
-#define OPTION_VAL_TWB64_141_CHRISTMAS_GOLD_IT NULL
-#define OPTION_VAL_TWB64_142_PEPSI_BLUE_IT NULL
-#define OPTION_VAL_TWB64_143_BUBBLUN_GREEN_IT NULL
-#define OPTION_VAL_TWB64_144_BOBBLUN_BLUE_IT NULL
+#define OPTION_VAL_TWB64_139_KAKAROT_ORANGE_IT "TWB64 139 - Arancio Di Kakarot"
+#define OPTION_VAL_TWB64_140_DRAGON_BALL_ORANGE_IT "TWB64 140 - Dragon Ball Arancione"
+#define OPTION_VAL_TWB64_141_CHRISTMAS_GOLD_IT "TWB64 141 - Oro Di Natale"
+#define OPTION_VAL_TWB64_142_PEPSI_BLUE_IT "TWB64 142 - Blu Pepsi"
+#define OPTION_VAL_TWB64_143_BUBBLUN_GREEN_IT "TWB64 143 - Verde Bubblun"
+#define OPTION_VAL_TWB64_144_BOBBLUN_BLUE_IT "TWB64 144 - Blu Bobblun"
 #define OPTION_VAL_TWB64_145_BAJA_BLAST_STORM_IT NULL
-#define OPTION_VAL_TWB64_146_OLYMPIC_GOLD_IT NULL
+#define OPTION_VAL_TWB64_146_OLYMPIC_GOLD_IT "TWB64 146 - Oro Olimpico"
 #define OPTION_VAL_TWB64_147_VALUE_ORANGE_IT NULL
 #define OPTION_VAL_TWB64_148_LIELLA_PURPLE_IT NULL
-#define OPTION_VAL_TWB64_149_OLYMPIC_SILVER_IT NULL
-#define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_IT NULL
+#define OPTION_VAL_TWB64_149_OLYMPIC_SILVER_IT "TWB64 149 - Argento Olimpico"
+#define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_IT "TWB64 150 - Bronzo Olimpico"
 #define OPTION_VAL_TWB64_151_ANA_SKY_BLUE_IT NULL
 #define OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_IT NULL
 #define OPTION_VAL_TWB64_153_HOLOBLUE_IT NULL
-#define OPTION_VAL_TWB64_154_WRESTLING_RED_IT NULL
+#define OPTION_VAL_TWB64_154_WRESTLING_RED_IT "TWB64 154 - Rosso Wrestling"
 #define OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_IT NULL
-#define OPTION_VAL_TWB64_156_POKEDEX_RED_IT NULL
+#define OPTION_VAL_TWB64_156_POKEDEX_RED_IT "TWB64 156 - Rosso Pokedex"
 #define OPTION_VAL_TWB64_157_DISNEY_DREAM_BLUE_IT NULL
 #define OPTION_VAL_TWB64_158_XBOX_GREEN_IT NULL
 #define OPTION_VAL_TWB64_159_SONIC_MEGA_BLUE_IT NULL
@@ -24820,22 +24820,22 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_TWB64_163_CLASSIC_LCD_IT NULL
 #define OPTION_VAL_TWB64_164_3DS_VIRTUAL_CONSOLE_VER_IT NULL
 #define OPTION_VAL_TWB64_165_POCKETSTATION_VER_IT NULL
-#define OPTION_VAL_TWB64_166_GAME_AND_GOLD_IT NULL
+#define OPTION_VAL_TWB64_166_GAME_AND_GOLD_IT "TWB64 166 - Game and Oro"
 #define OPTION_VAL_TWB64_167_SMURFY_BLUE_IT NULL
 #define OPTION_VAL_TWB64_168_SWAMPY_OGRE_GREEN_IT NULL
-#define OPTION_VAL_TWB64_169_SAILOR_SPINACH_GREEN_IT NULL
-#define OPTION_VAL_TWB64_170_SHENRON_GREEN_IT NULL
-#define OPTION_VAL_TWB64_171_BERSERK_BLOOD_IT NULL
+#define OPTION_VAL_TWB64_169_SAILOR_SPINACH_GREEN_IT "TWB64 169 - Sailor Spinach Verde"
+#define OPTION_VAL_TWB64_170_SHENRON_GREEN_IT "TWB64 170 - Verde Shenron"
+#define OPTION_VAL_TWB64_171_BERSERK_BLOOD_IT "TWB64 171 - Sangue Di Berserk"
 #define OPTION_VAL_TWB64_172_SUPER_STAR_PINK_IT NULL
 #define OPTION_VAL_TWB64_173_GAMEBUINO_CLASSIC_VER_IT NULL
 #define OPTION_VAL_TWB64_174_BARBIE_PINK_IT NULL
 #define OPTION_VAL_TWB64_175_STAR_COMMAND_GREEN_IT NULL
 #define OPTION_VAL_TWB64_176_NOKIA_3310_VER_IT NULL
-#define OPTION_VAL_TWB64_177_CLOVER_GREEN_IT NULL
-#define OPTION_VAL_TWB64_178_CRASH_ORANGE_IT NULL
+#define OPTION_VAL_TWB64_177_CLOVER_GREEN_IT "TWB64 177 - Verde Trifoglio"
+#define OPTION_VAL_TWB64_178_CRASH_ORANGE_IT "TWB64 178 - Arancione Crash"
 #define OPTION_VAL_TWB64_179_FAMICOM_DISK_YELLOW_IT NULL
-#define OPTION_VAL_TWB64_180_TEAM_ROCKET_RED_IT NULL
-#define OPTION_VAL_TWB64_181_SEIKO_TIMER_YELLOW_IT NULL
+#define OPTION_VAL_TWB64_180_TEAM_ROCKET_RED_IT "TWB64 180 - Team Rocket Rosso"
+#define OPTION_VAL_TWB64_181_SEIKO_TIMER_YELLOW_IT "TWB64 181 - SEIKO Timer Giallo"
 #define OPTION_VAL_TWB64_182_PINK109_IT NULL
 #define OPTION_VAL_TWB64_183_DORAEMON_BLUE_IT NULL
 #define OPTION_VAL_TWB64_184_FURY_BLUE_IT NULL
@@ -24890,52 +24890,52 @@ struct retro_core_options_v2 options_id = {
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_IT "Mostra Impostazioni del Game Link"
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_IT "Abilita la configurazione delle opzioni di collegamento di gioco in rete (multiplayer). NOTA: potrebbe essere necessario attivare il menu rapido affinché questa impostazione abbia effetto."
 #define GAMBATTE_GB_LINK_MODE_LABEL_IT "Modalità Game Link"
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_IT "Modalità Collegamento"
 #define GAMBATTE_GB_LINK_MODE_INFO_0_IT "Quando si attiva la funzionalità di Game Link in rete, specificare se l'istanza corrente debba essere eseguita come server o client."
-#define OPTION_VAL_NOT_CONNECTED_IT NULL
-#define OPTION_VAL_NETWORK_SERVER_IT NULL
-#define OPTION_VAL_NETWORK_CLIENT_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_IT NULL
+#define OPTION_VAL_NOT_CONNECTED_IT "Non Connesso"
+#define OPTION_VAL_NETWORK_SERVER_IT "Server Di Rete"
+#define OPTION_VAL_NETWORK_CLIENT_IT "Client Di Rete"
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_IT "Porta Collegamento Di Rete"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_IT "Porta"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_IT "Specifica la porta utilizzata per la comunicazione di rete Game Link."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_IT "Indirizzo Server Link Di Rete Pt. 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_IT "Indirizzo server Pt. 01: x__.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_IT "1a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Client di rete'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_IT "1a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_IT "Indirizzo Server Link Di Rete Pt. 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_IT "Indirizzo Server Pt. 02: _x_.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_IT "2a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Client di rete'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_IT "2a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_IT "Indirizzo Server Link Di Rete Pt. 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_IT "Indirizzo Del Server Pt. 03: __x.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_IT "3a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Client di rete'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_IT "3a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_IT "Indirizzo Server Link Di Rete Pt. 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_IT "Indirizzo Server Pt. 04: ___.x__.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_IT "4a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_IT "4a cifra di indirizzo IP del server di rete di Game Link. Usato solo quando 'Modalità collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_IT "Indirizzo Server Link Di Rete Pt. 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_IT "Indirizzo Del Server Pt. 05: ___._x_.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_IT "5a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_IT "5a cifra di indirizzo IP del server di rete di Game Link. Usato solo quando 'Modalità collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_IT "Indirizzo Server Link Di Rete Pt. 06: ___.__x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_IT "Indirizzo Del Server Pt. 06: ___.__x.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_IT "6a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Client di rete'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_IT "6a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_IT "Indirizzo Server Link Di Rete Pt. 07: ___.___.x__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_IT "Indirizzo Server Pt. 07: ___.___.x__.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_IT "7a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_IT "7a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_IT "Indirizzo Server Link Di Rete 08: ___.___._x_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_IT "Indirizzo Del Server 08: ___.___._x_.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_IT "8a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Client di rete'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_IT "8a cifra di indirizzo IP del server di rete di Game Link. Usato solo quando 'Modalità collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_IT "Indirizzo Del Server Collegamento Di Rete N. 09: ___.___.__x.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_IT "Indirizzo Del Server 09: ___.___.___x.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_IT "9a cifra dell'indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Client di rete'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_IT "9a cifra dell'indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Collegamento' è impostato su 'Client di rete'."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_IT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_IT NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_IT "Indirizzo Server Link Di Rete Pt. 10: ___.___.___.x__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_IT "Indirizzo Del Server Pt. 10: ___.___.___._x__"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_IT "10a cifra di indirizzo IP del server di rete di Game Link remoto. Usato solo quando 'Modalità Game Link' è impostato su 'Client di rete'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_IT "10a cifra di indirizzo IP del server di rete di Game Link. Usato solo quando 'Modalità collegamento' è impostato su 'Client di rete'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_IT "Indirizzo Del Server Collegamento Di Rete Pt. 11: ___.___.___._x_"
