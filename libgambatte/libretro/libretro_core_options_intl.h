@@ -14410,10 +14410,10 @@ struct retro_core_options_v2 options_eo = {
 #define OPTION_VAL_TWB64_091_POCKET_TALES_VER_ES "TWB64 091 (versión Pocket Tales)"
 #define OPTION_VAL_TWB64_092_INVESTIGATION_YELLOW_ES "TWB64 092 (amarillo investigación)"
 #define OPTION_VAL_TWB64_093_S_E_E_S_BLUE_ES "TWB64 093 (azul S.E.E.S.)"
-#define OPTION_VAL_TWB64_094_GAME_AWARDS_CYAN_ES "TWB64 094 (turquesa Game Awards)"
+#define OPTION_VAL_TWB64_094_GAME_AWARDS_CYAN_ES "TWB64 094 (cian Game Awards)"
 #define OPTION_VAL_TWB64_095_HOKAGE_ORANGE_ES "TWB64 095 (naranja Hokage)"
 #define OPTION_VAL_TWB64_096_STRAW_HAT_RED_ES "TWB64 096 (rojo Sombrero de paja)"
-#define OPTION_VAL_TWB64_097_SWORD_ART_CYAN_ES "TWB64 097 (turquesa Sword Art)"
+#define OPTION_VAL_TWB64_097_SWORD_ART_CYAN_ES "TWB64 097 (cian Sword Art)"
 #define OPTION_VAL_TWB64_098_DEKU_ALPHA_EMERALD_ES "TWB64 098 (verde Deku Alpha)"
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_ES "TWB64 099 (versión Franjas azules)"
 #define OPTION_VAL_TWB64_100_STONE_ORANGE_ES "TWB64 100 (naranja Stone)"
@@ -14424,7 +14424,7 @@ struct retro_core_options_v2 options_eo = {
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_ES "TWB64 103 (amarillo MILLION!)"
 #define OPTION_VAL_TWB64_104_SIDEM_GREEN_ES "TWB64 104 (verde SideM)"
 #define OPTION_VAL_TWB64_105_SHINY_SKY_BLUE_ES "TWB64 105 (azul cielo SHINY)"
-#define OPTION_VAL_TWB64_106_ANGRY_VOLCANO_VER_ES "TWB64 106 (versión Angry Volcano)"
+#define OPTION_VAL_TWB64_106_ANGRY_VOLCANO_VER_ES "TWB64 106 (versión volcán del Angry)"
 #define OPTION_VAL_TWB64_107_YO_KAI_PINK_ES "TWB64 107 (rosa Yo-kai)"
 #define OPTION_VAL_TWB64_108_YO_KAI_GREEN_ES "TWB64 108 (verde Yo-kai)"
 #define OPTION_VAL_TWB64_109_YO_KAI_BLUE_ES "TWB64 109 (azul Yo-kai)"
@@ -14448,7 +14448,7 @@ struct retro_core_options_v2 options_eo = {
 #define OPTION_VAL_TWB64_127_LIME_MIDORI_ES "TWB64 127 (midori verde lima)"
 #define OPTION_VAL_TWB64_128_GHOSTLY_AOI_ES "TWB64 128 (aoi espectral)"
 #define OPTION_VAL_TWB64_129_RETRO_BOGEDA_ES "TWB64 129 (bazar retro)"
-#define OPTION_VAL_TWB64_130_ROYAL_BLUE_ES "TWB64 130 (azul regio)"
+#define OPTION_VAL_TWB64_130_ROYAL_BLUE_ES "TWB64 130 (azul Switch)"
 #define OPTION_VAL_TWB64_131_NEON_PURPLE_ES "TWB64 131 (morado neón)"
 #define OPTION_VAL_TWB64_132_NEON_ORANGE_ES "TWB64 132 (naranja neón)"
 #define OPTION_VAL_TWB64_133_MOONLIGHT_VISION_ES "TWB64 133 (Moonlight Vision)"
@@ -17126,7 +17126,7 @@ struct retro_core_options_v2 options_fa = {
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_FI NULL
 #define GAMBATTE_MIX_FRAMES_LABEL_FI NULL
 #define GAMBATTE_MIX_FRAMES_INFO_0_FI NULL
-#define OPTION_VAL_MIX_FI NULL
+#define OPTION_VAL_MIX_FI "Yksinkertainen"
 #define OPTION_VAL_LCD_GHOSTING_FI NULL
 #define OPTION_VAL_LCD_GHOSTING_FAST_FI NULL
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_FI "Salli vastakkaiset suunnat"
@@ -18428,7 +18428,7 @@ struct retro_core_options_v2 options_fi = {
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_FR "Intensité de la vibration manette"
 #define GAMBATTE_RUMBLE_LEVEL_INFO_0_FR "Active les effets de retour haptique pour les jeux pris en charge (Pokémon Pinball, Perfect Dark...)."
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_FR "Afficher les paramètres du câble link"
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_FR "Activer la configuration des options du câble link en réseau (multijoueur). NOTE : Le menu rapide peut avoir besoin d'être réouvert pour que ce paramètre prenne effet."
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_FR "Activer la configuration des options du câble link en réseau (multijoueur). REMARQUE : Le menu rapide peut avoir besoin d'être réouvert pour que ce paramètre prenne effet."
 #define GAMBATTE_GB_LINK_MODE_LABEL_FR "Mode du câble link"
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_FR "Mode liaison"
 #define GAMBATTE_GB_LINK_MODE_INFO_0_FR "Lors de l'activation de la fonctionnalité du câble link en réseau, spécifier si l'instance actuelle doit s'exécuter en tant que serveur ou client."
@@ -32631,8 +32631,8 @@ struct retro_core_options_v2 options_oc = {
 #define GAMBATTE_MIX_FRAMES_LABEL_PL "Łączenie międzyramowe"
 #define GAMBATTE_MIX_FRAMES_INFO_0_PL "Symuluje efekty duchowe LCD. 'Proste' wykonuje mieszankę 50:50 bieżących i poprzednich ramek. \"LCD Ghosting\" naśladuje naturalne czasy reakcji LCD przez połączenie wielu zbuforowanych ram. \"Proste\" mieszanie jest wymagane podczas grania w gry, które polegają na duchach LCD dla efektów przezroczystości (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
 #define OPTION_VAL_MIX_PL "Prosty"
-#define OPTION_VAL_LCD_GHOSTING_PL NULL
-#define OPTION_VAL_LCD_GHOSTING_FAST_PL NULL
+#define OPTION_VAL_LCD_GHOSTING_PL "Ghosting LCD (dokładny)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_PL "LCD Ghosting (szybki)"
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_PL "Zezwalaj na przeciwne kierunki"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_PL NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_PL "Okres przycisków Turbo"
@@ -33692,7 +33692,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_SPECIAL_1_PT_BR "Especial 1"
 #define OPTION_VAL_SPECIAL_2_PT_BR "Especial 2"
 #define OPTION_VAL_SPECIAL_3_PT_BR "Especial 3"
-#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_PT_BR "Especial 4 (legado TI-83)"
+#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_PT_BR "Especial 4 (Legado TI-83)"
 #define OPTION_VAL_TWB64_PACK_1_PT_BR "TWB64 - Pacote 1"
 #define OPTION_VAL_TWB64_PACK_2_PT_BR "TWB64 - Pacote 2"
 #define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_PT_BR "> TWB64 - Pacote de Paleta 1"
@@ -33734,8 +33734,8 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TWB64_035_POKEMON_VER_PT_BR "TWB64 035 - Versão Pokemon"
 #define OPTION_VAL_TWB64_036_GAME_GRUMP_ORANGE_PT_BR "TWB64 036 - Laranja Game Grump"
 #define OPTION_VAL_TWB64_037_SCOOBY_DOO_MYSTERY_VER_PT_BR "TWB64 037 - Ver. Scooby-Doo Mistério"
-#define OPTION_VAL_TWB64_038_POKEMON_MINI_VER_PT_BR NULL
-#define OPTION_VAL_TWB64_039_SUPERVISION_VER_PT_BR NULL
+#define OPTION_VAL_TWB64_038_POKEMON_MINI_VER_PT_BR "TWB64 038 - Ver. Pokemon mini."
+#define OPTION_VAL_TWB64_039_SUPERVISION_VER_PT_BR "TWB64 039 - Versão Supervision."
 #define OPTION_VAL_TWB64_040_DMG_VER_PT_BR "TWB64 040 - Versão DMG"
 #define OPTION_VAL_TWB64_041_POCKET_VER_PT_BR "TWB64 041 - Versão Pocket"
 #define OPTION_VAL_TWB64_042_LIGHT_VER_PT_BR "TWB64 042 - Versão Light"
@@ -33752,7 +33752,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TWB64_053_VMU_VER_PT_BR "TWB64 053 - Versão VMU"
 #define OPTION_VAL_TWB64_054_GAME_MASTER_VER_PT_BR "TWB64 054 - Ver. Game Master"
 #define OPTION_VAL_TWB64_055_ANDROID_GREEN_PT_BR "TWB64 055 - Verde Android"
-#define OPTION_VAL_TWB64_056_TICKETMASTER_AZURE_PT_BR NULL
+#define OPTION_VAL_TWB64_056_TICKETMASTER_AZURE_PT_BR "TWB64 056 - Azul Ticketmaster"
 #define OPTION_VAL_TWB64_057_GOOGLE_RED_PT_BR "TWB64 057 - Vermelho Google"
 #define OPTION_VAL_TWB64_058_GOOGLE_BLUE_PT_BR "TWB64 058 - Azul Google"
 #define OPTION_VAL_TWB64_059_GOOGLE_YELLOW_PT_BR "TWB64 059 - Amarelo Google"
@@ -33777,7 +33777,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TWB64_078_CHRISTMAS_VER_PT_BR "TWB64 078 - Versão Natal"
 #define OPTION_VAL_TWB64_079_CARDCAPTOR_PINK_PT_BR "TWB64 079 - Rosa Card Captors"
 #define OPTION_VAL_TWB64_080_PRETTY_GUARDIAN_GOLD_PT_BR "TWB64 080 - Dourado Pretty Guardian"
-#define OPTION_VAL_TWB64_081_CAMOUFLAGE_VER_PT_BR NULL
+#define OPTION_VAL_TWB64_081_CAMOUFLAGE_VER_PT_BR "TWB64 081 - Versão Camuflagem."
 #define OPTION_VAL_TWB64_082_LEGENDARY_SUPER_SAIYAN_PT_BR "TWB64 082 - Super Saiyan Lendário"
 #define OPTION_VAL_TWB64_083_SUPER_SAIYAN_ROSE_PT_BR "TWB64 083 - Super Saiyan Rosa"
 #define OPTION_VAL_TWB64_084_SUPER_SAIYAN_PT_BR NULL
@@ -33825,8 +33825,8 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TWB64_124_MANIA_PLUS_GREEN_PT_BR "TWB64 124 - Verde Sonic Mania Plus"
 #define OPTION_VAL_TWB64_125_NINJA_TURTLE_GREEN_PT_BR "TWB64 125 - Verde Tartaruga Ninja"
 #define OPTION_VAL_TWB64_126_SLIME_BLUE_PT_BR "TWB64 126 - Azul Slime"
-#define OPTION_VAL_TWB64_127_LIME_MIDORI_PT_BR NULL
-#define OPTION_VAL_TWB64_128_GHOSTLY_AOI_PT_BR NULL
+#define OPTION_VAL_TWB64_127_LIME_MIDORI_PT_BR "TWB64 127 - Verde Lima Midori"
+#define OPTION_VAL_TWB64_128_GHOSTLY_AOI_PT_BR "TWB64 128 - Espectral Aoi"
 #define OPTION_VAL_TWB64_129_RETRO_BOGEDA_PT_BR NULL
 #define OPTION_VAL_TWB64_130_ROYAL_BLUE_PT_BR "TWB64 130 - Azul Real"
 #define OPTION_VAL_TWB64_131_NEON_PURPLE_PT_BR "TWB64 131 - Roxo Neon"
@@ -33904,9 +33904,9 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_GBC_ONLY_PT_BR "Apenas GBC"
 #define OPTION_VAL_ALWAYS_PT_BR "Sempre"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_PT_BR "Modo de correção de cor"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_PT_BR "Indica o método utilizado ao realizar a correção da cor. O 'Preciso' produz resultados quase indistinguíveis a partir de um verdadeiro painel LCD Game Boy Color. O 'Rápido' apenas escurece as cores e reduz a saturação, pode ser usado num hardware de baixo nível caso o método 'Preciso' seja muito lento."
-#define OPTION_VAL_ACCURATE_PT_BR "Preciso"
-#define OPTION_VAL_FAST_PT_BR "Rápido"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_PT_BR "Especifica o método a ser usado para a correção de cor. 'Precisa' produzirá uma imagem que é quase indistinguível da tela LCD de um Game Boy Color real. 'Rápida' irá apenas escurecer as cores e reduzir a saturação. A opção 'Rápido' pode ser usada em hardware de baixo custo se a opção 'Preciso' for muito lenta."
+#define OPTION_VAL_ACCURATE_PT_BR "Precisa"
+#define OPTION_VAL_FAST_PT_BR "Rápida"
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_PT_BR "Correção de cor - Posição de luz frontal"
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_PT_BR "Simula a resposta física de um painel LCD do Game Boy Color quando iluminado a partir de ângulos diferentes. 'Centrada' representa a reprodução de cores padrão. 'Acima da tela' aumenta seu brilho e 'Abaixo da tela' diminui seu brilho. Este ajuste será aplicado somente quando o modo de correção de cor for ajustado para 'Preciso'."
 #define OPTION_VAL_CENTRAL_PT_BR "Centrada"
@@ -33926,13 +33926,13 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_LCD_GHOSTING_PT_BR "Efeito fantasma do LCD (preciso)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_PT_BR "Efeito fantasma do LCD (rápido)"
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_PT_BR "Permitir direções opostas"
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_PT_BR "A ativação desta função permitirá pressionar/alternar rapidamente/manter ambas as direções, esquerda e direita (ou para cima e para baixo) pressionadas ao mesmo tempo. Isto pode causar falhas no movimento."
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_PT_BR "Esta opção permitira pressionar, alternar ou segurar rapidamente as direções esquerda e direita (ou cima e baixo) ao mesmo tempo. Pode causar falhas de movimento."
 #define GAMBATTE_TURBO_PERIOD_LABEL_PT_BR "Duração do botão 'Turbo'"
 #define GAMBATTE_TURBO_PERIOD_INFO_0_PT_BR "Especifica o intervalo (em quadros) que se repetirá o pressionamento dos botões A ou B ao manter pressionados seus equivalentes com turbo."
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_PT_BR "Força da vibração do controle"
 #define GAMBATTE_RUMBLE_LEVEL_INFO_0_PT_BR "Ativa os efeitos de resposta háptica/vibração para os jogos compatíveis (Pokemon Pinball, Perfect Dark...)."
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_PT_BR "Mostrar configurações do cabo Game Link"
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_PT_BR "Ativa as configurações da conexão (multijogador) em rede por cabo Game Link. NOTA: É necessário sair e entrar novamente no menu rápido para que a mudança tenha efeito."
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_PT_BR "Ativa as configurações da conexão (multijogador) em rede por cabo Game Link. NOTA: É necessário sair e entrar novamente no 'Menu rápido' para que a mudança tenha efeito."
 #define GAMBATTE_GB_LINK_MODE_LABEL_PT_BR "Modo cabo Game Link"
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_PT_BR "Modo de conexão"
 #define GAMBATTE_GB_LINK_MODE_INFO_0_PT_BR "Quando a função de rede do cabo Game Link é ativada, esta opção especifica qual instância deve atuar como servidor ou cliente."
