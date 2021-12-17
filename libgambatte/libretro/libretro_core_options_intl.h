@@ -33926,7 +33926,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_LCD_GHOSTING_PT_BR "Efeito fantasma do LCD (preciso)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_PT_BR "Efeito fantasma do LCD (rápido)"
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_PT_BR "Permitir direções opostas"
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_PT_BR "Esta opção permitira pressionar, alternar ou segurar rapidamente as direções esquerda e direita (ou cima e baixo) ao mesmo tempo. Pode causar falhas de movimento."
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_PT_BR "Esta opção permitirá pressionar, alternar ou segurar rapidamente as direções esquerda e direita (ou cima e baixo) ao mesmo tempo. Pode causar falhas de movimento."
 #define GAMBATTE_TURBO_PERIOD_LABEL_PT_BR "Duração do botão 'Turbo'"
 #define GAMBATTE_TURBO_PERIOD_INFO_0_PT_BR "Especifica o intervalo (em quadros) que se repetirá o pressionamento dos botões A ou B ao manter pressionados seus equivalentes com turbo."
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_PT_BR "Força da vibração do controle"
