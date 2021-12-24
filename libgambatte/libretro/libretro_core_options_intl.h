@@ -17127,8 +17127,8 @@ struct retro_core_options_v2 options_fa = {
 #define GAMBATTE_MIX_FRAMES_LABEL_FI NULL
 #define GAMBATTE_MIX_FRAMES_INFO_0_FI NULL
 #define OPTION_VAL_MIX_FI "Yksinkertainen"
-#define OPTION_VAL_LCD_GHOSTING_FI NULL
-#define OPTION_VAL_LCD_GHOSTING_FAST_FI NULL
+#define OPTION_VAL_LCD_GHOSTING_FI "LCD-ghosting (Tarkka)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_FI "LCD-ghosting (Nopea)"
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_FI "Salli vastakkaiset suunnat"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_FI NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_FI NULL
@@ -37517,7 +37517,7 @@ struct retro_core_options_v2 options_ro = {
 #define OPTION_VAL_INTERNAL_RU "Встроенная"
 #define OPTION_VAL_CUSTOM_RU "Кастомная"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_RU "Встроенная палитра"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_RU "Выбор палитры, используемой для раскрашивания игр Game Boy когда параметр 'Колоризация GB' установлен на значение 'Встроенная' или значение 'Авто' и для игры нет предустановленной палитры SGB/GBC. Палитры 'GB' имитируют оригинальное изображение консоли. Палитры 'GBC' идентичны встроенным пресетам Game Boy Color. Палитры 'SGB' идентичны встроенным пресетам Super Game Boy."
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_RU "Палитра, используемая для раскрашивания игр Game Boy при установке опции 'Колоризация GB' в режим 'Встроенная' или когда установлен режим 'Авто' и для игры нет предустановленной палитры SGB/GBC. Палитры 'GB' имитируют оригинальное изображение консоли. Палитры 'GBC' идентичны встроенным пресетам Game Boy Color. Палитры 'SGB' соответствуют встроенным пресетам Super Game Boy."
 #define OPTION_VAL_GB_DMG_RU NULL
 #define OPTION_VAL_GB_POCKET_RU NULL
 #define OPTION_VAL_GB_LIGHT_RU "GB - Светлая"
