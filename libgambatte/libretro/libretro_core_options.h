@@ -63,7 +63,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_colorization",
       "GB Colorization",
       NULL,
-      "Enables colorization of Game Boy games. 'Auto' selects the 'best' (most colorful/appropriate) palette. 'GBC' selects game-specific Game Boy Color palette if defined, otherwise 'GBC - Dark Green'. 'SGB' selects game-specific Super Game Boy palette if defined, otherwise 'SGB - 1A', 'Internal' uses 'Internal Palette' core option. 'Custom' loads user-created palette from system directory.",
+      "Enables colorization of Game Boy games. 'Auto' selects the 'best' (most colorful/appropriate) palette. 'GBC' selects game-specific Game Boy Color palette if defined, otherwise 'GBC - Dark Green'. 'SGB' selects game-specific Super Game Boy palette if defined, otherwise 'SGB - 1A'. 'Internal' uses 'Internal Palette' core option. 'Custom' loads user-created palette from system directory.",
       NULL,
       NULL,
       {
