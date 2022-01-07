@@ -14541,10 +14541,10 @@ struct retro_core_options_v2 options_eo = {
 #define GAMBATTE_GB_BOOTLOADER_LABEL_ES "Utilizar cargador de arranque oficial (es necesario reiniciar)"
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_ES "Activa el soporte para los cargadores de arranque oficiales de Game Boy y Game Boy Color con sus correspondientes animaciones de arranque."
 #define GAMBATTE_MIX_FRAMES_LABEL_ES "Fusión entre fotogramas"
-#define GAMBATTE_MIX_FRAMES_INFO_0_ES "Simula el efecto «ghosting» (fantasma) de la pantalla LCD. «Sencilla» mezcla la mitad de los fotogramas anterior y siguiente. «Ghosting de LCD» simula los tiempos de respuesta naturales de una pantalla LCD combinando varios fotogramas almacenados en el búfer. La fusión «Sencilla» es necesaria para aquellos juegos que necesiten el efecto «ghosting» para mostrar efectos de transparencias (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
+#define GAMBATTE_MIX_FRAMES_INFO_0_ES "Simula el efecto de imagen fantasma («ghosting») de la pantalla LCD. «Sencilla» mezcla la mitad de los fotogramas anterior y siguiente. «Imagen fantasma de LCD» simula los tiempos de respuesta naturales de una pantalla LCD combinando varios fotogramas almacenados en el búfer. La fusión «Sencilla» es necesaria para aquellos juegos que necesiten este efecto para mostrar efectos de transparencias (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
 #define OPTION_VAL_MIX_ES "Sencilla"
-#define OPTION_VAL_LCD_GHOSTING_ES "«Ghosting» de LCD (preciso)"
-#define OPTION_VAL_LCD_GHOSTING_FAST_ES "«Ghosting» de LCD (rápido)"
+#define OPTION_VAL_LCD_GHOSTING_ES "Imagen fantasma («ghosting») de LCD (preciso)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_ES "Imagen fantasma («ghosting») de LCD (rápido)"
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_ES "Permitir direcciones opuestas"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_ES "Esta opción permitirá pulsar, alternar rápidamente o mantener las direcciones izquierda y derecha (o arriba y abajo) al mismo tiempo. Podría provocar fallos de movimiento."
 #define GAMBATTE_TURBO_PERIOD_LABEL_ES "Duración del botón Turbo"
@@ -42943,10 +42943,10 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_SV NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_SV NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_SV NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_SV NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_SV "Färgkorrigering"
 #define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_SV NULL
 #define OPTION_VAL_GBC_ONLY_SV NULL
-#define OPTION_VAL_ALWAYS_SV NULL
+#define OPTION_VAL_ALWAYS_SV "Alltid"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_SV NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_SV NULL
 #define OPTION_VAL_ACCURATE_SV NULL
@@ -42978,10 +42978,10 @@ struct retro_core_options_v2 options_sr = {
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_SV NULL
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_MODE_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_SV "Länkläge"
 #define GAMBATTE_GB_LINK_MODE_INFO_0_SV NULL
-#define OPTION_VAL_NOT_CONNECTED_SV NULL
-#define OPTION_VAL_NETWORK_SERVER_SV NULL
+#define OPTION_VAL_NOT_CONNECTED_SV "Inte ansluten"
+#define OPTION_VAL_NETWORK_SERVER_SV "Nätverksserver"
 #define OPTION_VAL_NETWORK_CLIENT_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_SV NULL
