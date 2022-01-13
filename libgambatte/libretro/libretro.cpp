@@ -1422,12 +1422,19 @@ void retro_deinit(void)
 void retro_set_environment(retro_environment_t cb)
 {
    struct retro_vfs_interface_info vfs_iface_info;
+   bool option_categories = false;
    environ_cb = cb;
 
-   /* Set core options */
-   libretro_supports_option_categories = false;
-   libretro_set_core_options(environ_cb,
-         &libretro_supports_option_categories);
+   /* Set core options
+    * An annoyance: retro_set_environment() can be called
+    * multiple times, and depending upon the current frontend
+    * state various environment callbacks may be disabled.
+    * This means the reported 'categories_supported' status
+    * may change on subsequent iterations. We therefore have
+    * to record whether 'categories_supported' is true on any
+    * iteration, and latch the result */
+   libretro_set_core_options(environ_cb, &option_categories);
+   libretro_supports_option_categories |= option_categories;
 
 #ifdef HAVE_NETWORK
    /* If frontend supports core option categories,
