@@ -3918,7 +3918,7 @@ struct retro_core_options_v2 options_ca = {
 #define CATEGORY_GB_LINK_LABEL_CHS "游戏链接"
 #define CATEGORY_GB_LINK_INFO_0_CHS "更改网络游戏链接 (多人)"
 #define GAMBATTE_GB_COLORIZATION_LABEL_CHS "GB 调色"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_CHS "启用的GameBoy颜色化。'自动' 选择最佳' (最颜色/适当) 调色板。 'GBC' 如果定义则选择特定GameBoyColor色板，否则'GBC - 暗绿色'。 'SGB' 如果定义则选择特定SuperGameBoy色板，否则'SGB - 1A', '内部' 使用'内部调色板' 核心选项。 “自定义”从系统目录加载用户创建的调色板。"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_CHS NULL
 #define OPTION_VAL_AUTO_CHS "自动"
 #define OPTION_VAL_GBC_CHS NULL
 #define OPTION_VAL_SGB_CHS NULL
@@ -10378,7 +10378,7 @@ struct retro_core_options_v2 options_da = {
 #define CATEGORY_GB_LINK_LABEL_DE NULL
 #define CATEGORY_GB_LINK_INFO_0_DE NULL
 #define GAMBATTE_GB_COLORIZATION_LABEL_DE "GB-Einfärbung"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_DE "Aktiviert Farben in Game-Boy-Spielen. \"Automatisch\" wählt die \"beste\" (farbreichste/passendste) Farbpalette. \"GBC\" wählt die spielspezifische Game-Boy-Color-Farbpalette, wenn definiert, sonst \"GBC - Dunkelgrün\". \"SGB\" wählt die spielspezifische Super-Game-Boy-Farbpalette, wenn definiert, sonst \"SGB - 1A\". \"Intern\" nutzt die Core-Option \"Interne Farbpalette\". \"Benutzerdefiniert\" lädt eine benutzererstellte Farbpalette aus dem Systemverzeichnis."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_DE NULL
 #define OPTION_VAL_AUTO_DE "Automatisch"
 #define OPTION_VAL_GBC_DE NULL
 #define OPTION_VAL_SGB_DE NULL
@@ -14329,7 +14329,7 @@ struct retro_core_options_v2 options_eo = {
 #define OPTION_VAL_TWB64_010_MARIO_RED_ES "TWB64 010 (rojo Mario)"
 #define OPTION_VAL_TWB64_011_NICK_ORANGE_ES "TWB64 011 (naranja Nick)"
 #define OPTION_VAL_TWB64_012_VIRTUAL_BOY_VER_ES "TWB64 012 (versión Virtual Boy)"
-#define OPTION_VAL_TWB64_013_GOLDEN_WILD_ES "TWB64 013 (Golden Wild)"
+#define OPTION_VAL_TWB64_013_GOLDEN_WILD_ES "TWB64 013 (dorado Wild)"
 #define OPTION_VAL_TWB64_014_BUILDER_YELLOW_ES "TWB64 014 (amarillo construcción)"
 #define OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_ES "TWB64 015 (azul púrpura clásico)"
 #define OPTION_VAL_TWB64_016_765_PRODUCTION_VER_ES "TWB64 016 (ver. 765 Production)"
@@ -14367,7 +14367,7 @@ struct retro_core_options_v2 options_eo = {
 #define OPTION_VAL_TWB64_048_TI_83_VER_ES "TWB64 048 (versión TI-83)"
 #define OPTION_VAL_TWB64_049_AEGIS_CHERRY_ES "TWB64 049 (rojo Égida)"
 #define OPTION_VAL_TWB64_050_LABO_FAWN_ES "TWB64 050 (beige Labo)"
-#define OPTION_VAL_TWB64_051_MILLION_LIVE_GOLD_ES "TWB64 051 (¡ORO MILLION LIVE!)"
+#define OPTION_VAL_TWB64_051_MILLION_LIVE_GOLD_ES "TWB64 051 (¡DORADO MILLION LIVE!)"
 #define OPTION_VAL_TWB64_052_TOKYO_MIDTOWN_VER_ES "TWB64 052 (versión Tokyo Midtown)"
 #define OPTION_VAL_TWB64_053_VMU_VER_ES "TWB64 053 (versión Visual Memory)"
 #define OPTION_VAL_TWB64_054_GAME_MASTER_VER_ES "TWB64 054 (versión Game Master)"
@@ -18130,7 +18130,7 @@ struct retro_core_options_v2 options_fi = {
 #define CATEGORY_GB_LINK_LABEL_FR "Câble link"
 #define CATEGORY_GB_LINK_INFO_0_FR "Changer les réglages du câble link en réseau (multijoueur)."
 #define GAMBATTE_GB_COLORIZATION_LABEL_FR "Colorisation GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_FR "Active la colorisation des jeux Game Boy. 'Auto' sélectionne la 'meilleure' palette (la plus colorée/appropriée). 'GBC' sélectionne la palette Game Boy Color spécifique au jeu si elle est définie, sinon 'GBC - Vert foncé'. 'SGB' sélectionne la palette Super Game Boy spécifique au jeu si elle est définie, sinon 'SGB - 1A', 'Interne' utilise l'option du cœur 'Palette interne'. 'Personnalisée' charge la palette créée par l'utilisateur à partir du dossier système."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_FR "Active la colorisation des jeux Game Boy. 'Auto' sélectionne la 'meilleure' palette (la plus colorée/appropriée). 'GBC' sélectionne la palette Game Boy Color spécifique au jeu si elle est définie, sinon 'GBC - Vert foncé'. 'SGB' sélectionne la palette Super Game Boy spécifique au jeu si elle est définie, sinon 'SGB - 1A'. 'Interne' utilise l'option du cœur 'Palette interne'. 'Personnalisée' charge la palette créée par l'utilisateur à partir du dossier système."
 #define OPTION_VAL_AUTO_FR NULL
 #define OPTION_VAL_GBC_FR NULL
 #define OPTION_VAL_SGB_FR NULL
@@ -24590,7 +24590,7 @@ struct retro_core_options_v2 options_id = {
 #define CATEGORY_GB_LINK_LABEL_IT NULL
 #define CATEGORY_GB_LINK_INFO_0_IT "Cambia le impostazioni di Game Link (multiplayer) in rete."
 #define GAMBATTE_GB_COLORIZATION_LABEL_IT "Colorazione GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_IT "Abilita la colorazione dei giochi di Game Boy. 'Auto' seleziona la tavolozza 'migliore' (più colorata/appropriata). 'GBC' seleziona la tavolozza Game-specific Game Boy Color se definita, altrimenti 'GBC - Dark Green'. 'SGB' seleziona la tavolozza Super Game Boy specifica del gioco se definita, altrimenti 'SGB - 1A', 'Internal' utilizza l'opzione core 'Tavolozza interna'. 'Custom' carica tavolozza creata dall'utente dalla directory di sistema."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_IT "Abilita la colorazione dei giochi di Game Boy. 'Auto' seleziona la tavolozza 'migliore' (più colorata/appropriata). 'GBC' seleziona la tavolozza Game-specific Game Boy Color se definita, altrimenti 'GBC - Dark Green'. 'SGB' seleziona la tavolozza Super Game Boy specifica il gioco se definita, altrimenti 'SGB - 1A'. 'Internal' utilizza l'opzione core 'Tavolozza interna'. 'Personalizza' carica la tavolozza creata dall'utente dalla directory di sistema."
 #define OPTION_VAL_AUTO_IT NULL
 #define OPTION_VAL_GBC_IT NULL
 #define OPTION_VAL_SGB_IT NULL
@@ -27174,7 +27174,7 @@ struct retro_core_options_v2 options_ja = {
 #define CATEGORY_GB_LINK_LABEL_KO "게임 통신"
 #define CATEGORY_GB_LINK_INFO_0_KO "온라인 '게임 통신' (멀티플레이어) 옵션을 설정합니다."
 #define GAMBATTE_GB_COLORIZATION_LABEL_KO "GB 색상화"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_KO "Game Boy 게임을 색상화합니다. '자동'은 최선의(가장 색이 도드라지고 적절한) 팔레트를 선택합니다. 'GBC'는 Game Boy Color에 정의된 팔레트가 있을 경우 해당 팔레트를, 없을 경우 'GBC - 어두운 초록'을 사용합니다. 'SGB'는 Super Game Boy에 정의된 팔레트가 있을 경우 해당 팔레트를, 없을 경우 'SGB - 1A'를 사용합니다. '내장'은 '내장 팔레트' 코어 옵션을 사용합니다. '사용자 정의'는 시스템 디렉토리에서 사용자 정의 팔레트를 불러옵니다."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_KO NULL
 #define OPTION_VAL_AUTO_KO "자동"
 #define OPTION_VAL_GBC_KO NULL
 #define OPTION_VAL_SGB_KO NULL
@@ -32342,7 +32342,7 @@ struct retro_core_options_v2 options_oc = {
 #define CATEGORY_GB_LINK_LABEL_PL "Link do gry"
 #define CATEGORY_GB_LINK_INFO_0_PL NULL
 #define GAMBATTE_GB_COLORIZATION_LABEL_PL "Koloryzacja GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_PL "Włącza koloryzację gier Game Boy. 'Auto' wybiera paletę 'najlepszą' (najbardziej kolorową/właściwy). 'GBC' wybiera paletę kolorów Gier Boy Boy Boy, jeśli jest zdefiniowana, w przeciwnym razie 'GBC - Ciemny Zielony'. 'SGB' wybiera paletę Super Gry Boy, jeśli jest zdefiniowana, w przeciwnym razie 'SGB - 1A', 'Wewnętrzny' wykorzystuje podstawową opcję 'Wewnętrzna paleta'. 'Własny' ładuje paletę utworzoną przez użytkownika z katalogu systemowego."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_PL NULL
 #define OPTION_VAL_AUTO_PL NULL
 #define OPTION_VAL_GBC_PL NULL
 #define OPTION_VAL_SGB_PL NULL
@@ -33634,7 +33634,7 @@ struct retro_core_options_v2 options_pl = {
 #define CATEGORY_GB_LINK_LABEL_PT_BR NULL
 #define CATEGORY_GB_LINK_INFO_0_PT_BR "Altera as configurações da conexão (multijogador) mediante o cabo 'Game Link'."
 #define GAMBATTE_GB_COLORIZATION_LABEL_PT_BR "Colorização do GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_PT_BR "Permite a colorização de jogos do Game Boy. Seleção 'Automática' seleciona a paleta mais colorida ou apropriada. 'GBC' seleciona a paleta projetada para o Game Boy Color se ela existir, caso contrário, usará o 'GBC - Verde Escuro'. 'SGB' seleciona a paleta projetada para o Game Boy Color, se ela existir, caso contrário, usará 'SGB - 1A', 'Interna' utilizará a opção 'Paleta interna' do núcleo. A opção 'Personalizada' carrega uma paleta personalizada a partir do diretório do sistema."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_PT_BR NULL
 #define OPTION_VAL_AUTO_PT_BR "Automática"
 #define OPTION_VAL_GBC_PT_BR NULL
 #define OPTION_VAL_SGB_PT_BR NULL
@@ -37510,7 +37510,7 @@ struct retro_core_options_v2 options_ro = {
 #define CATEGORY_GB_LINK_LABEL_RU NULL
 #define CATEGORY_GB_LINK_INFO_0_RU "Изменить сетевые настройки Game Link (мультиплеер)."
 #define GAMBATTE_GB_COLORIZATION_LABEL_RU "Колоризация GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_RU "Включает колоризацию игр Game Boy. 'Авто' выбирает 'наилучшую' (наиболее подходящую/красочную) палитру. 'GBC' использует для игры предустановленную палитру Game Boy Color или, при её отсутствии, 'GBC - Dark Green'. 'SGB' использует для игры предустановленную палитру Super Game Boy или, при её отсутствии, 'SGB - 1A'. 'Встроенная' задействует опцию 'Встроенная палитра'. 'Кастомная' загружает пользовательскую палитру из системного каталога."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_RU "Включает колоризацию игр Game Boy. 'Авто' выбирает 'наилучшую' (наиболее подходящую/красочную) палитру. 'GBC' использует для игры предустановленную палитру Game Boy Color или, при её отсутствии, 'GBC - Dark Green'. 'SGB' использует для игры предустановленную палитру Super Game Boy или, при её отсутствии, 'SGB - 1A'. 'Встроенная' использует опцию 'Встроенная палитра'. 'Кастомная' загружает пользовательскую палитру из системного каталога."
 #define OPTION_VAL_AUTO_RU "Авто"
 #define OPTION_VAL_GBC_RU NULL
 #define OPTION_VAL_SGB_RU NULL
@@ -42966,7 +42966,7 @@ struct retro_core_options_v2 options_sr = {
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_SV NULL
 #define GAMBATTE_MIX_FRAMES_LABEL_SV NULL
 #define GAMBATTE_MIX_FRAMES_INFO_0_SV NULL
-#define OPTION_VAL_MIX_SV NULL
+#define OPTION_VAL_MIX_SV "Enkel"
 #define OPTION_VAL_LCD_GHOSTING_SV NULL
 #define OPTION_VAL_LCD_GHOSTING_FAST_SV NULL
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_SV NULL
@@ -43970,7 +43970,7 @@ struct retro_core_options_v2 options_sv = {
 #define CATEGORY_GB_LINK_LABEL_TR NULL
 #define CATEGORY_GB_LINK_INFO_0_TR "Ağa bağlı Game Link (çok oyunculu) ayarlarını değiştirin."
 #define GAMBATTE_GB_COLORIZATION_LABEL_TR "GB Renklendirme"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_TR "Game Boy oyunlarının renklendirme sağlar. 'Otomatik', 'en iyi' (en renkli/uygun) paleti seçer. 'GBC', tanımlanmışsa oyuna özel Game Boy Renk paletini seçer, tanımlanmamışsa 'GBC - Koyu Yeşil' seçer. 'SGB', tanımlanmışsa oyuna özel Super Game Boy paletini seçer, yoksa 'SGB - 1A', 'Dahili', 'Dahili Palet' çekirdek seçeneğini kullanır. 'Özel', sistem dizininden kullanıcı tarafından oluşturulan paleti yükler."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_TR NULL
 #define OPTION_VAL_AUTO_TR "Otomatik"
 #define OPTION_VAL_GBC_TR NULL
 #define OPTION_VAL_SGB_TR NULL
@@ -46842,7 +46842,7 @@ struct retro_core_options_v2 options_uk = {
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_VN NULL
 #define GAMBATTE_MIX_FRAMES_LABEL_VN NULL
 #define GAMBATTE_MIX_FRAMES_INFO_0_VN NULL
-#define OPTION_VAL_MIX_VN NULL
+#define OPTION_VAL_MIX_VN "Đơn giản"
 #define OPTION_VAL_LCD_GHOSTING_VN NULL
 #define OPTION_VAL_LCD_GHOSTING_FAST_VN NULL
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_VN NULL
@@ -46856,11 +46856,11 @@ struct retro_core_options_v2 options_uk = {
 #define GAMBATTE_GB_LINK_MODE_LABEL_VN NULL
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_VN NULL
 #define GAMBATTE_GB_LINK_MODE_INFO_0_VN NULL
-#define OPTION_VAL_NOT_CONNECTED_VN NULL
-#define OPTION_VAL_NETWORK_SERVER_VN NULL
-#define OPTION_VAL_NETWORK_CLIENT_VN NULL
+#define OPTION_VAL_NOT_CONNECTED_VN "Chưa kết nối"
+#define OPTION_VAL_NETWORK_SERVER_VN "Mạng máy chủ"
+#define OPTION_VAL_NETWORK_CLIENT_VN "Mạng máy khách"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_VN NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_VN "Cổng"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_VN NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_VN NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_VN NULL
