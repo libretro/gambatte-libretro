@@ -45262,7 +45262,7 @@ struct retro_core_options_v2 options_sv = {
 #define CATEGORY_GB_LINK_LABEL_TR NULL
 #define CATEGORY_GB_LINK_INFO_0_TR "Ağa bağlı Game Link (çok oyunculu) ayarlarını değiştirin."
 #define GAMBATTE_GB_COLORIZATION_LABEL_TR "GB Renklendirme"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_TR NULL
+#define GAMBATTE_GB_COLORIZATION_INFO_0_TR "Game Boy oyunlarının renklendirme sağlar. 'Otomatik', 'en iyi' (en renkli/uygun) paleti seçer. 'GBC', tanımlanmışsa oyuna özel Game Boy Renk paletini seçer, tanımlanmamışsa 'GBC - Koyu Yeşil' seçer. 'SGB', tanımlanmışsa oyuna özel Super Game Boy paletini seçer, yoksa 'SGB - 1A', 'Dahili', 'Dahili Palet' çekirdek seçeneğini kullanır. 'Özel', sistem dizininden kullanıcı tarafından oluşturulan paleti yükler."
 #define OPTION_VAL_AUTO_TR "Otomatik"
 #define OPTION_VAL_GBC_TR NULL
 #define OPTION_VAL_SGB_TR NULL
