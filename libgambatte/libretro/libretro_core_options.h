@@ -434,6 +434,40 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "0"
    },
    {
+      "gambatte_mix_frames",
+      "Interframe Blending",
+      NULL,
+      "Simulates LCD ghosting effects. 'Simple' performs a 50:50 mix of the current and previous frames. 'LCD Ghosting' mimics natural LCD response times by combining multiple buffered frames. 'Simple' blending is required when playing games that rely on LCD ghosting for transparency effects (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...).",
+      NULL,
+      NULL,
+      {
+         { "disabled",          NULL },
+         { "mix",               "Simple" },
+         { "lcd_ghosting",      "LCD Ghosting (Accurate)" },
+         { "lcd_ghosting_fast", "LCD Ghosting (Fast)" },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "gambatte_audio_resampler",
+      "Audio Resampler",
+      NULL,
+      "Specify which algorithm to use when resampling generated audio (the Game Boy audio rate is limited only by its CPU write speed, such that 'native' frequencies are impractical on modern sound devices and must be downsampled). 'Sinc' produces the highest quality. 'Cosine' improves performance on low-end hardware.",
+      NULL,
+      NULL,
+      {
+         { "sinc", "Sinc" },
+         { "cc",   "Cosine" },
+         { NULL, NULL },
+      },
+#if (defined(PS2) || defined(PSP) || defined(VITA) || defined(_3DS) || defined(DINGUX))
+      "cc"
+#else
+      "sinc"
+#endif
+   },
+   {
       "gambatte_gb_hwmode",
       "Emulated Hardware (Restart Required)",
       NULL,
@@ -462,22 +496,6 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { NULL, NULL },
       },
       "enabled"
-   },
-   {
-      "gambatte_mix_frames",
-      "Interframe Blending",
-      NULL,
-      "Simulates LCD ghosting effects. 'Simple' performs a 50:50 mix of the current and previous frames. 'LCD Ghosting' mimics natural LCD response times by combining multiple buffered frames. 'Simple' blending is required when playing games that rely on LCD ghosting for transparency effects (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...).",
-      NULL,
-      NULL,
-      {
-         { "disabled",          NULL },
-         { "mix",               "Simple" },
-         { "lcd_ghosting",      "LCD Ghosting (Accurate)" },
-         { "lcd_ghosting_fast", "LCD Ghosting (Fast)" },
-         { NULL, NULL },
-      },
-      "disabled"
    },
    {
       "gambatte_up_down_allowed",

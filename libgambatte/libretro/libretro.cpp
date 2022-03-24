@@ -4,6 +4,7 @@
 #include <libretro_core_options.h>
 #include "gambatte_log.h"
 #include "blipper.h"
+#include "cc_resampler.h"
 #include "gambatte.h"
 #include "gbcpalettes.h"
 #include "bootloader.h"
@@ -90,10 +91,6 @@ static gambatte::GB gb2;
 #define NUM_GAMEBOYS 1
 #endif
 
-#ifdef CC_RESAMPLER
-#include "cc_resampler.h"
-#endif
-
 bool use_official_bootloader = false;
 
 #define GB_SCREEN_WIDTH 160
@@ -103,11 +100,22 @@ bool use_official_bootloader = false;
  * there is a benefit to making this a power of 2 */
 #define VIDEO_BUFF_SIZE (256 * NUM_GAMEBOYS * VIDEO_HEIGHT * sizeof(gambatte::video_pixel_t))
 #define VIDEO_PITCH (256 * NUM_GAMEBOYS)
+#define VIDEO_REFRESH_RATE (4194304.0 / 70224.0)
+
+/*************************/
+/* Audio Resampler START */
+/*************************/
 
 /* There are 35112 stereo sound samples in a video frame */
-#define SOUND_SAMPLES_PER_FRAME 35112
+#define SOUND_SAMPLES_PER_FRAME   35112
 /* We request 2064 samples from each call of GB::runFor() */
-#define SOUND_SAMPLES_PER_RUN   2064
+#define SOUND_SAMPLES_PER_RUN     2064
+/* Native GB/GBC hardware audio sample rate (~2 MHz) */
+#define SOUND_SAMPLE_RATE_NATIVE  (VIDEO_REFRESH_RATE * (double)SOUND_SAMPLES_PER_FRAME)
+
+#define SOUND_SAMPLE_RATE_CC      (SOUND_SAMPLE_RATE_NATIVE / CC_DECIMATION_RATE) /* ~64k */
+#define SOUND_SAMPLE_RATE_BLIPPER (SOUND_SAMPLE_RATE_NATIVE / 64) /* ~32k */
+
 /* GB::runFor() nominally generates up to
  * (SOUND_SAMPLES_PER_RUN + 2064) samples, which
  * defines our sound buffer size
@@ -118,6 +126,214 @@ bool use_official_bootloader = false;
  * internal hard cap/bail out in the event that
  * excess samples are detected... */
 #define SOUND_BUFF_SIZE         (SOUND_SAMPLES_PER_RUN + 2064)
+
+/* Blipper produces between 548 and 549 output samples
+ * per frame. For safety, we want to keep the blip
+ * buffer no more than ~50% full. (2 * 549) = 1098,
+ * so add some padding and round up to (1024 + 512) */
+#define BLIP_BUFFER_SIZE (1024 + 512)
+
+static blipper_t *resampler_l = NULL;
+static blipper_t *resampler_r = NULL;
+
+static bool use_cc_resampler = false;
+
+static int16_t *audio_out_buffer     = NULL;
+static size_t audio_out_buffer_size  = 0;
+static size_t audio_out_buffer_pos   = 0;
+static size_t audio_batch_frames_max = (1 << 16);
+
+static void audio_out_buffer_init(void)
+{
+   float sample_rate       = use_cc_resampler ?
+         SOUND_SAMPLE_RATE_CC : SOUND_SAMPLE_RATE_BLIPPER;
+   float samples_per_frame = sample_rate / VIDEO_REFRESH_RATE;
+   size_t buffer_size      = ((size_t)samples_per_frame + 1) << 1;
+
+   /* Create a buffer that is double the required size
+    * to minimise the likelihood of resize operations
+    * (core tends to produce very brief 'bursts' of high
+    * sample counts depending upon the emulated content...) */
+   buffer_size = (buffer_size << 1);
+
+   audio_out_buffer        = (int16_t *)malloc(buffer_size * sizeof(int16_t));
+   audio_out_buffer_size   = buffer_size;
+   audio_out_buffer_pos    = 0;
+   audio_batch_frames_max  = (1 << 16);
+}
+
+static void audio_out_buffer_deinit(void)
+{
+   if (audio_out_buffer)
+      free(audio_out_buffer);
+
+   audio_out_buffer       = NULL;
+   audio_out_buffer_size  = 0;
+   audio_out_buffer_pos   = 0;
+   audio_batch_frames_max = (1 << 16);
+}
+
+static INLINE void audio_out_buffer_resize(size_t num_samples)
+{
+   size_t buffer_capacity = (audio_out_buffer_size -
+         audio_out_buffer_pos) >> 1;
+
+   if (buffer_capacity < num_samples)
+   {
+      int16_t *tmp_buffer = NULL;
+      size_t tmp_buffer_size;
+
+      tmp_buffer_size = audio_out_buffer_size +
+            ((num_samples - buffer_capacity) << 1);
+      tmp_buffer_size = (tmp_buffer_size << 1) - (tmp_buffer_size >> 1);
+      tmp_buffer      = (int16_t *)malloc(tmp_buffer_size * sizeof(int16_t));
+
+      memcpy(tmp_buffer, audio_out_buffer,
+            audio_out_buffer_pos * sizeof(int16_t));
+
+      free(audio_out_buffer);
+      audio_out_buffer      = tmp_buffer;
+      audio_out_buffer_size = tmp_buffer_size;
+   }
+}
+
+void audio_out_buffer_write(int16_t *samples, size_t num_samples)
+{
+   audio_out_buffer_resize(num_samples);
+
+   memcpy(audio_out_buffer + audio_out_buffer_pos,
+         samples, (num_samples << 1) * sizeof(int16_t));
+
+   audio_out_buffer_pos += num_samples << 1;
+}
+
+static void audio_out_buffer_read_blipper(size_t num_samples)
+{
+   int16_t *audio_out_buffer_ptr = NULL;
+
+   audio_out_buffer_resize(num_samples);
+   audio_out_buffer_ptr = audio_out_buffer + audio_out_buffer_pos;
+
+   blipper_read(resampler_l, audio_out_buffer_ptr    , num_samples, 2);
+   blipper_read(resampler_r, audio_out_buffer_ptr + 1, num_samples, 2);
+
+   audio_out_buffer_pos += num_samples << 1;
+}
+
+static void audio_upload_samples(void)
+{
+   int16_t *audio_out_buffer_ptr = audio_out_buffer;
+   size_t num_samples            = audio_out_buffer_pos >> 1;
+
+   while (num_samples > 0)
+   {
+      size_t samples_to_write = (num_samples >
+            audio_batch_frames_max) ?
+                  audio_batch_frames_max :
+                  num_samples;
+      size_t samples_written = audio_batch_cb(
+            audio_out_buffer_ptr, samples_to_write);
+
+      if ((samples_written < samples_to_write) &&
+          (samples_written > 0))
+         audio_batch_frames_max = samples_written;
+
+      num_samples          -= samples_to_write;
+      audio_out_buffer_ptr += samples_to_write << 1;
+   }
+
+   audio_out_buffer_pos = 0;
+}
+
+static void blipper_renderaudio(const int16_t *samples, unsigned frames)
+{
+   if (!frames)
+      return;
+
+   blipper_push_samples(resampler_l, samples + 0, frames, 2);
+   blipper_push_samples(resampler_r, samples + 1, frames, 2);
+}
+
+static void audio_resampler_deinit(void)
+{
+   if (resampler_l)
+      blipper_free(resampler_l);
+
+   if (resampler_r)
+      blipper_free(resampler_r);
+
+   resampler_l = NULL;
+   resampler_r = NULL;
+
+   audio_out_buffer_deinit();
+}
+
+static void audio_resampler_init(bool startup)
+{
+   if (use_cc_resampler)
+      CC_init();
+   else
+   {
+      resampler_l = blipper_new(32, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
+      resampler_r = blipper_new(32, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
+
+      /* It is possible for blipper_new() to fail,
+       * must handle errors */
+      if (!resampler_l || !resampler_r)
+      {
+         /* Display warning message */
+         if (libretro_msg_interface_version >= 1)
+         {
+            struct retro_message_ext msg = {
+               "Sinc resampler unsupported on this platform - using Cosine",
+               2000,
+               1,
+               RETRO_LOG_WARN,
+               RETRO_MESSAGE_TARGET_OSD,
+               RETRO_MESSAGE_TYPE_NOTIFICATION,
+               -1
+            };
+            environ_cb(RETRO_ENVIRONMENT_SET_MESSAGE_EXT, &msg);
+         }
+         else
+         {
+            struct retro_message msg = {
+               "Sinc resampler unsupported on this platform - using Cosine",
+               120
+            };
+            environ_cb(RETRO_ENVIRONMENT_SET_MESSAGE, &msg);
+         }
+
+         /* Force CC resampler */
+         audio_resampler_deinit();
+         use_cc_resampler = true;
+         CC_init();
+
+         /* Notify frontend of option value change */
+         if (libretro_supports_set_variable)
+         {
+            struct retro_variable var = {0};
+            var.key   = "gambatte_audio_resampler";
+            var.value = "cc";
+            environ_cb(RETRO_ENVIRONMENT_SET_VARIABLE, &var);
+         }
+
+         /* Notify frontend of sample rate change */
+         if (!startup)
+         {
+            struct retro_system_av_info av_info;
+            retro_get_system_av_info(&av_info);
+            environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &av_info);
+         }
+      }
+   }
+
+   audio_out_buffer_init();
+}
+
+/***********************/
+/* Audio Resampler END */
+/***********************/
 
 /***************************/
 /* Palette Switching START */
@@ -1262,9 +1478,6 @@ static int gb_NetworkPort = 12345;
 static std::string gb_NetworkClientAddr;
 #endif
 
-static blipper_t *resampler_l;
-static blipper_t *resampler_r;
-
 void retro_get_system_info(struct retro_system_info *info)
 {
    info->library_name = "Gambatte";
@@ -1281,19 +1494,18 @@ void retro_get_system_info(struct retro_system_info *info)
    info->valid_extensions = "gb|gbc|dmg";
 }
 
-static struct retro_system_timing g_timing;
-
 void retro_get_system_av_info(struct retro_system_av_info *info)
 {
-   retro_game_geometry geom = {
-      VIDEO_WIDTH,
-      VIDEO_HEIGHT,
-      VIDEO_WIDTH,
-      VIDEO_HEIGHT,
-      (float)GB_SCREEN_WIDTH / (float)VIDEO_HEIGHT
-   };
-   info->geometry = geom;
-   info->timing   = g_timing;
+
+   info->geometry.base_width   = VIDEO_WIDTH;
+   info->geometry.base_height  = VIDEO_HEIGHT;
+   info->geometry.max_width    = VIDEO_WIDTH;
+   info->geometry.max_height   = VIDEO_HEIGHT;
+   info->geometry.aspect_ratio = (float)GB_SCREEN_WIDTH / (float)VIDEO_HEIGHT;
+
+   info->timing.fps            = VIDEO_REFRESH_RATE;
+   info->timing.sample_rate    = use_cc_resampler ?
+         SOUND_SAMPLE_RATE_CC : SOUND_SAMPLE_RATE_BLIPPER;
 }
 
 static void check_system_specs(void)
@@ -1316,27 +1528,6 @@ void retro_init(void)
    gb.setInputGetter(&gb_input);
 #ifdef DUAL_MODE
    gb2.setInputGetter(&gb_input);
-#endif
-
-   double fps = 4194304.0 / 70224.0;
-   double sample_rate = fps * SOUND_SAMPLES_PER_FRAME;
-
-#ifdef CC_RESAMPLER
-   CC_init();
-   if (environ_cb)
-   {
-      g_timing.fps = fps;
-      g_timing.sample_rate = sample_rate / CC_DECIMATION_RATE; // ~64k
-   }
-#else
-   resampler_l = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
-   resampler_r = blipper_new(32, 0.85, 6.5, 64, 1024, NULL);
-
-   if (environ_cb)
-   {
-      g_timing.fps = fps;
-      g_timing.sample_rate = sample_rate / 64; // ~32k
-   }
 #endif
 
 #ifdef _3DS
@@ -1383,10 +1574,6 @@ void retro_init(void)
 
 void retro_deinit(void)
 {
-#ifndef CC_RESAMPLER
-   blipper_free(resampler_l);
-   blipper_free(resampler_r);
-#endif
 #ifdef _3DS
    linearFree(video_buf);
 #else
@@ -1394,6 +1581,7 @@ void retro_deinit(void)
 #endif
    video_buf = NULL;
    deinit_frame_blending();
+   audio_resampler_deinit();
 
    freePaletteMaps();
    deinit_palette_switch();
@@ -1840,7 +2028,7 @@ static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
    internal_palette_active = true;
 }
 
-static void check_variables(void)
+static void check_variables(bool startup)
 {
    unsigned i, j;
 
@@ -1883,6 +2071,23 @@ static void check_variables(void)
       darkFilterLevel = static_cast<unsigned>(atoi(var.value));
    }
    gb.setDarkFilterLevel(darkFilterLevel);
+
+   bool old_use_cc_resampler = use_cc_resampler;
+   use_cc_resampler          = false;
+   var.key                   = "gambatte_audio_resampler";
+   var.value                 = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) &&
+       var.value && !strcmp(var.value, "cc"))
+      use_cc_resampler = true;
+
+   if (!startup && (use_cc_resampler != old_use_cc_resampler))
+   {
+      struct retro_system_av_info av_info;
+      audio_resampler_deinit();
+      audio_resampler_init(false);
+      retro_get_system_av_info(&av_info);
+      environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &av_info);
+   }
 
    up_down_allowed = false;
    var.key         = "gambatte_up_down_allowed";
@@ -2303,7 +2508,8 @@ bool retro_load_game(const struct retro_game_info *info)
 
    gambatte_log(RETRO_LOG_INFO, "Got internal game name: %s.\n", internal_game_name);
 
-   check_variables();
+   check_variables(true);
+   audio_resampler_init(true);
 
    unsigned sramlen       = gb.savedata_size();
    const uint64_t rom     = RETRO_MEMDESC_CONST;
@@ -2406,15 +2612,6 @@ size_t retro_get_memory_size(unsigned id)
    return 0;
 }
 
-static void render_audio(const int16_t *samples, unsigned frames)
-{
-   if (!frames)
-      return;
-
-   blipper_push_samples(resampler_l, samples + 0, frames, 2);
-   blipper_push_samples(resampler_r, samples + 1, frames, 2);
-}
-
 void retro_run()
 {
    static uint64_t samples_count = 0;
@@ -2440,33 +2637,22 @@ void retro_run()
 
    while (gb.runFor(video_buf, VIDEO_PITCH, sound_buf.u32, SOUND_BUFF_SIZE, samples) == -1)
    {
-#ifdef CC_RESAMPLER
-      CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
-#else
-      render_audio(sound_buf.i16, samples);
-
-      unsigned read_avail = blipper_read_avail(resampler_l);
-      if (read_avail >= 512)
+      if (use_cc_resampler)
+         CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
+      else
       {
-         blipper_read(resampler_l, sound_buf.i16 + 0, read_avail, 2);
-         blipper_read(resampler_r, sound_buf.i16 + 1, read_avail, 2);
-         audio_batch_cb(sound_buf.i16, read_avail);
+         blipper_renderaudio(sound_buf.i16, samples);
+
+         unsigned read_avail = blipper_read_avail(resampler_l);
+         if (read_avail >= (BLIP_BUFFER_SIZE >> 1))
+            audio_out_buffer_read_blipper(read_avail);
       }
 
-#endif
       samples_count += samples;
       samples = SOUND_SAMPLES_PER_RUN;
    }
 #ifdef DUAL_MODE
    while (gb2.runFor(video_buf + GB_SCREEN_WIDTH, VIDEO_PITCH, sound_buf.u32, samples) == -1) {}
-#endif
-
-   samples_count += samples;
-
-#ifdef CC_RESAMPLER
-   CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
-#else
-   render_audio(sound_buf.i16, samples);
 #endif
 
    /* Perform interframe blending, if required */
@@ -2475,12 +2661,17 @@ void retro_run()
 
    video_cb(video_buf, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_PITCH * sizeof(gambatte::video_pixel_t));
 
-#ifndef CC_RESAMPLER
-   unsigned read_avail = blipper_read_avail(resampler_l);
-   blipper_read(resampler_l, sound_buf.i16 + 0, read_avail, 2);
-   blipper_read(resampler_r, sound_buf.i16 + 1, read_avail, 2);
-   audio_batch_cb(sound_buf.i16, read_avail);
-#endif
+   if (use_cc_resampler)
+      CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
+   else
+   {
+      blipper_renderaudio(sound_buf.i16, samples);
+
+      unsigned read_avail = blipper_read_avail(resampler_l);
+      audio_out_buffer_read_blipper(read_avail);
+   }
+   samples_count += samples;
+   audio_upload_samples();
 
    /* Apply any 'pending' rumble effects */
    if (rumble_active)
@@ -2490,7 +2681,7 @@ void retro_run()
 
    bool updated = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
-      check_variables();
+      check_variables(false);
 }
 
 unsigned retro_api_version() { return RETRO_API_VERSION; }

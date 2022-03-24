@@ -8,8 +8,6 @@
 #ifndef CC_RESAMPLER_H
 #define CC_RESAMPLER_H
 
-#ifdef CC_RESAMPLER
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -23,13 +21,13 @@ typedef struct audio_frame
 #define CC_DECIMATION_RATE 32
 
 static unsigned int CC_accumulated_samples = 0;
-static unsigned int CC_write_pos = 0;
+
+extern void audio_out_buffer_write(int16_t *samples, size_t num_samples);
 
 #ifdef _MIPS_ARCH_ALLEGREX
 static void CC_init(void)
 {
    CC_accumulated_samples = 0;
-   CC_write_pos = 0;
 
    __asm__ (
    ".set    push                   \n"
@@ -71,6 +69,7 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
 
    static uint32_t out_buf[512];
    unsigned i;
+   unsigned int write_pos = 0;
 
    for (i=0; i!=samples; i++)
    {
@@ -114,16 +113,19 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
          "vmov.q  c030, c030[Z,W,0,0]   \n"
 
          ".set    pop\n"
-         :"=m"(out_buf[CC_write_pos++])
+         :"=m"(out_buf[write_pos++])
          );
 
-         if (CC_write_pos == 512)
+         if (write_pos == 512)
          {
-            audio_batch_cb((int16_t*)out_buf, 512);
-            CC_write_pos = 0;
+            audio_out_buffer_write((int16_t*)out_buf, 512);
+            write_pos = 0;
          }
       }
    }
+
+   if (write_pos > 0)
+      audio_out_buffer_write((int16_t*)out_buf, write_pos);
 }
 #else
 
@@ -148,7 +150,6 @@ static void CC_init(void)
    CC_highpass_r = 0;
 #endif
    CC_accumulated_samples = 0;
-   CC_write_pos = 0;
    CC_current_l = 0;
    CC_current_r = 0;
    CC_next_l    = 0;
@@ -176,7 +177,7 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
    unsigned i;
 
    unsigned int accumulated_samples = CC_accumulated_samples;
-   unsigned int write_pos = CC_write_pos;
+   unsigned int write_pos = 0;
    int32_t current_l = CC_current_l;
    int32_t current_r = CC_current_r;
    int32_t next_l    = CC_next_l;
@@ -216,13 +217,16 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
 
          if (write_pos == 2048)
          {
-            audio_batch_cb(out_buf, 1024);
+            audio_out_buffer_write(out_buf, 1024);
             write_pos = 0;
          }
       }
    }
+
+   if (write_pos > 0)
+      audio_out_buffer_write(out_buf, write_pos >> 1);
+
    CC_accumulated_samples = accumulated_samples;
-   CC_write_pos = write_pos;
    CC_current_l = current_l;
    CC_current_r = current_r;
    CC_next_l    = next_l;
@@ -234,5 +238,4 @@ static void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
 }
 #endif
 
-#endif // CC_RESAMPLER
 #endif // CC_RESAMPLER_H
