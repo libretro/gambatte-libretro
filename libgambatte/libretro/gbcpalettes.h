@@ -1780,6 +1780,280 @@ static const unsigned short twb64_200_tokyo_skytree_cloudy_blue[] = {
 	PACK15_4(0x82B5C7, 0x638A98, 0x3D555D, 0x161F23)
 };
 
+//
+// Palettes by PixelShift
+// https://github.com/libretro/gambatte-libretro/issues/219
+//
+static const unsigned short pixelshift_01_arctic_green[] = {
+	PACK15_4(0xC4F0C2, 0x5AB9A8, 0x1E606E, 0x2D1B00),
+	PACK15_4(0xC4F0C2, 0x5AB9A8, 0x1E606E, 0x2D1B00),
+	PACK15_4(0xC4F0C2, 0x5AB9A8, 0x1E606E, 0x2D1B00)
+};
+
+static const unsigned short pixelshift_02_arduboy[] = {
+	PACK15_4(0x000000, 0x000000, 0xFFFFFF, 0xFFFFFF),
+	PACK15_4(0x000000, 0x000000, 0xFFFFFF, 0xFFFFFF),
+	PACK15_4(0x000000, 0x000000, 0xFFFFFF, 0xFFFFFF)
+};
+
+static const unsigned short pixelshift_03_bgb_0_3_emulator[] = {
+	PACK15_4(0xE8FCCC, 0xACD490, 0x548C70, 0x142C38),
+	PACK15_4(0xE8FCCC, 0xACD490, 0x548C70, 0x142C38),
+	PACK15_4(0xE8FCCC, 0xACD490, 0x548C70, 0x142C38)
+};
+
+static const unsigned short pixelshift_04_camouflage[] = {
+	PACK15_4(0x968969, 0x48623F, 0x60513A, 0x272727),
+	PACK15_4(0x968969, 0x48623F, 0x60513A, 0x272727),
+	PACK15_4(0x968969, 0x48623F, 0x60513A, 0x272727)
+};
+
+static const unsigned short pixelshift_05_chocolate_bar[] = {
+	PACK15_4(0xF7D9BA, 0xC2925C, 0x975447, 0x310300),
+	PACK15_4(0xF7D9BA, 0xC2925C, 0x975447, 0x310300),
+	PACK15_4(0xF7D9BA, 0xC2925C, 0x975447, 0x310300)
+};
+
+static const unsigned short pixelshift_06_cmyk[] = {
+	PACK15_4(0x8CDFFD, 0xFD80C6, 0xFFF68C, 0x3E3E3E),
+	PACK15_4(0x8CDFFD, 0xFD80C6, 0xFFF68C, 0x3E3E3E),
+	PACK15_4(0x8CDFFD, 0xFD80C6, 0xFFF68C, 0x3E3E3E)
+};
+
+static const unsigned short pixelshift_07_cotton_candy[] = {
+	PACK15_4(0xF8FFFF, 0x90D9FC, 0xFF7A99, 0x000000),
+	PACK15_4(0xF8FFFF, 0x90D9FC, 0xFF7A99, 0x000000),
+	PACK15_4(0xF8FFFF, 0x90D9FC, 0xFF7A99, 0x000000)
+};
+
+static const unsigned short pixelshift_08_easy_greens[] = {
+	PACK15_4(0xEBDD77, 0xA1BC00, 0x0D8833, 0x004333),
+	PACK15_4(0xEBDD77, 0xA1BC00, 0x0D8833, 0x004333),
+	PACK15_4(0xEBDD77, 0xA1BC00, 0x0D8833, 0x004333)
+};
+
+static const unsigned short pixelshift_09_gamate[] = {
+	PACK15_4(0x33CC33, 0x20983E, 0x006666, 0x003958),
+	PACK15_4(0x33CC33, 0x20983E, 0x006666, 0x003958),
+	PACK15_4(0x33CC33, 0x20983E, 0x006666, 0x003958)
+};
+
+static const unsigned short pixelshift_10_game_boy_light[] = {
+	PACK15_4(0x02EA75, 0x01B158, 0x00793C, 0x004120),
+	PACK15_4(0x02EA75, 0x01B158, 0x00793C, 0x004120),
+	PACK15_4(0x02EA75, 0x01B158, 0x00793C, 0x004120)
+};
+
+static const unsigned short pixelshift_11_game_boy_pocket[] = {
+	PACK15_4(0x929775, 0x656A55, 0x535849, 0x282C26),
+	PACK15_4(0x929775, 0x656A55, 0x535849, 0x282C26),
+	PACK15_4(0x929775, 0x656A55, 0x535849, 0x282C26)
+};
+
+static const unsigned short pixelshift_12_game_boy_pocket_alt[] = {
+	PACK15_4(0x89A18E, 0x758A78, 0x627262, 0x30372F),
+	PACK15_4(0x89A18E, 0x758A78, 0x627262, 0x30372F),
+	PACK15_4(0x89A18E, 0x758A78, 0x627262, 0x30372F)
+};
+
+static const unsigned short pixelshift_13_game_pocket_computer[] = {
+	PACK15_4(0xFFFFFF, 0xFFFFFF, 0x000000, 0x000000),
+	PACK15_4(0xFFFFFF, 0xFFFFFF, 0x000000, 0x000000),
+	PACK15_4(0xFFFFFF, 0xFFFFFF, 0x000000, 0x000000)
+};
+
+static const unsigned short pixelshift_14_game_and_watch_ball[] = {
+	PACK15_4(0x8E9F8D, 0x8E9F8D, 0x343837, 0x343837),
+	PACK15_4(0x8E9F8D, 0x8E9F8D, 0x343837, 0x343837),
+	PACK15_4(0x8E9F8D, 0x8E9F8D, 0x343837, 0x343837)
+};
+
+static const unsigned short pixelshift_15_gb_backlight_blue[] = {
+	PACK15_4(0x3FC1FF, 0x068EFF, 0x0058FF, 0x00006D),
+	PACK15_4(0x3FC1FF, 0x068EFF, 0x0058FF, 0x00006D),
+	PACK15_4(0x3FC1FF, 0x068EFF, 0x0058FF, 0x00006D)
+};
+
+static const unsigned short pixelshift_16_gb_backlight_faded[] = {
+	PACK15_4(0xFFFFFF, 0xE2E2E2, 0x9E9E9E, 0x808080),
+	PACK15_4(0xFFFFFF, 0xE2E2E2, 0x9E9E9E, 0x808080),
+	PACK15_4(0xFFFFFF, 0xE2E2E2, 0x9E9E9E, 0x808080)
+};
+
+static const unsigned short pixelshift_17_gb_backlight_orange[] = {
+	PACK15_4(0xFDA910, 0xF88806, 0xE96B08, 0x833403),
+	PACK15_4(0xFDA910, 0xF88806, 0xE96B08, 0x833403),
+	PACK15_4(0xFDA910, 0xF88806, 0xE96B08, 0x833403)
+};
+
+static const unsigned short pixelshift_18_gb_backlight_white_[] = {
+	PACK15_4(0xBAC9E8, 0x9091C9, 0x6731FF, 0x0C0FD0),
+	PACK15_4(0xBAC9E8, 0x9091C9, 0x6731FF, 0x0C0FD0),
+	PACK15_4(0xBAC9E8, 0x9091C9, 0x6731FF, 0x0C0FD0)
+};
+
+static const unsigned short pixelshift_19_gb_backlight_yellow_dark[] = {
+	PACK15_4(0x99931A, 0x8B7E0F, 0x63530F, 0x4F3B08),
+	PACK15_4(0x99931A, 0x8B7E0F, 0x63530F, 0x4F3B08),
+	PACK15_4(0x99931A, 0x8B7E0F, 0x63530F, 0x4F3B08)
+};
+
+static const unsigned short pixelshift_20_gb_bootleg[] = {
+	PACK15_4(0x89AABB, 0x9EB481, 0x4A714A, 0x4A2D2C),
+	PACK15_4(0xF7C6B5, 0xDE7B52, 0x9C3900, 0x4A3100),
+	PACK15_4(0xF7C6B5, 0xDE7B52, 0x9C3900, 0x4A3100)
+};
+
+static const unsigned short pixelshift_21_gb_hunter[] = {
+	PACK15_4(0xB4B0AD, 0x7D7A78, 0x464544, 0x101010),
+	PACK15_4(0xB4B0AD, 0x7D7A78, 0x464544, 0x101010),
+	PACK15_4(0xB4B0AD, 0x7D7A78, 0x464544, 0x101010)
+};
+
+static const unsigned short pixelshift_22_gb_kiosk[] = {
+	PACK15_4(0x01FC00, 0x00D100, 0x00BF00, 0x005C09),
+	PACK15_4(0x01FC00, 0x00D100, 0x00BF00, 0x005C09),
+	PACK15_4(0x01FC00, 0x00D100, 0x00BF00, 0x005C09)
+};
+
+static const unsigned short pixelshift_23_gb_kiosk_2[] = {
+	PACK15_4(0xFFFF93, 0xC2DE00, 0x536500, 0x003500),
+	PACK15_4(0xFFFF93, 0xC2DE00, 0x536500, 0x003500),
+	PACK15_4(0xFFFF93, 0xC2DE00, 0x536500, 0x003500)
+};
+
+static const unsigned short pixelshift_24_gb_new[] = {
+	PACK15_4(0x88CF45, 0x58B865, 0x23854B, 0x1D684B),
+	PACK15_4(0x88CF45, 0x58B865, 0x23854B, 0x1D684B),
+	PACK15_4(0x88CF45, 0x58B865, 0x23854B, 0x1D684B)
+};
+
+static const unsigned short pixelshift_25_gb_nuked[] = {
+	PACK15_4(0x70AC80, 0xA88D08, 0x85211F, 0x00004F),
+	PACK15_4(0x70AC80, 0xA88D08, 0x85211F, 0x00004F),
+	PACK15_4(0x70AC80, 0xA88D08, 0x85211F, 0x00004F)
+};
+
+static const unsigned short pixelshift_26_gb_old[] = {
+	PACK15_4(0x7E8416, 0x577B46, 0x385D49, 0x2E463D),
+	PACK15_4(0x7E8416, 0x577B46, 0x385D49, 0x2E463D),
+	PACK15_4(0x7E8416, 0x577B46, 0x385D49, 0x2E463D)
+};
+
+static const unsigned short pixelshift_27_gbp_bivert[] = {
+	PACK15_4(0xADD2FE, 0x73AAE6, 0x3982CF, 0x005BB8),
+	PACK15_4(0xADD2FE, 0x73AAE6, 0x3982CF, 0x005BB8),
+	PACK15_4(0xADD2FE, 0x73AAE6, 0x3982CF, 0x005BB8)
+};
+
+static const unsigned short pixelshift_28_gb_washed_yellow_backlight[] = {
+	PACK15_4(0xC4F796, 0x8DC472, 0x6488AA, 0x1C4599),
+	PACK15_4(0xC4F796, 0x8DC472, 0x6488AA, 0x1C4599),
+	PACK15_4(0xC4F796, 0x8DC472, 0x6488AA, 0x1C4599)
+};
+
+static const unsigned short pixelshift_29_ghost[] = {
+	PACK15_4(0xFFF1EB, 0xE096A8, 0x70579C, 0x0A0912),
+	PACK15_4(0xFFF1EB, 0xE096A8, 0x70579C, 0x0A0912),
+	PACK15_4(0xFFF1EB, 0xE096A8, 0x70579C, 0x0A0912)
+};
+
+static const unsigned short pixelshift_30_glow_in_the_dark[] = {
+	PACK15_4(0x4DEEAA, 0x339E71, 0x194F38, 0x000000),
+	PACK15_4(0x4DEEAA, 0x339E71, 0x194F38, 0x000000),
+	PACK15_4(0x4DEEAA, 0x339E71, 0x194F38, 0x000000)
+};
+
+static const unsigned short pixelshift_31_gold_bar[] = {
+	PACK15_4(0xFCFFD6, 0xFFDB57, 0xD27D2C, 0x854C30),
+	PACK15_4(0xFCFFD6, 0xFFDB57, 0xD27D2C, 0x854C30),
+	PACK15_4(0xFCFFD6, 0xFFDB57, 0xD27D2C, 0x854C30)
+};
+
+static const unsigned short pixelshift_32_grapefruit[] = {
+	PACK15_4(0xFFF5DD, 0xF4B26B, 0xB76591, 0x65296C),
+	PACK15_4(0xFFF5DD, 0xF4B26B, 0xB76591, 0x65296C),
+	PACK15_4(0xFFF5DD, 0xF4B26B, 0xB76591, 0x65296C)
+};
+
+static const unsigned short pixelshift_33_gray_green_mix[] = {
+	PACK15_4(0xE8E8E8, 0xA0A0A0, 0x585858, 0x101010),
+	PACK15_4(0xE0F8D0, 0x88C070, 0x346856, 0x081820),
+	PACK15_4(0xE0F8D0, 0x88C070, 0x346856, 0x081820)
+};
+
+static const unsigned short pixelshift_34_missingno[] = {
+	PACK15_4(0xFFFFFF, 0xF0B088, 0x807098, 0x181010),
+	PACK15_4(0xFFFFFF, 0xF0B088, 0x807098, 0x181010),
+	PACK15_4(0xFFFFFF, 0xF0B088, 0x807098, 0x181010)
+};
+
+static const unsigned short pixelshift_35_ms_dos[] = {
+	PACK15_4(0x000000, 0x000000, 0x17F117, 0x17F117),
+	PACK15_4(0x000000, 0x000000, 0x17F117, 0x17F117),
+	PACK15_4(0x000000, 0x000000, 0x17F117, 0x17F117)
+};
+
+static const unsigned short pixelshift_36_newspaper[] = {
+	PACK15_4(0x646464, 0x505050, 0x323232, 0x000000),
+	PACK15_4(0x646464, 0x505050, 0x323232, 0x000000),
+	PACK15_4(0x646464, 0x505050, 0x323232, 0x000000)
+};
+
+static const unsigned short pixelshift_37_pip_boy[] = {
+	PACK15_4(0x05160C, 0x062D1A, 0x0DB254, 0x1BC364),
+	PACK15_4(0x05160C, 0x062D1A, 0x0DB254, 0x1BC364),
+	PACK15_4(0x05160C, 0x062D1A, 0x0DB254, 0x1BC364)
+};
+
+static const unsigned short pixelshift_38_pocket_girl[] = {
+	PACK15_4(0xF7FFAE, 0xFFB3CB, 0x96FBC7, 0x74569B),
+	PACK15_4(0xF7FFAE, 0xFFB3CB, 0x96FBC7, 0x74569B),
+	PACK15_4(0xF7FFAE, 0xFFB3CB, 0x96FBC7, 0x74569B)
+};
+
+static const unsigned short pixelshift_39_silhouette[] = {
+	PACK15_4(0xE8E8E8, 0xA0A0A0, 0x585858, 0x000000),
+	PACK15_4(0x000000, 0x000000, 0x000000, 0x000000),
+	PACK15_4(0x000000, 0x000000, 0x000000, 0x000000)
+};
+
+static const unsigned short pixelshift_40_sunburst[] = {
+	PACK15_4(0xE1EEC3, 0xECE774, 0xF6903D, 0xF05053),
+	PACK15_4(0xE1EEC3, 0xECE774, 0xF6903D, 0xF05053),
+	PACK15_4(0xE1EEC3, 0xECE774, 0xF6903D, 0xF05053)
+};
+
+static const unsigned short pixelshift_41_technicolor[] = {
+	PACK15_4(0xFFF5F7, 0xE6B8C1, 0x456B73, 0x15191A),
+	PACK15_4(0xFFF5F7, 0xE6B8C1, 0x456B73, 0x15191A),
+	PACK15_4(0xFFF5F7, 0xE6B8C1, 0x456B73, 0x15191A)
+};
+
+static const unsigned short pixelshift_42_tron[] = {
+	PACK15_4(0x000000, 0x2A0055, 0x5500AA, 0x8000FF),
+	PACK15_4(0xAAA9B2, 0x757576, 0x0099EC, 0x0065A8),
+	PACK15_4(0xAAA9B2, 0x757576, 0x0099EC, 0x0065A8)
+};
+
+static const unsigned short pixelshift_43_vaporwave[] = {
+	PACK15_4(0x4ADBE5, 0xE54CB0, 0x574797, 0x1A2D40),
+	PACK15_4(0x4ADBE5, 0xE54CB0, 0x574797, 0x1A2D40),
+	PACK15_4(0x4ADBE5, 0xE54CB0, 0x574797, 0x1A2D40)
+};
+
+static const unsigned short pixelshift_44_virtual_boy[] = {
+	PACK15_4(0xD90708, 0x960708, 0x530607, 0x070303),
+	PACK15_4(0xD90708, 0x960708, 0x530607, 0x070303),
+	PACK15_4(0xD90708, 0x960708, 0x530607, 0x070303)
+};
+
+static const unsigned short pixelshift_45_wish[] = {
+	PACK15_4(0x8BE5FF, 0x608FCF, 0x7550E8, 0x622E4C),
+	PACK15_4(0x8BE5FF, 0x608FCF, 0x7550E8, 0x622E4C),
+	PACK15_4(0x8BE5FF, 0x608FCF, 0x7550E8, 0x622E4C)
+};
+
 #undef PACK15_4
 #undef PACK15_1
 #undef TO5BIT
@@ -2038,6 +2312,51 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 198 - Niconico Sea Green", twb64_198_niconico_sea_green },
 	{ "TWB64 199 - Duracell Copper", twb64_199_duracell_copper },
 	{ "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", twb64_200_tokyo_skytree_cloudy_blue },
+	{ "PixelShift 01 - Arctic Green", pixelshift_01_arctic_green },
+	{ "PixelShift 02 - Arduboy", pixelshift_02_arduboy },
+	{ "PixelShift 03 - BGB 0.3 Emulator", pixelshift_03_bgb_0_3_emulator },
+	{ "PixelShift 04 - Camouflage", pixelshift_04_camouflage },
+	{ "PixelShift 05 - Chocolate Bar", pixelshift_05_chocolate_bar },
+	{ "PixelShift 06 - CMYK", pixelshift_06_cmyk },
+	{ "PixelShift 07 - Cotton Candy", pixelshift_07_cotton_candy },
+	{ "PixelShift 08 - Easy Greens", pixelshift_08_easy_greens },
+	{ "PixelShift 09 - Gamate", pixelshift_09_gamate },
+	{ "PixelShift 10 - Game Boy Light", pixelshift_10_game_boy_light },
+	{ "PixelShift 11 - Game Boy Pocket", pixelshift_11_game_boy_pocket },
+	{ "PixelShift 12 - Game Boy Pocket Alt", pixelshift_12_game_boy_pocket_alt },
+	{ "PixelShift 13 - Game Pocket Computer", pixelshift_13_game_pocket_computer },
+	{ "PixelShift 14 - Game & Watch Ball", pixelshift_14_game_and_watch_ball },
+	{ "PixelShift 15 - GB Backlight Blue", pixelshift_15_gb_backlight_blue },
+	{ "PixelShift 16 - GB Backlight Faded", pixelshift_16_gb_backlight_faded },
+	{ "PixelShift 17 - GB Backlight Orange", pixelshift_17_gb_backlight_orange },
+	{ "PixelShift 18 - GB Backlight White ", pixelshift_18_gb_backlight_white_ },
+	{ "PixelShift 19 - GB Backlight Yellow Dark", pixelshift_19_gb_backlight_yellow_dark },
+	{ "PixelShift 20 - GB Bootleg", pixelshift_20_gb_bootleg },
+	{ "PixelShift 21 - GB Hunter", pixelshift_21_gb_hunter },
+	{ "PixelShift 22 - GB Kiosk", pixelshift_22_gb_kiosk },
+	{ "PixelShift 23 - GB Kiosk 2", pixelshift_23_gb_kiosk_2 },
+	{ "PixelShift 24 - GB New", pixelshift_24_gb_new },
+	{ "PixelShift 25 - GB Nuked", pixelshift_25_gb_nuked },
+	{ "PixelShift 26 - GB Old", pixelshift_26_gb_old },
+	{ "PixelShift 27 - GBP Bivert", pixelshift_27_gbp_bivert },
+	{ "PixelShift 28 - GB Washed Yellow Backlight", pixelshift_28_gb_washed_yellow_backlight },
+	{ "PixelShift 29 - Ghost", pixelshift_29_ghost },
+	{ "PixelShift 30 - Glow In The Dark", pixelshift_30_glow_in_the_dark },
+	{ "PixelShift 31 - Gold Bar", pixelshift_31_gold_bar },
+	{ "PixelShift 32 - Grapefruit", pixelshift_32_grapefruit },
+	{ "PixelShift 33 - Gray Green Mix", pixelshift_33_gray_green_mix },
+	{ "PixelShift 34 - Missingno", pixelshift_34_missingno },
+	{ "PixelShift 35 - MS-Dos", pixelshift_35_ms_dos },
+	{ "PixelShift 36 - Newspaper", pixelshift_36_newspaper },
+	{ "PixelShift 37 - Pip-Boy", pixelshift_37_pip_boy },
+	{ "PixelShift 38 - Pocket Girl", pixelshift_38_pocket_girl },
+	{ "PixelShift 39 - Silhouette", pixelshift_39_silhouette },
+	{ "PixelShift 40 - Sunburst", pixelshift_40_sunburst },
+	{ "PixelShift 41 - Technicolor", pixelshift_41_technicolor },
+	{ "PixelShift 42 - Tron", pixelshift_42_tron },
+	{ "PixelShift 43 - Vaporwave", pixelshift_43_vaporwave },
+	{ "PixelShift 44 - Virtual Boy", pixelshift_44_virtual_boy },
+	{ "PixelShift 45 - Wish", pixelshift_45_wish },
 };
 
 static const GbcPaletteEntry gbcTitlePalettes[] = {
