@@ -304,7 +304,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 139 - Kakarot Orange",            NULL },
          { "TWB64 140 - Dragon Ball Orange",        NULL },
          { "TWB64 141 - Christmas Gold",            NULL },
-         { "TWB64 142 - Pepsi Blue",                NULL },
+         { "TWB64 142 - Pepsi-Cola Blue",           NULL },
          { "TWB64 143 - Bubblun Green",             NULL },
          { "TWB64 144 - Bobblun Blue",              NULL },
          { "TWB64 145 - Baja Blast Storm",          NULL },
