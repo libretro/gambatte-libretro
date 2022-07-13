@@ -719,15 +719,15 @@ static const unsigned short twb64_023_odyssey_gold[] = {
 };
 
 static const unsigned short twb64_024_super_saiyan_god[] = {
-	PACK15_4(0xDA0363, 0xA6024B, 0x66012E, 0x260011),
-	PACK15_4(0xDA0363, 0xA6024B, 0x66012E, 0x260011),
-	PACK15_4(0xDA0363, 0xA6024B, 0x66012E, 0x260011)
+	PACK15_4(0xD5035F, 0xA20248, 0x64012C, 0x250010),
+	PACK15_4(0xD5035F, 0xA20248, 0x64012C, 0x250010),
+	PACK15_4(0xD5035F, 0xA20248, 0x64012C, 0x250010)
 };
 
 static const unsigned short twb64_025_super_saiyan_blue[] = {
-	PACK15_4(0x05BCCC, 0x038F9C, 0x025860, 0x002124),
-	PACK15_4(0x05BCCC, 0x038F9C, 0x025860, 0x002124),
-	PACK15_4(0x05BCCC, 0x038F9C, 0x025860, 0x002124)
+	PACK15_4(0x04BCCC, 0x038F9C, 0x015860, 0x002124),
+	PACK15_4(0x04BCCC, 0x038F9C, 0x015860, 0x002124),
+	PACK15_4(0x04BCCC, 0x038F9C, 0x015860, 0x002124)
 };
 
 static const unsigned short twb64_026_bizarre_pink[] = {
@@ -1079,9 +1079,9 @@ static const unsigned short twb64_083_super_saiyan_rose[] = {
 };
 
 static const unsigned short twb64_084_super_saiyan[] = {
-	PACK15_4(0xFEF47E, 0xC2BA60, 0x77723B, 0x2C2B16),
-	PACK15_4(0xFEF47E, 0xC2BA60, 0x77723B, 0x2C2B16),
-	PACK15_4(0xFEF47E, 0xC2BA60, 0x77723B, 0x2C2B16)
+	PACK15_4(0xFCFAC0, 0xC0BF92, 0x76775A, 0x2C2C21),
+	PACK15_4(0xFCFAC0, 0xC0BF92, 0x76775A, 0x2C2C21),
+	PACK15_4(0xFCFAC0, 0xC0BF92, 0x76775A, 0x2C2C21)
 };
 
 static const unsigned short twb64_085_mastered_ultra_instinct[] = {
@@ -1109,9 +1109,9 @@ static const unsigned short twb64_088_green_banana[] = {
 };
 
 static const unsigned short twb64_089_super_saiyan_3[] = {
-	PACK15_4(0xF9CA3A, 0xBE9A2C, 0x755F1B, 0x2B230A),
-	PACK15_4(0xF9CA3A, 0xBE9A2C, 0x755F1B, 0x2B230A),
-	PACK15_4(0xF9CA3A, 0xBE9A2C, 0x755F1B, 0x2B230A)
+	PACK15_4(0xF8C838, 0xBD982A, 0x745E1A, 0x2B2309),
+	PACK15_4(0xF8C838, 0xBD982A, 0x745E1A, 0x2B2309),
+	PACK15_4(0xF8C838, 0xBD982A, 0x745E1A, 0x2B2309)
 };
 
 static const unsigned short twb64_090_super_saiyan_blue_evolved[] = {
@@ -1289,9 +1289,9 @@ static const unsigned short twb64_118_fruity_orange[] = {
 };
 
 static const unsigned short twb64_119_akb48_pink[] = {
-	PACK15_4(0xF596B4, 0xBB7289, 0x734654, 0x2B1A1F),
-	PACK15_4(0xF596B4, 0xBB7289, 0x734654, 0x2B1A1F),
-	PACK15_4(0xF596B4, 0xBB7289, 0x734654, 0x2B1A1F)
+	PACK15_4(0xF676A6, 0xBC5A7E, 0x73374E, 0x2B141D),
+	PACK15_4(0xF676A6, 0xBC5A7E, 0x73374E, 0x2B141D),
+	PACK15_4(0xF676A6, 0xBC5A7E, 0x73374E, 0x2B141D)
 };
 
 static const unsigned short twb64_120_miku_blue[] = {
@@ -1426,10 +1426,10 @@ static const unsigned short twb64_141_christmas_gold[] = {
 	PACK15_4(0xC4B56C, 0x958A52, 0x5C5532, 0x221F13)
 };
 
-static const unsigned short twb64_142_pepsi_blue[] = {
-	PACK15_4(0x005CB4, 0x004689, 0x002B54, 0x00101F),
-	PACK15_4(0x005CB4, 0x004689, 0x002B54, 0x00101F),
-	PACK15_4(0x005CB4, 0x004689, 0x002B54, 0x00101F)
+static const unsigned short twb64_142_pepsi_cola_blue[] = {
+	PACK15_4(0x0065C3, 0x004D95, 0x002F5B, 0x001122),
+	PACK15_4(0x0065C3, 0x004D95, 0x002F5B, 0x001122),
+	PACK15_4(0x0065C3, 0x004D95, 0x002F5B, 0x001122)
 };
 
 static const unsigned short twb64_143_bubblun_green[] = {
