@@ -2253,7 +2253,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 139 - Kakarot Orange", twb64_139_kakarot_orange },
 	{ "TWB64 140 - Dragon Ball Orange", twb64_140_dragon_ball_orange },
 	{ "TWB64 141 - Christmas Gold", twb64_141_christmas_gold },
-	{ "TWB64 142 - Pepsi Blue", twb64_142_pepsi_blue },
+	{ "TWB64 142 - Pepsi Cola Blue", twb64_142_pepsi_cola_blue },
 	{ "TWB64 143 - Bubblun Green", twb64_143_bubblun_green },
 	{ "TWB64 144 - Bobblun Blue", twb64_144_bobblun_blue },
 	{ "TWB64 145 - Baja Blast Storm", twb64_145_baja_blast_storm },
