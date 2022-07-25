@@ -577,8 +577,8 @@ static const unsigned short sgb4H[] = {
 };
 
 //
-// Palettes by TheWolfBunny64 (TheWolfBunny on DeviantArt)
-// https://www.deviantart.com/thewolfbunny/gallery/69987002/game-boy-palettes
+// Palettes by TheWolfBunny64 (TheWolfBunny64 on DeviantArt)
+// https://www.deviantart.com/thewolfbunny64/gallery/69987002/game-boy-palettes
 //
 static const unsigned short twb64_001_aqours_blue[] = {
 	PACK15_4(0x00A0E9, 0x007AB2, 0x004B6D, 0x001C29),
