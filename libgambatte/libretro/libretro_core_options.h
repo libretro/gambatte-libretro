@@ -235,7 +235,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 082 - Legendary Super Saiyan",    NULL },
          { "TWB64 083 - Super Saiyan Rose",         NULL },
          { "TWB64 084 - Super Saiyan",              NULL },
-         { "TWB64 085 - Mastered Ultra Instinct",   NULL },
+         { "TWB64 085 - Perfected Ultra Instinct",  NULL },
          { "TWB64 086 - Saint Snow Red",            NULL },
          { "TWB64 087 - Yellow Banana",             NULL },
          { "TWB64 088 - Green Banana",              NULL },
