@@ -578,6 +578,7 @@ namespace gambatte
             case 0x1E: gambatte_log(RETRO_LOG_INFO, "MBC5+RUMBLE+RAM+BATTERY ROM loaded.\n"); type = MBC5; rumble = true; break;
             case 0x20: gambatte_log(RETRO_LOG_INFO, "MBC6 ROM not supported.\n"); return -1;
             case 0x22: gambatte_log(RETRO_LOG_INFO, "MBC7 ROM not supported.\n"); return -1;
+	     case 0xEA: type = MBC1; break; // Hack to accept 0xEA as a MBC1 (Sonic 3D Blast 5)
             case 0xFC: gambatte_log(RETRO_LOG_INFO, "Pocket Camera ROM not supported.\n"); return -1;
             case 0xFD: gambatte_log(RETRO_LOG_INFO, "Bandai TAMA5 ROM not supported.\n"); return -1;
             case 0xFE: gambatte_log(RETRO_LOG_INFO, "HuC3 ROM+RAM+BATTERY loaded.\n"); type = HUC3; break;
