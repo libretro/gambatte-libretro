@@ -1199,9 +1199,9 @@ static const unsigned short twb64_103_million_yellow[] = {
 };
 
 static const unsigned short twb64_104_sidem_green[] = {
-	PACK15_4(0x0FBE76, 0x0B915A, 0x075937, 0x022114),
-	PACK15_4(0x0FBE76, 0x0B915A, 0x075937, 0x022114),
-	PACK15_4(0x0FBE76, 0x0B915A, 0x075937, 0x022114)
+	PACK15_4(0x0FBE94, 0x0B9171, 0x075945, 0x02211A),
+	PACK15_4(0x0FBE94, 0x0B9171, 0x075945, 0x02211A),
+	PACK15_4(0x0FBE94, 0x0B9171, 0x075945, 0x02211A)
 };
 
 static const unsigned short twb64_105_shiny_sky_blue[] = {
