@@ -1415,9 +1415,9 @@ static const unsigned short twb64_139_kakarot_orange[] = {
 };
 
 static const unsigned short twb64_140_dragon_ball_orange[] = {
-	PACK15_4(0xFF9518, 0xC37112, 0x78460B, 0x2D1A04),
-	PACK15_4(0xFF9518, 0xC37112, 0x78460B, 0x2D1A04),
-	PACK15_4(0xFF9518, 0xC37112, 0x78460B, 0x2D1A04)
+	PACK15_4(0xF0831D, 0xB76416, 0x703D0D, 0x2A1705),
+	PACK15_4(0xF0831D, 0xB76416, 0x703D0D, 0x2A1705),
+	PACK15_4(0xF0831D, 0xB76416, 0x703D0D, 0x2A1705)
 };
 
 static const unsigned short twb64_141_christmas_gold[] = {
