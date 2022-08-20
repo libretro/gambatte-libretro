@@ -1199,9 +1199,9 @@ static const unsigned short twb64_103_million_yellow[] = {
 };
 
 static const unsigned short twb64_104_sidem_green[] = {
-	PACK15_4(0x0FBE76, 0x0B915A, 0x075937, 0x022114),
-	PACK15_4(0x0FBE76, 0x0B915A, 0x075937, 0x022114),
-	PACK15_4(0x0FBE76, 0x0B915A, 0x075937, 0x022114)
+	PACK15_4(0x0FBE94, 0x0B9171, 0x075945, 0x02211A),
+	PACK15_4(0x0FBE94, 0x0B9171, 0x075945, 0x02211A),
+	PACK15_4(0x0FBE94, 0x0B9171, 0x075945, 0x02211A)
 };
 
 static const unsigned short twb64_105_shiny_sky_blue[] = {
@@ -2196,7 +2196,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 082 - Legendary Super Saiyan", twb64_082_legendary_super_saiyan },
 	{ "TWB64 083 - Super Saiyan Rose", twb64_083_super_saiyan_rose },
 	{ "TWB64 084 - Super Saiyan", twb64_084_super_saiyan },
-	{ "TWB64 085 - Mastered Ultra Instinct", twb64_085_mastered_ultra_instinct },
+	{ "TWB64 085 - Perfected Ultra Instinct", twb64_085_perfected_ultra_instinct },
 	{ "TWB64 086 - Saint Snow Red", twb64_086_saint_snow_red },
 	{ "TWB64 087 - Yellow Banana", twb64_087_yellow_banana },
 	{ "TWB64 088 - Green Banana", twb64_088_green_banana },
