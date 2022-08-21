@@ -1115,9 +1115,9 @@ static const unsigned short twb64_089_super_saiyan_3[] = {
 };
 
 static const unsigned short twb64_090_super_saiyan_blue_evolved[] = {
-	PACK15_4(0x3EE2F5, 0x2FACBB, 0x1D6A73, 0x0A272B),
-	PACK15_4(0x3EE2F5, 0x2FACBB, 0x1D6A73, 0x0A272B),
-	PACK15_4(0x3EE2F5, 0x2FACBB, 0x1D6A73, 0x0A272B)
+	PACK15_4(0x1B97D1, 0x14739F, 0x0C4762, 0x041A24),
+	PACK15_4(0x1B97D1, 0x14739F, 0x0C4762, 0x041A24),
+	PACK15_4(0x1B97D1, 0x14739F, 0x0C4762, 0x041A24)
 };
 
 static const unsigned short twb64_091_pocket_tales_ver[] = {
