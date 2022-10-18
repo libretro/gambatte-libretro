@@ -1534,10 +1534,10 @@ static const unsigned short twb64_159_sonic_mega_blue[] = {
 	PACK15_4(0x4084D9, 0x3064A5, 0x1E3E66, 0x0B1726)
 };
 
-static const unsigned short twb64_160_g4_orange[] = {
-	PACK15_4(0xF89D21, 0xBD7819, 0x74490F, 0x2B1B05),
-	PACK15_4(0xF89D21, 0xBD7819, 0x74490F, 0x2B1B05),
-	PACK15_4(0xF89D21, 0xBD7819, 0x74490F, 0x2B1B05)
+static const unsigned short twb64_160_sprite_green[] = {
+	PACK15_4(0x009B4E, 0x00763B, 0x004824, 0x001B0D),
+	PACK15_4(0x009B4E, 0x00763B, 0x004824, 0x001B0D),
+	PACK15_4(0x009B4E, 0x00763B, 0x004824, 0x001B0D)
 };
 
 static const unsigned short twb64_161_scarlett_green[] = {
