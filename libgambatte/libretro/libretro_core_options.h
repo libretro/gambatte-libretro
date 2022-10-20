@@ -322,7 +322,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 157 - Disney Dream Blue",         NULL },
          { "TWB64 158 - Xbox Green",                NULL },
          { "TWB64 159 - Sonic Mega Blue",           NULL },
-         { "TWB64 160 - G4 Orange",                 NULL },
+         { "TWB64 160 - Sprite Green",              NULL },
          { "TWB64 161 - Scarlett Green",            NULL },
          { "TWB64 162 - Glitchy Blue",              NULL },
          { "TWB64 163 - Classic LCD",               NULL },
