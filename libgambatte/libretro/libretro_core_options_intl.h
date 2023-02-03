@@ -27288,8 +27288,8 @@ struct retro_core_options_v2 options_hr = {
 #define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HU NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_HU NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_HU NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_HU NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_HU NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_HU "> PixelShift - Pack 1 paletta"
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_HU "A belső színezés palettája, amikor a belső paletta értéke \"PixelShift - Pack 1\"."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_HU NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_HU NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_HU NULL
@@ -27356,9 +27356,9 @@ struct retro_core_options_v2 options_hr = {
 #define OPTION_VAL_LCD_GHOSTING_HU "LCD szellemkép (pontos)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_HU "LCD szellemkép (gyors)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_HU "Hang-újramintavételező"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_HU NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_HU "A generált hang újramintavételezésének algoritmusa. (A Game Boy hang frissítési frekvenciáját csak a CPU-jának írási sebessége korlátozza, ezek az eredeti frekvenciák nem praktikusak modern hangeszközökön és le kell konvertálni azt.) A \"Sinc\" beállítás a legjobb minőségű, a \"Koszinuszos\" javítja a teljesítményt alacsony kategóriás hardveren."
 #define OPTION_VAL_SINC_HU NULL
-#define OPTION_VAL_CC_HU NULL
+#define OPTION_VAL_CC_HU "Koszinuszos"
 #define GAMBATTE_GB_HWMODE_LABEL_HU "Emulált hardver (újraindítás szükséges)"
 #define GAMBATTE_GB_HWMODE_INFO_0_HU "Az emulált hardver típusa. Ajánlott az automatikus beállítás. A \"GBA\" mód extra funkciókat old fel bizonyos \"GBA Enhanced\" Game Boy Color játékokban (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_HU NULL
