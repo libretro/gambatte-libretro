@@ -232,7 +232,7 @@ libretro-build-ps2:
     - .core-defs
 
 # PlayStation3
-libretro-build-ps3:
+libretro-build-psl1ght:
   extends:
     - .libretro-psl1ght-static-retroarch-master
     - .core-defs
