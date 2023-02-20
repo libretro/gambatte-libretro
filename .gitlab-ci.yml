@@ -63,9 +63,13 @@ include:
     file: '/ios9.yml'
 
   ################################## CONSOLES ################################
-    # PlayStation 2
+    # PlayStation2
   - project: 'libretro-infrastructure/ci-templates'
     file: '/ps2-static.yml'
+
+    # PlayStation3
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/psl1ght-static.yml'
 
   # PlayStation Portable
   - project: 'libretro-infrastructure/ci-templates'
@@ -221,10 +225,16 @@ libretro-build-tvos-arm64:
     - .core-defs
 
 ################################### CONSOLES #################################
-# PlayStation 2
+# PlayStation2
 libretro-build-ps2:
   extends:
     - .libretro-ps2-static-retroarch-master
+    - .core-defs
+
+# PlayStation3
+libretro-build-ps3:
+  extends:
+    - .libretro-psl1ght-static-retroarch-master
     - .core-defs
 
 # PlayStation Portable
