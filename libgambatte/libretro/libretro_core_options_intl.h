@@ -5719,17 +5719,17 @@ struct retro_core_options_v2 options_chs = {
 
 /* RETRO_LANGUAGE_CHT */
 
-#define CATEGORY_GB_LINK_LABEL_CHT "連線遊戲"
-#define CATEGORY_GB_LINK_INFO_0_CHT "變更網路連線遊戲的設定。"
+#define CATEGORY_GB_LINK_LABEL_CHT "連線主機連接"
+#define CATEGORY_GB_LINK_INFO_0_CHT "變更連線對戰時主機連接的設定。"
 #define GAMBATTE_GB_COLORIZATION_LABEL_CHT "Game Boy著色"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_CHT "設定Game Boy遊戲的著色模式, 設定<自動>時使用最佳的配色效果, 核心未定義遊戲配色時使用「影像配色」自訂配色, \n設定<GBC>核心未定義配色時使用GBC內建深綠, 設定<SGB>核心未定義配色時使用SGB內建1A, \n設定<影像配色>時使用「影像配色」自訂配色, 設定<自訂>時從系統資料夾中載入自訂調色板。"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_CHT "設定Game Boy遊戲的著色模式, 設定<自動>時使用最佳的配色效果, 核心未定義遊戲配色時使用「影像配色」自訂配色, 設定<GBC>核心未定義配色時使用GBC內建深綠, 設定<SGB>核心未定義配色時使用SGB內建1A, 設定<影像配色>時使用「影像配色」自訂配色, 設定<自訂>時從系統資料夾中載入自訂調色板。"
 #define OPTION_VAL_AUTO_CHT "自動"
 #define OPTION_VAL_GBC_CHT "GBC (Game Boy Color主機)"
 #define OPTION_VAL_SGB_CHT "SGB (Super Game Boy介面卡)"
 #define OPTION_VAL_INTERNAL_CHT "影像配色"
 #define OPTION_VAL_CUSTOM_CHT "自訂"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_CHT "影像配色"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_CHT "「Game Boy著色」設定<影像配色>時使用, 或設定為<自動>且核心未定義遊戲配色時使用, \n配色GB類為主機畫面擬真顯示, GBC類為主機內建顏色, SGB類為介面卡內建顏色, \n此選項可設定為 狼兔64(TheWolfBunny64) 和 PixelShift(像素偏移) 提供的配色, 設定為調色師時依設定套用其他選項。"
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_CHT "「Game Boy著色」設定<影像配色>時使用, 或設定為<自動>且核心未定義遊戲配色時使用, 配色GB類為主機畫面擬真顯示, GBC類為主機內建顏色, SGB類為介面卡內建顏色, 此選項可設定為 狼兔64(TheWolfBunny64) 和 PixelShift(像素偏移) 提供的配色, 設定為調色師時依設定套用其他選項。"
 #define OPTION_VAL_GB_DMG_CHT "GB - 初版主機"
 #define OPTION_VAL_GB_POCKET_CHT "GB - 輕薄型主機"
 #define OPTION_VAL_GB_LIGHT_CHT "GB - 背光型主機"
@@ -5800,19 +5800,19 @@ struct retro_core_options_v2 options_chs = {
 #define OPTION_VAL_TWB64_012_VIRTUAL_BOY_VER_CHT "狼兔64 012 - Virtual Boy主機 (紅黑)"
 #define OPTION_VAL_TWB64_013_GOLDEN_WILD_CHT "狼兔64 013 - 薩爾達傳說曠野金"
 #define OPTION_VAL_TWB64_014_BUILDER_YELLOW_CHT "狼兔64 014 - 瑪利歐創作家工程黃"
-#define OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_CHT "狼兔64 015 - Discord藍紫"
+#define OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_CHT "狼兔64 015 - Discord商標藍紫"
 #define OPTION_VAL_TWB64_016_765_PRODUCTION_VER_CHT "狼兔64 016 - 765偶像藍紫"
 #define OPTION_VAL_TWB64_017_SUPERBALL_IVORY_CHT "狼兔64 017 - 瑪利歐創作家超級球黃"
-#define OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_CHT "狼兔64 018 - Crunchyroll橘"
-#define OPTION_VAL_TWB64_019_MUSE_PINK_CHT NULL
-#define OPTION_VAL_TWB64_020_NIJIGASAKI_YELLOW_CHT NULL
-#define OPTION_VAL_TWB64_021_GAMATE_VER_CHT NULL
-#define OPTION_VAL_TWB64_022_GREENSCALE_VER_CHT NULL
-#define OPTION_VAL_TWB64_023_ODYSSEY_GOLD_CHT NULL
-#define OPTION_VAL_TWB64_024_SUPER_SAIYAN_GOD_CHT NULL
-#define OPTION_VAL_TWB64_025_SUPER_SAIYAN_BLUE_CHT NULL
-#define OPTION_VAL_TWB64_026_BIZARRE_PINK_CHT NULL
-#define OPTION_VAL_TWB64_027_NINTENDO_SWITCH_LITE_VER_CHT NULL
+#define OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_CHT "狼兔64 018 - Crunchyroll商標橘"
+#define OPTION_VAL_TWB64_019_MUSE_PINK_CHT "狼兔64 019 - 學園偶像計畫繆斯粉色"
+#define OPTION_VAL_TWB64_020_NIJIGASAKI_YELLOW_CHT "狼兔64 020 - 虹咲學園黃"
+#define OPTION_VAL_TWB64_021_GAMATE_VER_CHT "狼兔64 021 - 超級小子主機 (Gamate)"
+#define OPTION_VAL_TWB64_022_GREENSCALE_VER_CHT "狼兔64 022 - 綠色階"
+#define OPTION_VAL_TWB64_023_ODYSSEY_GOLD_CHT "狼兔64 023 - 奧德賽金幣 (金黃)"
+#define OPTION_VAL_TWB64_024_SUPER_SAIYAN_GOD_CHT "狼兔64 024 - 超級賽亞人之神 (紅光)"
+#define OPTION_VAL_TWB64_025_SUPER_SAIYAN_BLUE_CHT "狼兔64 025 - 超級賽亞人藍 (藍光)"
+#define OPTION_VAL_TWB64_026_BIZARRE_PINK_CHT "狼兔64 026 - JoJo的奇妙冒險標題桃紅"
+#define OPTION_VAL_TWB64_027_NINTENDO_SWITCH_LITE_VER_CHT "狼兔64 027 - Switch輕量版外殼 (黃藍)"
 #define OPTION_VAL_TWB64_028_GAME_COM_VER_CHT NULL
 #define OPTION_VAL_TWB64_029_SANRIO_PINK_CHT NULL
 #define OPTION_VAL_TWB64_030_BANDAI_NAMCO_VER_CHT NULL
@@ -6070,66 +6070,66 @@ struct retro_core_options_v2 options_chs = {
 #define GAMBATTE_TURBO_PERIOD_LABEL_CHT "連發間隔"
 #define GAMBATTE_TURBO_PERIOD_INFO_0_CHT NULL
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_CHT "模擬震動強度"
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_CHT NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_CHT "顯示遊戲連線選項"
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_CHT "遊戲連線模式"
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_CHT "遊戲連線模式"
-#define GAMBATTE_GB_LINK_MODE_INFO_0_CHT NULL
-#define OPTION_VAL_NOT_CONNECTED_CHT "不連線"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_CHT "設定遊戲支援震動的震動強度, 模擬內建振動模組的卡帶, 例如「寶可夢彈珠臺(Pokemon Pinball)」。"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_CHT "顯示連線主機連接選項"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_CHT "顯示連線對戰時主機連接相關的選項。\n注意: 此選項變更時需要重新進入核心選項才能生效。"
+#define GAMBATTE_GB_LINK_MODE_LABEL_CHT "主機連接模式"
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_CHT "主機連接模式"
+#define GAMBATTE_GB_LINK_MODE_INFO_0_CHT "設定連線對戰時使用的連線模式, 主機和用戶需要建立主機連接時, 必須在未建立連線之前設定完成。"
+#define OPTION_VAL_NOT_CONNECTED_CHT "不連接"
 #define OPTION_VAL_NETWORK_SERVER_CHT "主機端"
 #define OPTION_VAL_NETWORK_CLIENT_CHT "用戶端"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CHT "主機通訊埠號"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_CHT "主機通訊埠號"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CHT "連線主機位址(1字節百位): #__.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_CHT "連線主機位址(1字節百位): #__.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CHT "連線主機位址(1字節十位): _#_.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_CHT "連線主機位址(1字節十位): _#_.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CHT "連線主機位址(1字節個位): __#.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_CHT "連線主機位址(1字節個位): __#.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CHT "連線主機位址(2字節百位): ___.#__.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_CHT "連線主機位址(2字節百位): ___.#__.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CHT "連線主機位址(2字節十位): ___._#_.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_CHT "連線主機位址(2字節十位): ___._#_.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CHT "連線主機位址(2字節個位): ___.__#.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_CHT "連線主機位址(2字節個位): ___.__#.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CHT "連線主機位址(3字節百位): ___.___.#__.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_CHT "連線主機位址(3字節百位): ___.___.#__.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CHT "連線主機位址(3字節十位): ___.___._#_.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_CHT "連線主機位址(3字節十位): ___.___._#_.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CHT "連線主機位址(3字節個位): ___.___.__#.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_CHT "連線主機位址(3字節個位): ___.___.__#.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CHT "連線主機位址(4字節百位): ___.___.___.#__"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_CHT "連線主機位址(4字節百位): ___.___.___.#__"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CHT "連線主機位址(4字節十位): ___.___.___._#_"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_CHT "連線主機位址(4字節十位): ___.___.___._#_"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CHT "連線主機位址(4字節個位): ___.___.___.__#"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_CHT "連線主機位址(4字節個位): ___.___.___.__#"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_CHT NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_CHT NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_CHT "設定遊戲連線主機的通訊埠號。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CHT "連線主機位址(01): #__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_CHT "連線主機位址(01): #__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_CHT "設定連線主機IP位址第1碼, 例如「192.168.1.1」不滿12個數字, 設定方式為「192.168.001.001」。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_CHT "設定連線主機IP位址第1碼, 例如「192.168.1.1」不滿12個數字, 設定方式為「192.168.001.001」。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CHT "連線主機位址(02): _#_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_CHT "連線主機位址(02): _#_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_CHT "設定連線主機IP位址第2碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_CHT "設定連線主機IP位址第2碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CHT "連線主機位址(03): __#.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_CHT "連線主機位址(03): __#.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_CHT "設定連線主機IP位址第3碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_CHT "設定連線主機IP位址第3碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CHT "連線主機位址(04): ___.#__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_CHT "連線主機位址(04): ___.#__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_CHT "設定連線主機IP位址第4碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_CHT "設定連線主機IP位址第4碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CHT "連線主機位址(05): ___._#_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_CHT "連線主機位址(05): ___._#_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_CHT "設定連線主機IP位址第5碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_CHT "設定連線主機IP位址第5碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CHT "連線主機位址(06): ___.__#.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_CHT "連線主機位址(06): ___.__#.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_CHT "設定連線主機IP位址第6碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_CHT "設定連線主機IP位址第6碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CHT "連線主機位址(07): ___.___.#__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_CHT "連線主機位址(07): ___.___.#__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_CHT "設定連線主機IP位址第7碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_CHT "設定連線主機IP位址第7碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CHT "連線主機位址(08): ___.___._#_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_CHT "連線主機位址(08): ___.___._#_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_CHT "設定連線主機IP位址第8碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_CHT "設定連線主機IP位址第8碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CHT "連線主機位址(09): ___.___.__#.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_CHT "連線主機位址(09): ___.___.__#.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_CHT "設定連線主機IP位址第9碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_CHT "設定連線主機IP位址第9碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CHT "連線主機位址(10): ___.___.___.#__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_CHT "連線主機位址(10): ___.___.___.#__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_CHT "設定連線主機IP位址第10碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_CHT "設定連線主機IP位址第10碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CHT "連線主機位址(11): ___.___.___._#_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_CHT "連線主機位址(11): ___.___.___._#_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_CHT "設定連線主機IP位址第11碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_CHT "設定連線主機IP位址第11碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CHT "連線主機位址(12): ___.___.___.__#"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_CHT "連線主機位址(12): ___.___.___.__#"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_CHT "設定連線主機IP位址第12碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_CHT "設定連線主機IP位址第12碼, 僅限「遊戲連線模式」設定為<用戶端>時使用。"
 
 struct retro_core_option_v2_category option_cats_cht[] = {
    {
