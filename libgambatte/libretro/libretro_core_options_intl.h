@@ -7142,7 +7142,7 @@ struct retro_core_options_v2 options_chs = {
 #define CATEGORY_GB_LINK_LABEL_CHT "連線主機連接"
 #define CATEGORY_GB_LINK_INFO_0_CHT "變更連線對戰時主機連接的設定。"
 #define GAMBATTE_GB_COLORIZATION_LABEL_CHT "Game Boy著色"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_CHT "設定Game Boy遊戲的著色模式, 設定<自動>時為核心定義的最佳配色效果, 當遊戲未定義配色時套用「影像配色」設定, 設定<GBC>時為GBC配色, 未定義則用深綠, 設定<SGB>時為SGB配色, 未定義則用1A, 設定<影像配色>時套用「影像配色」設定, 設定<自訂>時從系統資料夾載入自訂調色板。"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_CHT "設定Game Boy遊戲的著色模式, 設定<自動>時為核心定義的配色效果, 當遊戲未定義時套用「影像配色」設定, 設定<GBC>時為GBC配色, 未定義則用深綠, 設定<SGB>時為SGB配色, 未定義則用1A, 設定<影像配色>時套用「影像配色」設定, 設定<自訂>時從系統資料夾載入自訂調色板。"
 #define OPTION_VAL_AUTO_CHT "自動"
 #define OPTION_VAL_GBC_CHT "GBC (Game Boy Color主機)"
 #define OPTION_VAL_SGB_CHT "SGB (Super Game Boy介面卡)"
