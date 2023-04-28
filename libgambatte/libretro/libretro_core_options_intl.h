@@ -355,38 +355,38 @@ extern "C" {
 #define OPTION_VAL_PIXELSHIFT_43_VAPORWAVE_AR NULL
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_AR NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_AR NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_AR NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_AR NULL
-#define OPTION_VAL_GBC_ONLY_AR NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_AR "تصحيح الألوان"
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_AR "ضبط ألوان الإخراج لمطابقة عرض معدات Game Boy Color الحقيقي. يتضمن \"GBC فقط\" أن التصحيح سيتم تطبيقه فقط عند لعب Game Boy Color اللعبة، أو عند استخدام لوح ألوان Game Boy Color اللعبة. \"دائماً\" يطبق تصحيح الألوان على جميع المحتوى، وسوف ينتج نتائج غير متوقعة/دون المستوى الأمثل عند استخدام ألواح الألوان الداخلية \"GB\" أو \"SGB\"."
+#define OPTION_VAL_GBC_ONLY_AR "GBC فقط"
 #define OPTION_VAL_ALWAYS_AR "دائما"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_AR NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_AR NULL
-#define OPTION_VAL_ACCURATE_AR NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_AR "وضع تصحيح الألوان"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_AR "يحدد الطريقة المستخدمة عند القيام بتصحيح الألوان. 'دقيقة' ينتج المخرجات تقريبا لا يمكن تمييزها عن لوحةGame Boy Color لوح LCD. \"سريع\" فقط ألوان مظلمة وتقلل من التشبع، وقد تستخدم على أجهزة منخفضة النهاية إذا كانت طريقة \"دقيقة\" بطيئة جداً."
+#define OPTION_VAL_ACCURATE_AR "دقيق"
 #define OPTION_VAL_FAST_AR "سريع"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_AR NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_AR NULL
-#define OPTION_VAL_CENTRAL_AR NULL
-#define OPTION_VAL_ABOVE_SCREEN_AR NULL
-#define OPTION_VAL_BELOW_SCREEN_AR NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_AR NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_AR NULL
-#define GAMBATTE_MIX_FRAMES_LABEL_AR NULL
-#define GAMBATTE_MIX_FRAMES_INFO_0_AR NULL
-#define OPTION_VAL_MIX_AR NULL
-#define OPTION_VAL_LCD_GHOSTING_AR NULL
-#define OPTION_VAL_LCD_GHOSTING_FAST_AR NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_AR "تصحيح اللون - موقع الضوء الأمامي"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_AR "محاكاة الاستجابة الفيزيائية للوحة Game Boy Color LCD، عند الإضاءة من زوايا مختلفة. 'المركزية' يمثل استنساخ الألوان القياسي. 'أعلى الشاشة' يزيد السطوع. 'أسفل الشاشة' يقلل السطوع. ينطبق هذا الإعداد فقط عند تعيين 'وضع تصحيح الألوان' إلى 'دقيقة'."
+#define OPTION_VAL_CENTRAL_AR "مركزي"
+#define OPTION_VAL_ABOVE_SCREEN_AR "أعلى الشاشة"
+#define OPTION_VAL_BELOW_SCREEN_AR "أسفل الشاشة"
+#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_AR "مستوى فلتر الظلام (%)"
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_AR "تمكين تقليل السطوع القائم على الإضاءة. قد تستخدم لتجنب السلال/العين عند لعب الألعاب مع خلفيات بيضاء ، وهي مصممة للعرض على Game Boy اللعبة غير الخلفية ويمكن لذلك أن تبدو مشرقة بشكل غير مريح عند مشاهدتها على شاشة خلفية حديثة."
+#define GAMBATTE_MIX_FRAMES_LABEL_AR "مزج حدود مشتركة"
+#define GAMBATTE_MIX_FRAMES_INFO_0_AR "محاكاة تأثيرات شبح LCD. \"بسيط\" يقوم بمزيج 50:50 من الإطارات الحالية والسابقة. محاكاة أوقات الاستجابة الطبيعية لبلورات LCD، بالجمع بين إطارات زبائن متعددة. المزج 'بسيط' مطلوب عند لعب الألعاب التي تعتمد على شبح LCD لتأثيرات الشفافية (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
+#define OPTION_VAL_MIX_AR "بسيط"
+#define OPTION_VAL_LCD_GHOSTING_AR "LCD Ghost (دقيقة)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_AR "LCD Ghost (سريع)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_AR "إعادة تشغيل الصوت"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_AR NULL
-#define OPTION_VAL_SINC_AR NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_AR "حدد الخوارزمية التي ستستخدم عند إعادة تسمية الصوت الذي تم إنشاؤه (معدل صوت فتى اللعبة محدود فقط من خلال سرعة كتابة المعالج الخاص بها، بحيث تكون الترددات 'الأصلية` غير عملية على الأجهزة الصوتية الحديثة ويجب أن تُنزل على العينة). \"Sinc\" ينتج أعلى جودة. \"Cosine\" يحسّن الأداء على الأجهزة الطرفية المنخفضة."
+#define OPTION_VAL_SINC_AR "صفر"
 #define OPTION_VAL_CC_AR NULL
-#define GAMBATTE_GB_HWMODE_LABEL_AR NULL
-#define GAMBATTE_GB_HWMODE_INFO_0_AR NULL
+#define GAMBATTE_GB_HWMODE_LABEL_AR "محاكاة العتاد (مطلوب إعادة التشغيل)"
+#define GAMBATTE_GB_HWMODE_INFO_0_AR "حدد نوع الأجهزة التي يجب محاكاتها. \"تلقائي\" ينصح به. اختيار 'GBA' يفتح ميزات إضافية في بعض ألعاب ألوان الألعاب 'GBA المعززة' (شانتا وويندي - كل طريق ساحرة، أسطورة زيلدا: أوراكل من المواسم/الأعمار...)."
 #define OPTION_VAL_GB_AR NULL
 #define OPTION_VAL_GBA_AR NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_AR NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_AR NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_AR NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_AR NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_AR "استخدم محمل الإقلاع الرسمي (مطلوب إعادة التشغيل)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_AR "تمكين الدعم لمشغلي الألعاب الرسمية و مشغلي الألوان اللعبة، مع ما يقابل ذلك من الرسوم المتحركة لشعار البدء."
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_AR "السماح باتجاهات المعارضة"
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_AR "تمكين هذا سوف يسمح بالضغط / التبديل/الضغط بسرعة على الإتجاهات اليسرى واليسرى (أو الأعلى والأسفل) في نفس الوقت. قد يسبب هذا إغراءات قائمة على الحركة."
 #define GAMBATTE_TURBO_PERIOD_LABEL_AR NULL
 #define GAMBATTE_TURBO_PERIOD_INFO_0_AR NULL
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_AR NULL
@@ -397,18 +397,18 @@ extern "C" {
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_AR NULL
 #define GAMBATTE_GB_LINK_MODE_INFO_0_AR NULL
 #define OPTION_VAL_NOT_CONNECTED_AR NULL
-#define OPTION_VAL_NETWORK_SERVER_AR NULL
-#define OPTION_VAL_NETWORK_CLIENT_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_AR NULL
+#define OPTION_VAL_NETWORK_SERVER_AR "خادم الشبكة"
+#define OPTION_VAL_NETWORK_CLIENT_AR "عميل الشبكة"
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_AR "منفذ رابط الشبكة"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_AR "المنفذ"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_AR NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_AR "حدد المنفذ المستخدم للاتصال بشبكة رابط اللعبة."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_AR "عنوان سيرفر الشبكة Pt. 01: x__.__.___._.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_AR "عنوان الخادم Pt. 01: x__._.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_AR "الرقم الأول لعنوان IP لخادم شبكة اللعبة البعيدة. يستخدم فقط عندما يتم تعيين \"وضع رابط اللعبة\" إلى \"عميل الشبكة\"."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_AR "الرقم الأول لعنوان IP لخادم شبكة اللعبة البعيدة. يستخدم فقط عندما يتم تعيين \"وضع الرابط\" إلى \"عميل الشبكة\"."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_AR "عنوان سيرفر رابط الشبكة Pt. 02: _x_.___.___.___.____"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_AR "عنوان الخادم Pt. 02: _x_.___.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_AR "الرقم الثاني لعنوان IP لخادم شبكة اللعبة البعيدة. يستخدم فقط عندما يتم تعيين \"وضع رابط اللعبة\" إلى \"عميل الشبكة\"."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_AR NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_AR NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_AR NULL
@@ -448,8 +448,8 @@ extern "C" {
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_AR NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_AR NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_AR NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_AR NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_AR "الرقم الثاني عشر لعنوان IP لخادم شبكة اللعبة البعيد. يستخدم فقط عندما يتم تعيين \"وضع رابط اللعبة\" إلى \"عميل الشبكة\"."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_AR "الرقم الثاني عشر لعنوان IP لخادم شبكة اللعبة البعيدة. يستخدم فقط عندما يتم تعيين \"وضع الرابط\" إلى \"عميل الشبكة\"."
 
 struct retro_core_option_v2_category option_cats_ar[] = {
    {
