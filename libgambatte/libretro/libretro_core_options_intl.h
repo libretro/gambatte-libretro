@@ -21680,11 +21680,11 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_SINC_FI NULL
 #define OPTION_VAL_CC_FI NULL
 #define GAMBATTE_GB_HWMODE_LABEL_FI "Emuloitu laitteisto (Uudelleenkäynnistys vaaditaan)"
-#define GAMBATTE_GB_HWMODE_INFO_0_FI NULL
+#define GAMBATTE_GB_HWMODE_INFO_0_FI "Määritä, minkä tyyppistä laitetta emuloidaan. 'Automaattinen' on suositus. GBA:n valitseminen avaa lisäominaisuuksia tietyissä 'GBA tehostetuissa' Game Boy Color peleissä (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_FI NULL
 #define OPTION_VAL_GBA_FI NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_FI "Käytä virallista käynnistyslataajaa (uudelleenkäynnistys vaaditaan)"
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_FI NULL
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_FI "Ota käyttöön tuki virallisille Game Boy- ja Game Boy Color käynnistyslataimille, joilla on omantyyppisensä käynnistyslogo-animaatiot."
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_FI "Salli vastakkaiset suunnat"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_FI NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_FI NULL
