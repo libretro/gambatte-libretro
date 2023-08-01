@@ -644,6 +644,9 @@ else
 endif
    CFLAGS   += -DDEBUG
    CXXFLAGS += -DDEBUG
+else ifeq ($(platform), emscripten)
+   CFLAGS   += -O3 -DNDEBUG
+   CXXFLAGS += -O3 -DNDEBUG
 else
 ifneq (,$(findstring msvc,$(platform)))
    CFLAGS   += -MT
