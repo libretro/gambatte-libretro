@@ -44060,7 +44060,7 @@ struct retro_core_options_v2 options_pt_pt = {
 /* RETRO_LANGUAGE_RU */
 
 #define CATEGORY_GB_LINK_LABEL_RU NULL
-#define CATEGORY_GB_LINK_INFO_0_RU "Изменить сетевые настройки Game Link (мультиплеер)."
+#define CATEGORY_GB_LINK_INFO_0_RU "Настройки сетевого мультиплеера Game Link."
 #define GAMBATTE_GB_COLORIZATION_LABEL_RU "Колоризация GB"
 #define GAMBATTE_GB_COLORIZATION_INFO_0_RU "Включает колоризацию игр Game Boy. 'Авто' выбирает 'наилучшую' (наиболее подходящую/красочную) палитру. 'GBC' использует для игры предустановленную палитру Game Boy Color или, при её отсутствии, 'GBC - Dark Green'. 'SGB' использует для игры предустановленную палитру Super Game Boy или, при её отсутствии, 'SGB - 1A'. 'Встроенная' использует опцию 'Встроенная палитра'. 'Кастомная' загружает пользовательскую палитру из системного каталога."
 #define OPTION_VAL_AUTO_RU "Авто"
@@ -48650,11 +48650,11 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_BELOW_SCREEN_SV NULL
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_SV "Mörkerfilternivå (%)"
 #define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_SV NULL
-#define GAMBATTE_MIX_FRAMES_LABEL_SV NULL
+#define GAMBATTE_MIX_FRAMES_LABEL_SV "Mellanbildsblandning"
 #define GAMBATTE_MIX_FRAMES_INFO_0_SV NULL
 #define OPTION_VAL_MIX_SV "Simpel"
-#define OPTION_VAL_LCD_GHOSTING_SV NULL
-#define OPTION_VAL_LCD_GHOSTING_FAST_SV NULL
+#define OPTION_VAL_LCD_GHOSTING_SV "LCD-efterbilder (Träffsäker noggrannhet)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_SV "LCD-efterbilder (Snabb)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_SV "Ljud-resampler"
 #define GAMBATTE_AUDIO_RESAMPLER_INFO_0_SV NULL
 #define OPTION_VAL_SINC_SV NULL
