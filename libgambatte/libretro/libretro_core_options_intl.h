@@ -44060,7 +44060,7 @@ struct retro_core_options_v2 options_pt_pt = {
 /* RETRO_LANGUAGE_RU */
 
 #define CATEGORY_GB_LINK_LABEL_RU NULL
-#define CATEGORY_GB_LINK_INFO_0_RU "Изменить сетевые настройки Game Link (мультиплеер)."
+#define CATEGORY_GB_LINK_INFO_0_RU "Настройки сетевого мультиплеера Game Link."
 #define GAMBATTE_GB_COLORIZATION_LABEL_RU "Колоризация GB"
 #define GAMBATTE_GB_COLORIZATION_INFO_0_RU "Включает колоризацию игр Game Boy. 'Авто' выбирает 'наилучшую' (наиболее подходящую/красочную) палитру. 'GBC' использует для игры предустановленную палитру Game Boy Color или, при её отсутствии, 'GBC - Dark Green'. 'SGB' использует для игры предустановленную палитру Super Game Boy или, при её отсутствии, 'SGB - 1A'. 'Встроенная' использует опцию 'Встроенная палитра'. 'Кастомная' загружает пользовательскую палитру из системного каталога."
 #define OPTION_VAL_AUTO_RU "Авто"
@@ -48321,15 +48321,15 @@ struct retro_core_options_v2 options_sr = {
 
 #define CATEGORY_GB_LINK_LABEL_SV "Spellänk"
 #define CATEGORY_GB_LINK_INFO_0_SV "Ändra inställningar för nätverksspel (flerspelarläge)."
-#define GAMBATTE_GB_COLORIZATION_LABEL_SV NULL
-#define GAMBATTE_GB_COLORIZATION_INFO_0_SV NULL
+#define GAMBATTE_GB_COLORIZATION_LABEL_SV "GB Färgläggning"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_SV "Aktiverar färgläggning av Game Boy-spel. \"Auto\" väljer den \"bästa\" (mest färgglada/lämpliga) paletten. \"GBC\" väljer spel-specifik Game Boy Color-palett om definierad, annars \"GBC - Mörkgrön\". \"SGB\" väljer spel-specifik Super Game Boy-palett om definierad, annars \"SGB - 1A\". \"Intern\" använder \"Intern Palett\" kärninställningen. \"Anpassad\" laddar in användar skapad palett från systemkatalogen."
 #define OPTION_VAL_AUTO_SV "Automatiskt"
 #define OPTION_VAL_GBC_SV NULL
 #define OPTION_VAL_SGB_SV NULL
 #define OPTION_VAL_INTERNAL_SV "Intern"
 #define OPTION_VAL_CUSTOM_SV "Anpassad"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_SV "Intern palett"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_SV NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_SV "Väljer en palett som används för att färglägga Game Boy-spel när \"GB Färgläggning\" är inställd på \"Intern\", eller när \"GB Färgläggning\" är inställd på \"Auto\" och spelet inte har någon fördefinierad SGB/GBC-palett. \"GB\"-paletter återskapar den ursprungliga Game Boy-hårdvaran. \"GBC\"-paletter är identiska med de inbyggda förinställningarna för Game Boy Color. \"SGB\"-paletter är identiska med de inbyggda förinställningarna för Super Game Boy."
 #define OPTION_VAL_GB_DMG_SV NULL
 #define OPTION_VAL_GB_POCKET_SV NULL
 #define OPTION_VAL_GB_LIGHT_SV "GB - Ljus"
@@ -48377,28 +48377,28 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_SGB_4F_SV NULL
 #define OPTION_VAL_SGB_4G_SV NULL
 #define OPTION_VAL_SGB_4H_SV NULL
-#define OPTION_VAL_SPECIAL_1_SV NULL
-#define OPTION_VAL_SPECIAL_2_SV NULL
-#define OPTION_VAL_SPECIAL_3_SV NULL
-#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_SV NULL
-#define OPTION_VAL_TWB64_PACK_1_SV NULL
-#define OPTION_VAL_TWB64_PACK_2_SV NULL
-#define OPTION_VAL_PIXELSHIFT_PACK_1_SV NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_SV NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_SV NULL
-#define OPTION_VAL_TWB64_001_AQOURS_BLUE_SV NULL
+#define OPTION_VAL_SPECIAL_1_SV "Speciell 1"
+#define OPTION_VAL_SPECIAL_2_SV "Speciell 2"
+#define OPTION_VAL_SPECIAL_3_SV "Speciell 3"
+#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_SV "Speciell 4 (TI-83 Legacy)"
+#define OPTION_VAL_TWB64_PACK_1_SV "TWB64 - Paket 1"
+#define OPTION_VAL_TWB64_PACK_2_SV "TWB64 - Paket 2"
+#define OPTION_VAL_PIXELSHIFT_PACK_1_SV "PixelShift - Paket 1"
+#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_SV "> TWB64 - Paket 1 Palett"
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_SV "Väljer intern färgpalett när \"Intern Palett\" är inställd på \"TWB64 - Paket 1\"."
+#define OPTION_VAL_TWB64_001_AQOURS_BLUE_SV "TWB64 001 - Aqours Blå"
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_SV NULL
-#define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_SV NULL
-#define OPTION_VAL_TWB64_004_PATRICK_STAR_PINK_SV NULL
-#define OPTION_VAL_TWB64_005_NEON_RED_SV NULL
-#define OPTION_VAL_TWB64_006_NEON_BLUE_SV NULL
-#define OPTION_VAL_TWB64_007_NEON_YELLOW_SV NULL
-#define OPTION_VAL_TWB64_008_NEON_GREEN_SV NULL
-#define OPTION_VAL_TWB64_009_NEON_PINK_SV NULL
-#define OPTION_VAL_TWB64_010_MARIO_RED_SV NULL
+#define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_SV "TWB64 003 - SvampBob Gul"
+#define OPTION_VAL_TWB64_004_PATRICK_STAR_PINK_SV "TWB64 004 - Patrik Stjärna Rosa"
+#define OPTION_VAL_TWB64_005_NEON_RED_SV "TWB64 005 - Neon Röd"
+#define OPTION_VAL_TWB64_006_NEON_BLUE_SV "TWB64 006 - Neon Blå"
+#define OPTION_VAL_TWB64_007_NEON_YELLOW_SV "TWB64 007 - Neon Gul"
+#define OPTION_VAL_TWB64_008_NEON_GREEN_SV "TWB64 008 - Neon Grön"
+#define OPTION_VAL_TWB64_009_NEON_PINK_SV "TWB64 009 - Neon Rosa"
+#define OPTION_VAL_TWB64_010_MARIO_RED_SV "TWB64 010 - Mario Röd"
 #define OPTION_VAL_TWB64_011_NICK_ORANGE_SV NULL
 #define OPTION_VAL_TWB64_012_VIRTUAL_BOY_VER_SV NULL
-#define OPTION_VAL_TWB64_013_GOLDEN_WILD_SV NULL
+#define OPTION_VAL_TWB64_013_GOLDEN_WILD_SV "TWB64 013 - Gyllne Vildheten"
 #define OPTION_VAL_TWB64_014_BUILDER_YELLOW_SV NULL
 #define OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_SV NULL
 #define OPTION_VAL_TWB64_016_765_PRODUCTION_VER_SV NULL
@@ -48650,11 +48650,11 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_BELOW_SCREEN_SV NULL
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_SV "Mörkerfilternivå (%)"
 #define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_SV NULL
-#define GAMBATTE_MIX_FRAMES_LABEL_SV NULL
+#define GAMBATTE_MIX_FRAMES_LABEL_SV "Mellanbildsblandning"
 #define GAMBATTE_MIX_FRAMES_INFO_0_SV NULL
 #define OPTION_VAL_MIX_SV "Simpel"
-#define OPTION_VAL_LCD_GHOSTING_SV NULL
-#define OPTION_VAL_LCD_GHOSTING_FAST_SV NULL
+#define OPTION_VAL_LCD_GHOSTING_SV "LCD-efterbilder (Träffsäker noggrannhet)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_SV "LCD-efterbilder (Snabb)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_SV "Ljud-resampler"
 #define GAMBATTE_AUDIO_RESAMPLER_INFO_0_SV NULL
 #define OPTION_VAL_SINC_SV NULL
