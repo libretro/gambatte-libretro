@@ -44067,7 +44067,7 @@ struct retro_core_options_v2 options_pt_pt = {
 #define OPTION_VAL_GBC_RU NULL
 #define OPTION_VAL_SGB_RU NULL
 #define OPTION_VAL_INTERNAL_RU "Встроенная"
-#define OPTION_VAL_CUSTOM_RU "Пользовательская"
+#define OPTION_VAL_CUSTOM_RU "Ручная установка"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_RU "Встроенная палитра"
 #define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_RU "Палитра, используемая для раскрашивания игр Game Boy при установке опции 'Колоризация GB' в режим 'Встроенная' или когда установлен режим 'Авто' и для игры нет предустановленной палитры SGB/GBC. Палитры 'GB' имитируют оригинальное изображение консоли. Палитры 'GBC' идентичны встроенным пресетам Game Boy Color. Палитры 'SGB' соответствуют встроенным пресетам Super Game Boy."
 #define OPTION_VAL_GB_DMG_RU NULL
@@ -44396,9 +44396,9 @@ struct retro_core_options_v2 options_pt_pt = {
 #define OPTION_VAL_LCD_GHOSTING_RU "Двоение ЖК (точно)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_RU "Двоение ЖК (быстро)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_RU "Аудиоресемплер"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_RU NULL
-#define OPTION_VAL_SINC_RU NULL
-#define OPTION_VAL_CC_RU NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_RU "Алгоритм передискретизации сгенерированного звука. Частота звука Game Boy ограничена только скоростью записи CPU консоли, т.о., 'нативные' частоты на современных звуковых устройствах неприменимы и требуют понижения. 'Синусный' обеспечивает наилучшее качество. 'Косинусный' улучшает производительность для слабых устройств."
+#define OPTION_VAL_SINC_RU "Синусный"
+#define OPTION_VAL_CC_RU "Косинусный"
 #define GAMBATTE_GB_HWMODE_LABEL_RU "Модель консоли (требуется перезапуск)"
 #define GAMBATTE_GB_HWMODE_INFO_0_RU "Выбор системы для эмуляции. Рекомендуется установить 'Авто'. Выбор 'GBA' открывает новые возможности в некоторых играх Game Boy Color с улучшениями для GBA (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_RU NULL
@@ -48402,19 +48402,19 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_014_BUILDER_YELLOW_SV "TWB64 014 - Byggargul"
 #define OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_SV "TWB64 015 - Klassisk Suddigila"
 #define OPTION_VAL_TWB64_016_765_PRODUCTION_VER_SV "TWB64 016 - 765 Produktion Ver."
-#define OPTION_VAL_TWB64_017_SUPERBALL_IVORY_SV NULL
+#define OPTION_VAL_TWB64_017_SUPERBALL_IVORY_SV "TWB64 017 - Elfenben Superboll"
 #define OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_SV NULL
-#define OPTION_VAL_TWB64_019_MUSE_PINK_SV NULL
-#define OPTION_VAL_TWB64_020_NIJIGASAKI_YELLOW_SV NULL
+#define OPTION_VAL_TWB64_019_MUSE_PINK_SV "TWB64 019 - Muse Rosa"
+#define OPTION_VAL_TWB64_020_NIJIGASAKI_YELLOW_SV "TWB64 020 - Nijigasaki Gul"
 #define OPTION_VAL_TWB64_021_GAMATE_VER_SV NULL
-#define OPTION_VAL_TWB64_022_GREENSCALE_VER_SV NULL
-#define OPTION_VAL_TWB64_023_ODYSSEY_GOLD_SV NULL
-#define OPTION_VAL_TWB64_024_SUPER_SAIYAN_GOD_SV NULL
-#define OPTION_VAL_TWB64_025_SUPER_SAIYAN_BLUE_SV NULL
-#define OPTION_VAL_TWB64_026_BIZARRE_PINK_SV NULL
+#define OPTION_VAL_TWB64_022_GREENSCALE_VER_SV "TWB64 022 - Grönskalan Ver."
+#define OPTION_VAL_TWB64_023_ODYSSEY_GOLD_SV "TWB64 023 - Gyllne Odysséen"
+#define OPTION_VAL_TWB64_024_SUPER_SAIYAN_GOD_SV "TWB64 024 - Super Saiyan Guden"
+#define OPTION_VAL_TWB64_025_SUPER_SAIYAN_BLUE_SV "TWB64 025 - Super Saiyan Blå"
+#define OPTION_VAL_TWB64_026_BIZARRE_PINK_SV "TWB64 026 - Bisarr Rosa"
 #define OPTION_VAL_TWB64_027_NINTENDO_SWITCH_LITE_VER_SV NULL
 #define OPTION_VAL_TWB64_028_GAME_COM_VER_SV NULL
-#define OPTION_VAL_TWB64_029_SANRIO_PINK_SV NULL
+#define OPTION_VAL_TWB64_029_SANRIO_PINK_SV "TWB64 029 - Sanrio Rosa"
 #define OPTION_VAL_TWB64_030_BANDAI_NAMCO_VER_SV NULL
 #define OPTION_VAL_TWB64_031_COSMO_GREEN_SV "TWB64 031 - Kosmisk grön"
 #define OPTION_VAL_TWB64_032_WANDA_PINK_SV "TWB64 032 - Wanda Rosa"
@@ -48429,7 +48429,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_041_POCKET_VER_SV NULL
 #define OPTION_VAL_TWB64_042_LIGHT_VER_SV "TWB64 042 - Ljus Ver."
 #define OPTION_VAL_TWB64_043_MIRAITOWA_BLUE_SV "TWB64 043 - Miraitowa Blå"
-#define OPTION_VAL_TWB64_044_SOMEITY_PINK_SV NULL
+#define OPTION_VAL_TWB64_044_SOMEITY_PINK_SV "TWB64 044 - Someity Rosa"
 #define OPTION_VAL_TWB64_045_PIKACHU_YELLOW_SV "TWB64 045 - Pikachu Gul"
 #define OPTION_VAL_TWB64_046_EEVEE_BROWN_SV "TWB64 046 - Eevee brun"
 #define OPTION_VAL_TWB64_047_MICROVISION_VER_SV NULL
@@ -48443,7 +48443,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_055_ANDROID_GREEN_SV "TWB64 055 - Android Grön"
 #define OPTION_VAL_TWB64_056_TICKETMASTER_AZURE_SV NULL
 #define OPTION_VAL_TWB64_057_GOOGLE_RED_SV "TWB64 057 - Google Röd"
-#define OPTION_VAL_TWB64_058_GOOGLE_BLUE_SV NULL
+#define OPTION_VAL_TWB64_058_GOOGLE_BLUE_SV "TWB64 058 - Google Blå"
 #define OPTION_VAL_TWB64_059_GOOGLE_YELLOW_SV "TWB64 059 - Google Gul"
 #define OPTION_VAL_TWB64_060_GOOGLE_GREEN_SV NULL
 #define OPTION_VAL_TWB64_061_WONDERSWAN_VER_SV NULL
@@ -48453,7 +48453,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_065_GAMEKING_VER_SV NULL
 #define OPTION_VAL_TWB64_066_DO_THE_DEW_VER_SV NULL
 #define OPTION_VAL_TWB64_067_DIGIVICE_VER_SV NULL
-#define OPTION_VAL_TWB64_068_BIKINI_BOTTOM_VER_SV NULL
+#define OPTION_VAL_TWB64_068_BIKINI_BOTTOM_VER_SV "TWB64 068 - Bikini Botten Ver."
 #define OPTION_VAL_TWB64_069_BLOSSOM_PINK_SV "TWB64 069 - Blossom Rosa"
 #define OPTION_VAL_TWB64_070_BUBBLES_BLUE_SV "TWB64 070 - Bubbelblå"
 #define OPTION_VAL_TWB64_071_BUTTERCUP_GREEN_SV "TWB64 071 - Buttercups-grön"
@@ -48463,22 +48463,22 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_075_TAMAGOTCHI_VER_SV NULL
 #define OPTION_VAL_TWB64_076_PHANTOM_RED_SV "TWB64 076 - Fantomröd"
 #define OPTION_VAL_TWB64_077_HALLOWEEN_VER_SV NULL
-#define OPTION_VAL_TWB64_078_CHRISTMAS_VER_SV NULL
+#define OPTION_VAL_TWB64_078_CHRISTMAS_VER_SV "TWB64 078 - Jul Ver."
 #define OPTION_VAL_TWB64_079_CARDCAPTOR_PINK_SV "TWB64 079 - Cardcaptor - rosa"
 #define OPTION_VAL_TWB64_080_PRETTY_GUARDIAN_GOLD_SV "TWB64 080 - Pretty Guardian - Guld"
-#define OPTION_VAL_TWB64_081_CAMOUFLAGE_VER_SV NULL
-#define OPTION_VAL_TWB64_082_LEGENDARY_SUPER_SAIYAN_SV NULL
-#define OPTION_VAL_TWB64_083_SUPER_SAIYAN_ROSE_SV NULL
+#define OPTION_VAL_TWB64_081_CAMOUFLAGE_VER_SV "TWB64 081 - Kamouflage Ver."
+#define OPTION_VAL_TWB64_082_LEGENDARY_SUPER_SAIYAN_SV "TWB64 082 - Legendariska Super Saiyan"
+#define OPTION_VAL_TWB64_083_SUPER_SAIYAN_ROSE_SV "TWB64 083 - Super Saiyan Rosé"
 #define OPTION_VAL_TWB64_084_SUPER_SAIYAN_SV NULL
-#define OPTION_VAL_TWB64_085_PERFECTED_ULTRA_INSTINCT_SV NULL
-#define OPTION_VAL_TWB64_086_SAINT_SNOW_RED_SV NULL
-#define OPTION_VAL_TWB64_087_YELLOW_BANANA_SV NULL
-#define OPTION_VAL_TWB64_088_GREEN_BANANA_SV NULL
+#define OPTION_VAL_TWB64_085_PERFECTED_ULTRA_INSTINCT_SV "TWB64 085 - Fulländad Ultra Instinkt"
+#define OPTION_VAL_TWB64_086_SAINT_SNOW_RED_SV "TWB64 086 - Saint Snow Röd"
+#define OPTION_VAL_TWB64_087_YELLOW_BANANA_SV "TWB64 087 - Gul Banan"
+#define OPTION_VAL_TWB64_088_GREEN_BANANA_SV "TWB64 088 - Grön Banan"
 #define OPTION_VAL_TWB64_089_SUPER_SAIYAN_3_SV NULL
-#define OPTION_VAL_TWB64_090_SUPER_SAIYAN_BLUE_EVOLVED_SV NULL
+#define OPTION_VAL_TWB64_090_SUPER_SAIYAN_BLUE_EVOLVED_SV "TWB64 090 - Super Saiyan Blå Evolverad"
 #define OPTION_VAL_TWB64_091_POCKET_TALES_VER_SV NULL
-#define OPTION_VAL_TWB64_092_INVESTIGATION_YELLOW_SV NULL
-#define OPTION_VAL_TWB64_093_S_E_E_S_BLUE_SV NULL
+#define OPTION_VAL_TWB64_092_INVESTIGATION_YELLOW_SV "TWB64 092 - Utredningsgul"
+#define OPTION_VAL_TWB64_093_S_E_E_S_BLUE_SV "TWB64 093 - S.E.E.S. Blå"
 #define OPTION_VAL_TWB64_094_GAME_AWARDS_CYAN_SV NULL
 #define OPTION_VAL_TWB64_095_HOKAGE_ORANGE_SV NULL
 #define OPTION_VAL_TWB64_096_STRAW_HAT_RED_SV NULL
