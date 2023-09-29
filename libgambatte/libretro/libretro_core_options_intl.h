@@ -44123,7 +44123,7 @@ struct retro_core_options_v2 options_pt_pt = {
 #define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_RU NULL
 #define OPTION_VAL_TWB64_PACK_1_RU "TWB64 - Пакет 1"
 #define OPTION_VAL_TWB64_PACK_2_RU "TWB64 - Пакет 2"
-#define OPTION_VAL_PIXELSHIFT_PACK_1_RU NULL
+#define OPTION_VAL_PIXELSHIFT_PACK_1_RU "PixelShift - Пакет 1"
 #define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_RU "> Палитра TWB64 - Пакет 1"
 #define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_RU "Выбор встроенной палитры колоризации при установке параметра 'Встроенная палитра' на 'TWB64 - Пакет 1'."
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_RU NULL
@@ -44328,8 +44328,8 @@ struct retro_core_options_v2 options_pt_pt = {
 #define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_RU NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_RU NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_RU NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_RU NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_RU NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_RU "> Палитра PixelShift - Пакет 1"
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_RU "Выбор встроенной палитры колоризации при установке параметра 'Встроенная палитра' на 'PixelShift - Пакет 1'."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_RU NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_RU NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_RU NULL
@@ -44408,7 +44408,7 @@ struct retro_core_options_v2 options_pt_pt = {
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_RU "Разрешить противоположные направления"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_RU "Позволяет нажимать/быстро менять/зажимать одновременно направления влево и вправо (или вверх и вниз). Может вызывать глитчи, связанные с перемещением."
 #define GAMBATTE_TURBO_PERIOD_LABEL_RU "Период турбо-кнопки"
-#define GAMBATTE_TURBO_PERIOD_INFO_0_RU "Устанавливает интервал повтора (в кадрах) при удерживании турбо-кнопок A/B."
+#define GAMBATTE_TURBO_PERIOD_INFO_0_RU "Устанавливает интервал повтора (в кадрах) при удержании турбо-кнопок A/B."
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_RU "Сила отдачи контроллера"
 #define GAMBATTE_RUMBLE_LEVEL_INFO_0_RU "Включает эффекты тактильной отдачи для игр с поддержкой (Pokemon Pinball, Perfect Dark...)."
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_RU "Показывать настройки Game Link"
@@ -48384,7 +48384,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_PACK_1_SV "TWB64 - Paket 1"
 #define OPTION_VAL_TWB64_PACK_2_SV "TWB64 - Paket 2"
 #define OPTION_VAL_PIXELSHIFT_PACK_1_SV "PixelShift - Paket 1"
-#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_SV "> TWB64 - Paket 1 Palett"
+#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_SV "> TWB64 - Paletter från Paket 1"
 #define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_SV "Väljer intern färgpalett när \"Intern Palett\" är inställd på \"TWB64 - Paket 1\"."
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_SV "TWB64 001 - Aqours Blå"
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_SV NULL
@@ -48481,17 +48481,17 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_093_S_E_E_S_BLUE_SV "TWB64 093 - S.E.E.S. Blå"
 #define OPTION_VAL_TWB64_094_GAME_AWARDS_CYAN_SV NULL
 #define OPTION_VAL_TWB64_095_HOKAGE_ORANGE_SV NULL
-#define OPTION_VAL_TWB64_096_STRAW_HAT_RED_SV NULL
+#define OPTION_VAL_TWB64_096_STRAW_HAT_RED_SV "TWB64 096 - Stråhattsröd"
 #define OPTION_VAL_TWB64_097_SWORD_ART_CYAN_SV NULL
-#define OPTION_VAL_TWB64_098_DEKU_ALPHA_EMERALD_SV NULL
-#define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_SV NULL
+#define OPTION_VAL_TWB64_098_DEKU_ALPHA_EMERALD_SV "TWB64 098 - Deku Alfa Smaragd"
+#define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_SV "TWB64 099 - Blåa Ränder Ver."
 #define OPTION_VAL_TWB64_100_STONE_ORANGE_SV NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_SV NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_SV NULL
-#define OPTION_VAL_TWB64_101_765PRO_PINK_SV NULL
-#define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_SV NULL
-#define OPTION_VAL_TWB64_103_MILLION_YELLOW_SV NULL
-#define OPTION_VAL_TWB64_104_SIDEM_GREEN_SV NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_SV "> TWB64 - Paletter från Paket 2"
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_SV "Väljer intern färgpalett när \"Intern Palett\" är inställd på \"TWB64 - Paket 2\"."
+#define OPTION_VAL_TWB64_101_765PRO_PINK_SV "TWB64 101 - 765PRO Rosa"
+#define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_SV "TWB64 102 - CINDERELLA Blå"
+#define OPTION_VAL_TWB64_103_MILLION_YELLOW_SV "TWB64 103 - MILLION GUL!"
+#define OPTION_VAL_TWB64_104_SIDEM_GREEN_SV "TWB64 104 - SideM Grön"
 #define OPTION_VAL_TWB64_105_SHINY_SKY_BLUE_SV NULL
 #define OPTION_VAL_TWB64_106_ANGRY_VOLCANO_VER_SV NULL
 #define OPTION_VAL_TWB64_107_YO_KAI_PINK_SV NULL
