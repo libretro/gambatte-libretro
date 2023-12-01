@@ -55667,11 +55667,11 @@ struct retro_core_options_v2 options_sr = {
 #define CATEGORY_GB_LINK_INFO_0_SV "Ändra inställningar för nätverksspel (flerspelarläge)."
 #define GAMBATTE_GB_COLORIZATION_LABEL_SV "GB Färgläggning"
 #define GAMBATTE_GB_COLORIZATION_INFO_0_SV "Aktiverar färgläggning av Game Boy-spel. \"Auto\" väljer den \"bästa\" (mest färgglada/lämpliga) paletten. \"GBC\" väljer spel-specifik Game Boy Color-palett om definierad, annars \"GBC - Mörkgrön\". \"SGB\" väljer spel-specifik Super Game Boy-palett om definierad, annars \"SGB - 1A\". \"Intern\" använder \"Intern Palett\" kärninställningen. \"Anpassad\" laddar in användar skapad palett från systemkatalogen."
-#define OPTION_VAL_AUTO_SV "Automatiskt"
+#define OPTION_VAL_AUTO_SV NULL
 #define OPTION_VAL_GBC_SV NULL
 #define OPTION_VAL_SGB_SV NULL
 #define OPTION_VAL_INTERNAL_SV "Intern"
-#define OPTION_VAL_CUSTOM_SV "Anpassad"
+#define OPTION_VAL_CUSTOM_SV "Anpassa"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_SV "Intern palett"
 #define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_SV "Väljer en palett som används för att färglägga Game Boy-spel när \"GB Färgläggning\" är inställd på \"Intern\", eller när \"GB Färgläggning\" är inställd på \"Auto\" och spelet inte har någon fördefinierad SGB/GBC-palett. \"GB\"-paletter återskapar den ursprungliga Game Boy-hårdvaran. \"GBC\"-paletter är identiska med de inbyggda förinställningarna för Game Boy Color. \"SGB\"-paletter är identiska med de inbyggda förinställningarna för Super Game Boy."
 #define OPTION_VAL_GB_DMG_SV NULL
@@ -56112,7 +56112,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_GBA_SV NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_SV NULL
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_SV NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_SV NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_SV "Tillåt motsatta riktningar"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_SV NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_SV NULL
 #define GAMBATTE_TURBO_PERIOD_INFO_0_SV NULL
