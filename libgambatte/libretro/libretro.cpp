@@ -358,12 +358,15 @@ static unsigned palette_switch_counter = 0;
 #define NUM_PALETTES_DEFAULT       51
 #define NUM_PALETTES_TWB64_1      100
 #define NUM_PALETTES_TWB64_2      100
+#define NUM_PALETTES_TWB64_3      100
 #define NUM_PALETTES_PIXELSHIFT_1  45
-#define NUM_PALETTES_TOTAL        (NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2 + NUM_PALETTES_PIXELSHIFT_1)
+#define NUM_PALETTES_TOTAL        (NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2 + \
+                                   NUM_PALETTES_TWB64_3 + NUM_PALETTES_PIXELSHIFT_1)
 
 struct retro_core_option_value *palettes_default_opt_values      = NULL;
 struct retro_core_option_value *palettes_twb64_1_opt_values      = NULL;
 struct retro_core_option_value *palettes_twb64_2_opt_values      = NULL;
+struct retro_core_option_value *palettes_twb64_3_opt_values      = NULL;
 struct retro_core_option_value *palettes_pixelshift_1_opt_values = NULL;
 
 static const char *internal_palette_labels[NUM_PALETTES_TOTAL] = {0};
@@ -371,6 +374,7 @@ static const char *internal_palette_labels[NUM_PALETTES_TOTAL] = {0};
 static size_t *palettes_default_index_map      = NULL;
 static size_t *palettes_twb64_1_index_map      = NULL;
 static size_t *palettes_twb64_2_index_map      = NULL;
+static size_t *palettes_twb64_3_index_map      = NULL;
 static size_t *palettes_pixelshift_1_index_map = NULL;
 
 static void parse_internal_palette_values(const char *key,
@@ -506,10 +510,17 @@ static void init_palette_switch(void)
          NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1,
          &palettes_twb64_2_opt_values,
          &palettes_twb64_2_index_map);
+   /* > TWB64 Pack 3 palettes */
+   parse_internal_palette_values("gambatte_gb_palette_twb64_3",
+         opt_defs_intl, NUM_PALETTES_TWB64_3,
+         NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2,
+         &palettes_twb64_3_opt_values,
+         &palettes_twb64_3_index_map);
    /* > PixelShift - Pack 1 palettes */
    parse_internal_palette_values("gambatte_gb_palette_pixelshift_1",
          opt_defs_intl, NUM_PALETTES_PIXELSHIFT_1,
-         NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2,
+         NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2 +
+         NUM_PALETTES_TWB64_3,
          &palettes_pixelshift_1_opt_values,
          &palettes_pixelshift_1_index_map);
 }
@@ -524,11 +535,13 @@ static void deinit_palette_switch(void)
    palettes_default_opt_values      = NULL;
    palettes_twb64_1_opt_values      = NULL;
    palettes_twb64_2_opt_values      = NULL;
+   palettes_twb64_3_opt_values      = NULL;
    palettes_pixelshift_1_opt_values = NULL;
 
    RHMAP_FREE(palettes_default_index_map);
    RHMAP_FREE(palettes_twb64_1_index_map);
    RHMAP_FREE(palettes_twb64_2_index_map);
+   RHMAP_FREE(palettes_twb64_3_index_map);
    RHMAP_FREE(palettes_pixelshift_1_index_map);
 }
 
@@ -572,13 +585,26 @@ static void palette_switch_set_index(size_t palette_index)
       palettes_ext_key       = "gambatte_gb_palette_twb64_2";
       palettes_ext_value     = palettes_twb64_2_opt_values[opt_index].value;
    }
+   else if (palette_index <
+         NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2 +
+         NUM_PALETTES_TWB64_3)
+   {
+      /* This is a palette from the TWB64 Pack 3 group */
+      palettes_default_value = "TWB64 - Pack 3";
+
+      opt_index              = palette_index -
+            (NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2);
+      palettes_ext_key       = "gambatte_gb_palette_twb64_3";
+      palettes_ext_value     = palettes_twb64_3_opt_values[opt_index].value;
+   }
    else
    {
       /* This is a palette from the PixelShift Pack 1 group */
       palettes_default_value = "PixelShift - Pack 1";
 
       opt_index              = palette_index -
-            (NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2);
+            (NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2 +
+             NUM_PALETTES_TWB64_3);
       palettes_ext_key       = "gambatte_gb_palette_pixelshift_1";
       palettes_ext_value     = palettes_pixelshift_1_opt_values[opt_index].value;
    }
@@ -2007,6 +2033,22 @@ static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
          internal_palette_index = NUM_PALETTES_DEFAULT +
                NUM_PALETTES_TWB64_1 + index;
       }
+      else if (string_is_equal(var.value, "TWB64 - Pack 3"))
+      {
+         var.key   = "gambatte_gb_palette_twb64_3";
+         var.value = NULL;
+
+         if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+            palette_title = var.value;
+
+         // Determine 'consolidated' palette index
+         if (palette_title)
+            index = RHMAP_GET_STR(palettes_twb64_3_index_map, palette_title);
+         if (index > 0)
+            index--;
+         internal_palette_index = NUM_PALETTES_DEFAULT +
+               NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2 + index;
+      }
       // Handle PixelShift packs
       else if (string_is_equal(var.value, "PixelShift - Pack 1"))
       {
@@ -2021,8 +2063,8 @@ static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
             index = RHMAP_GET_STR(palettes_pixelshift_1_index_map, palette_title);
          if (index > 0)
             index--;
-         internal_palette_index = NUM_PALETTES_DEFAULT +
-               NUM_PALETTES_TWB64_1 + NUM_PALETTES_TWB64_2 + index;
+         internal_palette_index = NUM_PALETTES_DEFAULT + NUM_PALETTES_TWB64_1 +
+               NUM_PALETTES_TWB64_2 + NUM_PALETTES_TWB64_3 + index;
       }
       else
       {
