@@ -1384,7 +1384,7 @@ static const unsigned short twb64_134_rising_sun_red[] = {
 	PACK15_4(0xBC002D, 0x960024, 0x5D0016, 0x38000D)
 };
 
-static const unsigned short twb64_135_burger_king_combo[] = {
+static const unsigned short twb64_135_burger_king_color_combo[] = {
 	PACK15_4(0xF5EBDC, 0xFF8732, 0xD62300, 0x502314),
 	PACK15_4(0xF5EBDC, 0xFF8732, 0xD62300, 0x502314),
 	PACK15_4(0xF5EBDC, 0xFF8732, 0xD62300, 0x502314)
@@ -1696,7 +1696,7 @@ static const unsigned short twb64_186_puyo_puyo_green[] = {
 	PACK15_4(0x48E236, 0x39B42B, 0x24771B, 0x154310)
 };
 
-static const unsigned short twb64_187_circle_k_combo[] = {
+static const unsigned short twb64_187_circle_k_color_combo[] = {
 	PACK15_4(0xF99B2A, 0xEC2E24, 0x8D1B15, 0x460D0A),
 	PACK15_4(0xF99B2A, 0xEC2E24, 0x8D1B15, 0x460D0A),
 	PACK15_4(0xF99B2A, 0xEC2E24, 0x8D1B15, 0x460D0A)
@@ -2846,7 +2846,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 132 - Neon Orange", twb64_132_neon_orange },
 	{ "TWB64 133 - Moonlight Vision", twb64_133_moonlight_vision },
 	{ "TWB64 134 - Rising Sun Red", twb64_134_rising_sun_red },
-	{ "TWB64 135 - Burger King Combo", twb64_135_burger_king_combo },
+	{ "TWB64 135 - Burger King Color Combo", twb64_135_burger_king_color_combo },
 	{ "TWB64 136 - Grand Zeno Coat", twb64_136_grand_zeno_coat },
 	{ "TWB64 137 - Pac-Man Yellow", twb64_137_pac_man_yellow },
 	{ "TWB64 138 - Irish Green", twb64_138_irish_green },
@@ -2898,7 +2898,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 184 - Fury Blue", twb64_184_fury_blue },
 	{ "TWB64 185 - GOOD SMILE VISION", twb64_185_good_smile_vision },
 	{ "TWB64 186 - Puyo Puyo Green", twb64_186_puyo_puyo_green },
-	{ "TWB64 187 - Circle K Combo", twb64_187_circle_k_combo },
+	{ "TWB64 187 - Circle K Color Combo", twb64_187_circle_k_color_combo },
 	{ "TWB64 188 - Pizza Hut Red", twb64_188_pizza_hut_red },
 	{ "TWB64 189 - Emerald Green", twb64_189_emerald_green },
 	{ "TWB64 190 - Grand Ivory", twb64_190_grand_ivory },
