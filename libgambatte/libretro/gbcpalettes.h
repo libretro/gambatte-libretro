@@ -694,7 +694,7 @@ static const unsigned short twb64_019_muse_pink[] = {
 	PACK15_4(0xE4007F, 0xB60065, 0x72003F, 0x440026)
 };
 
-static const unsigned short twb64_020_otonokizaka_high_school_uniform[] = {
+static const unsigned short twb64_020_school_idol_blue[] = {
 	PACK15_4(0xF9F9F8, 0x87ADF5, 0x3960D7, 0x283066),
 	PACK15_4(0xF9F9F8, 0x87ADF5, 0x3960D7, 0x283066),
 	PACK15_4(0xF9F9F8, 0x87ADF5, 0x3960D7, 0x283066)
@@ -2731,7 +2731,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 017 - Superball Ivory", twb64_017_superball_ivory },
 	{ "TWB64 018 - Crunchyroll Orange", twb64_018_crunchyroll_orange },
 	{ "TWB64 019 - Muse Pink", twb64_019_muse_pink },
-	{ "TWB64 020 - Otonokizaka High School Uniform", twb64_020_otonokizaka_high_school_uniform },
+	{ "TWB64 020 - School Idol Blue", twb64_020_school_idol_blue },
 	{ "TWB64 021 - Gamate Ver.", twb64_021_gamate_ver },
 	{ "TWB64 022 - Greenscale Ver.", twb64_022_greenscale_ver },
 	{ "TWB64 023 - Odyssey Gold", twb64_023_odyssey_gold },
