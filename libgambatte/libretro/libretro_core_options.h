@@ -251,7 +251,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 097 - Sword Art Cyan",            NULL },
          { "TWB64 098 - Deku Alpha Emerald",        NULL },
          { "TWB64 099 - Blue Stripes Ver.",         NULL },
-         { "TWB64 100 - Dr. Stone Orange",          NULL },
+         { "TWB64 100 - Precure Marble Raspberry",  NULL },
          { NULL, NULL },
       },
       "TWB64 001 - Aqours Blue"
