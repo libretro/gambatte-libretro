@@ -683,9 +683,9 @@ static const unsigned short twb64_017_superball_ivory[] = {
 };
 
 static const unsigned short twb64_018_crunchyroll_orange[] = {
-	PACK15_4(0xF47522, 0xC35D1B, 0x7A3A11, 0x49203A),
-	PACK15_4(0xF47522, 0xC35D1B, 0x7A3A11, 0x49203A),
-	PACK15_4(0xF47522, 0xC35D1B, 0x7A3A11, 0x49203A)
+	PACK15_4(0xF47522, 0xC35D1B, 0x7A3A11, 0x49230A),
+	PACK15_4(0xF47522, 0xC35D1B, 0x7A3A11, 0x49230A),
+	PACK15_4(0xF47522, 0xC35D1B, 0x7A3A11, 0x49230A)
 };
 
 static const unsigned short twb64_019_muse_pink[] = {
