@@ -2811,7 +2811,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 097 - Sword Art Cyan", twb64_097_sword_art_cyan },
 	{ "TWB64 098 - Deku Alpha Emerald", twb64_098_deku_alpha_emerald },
 	{ "TWB64 099 - Blue Stripes Ver.", twb64_099_blue_stripes_ver },
-	{ "TWB64 100 - Dr. Stone Orange", twb64_100_dr_stone_orange },
+	{ "TWB64 100 - Precure Marble Raspberry", twb64_100_precure_marble_raspberry },
 	{ "TWB64 101 - 765PRO Pink", twb64_101_765pro_pink },
 	{ "TWB64 102 - CINDERELLA Blue", twb64_102_cinderella_blue },
 	{ "TWB64 103 - MILLION Yellow!", twb64_103_million_yellow },
