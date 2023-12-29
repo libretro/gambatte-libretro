@@ -581,9 +581,9 @@ static const unsigned short sgb4H[] = {
 // https://www.deviantart.com/thewolfbunny64/gallery/69987002/game-boy-palettes
 //
 static const unsigned short twb64_001_aqours_blue[] = {
-	PACK15_4(0x00A0E9, 0x0080BA, 0x00405D, 0x003045),
-	PACK15_4(0x00A0E9, 0x0080BA, 0x00405D, 0x003045),
-	PACK15_4(0x00A0E9, 0x0080BA, 0x00405D, 0x003045)
+	PACK15_4(0x00A0E9, 0x0080BA, 0x005074, 0x003045),
+	PACK15_4(0x00A0E9, 0x0080BA, 0x005074, 0x003045),
+	PACK15_4(0x00A0E9, 0x0080BA, 0x005074, 0x003045)
 };
 
 static const unsigned short twb64_002_anime_expo_ver[] = {
@@ -737,9 +737,9 @@ static const unsigned short twb64_026_animax_blue[] = {
 };
 
 static const unsigned short twb64_027_bmo_ver[] = {
-	PACK15_4(0xC0FFCC, 0x99CCA3, 0x067F66, 0x394C3D),
-	PACK15_4(0xC0FFCC, 0x99CCA3, 0x067F66, 0x394C3D),
-	PACK15_4(0xC0FFCC, 0x99CCA3, 0x067F66, 0x394C3D)
+	PACK15_4(0xC0FFCC, 0x99CCA3, 0x607F66, 0x394C3D),
+	PACK15_4(0xC0FFCC, 0x99CCA3, 0x607F66, 0x394C3D),
+	PACK15_4(0xC0FFCC, 0x99CCA3, 0x607F66, 0x394C3D)
 };
 
 static const unsigned short twb64_028_game_com_ver[] = {
