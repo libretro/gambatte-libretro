@@ -658,10 +658,10 @@ static const unsigned short twb64_013_golden_wild[] = {
 	PACK15_4(0xB99F65, 0x947F50, 0x5C4F32, 0x372F1E)
 };
 
-static const unsigned short twb64_014_love_live_bright_pink[] = {
-	PACK15_4(0xF34F6C, 0xC23F56, 0x792736, 0x481720),
-	PACK15_4(0xF34F6C, 0xC23F56, 0x792736, 0x481720),
-	PACK15_4(0xF34F6C, 0xC23F56, 0x792736, 0x481720)
+static const unsigned short twb64_014_dmg_099[] = {
+	PACK15_4(0x84B510, 0x6BAD19, 0x3F642F, 0x313231),
+	PACK15_4(0x84B510, 0x6BAD19, 0x3F642F, 0x313231),
+	PACK15_4(0x84B510, 0x6BAD19, 0x3F642F, 0x313231)
 };
 
 static const unsigned short twb64_015_classic_blurple[] = {
@@ -2725,7 +2725,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 011 - Nick Orange", twb64_011_nick_orange },
 	{ "TWB64 012 - Virtual Vision", twb64_012_virtual_vision },
 	{ "TWB64 013 - Golden Wild", twb64_013_golden_wild },
-	{ "TWB64 014 - Love Live Bright Pink!", twb64_014_love_live_bright_pink },
+	{ "TWB64 014 - DMG-099", twb64_014_dmg_099 },
 	{ "TWB64 015 - Classic Blurple", twb64_015_classic_blurple },
 	{ "TWB64 016 - 765 Production Ver.", twb64_016_765_production_ver },
 	{ "TWB64 017 - Superball Ivory", twb64_017_superball_ivory },
