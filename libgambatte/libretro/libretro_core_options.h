@@ -165,7 +165,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "TWB64 011 - Nick Orange",               NULL },
          { "TWB64 012 - Virtual Vision",            NULL },
          { "TWB64 013 - Golden Wild",               NULL },
-         { "TWB64 014 - Love Live Bright Pink!",    NULL },
+         { "TWB64 014 - DMG-099",                   NULL },
          { "TWB64 015 - Classic Blurple",           NULL },
          { "TWB64 016 - 765 Production Ver.",       NULL },
          { "TWB64 017 - Superball Ivory",           NULL },
