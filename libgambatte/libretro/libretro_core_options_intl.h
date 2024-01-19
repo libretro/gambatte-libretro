@@ -37669,7 +37669,7 @@ struct retro_core_options_v2 options_it = {
 
 #define CATEGORY_GB_LINK_LABEL_JA "ゲームリンク"
 #define CATEGORY_GB_LINK_INFO_0_JA NULL
-#define GAMBATTE_GB_COLORIZATION_LABEL_JA NULL
+#define GAMBATTE_GB_COLORIZATION_LABEL_JA "GB 配色"
 #define GAMBATTE_GB_COLORIZATION_INFO_0_JA NULL
 #define OPTION_VAL_AUTO_JA "自動"
 #define OPTION_VAL_GBC_JA NULL
@@ -37734,7 +37734,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_PACK_3_JA "TWB64 - パック 3"
 #define OPTION_VAL_PIXELSHIFT_PACK_1_JA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_JA "> TWB64 - パック 1 パレット"
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_JA NULL
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_JA "[内部パレット] が [TWB - パック 1] に設定されている場合の内部配色パレットを選択します。"
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_JA NULL
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_JA NULL
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_JA NULL
@@ -37836,7 +37836,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_JA NULL
 #define OPTION_VAL_TWB64_100_STONE_ORANGE_JA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_JA "> TWB64 - パック 2 パレット"
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_JA NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_JA "[内部パレット] が [TWB64 - パック 2] に設定されている場合の内部配色パレットを選択します。"
 #define OPTION_VAL_TWB64_101_765PRO_PINK_JA NULL
 #define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_JA NULL
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_JA NULL
@@ -37938,7 +37938,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_JA NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_JA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_JA "> TWB64 - パック 3 パレット"
-#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_JA NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_JA "[内部パレット] が [TWB64 - パック 3] に設定されている場合の内部配色パレットを選択します。"
 #define OPTION_VAL_TWB64_201_DMG_GOLD_JA NULL
 #define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_JA NULL
 #define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_JA NULL
@@ -38040,7 +38040,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_JA NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_JA NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_JA "> PixelShift - パック 1 パレット"
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_JA NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_JA "[内部パレット] が [PixelShift - パック 1] に設定されている場合の内部配色パレットを選択します。"
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_JA NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_JA NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_JA NULL
@@ -38094,7 +38094,7 @@ struct retro_core_options_v2 options_it = {
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_JA NULL
 #define OPTION_VAL_ACCURATE_JA "正確"
 #define OPTION_VAL_FAST_JA "高速"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_JA NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_JA "色補正 - フロントライト位置"
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_JA NULL
 #define OPTION_VAL_CENTRAL_JA NULL
 #define OPTION_VAL_ABOVE_SCREEN_JA "画面の上"
@@ -38116,12 +38116,12 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_GBA_JA NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_JA NULL
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_JA NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_JA "反対方向を許可"
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_JA "逆方向入力を許可"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_JA NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_JA NULL
 #define GAMBATTE_TURBO_PERIOD_INFO_0_JA NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_JA NULL
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_JA NULL
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_JA "コントローラーの振動の強さ"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_JA "対応しているゲーム (ポケモンピンボール, パーフェクトダークなど) で触覚フィードバック効果を有効にします。"
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_JA NULL
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_JA NULL
 #define GAMBATTE_GB_LINK_MODE_LABEL_JA "ゲームリンクモード"
@@ -38134,51 +38134,51 @@ struct retro_core_options_v2 options_it = {
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_JA "ポート"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_JA NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 01: x__.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_JA "サーバーアドレス Pt. 01: x__.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 1 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 1 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 02: _x_.___.____"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_JA "サーバーアドレス Pt. 02: _x_.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 2 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 2 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 03: __x.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_JA "サーバーアドレス Pt. 03: __x.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 3 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 3 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 04: ___.x__.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_JA "サーバーアドレス Pt. 04: ___.x__.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 4 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 4 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 05: ___._x_.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_JA "サーバーアドレス Pt. 05: ___._x_.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 5 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 5 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 06: ___.__x.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_JA "サーバーアドレス Pt. 06: ___.__x.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 6 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 6 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 07: ___.___.x__.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_JA "サーバーアドレス Pt. 07: ___.___.x__.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 7 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 7 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 08: ___.___._x_.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_JA "サーバーアドレス Pt. 08: ___.___._x_.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 8 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 8 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 09: ___.___.__x.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_JA "サーバーアドレス Pt. 09: ___.___.__x.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 9 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 9 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 10: ___.___.___.x__"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_JA "サーバーアドレス Pt. 10: ___.___.___.x__"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 10 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 10 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 11: ___.___.___._x_"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_JA "サーバーアドレス Pt. 11: ___.___.___._x_"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 11 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 11 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 12: ___.___.___.__x"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_JA "サーバーアドレス Pt. 12: ___.___.___.__x"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 12 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_JA "リモートゲームリンクネットワークサーバー IP アドレスの 12 桁目です。[リンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
 
