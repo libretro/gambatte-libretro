@@ -2932,7 +2932,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 218 - Timing Hero Ver.", twb64_218_timing_hero_ver },
 	{ "TWB64 219 - Invincible Yellow and Blue", twb64_219_invincible_yellow_and_blue },
 	{ "TWB64 220 - Grinchy Green", twb64_220_grinchy_green },
-	{ "TWB64 221 - Winter Icy Blue", twb64_221_animate_blue },
+	{ "TWB64 221 - Winter Icy Blue", twb64_221_animate_vision },
 	{ "TWB64 222 - School Idol Mix", twb64_222_school_idol_mix },
 	{ "TWB64 223 - Green Awakening", twb64_223_green_awakening },
 	{ "TWB64 224 - Goomba Brown", twb64_224_goomba_brown },
