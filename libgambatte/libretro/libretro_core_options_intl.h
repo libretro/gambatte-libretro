@@ -47932,7 +47932,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_GBA_PT_BR NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_PT_BR "Usar carregador de inicialização oficial (requer reinício)"
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_PT_BR "Permite o suporte os carregadores de inicialização oficiais do Game Boy e Game Boy Color com suas animações de inicialização correspondentes."
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_PT_BR "Permite direções contrárias"
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_PT_BR "Permitir direções opostas"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_PT_BR "Esta opção permitirá pressionar, alternar ou segurar rapidamente as direções esquerda e direita (ou cima e baixo) ao mesmo tempo. Pode causar falhas de movimento."
 #define GAMBATTE_TURBO_PERIOD_LABEL_PT_BR "Duração do botão 'Turbo'"
 #define GAMBATTE_TURBO_PERIOD_INFO_0_PT_BR "Especifica o intervalo (em quadros) que se repetirá o pressionamento dos botões A ou B ao manter pressionados seus equivalentes com turbo."
