@@ -3,14 +3,14 @@
 #include "gambatte_log.h"
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/types.h>
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <winbase.h>
 #else
+#include <unistd.h>
+#include <errno.h>
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
