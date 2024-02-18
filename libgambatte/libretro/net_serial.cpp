@@ -9,6 +9,7 @@
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include <winbase.h>
 #else
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -25,11 +26,17 @@ NetSerial::NetSerial()
 , sockfd_(-1)
 , lastConnectAttempt_(0)
 {
+#ifdef _WIN32
+	wsaStartupStatus = WSAStartup(MAKEWORD(2, 2), &wsaData);
+#endif
 }
 
 NetSerial::~NetSerial()
 {
 	stop();
+#ifdef _WIN32
+	WSACleanup();
+#endif
 }
 
 bool NetSerial::start(bool is_server, int port, const std::string& hostname)
@@ -101,7 +108,14 @@ bool NetSerial::startServerSocket()
 
 		int fd = socket(AF_INET, SOCK_STREAM, 0);
 		if (fd < 0) {
+#ifdef _WIN32
+			LPSTR lpErrorMessage;
+			FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR) &lpErrorMessage, 0, NULL);
 			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));
+			LocalFree(lpErrorMessage);
+#else
+			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));
+#endif
 			return false;
 		}
 
