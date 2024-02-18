@@ -111,7 +111,7 @@ bool NetSerial::startServerSocket()
 #ifdef _WIN32
 			LPSTR lpErrorMessage;
 			FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR) &lpErrorMessage, 0, NULL);
-			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));
+			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", lpErrorMessage);
 			LocalFree(lpErrorMessage);
 #else
 			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));

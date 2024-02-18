@@ -14,7 +14,6 @@ configuration:
 
 platform:
   - windows_msvc2017_desktop_x64
-  - windows_msvc2017_desktop_x86
 
 init:
   - set Path=C:\msys64\usr\bin;%Path%
