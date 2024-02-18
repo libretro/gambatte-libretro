@@ -17,6 +17,11 @@
 #include <netdb.h>
 #endif
 
+#ifdef _WIN32
+#define close closesocket
+#define ioctl ioctlsocket
+#endif
+
 NetSerial::NetSerial()
 : is_stopped_(true)
 , is_server_(false)
@@ -27,7 +32,9 @@ NetSerial::NetSerial()
 , lastConnectAttempt_(0)
 {
 #ifdef _WIN32
-	wsaStartupStatus = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	//wsaStartupStatus = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	WSADATA data = {};
+	WSAStartup(MAKEWORD(2, 2), &data);
 #endif
 }
 
@@ -260,11 +267,7 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 			return false;
 		}
 	}
-#ifdef _WIN32
-   if (ioctlsocket(sockfd_, FIONREAD, &bytes_avail) < 0)
-#else
 	if (ioctl(sockfd_, FIONREAD, &bytes_avail) < 0)
-#endif
    {
 		gambatte_log(RETRO_LOG_ERROR, "IOCTL Failed: %s\n", strerror(errno));
 		return false;
