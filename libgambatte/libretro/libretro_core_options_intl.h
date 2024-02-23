@@ -47491,7 +47491,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_GBC_PT_BR NULL
 #define OPTION_VAL_SGB_PT_BR NULL
 #define OPTION_VAL_INTERNAL_PT_BR "Interna"
-#define OPTION_VAL_CUSTOM_PT_BR "Personalizado"
+#define OPTION_VAL_CUSTOM_PT_BR "Personalizada"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_PT_BR "Paleta interna"
 #define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_PT_BR "Seleciona a paleta usada para colorização de jogos quando 'Colorização do GB' estiver definida como 'Interna', ou quando 'Colorização do GB' estiver definida como 'Automática' e o jogo não possui uma paleta SGB/GBC predefinida. As paletas 'GB' imitam a exibição do hardware original do Game Boy. As paletas 'GBC' são idênticas às predefinições internas do Game Boy Color. As paletas 'SGB' são idênticas às predefinições internas do Super Game Boy."
 #define OPTION_VAL_GB_DMG_PT_BR NULL
