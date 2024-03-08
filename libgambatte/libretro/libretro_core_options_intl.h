@@ -37667,17 +37667,17 @@ struct retro_core_options_v2 options_it = {
 
 /* RETRO_LANGUAGE_JA */
 
-#define CATEGORY_GB_LINK_LABEL_JA "ゲームリンク"
-#define CATEGORY_GB_LINK_INFO_0_JA NULL
+#define CATEGORY_GB_LINK_LABEL_JA "通信"
+#define CATEGORY_GB_LINK_INFO_0_JA "ネットワーク通信 (マルチプレイヤー) の設定を変更します。"
 #define GAMBATTE_GB_COLORIZATION_LABEL_JA "GB 配色"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_JA NULL
+#define GAMBATTE_GB_COLORIZATION_INFO_0_JA "[自動] は [ベスト] (最もカラフルで適切) なパレットを選択します。[GBC] は、定義されている場合は GBC パレットを、そうでない場合は [GBC - 暗緑] を使用します。[SGB] は、定義されている場合は SGB パレットを、そうでない場合は [SGB-1A] を使用します。[内蔵] は [内蔵パレット] オプションを使用し、[カスタム] はユーザーが作成したパレットをシステムディレクトリから読み込みます。"
 #define OPTION_VAL_AUTO_JA "自動"
 #define OPTION_VAL_GBC_JA NULL
 #define OPTION_VAL_SGB_JA NULL
 #define OPTION_VAL_INTERNAL_JA "内蔵"
 #define OPTION_VAL_CUSTOM_JA "カスタム"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_JA "内蔵パレット"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_JA NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_JA "[GB 配色] を [内蔵] に設定した場合、または [自動] に設定した際、ゲームに定義されたパレットがない場合に使用するパレットを選択します。[GB] パレットはゲームボーイ実機のディスプレイを再現します。[GBC] パレットはゲームボーイカラーの組み込みプリセットと、[SGB] はスーパーゲームボーイの組み込みプリセットと同じです。"
 #define OPTION_VAL_GB_DMG_JA NULL
 #define OPTION_VAL_GB_POCKET_JA "GB - ポケット"
 #define OPTION_VAL_GB_LIGHT_JA "GB - ライト"
@@ -37734,7 +37734,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_PACK_3_JA "TWB64 - パック 3"
 #define OPTION_VAL_PIXELSHIFT_PACK_1_JA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_JA "> TWB64 - パック 1 パレット"
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_JA "[内部パレット] が [TWB - パック 1] に設定されている場合の内部配色パレットを選択します。"
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_JA "[内蔵パレット] が [TWB64 - パック 1] に設定されている場合の内蔵配色パレットを選択します。"
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_JA NULL
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_JA NULL
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_JA NULL
@@ -37836,7 +37836,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_JA NULL
 #define OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_JA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_JA "> TWB64 - パック 2 パレット"
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_JA "[内部パレット] が [TWB64 - パック 2] に設定されている場合の内部配色パレットを選択します。"
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_JA "[内蔵パレット] が [TWB64 - パック 2] に設定されている場合の内蔵配色パレットを選択します。"
 #define OPTION_VAL_TWB64_101_765PRO_PINK_JA NULL
 #define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_JA NULL
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_JA NULL
@@ -37938,7 +37938,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_JA NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_JA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_JA "> TWB64 - パック 3 パレット"
-#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_JA "[内部パレット] が [TWB64 - パック 3] に設定されている場合の内部配色パレットを選択します。"
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_JA "[内蔵パレット] が [TWB64 - パック 3] に設定されている場合の内蔵配色パレットを選択します。"
 #define OPTION_VAL_TWB64_201_DMG_GOLD_JA NULL
 #define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_JA NULL
 #define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_JA NULL
@@ -38040,7 +38040,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_JA NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_JA NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_JA "> PixelShift - パック 1 パレット"
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_JA "[内部パレット] が [PixelShift - パック 1] に設定されている場合の内部配色パレットを選択します。"
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_JA "[内蔵パレット] が [PixelShift - パック 1] に設定されている場合の内蔵配色パレットを選択します。"
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_JA NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_JA NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_JA NULL
@@ -38091,48 +38091,48 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_GBC_ONLY_JA "GBC のみ"
 #define OPTION_VAL_ALWAYS_JA "常に"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_JA "色補正モード"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_JA NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_JA "色補正の実行時に使用される方法を指定します。[正確] は実際のゲームボーイカラーの液晶パネルとほとんど区別できない映像を出力します。[高速] は単に色を濃くして彩度を下げるだけです。[正確] では遅すぎる場合、ローエンドハードウェアで使用することができます。"
 #define OPTION_VAL_ACCURATE_JA "正確"
 #define OPTION_VAL_FAST_JA "高速"
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_JA "色補正 - フロントライト位置"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_JA NULL
-#define OPTION_VAL_CENTRAL_JA NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_JA "ゲームボーイカラーの液晶パネルに様々な角度から光を当てたときの物理的な反応をシミュレートします。[中央] は標準的な色を再現します。[画面上部] は明るさを増やし、[画面下部] は明るさを減らします。この設定は [色補正モード] が [正確] に設定されている場合にのみ適用されます。"
+#define OPTION_VAL_CENTRAL_JA "中央"
 #define OPTION_VAL_ABOVE_SCREEN_JA "画面の上"
 #define OPTION_VAL_BELOW_SCREEN_JA "画面の下"
-#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_JA NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_JA NULL
+#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_JA "ダークフィルターレベル (%)"
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_JA "輝度ベースの明るさ軽減を有効にします。白背景のゲームをプレイする際に、まぶしさや目の負担を軽減するために使用されることがあります。これらのゲームはバックライトのないゲームボーイカラーでの表示を想定して開発されたため、現代的なバックライト付き画面で見ると不快な明るさに見えることがあります。"
 #define GAMBATTE_MIX_FRAMES_LABEL_JA "フレーム間合成"
-#define GAMBATTE_MIX_FRAMES_INFO_0_JA NULL
+#define GAMBATTE_MIX_FRAMES_INFO_0_JA "液晶ディスプレイの残像効果をシミュレートします。[シンプル] は現在と以前のフレームを半々の割合で合成します。[液晶ディスプレイ残像] は、複数のバッファ付きフレームを組み合わせることで、より自然に液晶ディスプレイの応答速度を再現します。残像を利用した透明効果のあるゲームをプレイする場合、[シンプル] を選択してください。"
 #define OPTION_VAL_MIX_JA "シンプル"
-#define OPTION_VAL_LCD_GHOSTING_JA "液晶残像 (正確)"
-#define OPTION_VAL_LCD_GHOSTING_FAST_JA "液晶残像 (高速)"
+#define OPTION_VAL_LCD_GHOSTING_JA "LCD 残像 (正確)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_JA "LCD 残像 (高速)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_JA "オーディオリサンプラー"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_JA NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_JA "生成されたオーディオをリサンプリングする際に使用するアルゴリズムを指定します。(ゲームボーイのオーディオレートは CPU の書き込み速度によってのみ制限されるため、最新のサウンドデバイスでは「ネイティブ」周波数は実用的ではなく、ダウンサンプリングする必要があります)。[Sinc] は最高品質で、[Cosine] はローエンドハードウェアで実行速度を改善します。"
 #define OPTION_VAL_SINC_JA NULL
 #define OPTION_VAL_CC_JA NULL
 #define GAMBATTE_GB_HWMODE_LABEL_JA "エミュレートするハードウェア (再起動が必要)"
-#define GAMBATTE_GB_HWMODE_INFO_0_JA NULL
+#define GAMBATTE_GB_HWMODE_INFO_0_JA "エミュレートするハードウェアの種類を指定します。[自動] に設定することをおすすめします。[GBA] を選択すると、[GBA 拡張] をもつ特定のゲームボーイカラーゲームで追加機能をアンロックします。"
 #define OPTION_VAL_GB_JA NULL
 #define OPTION_VAL_GBA_JA NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_JA NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_JA NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_JA "公式ブートローダーを使用する (再起動が必要)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_JA "公式ゲームボーイおよびゲームボーイカラーのブートローダーのサポートを有効にし、対応するスタートアップロゴアニメーションを表示します。"
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_JA "逆方向入力を許可"
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_JA NULL
-#define GAMBATTE_TURBO_PERIOD_LABEL_JA NULL
-#define GAMBATTE_TURBO_PERIOD_INFO_0_JA NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_JA "有効にすると、左右 (または上下) 方向の同時押し / 高速交互押し / 長押しが可能になります。動作に不具合が生じる場合があります。"
+#define GAMBATTE_TURBO_PERIOD_LABEL_JA "ターボボタン間隔"
+#define GAMBATTE_TURBO_PERIOD_INFO_0_JA "ターボ A/B ボタンを押している間、ボタンが押される間隔 (フレーム単位) を指定します。"
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_JA "コントローラーの振動の強さ"
 #define GAMBATTE_RUMBLE_LEVEL_INFO_0_JA "対応しているゲーム (ポケモンピンボール, パーフェクトダークなど) で触覚フィードバック効果を有効にします。"
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_JA NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_JA NULL
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_JA "通信設定を表示"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_JA "ネットワーク通信 (マルチプレイヤー) オプションの設定を有効にします。注意: この設定を有効にするには、クイックメニューを開き直す必要があります。"
 #define GAMBATTE_GB_LINK_MODE_LABEL_JA "ゲームリンクモード"
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_JA "リンクモード"
-#define GAMBATTE_GB_LINK_MODE_INFO_0_JA NULL
+#define GAMBATTE_GB_LINK_MODE_INFO_0_JA "ネットワーク通信機能を有効にする場合、現在のインスタンスをサーバーまたはクライアントとして実行するかどうかを指定します。"
 #define OPTION_VAL_NOT_CONNECTED_JA "接続されていません"
 #define OPTION_VAL_NETWORK_SERVER_JA "ネットワークサーバー"
 #define OPTION_VAL_NETWORK_CLIENT_JA "ネットワーククライアント"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_JA "ネットワークリンクポート"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_JA "ポート"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_JA NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_JA "ネットワーク通信に使用するポートを指定します。"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_JA "ネットワークリンクサーバーアドレス Pt. 01: x__.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_JA "サーバーアドレス Pt. 01: x__.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_JA "リモートゲームリンクネットワークサーバー IP アドレスの 1 桁目です。[ゲームリンクモード] が [ネットワーククライアント] に設定されている場合にのみ使用されます。"
