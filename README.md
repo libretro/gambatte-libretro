@@ -3,7 +3,7 @@
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
-Copyright (C) 2007 by Sindre Aamås
+Copyright (C) 2007 by Sindre AamÃ¥s
 aamas@stud.ntnu.no
 
 This program is free software; you can redistribute it and/or modify
