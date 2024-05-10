@@ -44212,9 +44212,9 @@ struct retro_core_options_v2 options_nl = {
 /* RETRO_LANGUAGE_NO */
 
 #define CATEGORY_GB_LINK_LABEL_NO NULL
-#define CATEGORY_GB_LINK_INFO_0_NO NULL
-#define GAMBATTE_GB_COLORIZATION_LABEL_NO NULL
-#define GAMBATTE_GB_COLORIZATION_INFO_0_NO NULL
+#define CATEGORY_GB_LINK_INFO_0_NO "Endre innstillinger for Game Link (flerspiller)."
+#define GAMBATTE_GB_COLORIZATION_LABEL_NO "GB Fargelegging"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_NO "Aktiverer fargelegging av Game Boy spill. 'Auto' velger den beste (mest fargerike/tilhørige) paletten. 'GBC' velger spill-spesifikk Game Boy Color palett hvis definert, hvis ikke 'GBC - Mørk Grønn'. 'SGB' velger spill-spesifikk Super Game Boy palett hvis definert, ellers 'SGB - 1A'. 'Intern' bruker 'Intern Palett' kjerne alternativ. 'Egendefinert' laster inn bruker-opprettet palett fra katalogen."
 #define OPTION_VAL_AUTO_NO NULL
 #define OPTION_VAL_GBC_NO NULL
 #define OPTION_VAL_SGB_NO NULL
@@ -44633,7 +44633,7 @@ struct retro_core_options_v2 options_nl = {
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_NO NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_NO NULL
 #define OPTION_VAL_GBC_ONLY_NO NULL
-#define OPTION_VAL_ALWAYS_NO NULL
+#define OPTION_VAL_ALWAYS_NO "Alltid"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_NO NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_NO NULL
 #define OPTION_VAL_ACCURATE_NO NULL
