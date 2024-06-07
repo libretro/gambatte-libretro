@@ -36475,7 +36475,7 @@ struct retro_core_options_v2 options_hu = {
 #define OPTION_VAL_SINC_ID NULL
 #define OPTION_VAL_CC_ID NULL
 #define GAMBATTE_GB_HWMODE_LABEL_ID "Emulasi Peranti Keras (Perlu Mulai Ulang)"
-#define GAMBATTE_GB_HWMODE_INFO_0_ID "Menentukan jenis peranti keras yang diemulasi. Dianjurkan opsi 'Auto'. Memilih 'GBA' membuka fitur tambahan di permainan Game Boy Color yang 'GBA Enhanced' (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
+#define GAMBATTE_GB_HWMODE_INFO_0_ID "Menentukan jenis emulasi peranti keras, dianjurkan opsi 'Auto'. Memilih 'GBA' membuka fitur tambahan di permainan Game Boy Color yang 'GBA Enhanced' (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_ID NULL
 #define OPTION_VAL_GBA_ID NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_ID "Gunakan Bootloader Resmi (Perlu Mulai Ulang)"
