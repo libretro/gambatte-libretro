@@ -98,7 +98,7 @@ ifneq (,$(findstring unix,$(platform)))
 
 # (armv7 a7, hard point, neon based) ### 
 # NESC, SNESC, C64 mini 
-else ifeq ($(platform), classic_armv7_a7)
+else ifeq ($(platform),$(filter $(platform),classic_armv7_a7 unix-armv7-hardfloat-neon))
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
     SHARED := -shared -Wl,--version-script=$(version_script)  -Wl,--no-undefined -fPIC
@@ -204,6 +204,8 @@ else ifeq ($(platform), tvos-arm64)
    ifeq ($(IOSSDK),)
       IOSSDK := $(shell xcodebuild -version -sdk appletvos Path)
    endif
+   CC = clang -arch arm64 -isysroot $(IOSSDK)
+   CXX = clang++ -arch arm64 -isysroot $(IOSSDK)
    HAVE_NETWORK=1
 
 # Theos
@@ -227,11 +229,16 @@ else ifeq ($(platform), qnx)
    AR = QCC -Vgcc_ntoarmv7le
    PLATFORM_DEFINES := -D__BLACKBERRY_QNX__ -fexceptions -marm -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 
-   # Lightweight PS3 Homebrew SDK
-   ifneq (,$(findstring psl1ght,$(platform)))
-      CC = $(PS3DEV)/ppu/bin/ppu-gcc$(EXE_EXT)
-      CXX = $(PS3DEV)/ppu/bin/ppu-g++$(EXE_EXT)
-      AR = $(PS3DEV)/ppu/bin/ppu-ar$(EXE_EXT)
+# Lightweight PS3 Homebrew SDK
+else ifneq (,$(filter $(platform), ps3 psl1ght))
+   TARGET := $(TARGET_NAME)_libretro_$(platform).a
+   PLATFORM_DEFINES := -D__PS3__
+   STATIC_LINKING = 1
+   CC = $(PS3DEV)/ppu/bin/ppu-$(COMMONLV)gcc$(EXE_EXT)
+   CXX = $(PS3DEV)/ppu/bin/ppu-$(COMMONLV)g++$(EXE_EXT)
+   AR = $(PS3DEV)/ppu/bin/ppu-$(COMMONLV)ar$(EXE_EXT)
+   ifeq ($(platform), psl1ght)
+        PLATFORM_DEFINES += -D__PSL1GHT__
    endif
 
 # PS2
@@ -240,7 +247,7 @@ else ifeq ($(platform), ps2)
    CC = mips64r5900el-ps2-elf-gcc$(EXE_EXT)
    CXX = mips64r5900el-ps2-elf-g++$(EXE_EXT)
    AR = mips64r5900el-ps2-elf-ar$(EXE_EXT)
-   PLATFORM_DEFINES := -DPS2 -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS -DVIDEO_ABGR1555
+   PLATFORM_DEFINES := -DPS2 -DVIDEO_ABGR1555
    CFLAGS += -G0
    CXXFLAGS += -G0
    STATIC_LINKING = 1
@@ -253,7 +260,7 @@ else ifeq ($(platform), psp1)
    CC = psp-gcc$(EXE_EXT)
    CXX = psp-g++$(EXE_EXT)
    AR = psp-ar$(EXE_EXT)
-   PLATFORM_DEFINES := -DPSP -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
+   PLATFORM_DEFINES := -DPSP
    CFLAGS += -G0
    CXXFLAGS += -G0
    STATIC_LINKING = 1
@@ -264,7 +271,6 @@ else ifeq ($(platform), vita)
    CC = arm-vita-eabi-gcc$(EXE_EXT)
    CXX = arm-vita-eabi-g++$(EXE_EXT)
    AR = arm-vita-eabi-ar$(EXE_EXT)
-   PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
    CFLAGS += -DVITA
    CXXFLAGS += -DVITA
    STATIC_LINKING = 1
@@ -275,7 +281,7 @@ else ifeq ($(platform), ctr)
    CC = $(DEVKITARM)/bin/arm-none-eabi-gcc$(EXE_EXT)
    CXX = $(DEVKITARM)/bin/arm-none-eabi-g++$(EXE_EXT)
    AR = $(DEVKITARM)/bin/arm-none-eabi-ar$(EXE_EXT)
-   PLATFORM_DEFINES := -DARM11 -D_3DS -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
+   PLATFORM_DEFINES := -DARM11 -D_3DS
    CFLAGS += -march=armv6k -mtune=mpcore -mfloat-abi=hard
    CFLAGS += -Wall -mword-relocations
    CFLAGS += -fomit-frame-pointer -ffast-math
@@ -361,7 +367,7 @@ else ifeq ($(platform), rs90)
    AR = /opt/rs90-toolchain/usr/bin/mipsel-linux-ar
    fpic := -fPIC
    SHARED := -shared -Wl,-version-script=$(version_script)
-   PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
+   PLATFORM_DEFINES := -DDINGUX
    CFLAGS += -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32
    CXXFLAGS += $(CFLAGS)
 
@@ -373,7 +379,7 @@ else ifeq ($(platform), gcw0)
    AR = /opt/gcw0-toolchain/usr/bin/mipsel-linux-ar
    fpic := -fPIC
    SHARED := -shared -Wl,-version-script=$(version_script)
-   PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
+   PLATFORM_DEFINES := -DDINGUX
    CFLAGS += -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32r2 -mhard-float
    CXXFLAGS += $(CFLAGS)
 
@@ -385,7 +391,7 @@ else ifeq ($(platform), retrofw)
    AR = /opt/retrofw-toolchain/usr/bin/mipsel-linux-ar
    fpic := -fPIC
    SHARED := -shared -Wl,-version-script=$(version_script)
-   PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
+   PLATFORM_DEFINES := -DDINGUX
    CFLAGS += -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32 -mhard-float
    CXXFLAGS += $(CFLAGS)
 
@@ -397,7 +403,7 @@ else ifeq ($(platform), miyoo)
    AR = /opt/miyoo/usr/bin/arm-linux-ar
    fpic := -fPIC
    SHARED := -shared -Wl,-version-script=$(version_script)
-   PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
+   PLATFORM_DEFINES := -DDINGUX
    CFLAGS += -fomit-frame-pointer -ffast-math -march=armv5te -mtune=arm926ej-s
    CXXFLAGS += $(CFLAGS)
 
@@ -670,7 +676,7 @@ include Makefile.common
 
 OBJECTS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
 
-DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H 
+DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) -DHAVE_STDINT_H -DHAVE_INTTYPES_H -DCC_RESAMPLER_NO_HIGHPASS
 
 ifeq ($(VIDEO_RGB565), 1)
    DEFINES += -DVIDEO_RGB565
