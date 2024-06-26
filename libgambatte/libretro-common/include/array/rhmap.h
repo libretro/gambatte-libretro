@@ -228,18 +228,6 @@ RHMAP__UNUSED static void* rhmap__grow(void* old_ptr, size_t elem_size, size_t r
    return new_vals;
 }
 
-RHMAP__UNUSED static char* rhmap__strdup(const char * str)
-{
-   size_t full_len = strlen(str) + 1;
-   char *dup_str   = (char *)malloc(full_len);
-
-   if (!dup_str)
-      return NULL;
-
-   memcpy(dup_str, str, full_len);
-   return dup_str;
-}
-
 RHMAP__UNUSED static ptrdiff_t rhmap__idx(struct rhmap__hdr* hdr, uint32_t key, const char * str, int add, size_t del)
 {
    uint32_t i;
@@ -272,7 +260,7 @@ RHMAP__UNUSED static ptrdiff_t rhmap__idx(struct rhmap__hdr* hdr, uint32_t key, 
       }
       if (!hdr->keys[i])
       {
-         if (add) { hdr->len++; hdr->keys[i] = key; if (str) hdr->key_strs[i] = rhmap__strdup(str); return (ptrdiff_t)i; }
+         if (add) { hdr->len++; hdr->keys[i] = key; if (str) hdr->key_strs[i] = strdup(str); return (ptrdiff_t)i; }
          return (ptrdiff_t)-1;
       }
    }
