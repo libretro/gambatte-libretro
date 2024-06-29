@@ -22,6 +22,7 @@
 
 #ifdef HAVE_THREADS
 #include <rthreads/rthreads.h>
+#include <retro_assert.h>
 #include <stdlib.h>
 #endif
 
@@ -40,6 +41,8 @@ void rtime_init(void)
 #ifdef HAVE_THREADS
    if (!rtime_localtime_lock)
       rtime_localtime_lock = slock_new();
+
+   retro_assert(rtime_localtime_lock);
 #endif
 }
 
