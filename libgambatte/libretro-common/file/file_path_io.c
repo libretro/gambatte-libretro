@@ -24,11 +24,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
 
 #include <sys/stat.h>
 
 #include <boolean.h>
 #include <file/file_path.h>
+#include <retro_assert.h>
 #include <compat/strl.h>
 #include <compat/posix_string.h>
 #include <retro_miscellaneous.h>
@@ -72,7 +74,7 @@ int path_stat(const char *path)
  *
  * Checks if path is a directory.
  *
- * @return true if path is a directory, otherwise false.
+ * Returns: true (1) if path is a directory, otherwise false (0).
  */
 bool path_is_directory(const char *path)
 {
@@ -103,10 +105,8 @@ int32_t path_get_size(const char *path)
  * @dir                : directory
  *
  * Create directory on filesystem.
- * 
- * Recursive function.
  *
- * @return true if directory could be created, otherwise false.
+ * Returns: true (1) if directory could be created, otherwise false (0).
  **/
 bool path_mkdir(const char *dir)
 {
@@ -118,10 +118,12 @@ bool path_mkdir(const char *dir)
 
    /* Use heap. Real chance of stack 
     * overflow if we recurse too hard. */
-   if (!(basedir = strdup(dir)))
-      return false;
+   basedir            = strdup(dir);
 
-   path_parent_dir(basedir, strlen(basedir));
+   if (!basedir)
+	   return false;
+
+   path_parent_dir(basedir);
 
    if (!*basedir || !strcmp(basedir, dir))
    {
