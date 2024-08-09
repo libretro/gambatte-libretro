@@ -26216,31 +26216,31 @@ struct retro_core_options_v2 options_fa = {
 /* RETRO_LANGUAGE_FI */
 
 #define CATEGORY_GB_LINK_LABEL_FI NULL
-#define CATEGORY_GB_LINK_INFO_0_FI NULL
+#define CATEGORY_GB_LINK_INFO_0_FI "Muuta verkotettuja Game Link (moninpeli) -asetuksia."
 #define GAMBATTE_GB_COLORIZATION_LABEL_FI "GB-väritys"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_FI NULL
+#define GAMBATTE_GB_COLORIZATION_INFO_0_FI "Mahdollistaa Game Boy -pelien värityksen. 'Automaattinen' valitsee 'parhaan' (värikkäimmän/sopivimman) paletin. 'GBC' valitsee pelikohtaisen Game Boy Color -paletin, jos sellainen on määritelty, muuten 'GBC - Dark Green'. 'SGB' valitsee pelikohtaisen Super Game Boy -paletin, jos määritelty, muuten valitaan 'SGB - 1A'. 'Sisäinen' käyttää 'Sisäinen paletti' -ydinasetusta. 'Mukautettu' lataa käyttäjän luoman paletin järjestelmäkansiosta."
 #define OPTION_VAL_AUTO_FI "Automaattinen"
 #define OPTION_VAL_GBC_FI NULL
 #define OPTION_VAL_SGB_FI NULL
 #define OPTION_VAL_INTERNAL_FI "Sisäinen"
 #define OPTION_VAL_CUSTOM_FI "Mukautettu"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_FI "Sisäinen paletti"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_FI NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_FI "Valitsee paletin, jota käytetään Game Boy -pelien värityksessä, kun 'GB-väritys' on asetettu tilaan 'Sisäinen', tai kun 'GB-väritys' on asetettu tilaan 'Automaattinen' eikä pelillä ole ennalta määriteltyä SGB/GBC-paletia. 'GB' -paletit jäljittelevät alkuperäisen Game Boy -laitteiston näyttöä. 'GBC' -paletit ovat identtisiä Game Boy Colorin sisäänrakennettujen esiasetusten kanssa. 'SGB' -paletit ovat identtisiä Super Game Boyn sisäänrakennettujen esiasetusten kanssa."
 #define OPTION_VAL_GB_DMG_FI NULL
 #define OPTION_VAL_GB_POCKET_FI NULL
 #define OPTION_VAL_GB_LIGHT_FI NULL
-#define OPTION_VAL_GBC_BLUE_FI NULL
-#define OPTION_VAL_GBC_BROWN_FI NULL
-#define OPTION_VAL_GBC_DARK_BLUE_FI NULL
-#define OPTION_VAL_GBC_DARK_BROWN_FI NULL
-#define OPTION_VAL_GBC_DARK_GREEN_FI NULL
-#define OPTION_VAL_GBC_GRAYSCALE_FI NULL
-#define OPTION_VAL_GBC_GREEN_FI NULL
-#define OPTION_VAL_GBC_INVERTED_FI NULL
-#define OPTION_VAL_GBC_ORANGE_FI NULL
-#define OPTION_VAL_GBC_PASTEL_MIX_FI NULL
-#define OPTION_VAL_GBC_RED_FI NULL
-#define OPTION_VAL_GBC_YELLOW_FI NULL
+#define OPTION_VAL_GBC_BLUE_FI "GBC - Sininen"
+#define OPTION_VAL_GBC_BROWN_FI "GBC - Ruskea"
+#define OPTION_VAL_GBC_DARK_BLUE_FI "GBC - Tummansininen"
+#define OPTION_VAL_GBC_DARK_BROWN_FI "GBC - Tummanruskea"
+#define OPTION_VAL_GBC_DARK_GREEN_FI "GBC - Tummanvihreä"
+#define OPTION_VAL_GBC_GRAYSCALE_FI "GBC - Harmaa"
+#define OPTION_VAL_GBC_GREEN_FI "GBC - Vihreä"
+#define OPTION_VAL_GBC_INVERTED_FI "GBC - Käänteinen"
+#define OPTION_VAL_GBC_ORANGE_FI "GBC - Oranssi"
+#define OPTION_VAL_GBC_PASTEL_MIX_FI "GBC – Pastellisekoitus"
+#define OPTION_VAL_GBC_RED_FI "GBC – Punainen"
+#define OPTION_VAL_GBC_YELLOW_FI "GBC - Keltainen"
 #define OPTION_VAL_SGB_1A_FI NULL
 #define OPTION_VAL_SGB_1B_FI NULL
 #define OPTION_VAL_SGB_1C_FI NULL
@@ -26273,10 +26273,10 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_SGB_4F_FI NULL
 #define OPTION_VAL_SGB_4G_FI NULL
 #define OPTION_VAL_SGB_4H_FI NULL
-#define OPTION_VAL_SPECIAL_1_FI NULL
-#define OPTION_VAL_SPECIAL_2_FI NULL
-#define OPTION_VAL_SPECIAL_3_FI NULL
-#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_FI NULL
+#define OPTION_VAL_SPECIAL_1_FI "Erityinen 1"
+#define OPTION_VAL_SPECIAL_2_FI "Erityinen 2"
+#define OPTION_VAL_SPECIAL_3_FI "Erityinen 3"
+#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_FI "Erityinen 4 (TI-83 Legacy)"
 #define OPTION_VAL_TWB64_PACK_1_FI NULL
 #define OPTION_VAL_TWB64_PACK_2_FI NULL
 #define OPTION_VAL_TWB64_PACK_3_FI NULL
@@ -26292,7 +26292,7 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_TWB64_007_NEON_YELLOW_FI NULL
 #define OPTION_VAL_TWB64_008_NEON_GREEN_FI NULL
 #define OPTION_VAL_TWB64_009_NEON_PINK_FI NULL
-#define OPTION_VAL_TWB64_010_MARIO_RED_FI NULL
+#define OPTION_VAL_TWB64_010_MARIO_RED_FI "TWB64 010 - Marion punainen"
 #define OPTION_VAL_TWB64_011_NICK_ORANGE_FI NULL
 #define OPTION_VAL_TWB64_012_VIRTUAL_VISION_FI NULL
 #define OPTION_VAL_TWB64_013_GOLDEN_WILD_FI NULL
@@ -26300,7 +26300,7 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_FI NULL
 #define OPTION_VAL_TWB64_016_765_PRODUCTION_VER_FI NULL
 #define OPTION_VAL_TWB64_017_SUPERBALL_IVORY_FI NULL
-#define OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_FI NULL
+#define OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_FI "TWB64 018 - Crunchyrollin oranssi"
 #define OPTION_VAL_TWB64_019_MUSE_PINK_FI NULL
 #define OPTION_VAL_TWB64_020_SCHOOL_IDOL_BLUE_FI NULL
 #define OPTION_VAL_TWB64_021_GAMATE_VER_FI NULL
@@ -26635,16 +26635,16 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_FI NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_FI NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_FI "Värinkorjaus"
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_FI NULL
-#define OPTION_VAL_GBC_ONLY_FI NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_FI "Säätää ulostulon värit vastaamaan oikean Game Boy Color -laitteiston näyttöä. 'Vain GBC' varmistaa, että korjaus tehdään vain, kun pelataan Game Boy Color -pelejä tai kun käytetään Game Boy Color -palettia väritykseen Game Boy -pelissä. 'Aina' soveltaa värikorjausta kaikkeen sisältöön, mikä voi tuottaa odottamattomia/epäoptimaalisia tuloksia, kun käytetään 'GB' tai 'SGB' sisäisiä väripaletteja."
+#define OPTION_VAL_GBC_ONLY_FI "Vain GBC"
 #define OPTION_VAL_ALWAYS_FI "Aina"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_FI "Värinkorjauksen tila"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_FI NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_FI "Määrittää menetelmän, jota käytetään värikorjauksen suorittamiseen. 'Tarkka' tuottaa ulostulon, joka on lähes erottamaton oikean Game Boy Color -LCD-paneelin näytöstä. 'Nopea' vain tummentaa värejä ja vähentää kylläisyyttä, ja sitä voidaan käyttää heikkotehoisilla laitteilla, jos 'Tarkka' menetelmä on liian hidas."
 #define OPTION_VAL_ACCURATE_FI "Tarkka"
 #define OPTION_VAL_FAST_FI "Nopea"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_FI NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_FI NULL
-#define OPTION_VAL_CENTRAL_FI NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_FI "Värikorjaus - Etuvalon sijainti"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_FI "Simuloi Game Boy Color -LCD-paneelin fyysistä vastetta, kun sitä valaistaan eri kulmista. 'Keskellä' edustaa tavanomaista värintoistoa. 'Näytön yläpuolella' lisää kirkkautta. 'Näytön alapuolella' vähentää kirkkautta. Tämä asetus pätee vain silloin, kun 'Värinkorjaustila' on asetettu tilaan 'Tarkka'."
+#define OPTION_VAL_CENTRAL_FI "Keskellä"
 #define OPTION_VAL_ABOVE_SCREEN_FI "Näytön yläpuolella"
 #define OPTION_VAL_BELOW_SCREEN_FI "Näytön alapuolella"
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_FI NULL
@@ -36450,15 +36450,15 @@ struct retro_core_options_v2 options_hu = {
 #define OPTION_VAL_PIXELSHIFT_43_VAPORWAVE_ID NULL
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_ID NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_ID NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_ID NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_ID "Betulkan Warna"
 #define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_ID NULL
 #define OPTION_VAL_GBC_ONLY_ID NULL
 #define OPTION_VAL_ALWAYS_ID NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_ID NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_ID "Mode Betulkan Warna"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_ID NULL
 #define OPTION_VAL_ACCURATE_ID NULL
 #define OPTION_VAL_FAST_ID NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_ID NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_ID "Betulkan Warna - Posisi Cahaya Depan"
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_ID NULL
 #define OPTION_VAL_CENTRAL_ID NULL
 #define OPTION_VAL_ABOVE_SCREEN_ID NULL
