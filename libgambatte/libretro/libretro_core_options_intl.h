@@ -3312,31 +3312,31 @@ struct retro_core_options_v2 options_ast = {
 /* RETRO_LANGUAGE_BE */
 
 #define CATEGORY_GB_LINK_LABEL_BE NULL
-#define CATEGORY_GB_LINK_INFO_0_BE NULL
-#define GAMBATTE_GB_COLORIZATION_LABEL_BE NULL
-#define GAMBATTE_GB_COLORIZATION_INFO_0_BE NULL
+#define CATEGORY_GB_LINK_INFO_0_BE "Наладкі сеткавага (мультыплэера) Game Link."
+#define GAMBATTE_GB_COLORIZATION_LABEL_BE "Каларызацыя GB"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_BE "Уключае каларызацыю гульняў Game Boy. 'Аўта' выбірае 'найлепшую' (найболей падыходную/маляўнічую) палітру. 'GBC' выкарыстоўвае для гульні прадусталяваную палітру Game Boy Color ці, пры яе адсутнасці, 'GBC - Dark Green'. 'SGB' выкарыстоўвае для гульні прадусталяваную палітру Super Game Boy ці, пры яе адсутнасці, 'SGB - 1A'. 'Убудаваная' выкарыстоўвае опцыю 'Убудаваная палітра'. 'Кастомная' загружае карыстальніцкую палітру з сістэмнага каталога."
 #define OPTION_VAL_AUTO_BE "Аўта"
 #define OPTION_VAL_GBC_BE NULL
 #define OPTION_VAL_SGB_BE NULL
-#define OPTION_VAL_INTERNAL_BE NULL
+#define OPTION_VAL_INTERNAL_BE "Убудаваная"
 #define OPTION_VAL_CUSTOM_BE "Уласная"
-#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_BE NULL
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_BE NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_BE "Убудаваная палітра"
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_BE "Палітра, якая выкарыстоўваецца для размалёўвання гульняў Game Boy пры ўсталёўцы опцыі 'Каларызацыя GB' у рэжым 'Убудаваная' або калі ўсталяваны рэжым 'Аўта' і для гульні няма прадусталяванай палітры SGB/GBC. Палітры 'GB' імітуюць арыгінальную выяву кансолі. Палітры 'GBC' ідэнтычныя ўбудаваным прасэтам Game Boy Color. Палітры 'SGB' адпавядаюць убудаваным прасэтам Super Game Boy."
 #define OPTION_VAL_GB_DMG_BE NULL
 #define OPTION_VAL_GB_POCKET_BE NULL
-#define OPTION_VAL_GB_LIGHT_BE NULL
-#define OPTION_VAL_GBC_BLUE_BE NULL
-#define OPTION_VAL_GBC_BROWN_BE NULL
-#define OPTION_VAL_GBC_DARK_BLUE_BE NULL
-#define OPTION_VAL_GBC_DARK_BROWN_BE NULL
-#define OPTION_VAL_GBC_DARK_GREEN_BE NULL
-#define OPTION_VAL_GBC_GRAYSCALE_BE NULL
-#define OPTION_VAL_GBC_GREEN_BE NULL
-#define OPTION_VAL_GBC_INVERTED_BE NULL
-#define OPTION_VAL_GBC_ORANGE_BE NULL
-#define OPTION_VAL_GBC_PASTEL_MIX_BE NULL
-#define OPTION_VAL_GBC_RED_BE NULL
-#define OPTION_VAL_GBC_YELLOW_BE NULL
+#define OPTION_VAL_GB_LIGHT_BE "GB - Светлая"
+#define OPTION_VAL_GBC_BLUE_BE "GBC - Блакітная"
+#define OPTION_VAL_GBC_BROWN_BE "GBC - Карычневая"
+#define OPTION_VAL_GBC_DARK_BLUE_BE "GBC - Цёмна-сіняя"
+#define OPTION_VAL_GBC_DARK_BROWN_BE "GBC - Цёмна-карычневая"
+#define OPTION_VAL_GBC_DARK_GREEN_BE "GBC - Цёмна-зялёная"
+#define OPTION_VAL_GBC_GRAYSCALE_BE "GBC - Адценні шэрага"
+#define OPTION_VAL_GBC_GREEN_BE "GBC - Зялёная"
+#define OPTION_VAL_GBC_INVERTED_BE "GBC - Інверсія"
+#define OPTION_VAL_GBC_ORANGE_BE "GBC - Аранжавая"
+#define OPTION_VAL_GBC_PASTEL_MIX_BE "GBC - Пастэльны мікс"
+#define OPTION_VAL_GBC_RED_BE "GBC - Чырвоная"
+#define OPTION_VAL_GBC_YELLOW_BE "GBC - Жоўтая"
 #define OPTION_VAL_SGB_1A_BE NULL
 #define OPTION_VAL_SGB_1B_BE NULL
 #define OPTION_VAL_SGB_1C_BE NULL
@@ -3369,16 +3369,16 @@ struct retro_core_options_v2 options_ast = {
 #define OPTION_VAL_SGB_4F_BE NULL
 #define OPTION_VAL_SGB_4G_BE NULL
 #define OPTION_VAL_SGB_4H_BE NULL
-#define OPTION_VAL_SPECIAL_1_BE NULL
-#define OPTION_VAL_SPECIAL_2_BE NULL
-#define OPTION_VAL_SPECIAL_3_BE NULL
+#define OPTION_VAL_SPECIAL_1_BE "Асаблівая 1"
+#define OPTION_VAL_SPECIAL_2_BE "Асаблівая 2"
+#define OPTION_VAL_SPECIAL_3_BE "Асаблівая 3"
 #define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_BE NULL
-#define OPTION_VAL_TWB64_PACK_1_BE NULL
-#define OPTION_VAL_TWB64_PACK_2_BE NULL
-#define OPTION_VAL_TWB64_PACK_3_BE NULL
-#define OPTION_VAL_PIXELSHIFT_PACK_1_BE NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_BE NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_BE NULL
+#define OPTION_VAL_TWB64_PACK_1_BE "TWB64 - Пакет 1"
+#define OPTION_VAL_TWB64_PACK_2_BE "TWB64 - Пакет 2"
+#define OPTION_VAL_TWB64_PACK_3_BE "TWB64 - Пакет 3"
+#define OPTION_VAL_PIXELSHIFT_PACK_1_BE "PixelShift - Пакет 1"
+#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_BE "> Палітра TWB64 - Пакет 1"
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_BE "Выбар убудаванай палітры каларызацыі, калі для опцыі 'Убудаваная палітра' зададзена 'TWB64 - Пакет 1'."
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_BE NULL
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_BE NULL
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_BE NULL
@@ -3479,8 +3479,8 @@ struct retro_core_options_v2 options_ast = {
 #define OPTION_VAL_TWB64_098_DEKU_ALPHA_EMERALD_BE NULL
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_BE NULL
 #define OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_BE NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_BE NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_BE NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_BE "> Палітра TWB64 - Пакет 2"
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_BE "Выбар убудаванай палітры каларызацыі, калі для опцыі 'Убудаваная палітра' зададзена 'TWB64 - Пакет 2'."
 #define OPTION_VAL_TWB64_101_765PRO_PINK_BE NULL
 #define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_BE NULL
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_BE NULL
@@ -3581,8 +3581,8 @@ struct retro_core_options_v2 options_ast = {
 #define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_BE NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_BE NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_BE NULL
-#define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_BE NULL
-#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_BE NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_BE "> Палітра TWB64 - Пакет 3"
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_BE "Выбар убудаванай палітры каларызацыі, калі для опцыі 'Убудаваная палітра' зададзена 'TWB64 - Пакет 3'."
 #define OPTION_VAL_TWB64_201_DMG_GOLD_BE NULL
 #define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_BE NULL
 #define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_BE NULL
@@ -3683,8 +3683,8 @@ struct retro_core_options_v2 options_ast = {
 #define OPTION_VAL_TWB64_298_BAJA_BLAST_BEACH_BE NULL
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_BE NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_BE NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_BE NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_BE NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_BE "> Палітра PixelShift - Пакет 1"
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_BE "Выбар убудаванай палітры каларызацыі, калі для опцыі 'Убудаваная палітра' зададзена 'PixelShift - Пакет 1'."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_BE NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_BE NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_BE NULL
@@ -3731,100 +3731,100 @@ struct retro_core_options_v2 options_ast = {
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_BE NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_BE NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_BE "Карэкцыя колеру"
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_BE NULL
-#define OPTION_VAL_GBC_ONLY_BE NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_BE "Падладка каляровасці для адпаведнасці малюнку на дысплеі рэальнага Game Boy Color. 'Толькі GBC' ужывае карэкцыю пры запуску гульняў Game Boy Color ці калі для каларызацыі гульні Game Boy выкарыстоўваецца палітра Game Boy Color. 'Заўсёды' ужывае колеракарэкцыю да ўсяго кантэнту і прыводзіць да непажаданых вынікаў пры выкарыстанні ўбудаваных палітраў 'GB' або 'SGB'."
+#define OPTION_VAL_GBC_ONLY_BE "Толькі GBC"
 #define OPTION_VAL_ALWAYS_BE "Заўсёды"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_BE NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_BE NULL
-#define OPTION_VAL_ACCURATE_BE NULL
-#define OPTION_VAL_FAST_BE NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_BE NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_BE NULL
-#define OPTION_VAL_CENTRAL_BE NULL
-#define OPTION_VAL_ABOVE_SCREEN_BE NULL
-#define OPTION_VAL_BELOW_SCREEN_BE NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_BE NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_BE NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_BE "Рэжым карэкцыі колеру"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_BE "Выбар рэжыму, які выкарыстоўваецца для колеракарэкцыі. 'Дакладны' прайгравае колеры практычна неадрозна ад рэальнай ВК-панэлі Game Boy Color. 'Хуткі' толькі зацямняе колеры і памяншае насычанасць і падыходзіць для слабых прылад у тым выпадку, калі 'Дакладны' рэжым працуе занадта павольна."
+#define OPTION_VAL_ACCURATE_BE "Дакладны"
+#define OPTION_VAL_FAST_BE "Хуткі"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_BE "Карэкцыя колеру - крыніца святла"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_BE "Імітуе фізічны водгук ВК-панэлі Game Boy Color пры асвятленні з розных кутоў. 'Па цэнтры' адпавядае стандартнай колераперадачы. 'Над экранам' павялічвае яркасць. 'Пад экранам' памяншае яркасць. Дадзеная налада ўжываецца толькі ў тым выпадку, калі 'Рэжым колеракарэкцыі' мае значэнне 'Дакладны'."
+#define OPTION_VAL_CENTRAL_BE "Цэнтральны"
+#define OPTION_VAL_ABOVE_SCREEN_BE "Над экранам"
+#define OPTION_VAL_BELOW_SCREEN_BE "Пад экранам"
+#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_BE "Узровень фільтра зацямнення (%)"
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_BE "Уключае памяншэнне яркасці ў залежнасці ад навакольнага асвятлення. Можа выкарыстоўвацца для зніжэння нагрузкі на вочы ў гульнях з белым заднім фонам, якія прызначаны для Game Boy Color без падсвятлення і з-за залішняй яркасці могуць выклікаць дыскамфорт на сучасных экранах з падсветкай."
 #define GAMBATTE_MIX_FRAMES_LABEL_BE "Міжкадравае змешванне"
-#define GAMBATTE_MIX_FRAMES_INFO_0_BE NULL
+#define GAMBATTE_MIX_FRAMES_INFO_0_BE "Імітацыя эфекту дваення LCD. 'Простае' змешвае бягучыя кадры з папярэднімі ў прапорцыі 50:50. 'Дваенне LCD' імітуе натуральны час водгуку LCD аб'яднаннем некалькіх буфераваных кадраў. \"Простае\" змешванне патрабуецца для гульняў, якія выкарыстоўваюць LCD-гостынг для эфектаў празрыстасці (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
 #define OPTION_VAL_MIX_BE "Простае"
 #define OPTION_VAL_LCD_GHOSTING_BE "Дваенне ВК (дакладна)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_BE "Дваенне ВК (хутка)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_BE "Перадыскрэтызацыя гуку"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_BE NULL
-#define OPTION_VAL_SINC_BE NULL
-#define OPTION_VAL_CC_BE NULL
-#define GAMBATTE_GB_HWMODE_LABEL_BE NULL
-#define GAMBATTE_GB_HWMODE_INFO_0_BE NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_BE "Алгарытм перадіскрэтызацыі згенераванага гуку (частата гуку Game Boy абмежавана толькі хуткасцю запісу CPU кансолі, т. ч., 'натыўныя' частоты на сучасных гукавых прыладах непрымяняльныя і патрабуюць паніжэнні). 'Сінусны' забяспечвае найлепшую якасць. 'Касінусны' паляпшае прадукцыйнасць для слабых прылад."
+#define OPTION_VAL_SINC_BE "Сінусны"
+#define OPTION_VAL_CC_BE "Касінусны"
+#define GAMBATTE_GB_HWMODE_LABEL_BE "Мадэль кансолі (патрабуецца перазапуск)"
+#define GAMBATTE_GB_HWMODE_INFO_0_BE "Выбар сістэмы для эмуляцыі. Рэкамендуецца ўсталяваць «Аўта». Выбар 'GBA' адкрывае новыя магчымасці ў некаторых гульнях Game Boy Color з паляпшэннямі для GBA (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_BE NULL
 #define OPTION_VAL_GBA_BE NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_BE NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_BE NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_BE "Выкарыстоўваць афіцыйны загрузчык (патрабуецца перазапуск)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_BE "Уключае падтрымку афіцыйных загрузчыкаў Game Boy і Game Boy Color з адпаведнай анімацыяй запуску."
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_BE "Дазволіць супрацьлеглыя напрамкі"
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_BE NULL
-#define GAMBATTE_TURBO_PERIOD_LABEL_BE NULL
-#define GAMBATTE_TURBO_PERIOD_INFO_0_BE NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_BE NULL
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_BE NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_BE NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_MODE_INFO_0_BE NULL
-#define OPTION_VAL_NOT_CONNECTED_BE NULL
-#define OPTION_VAL_NETWORK_SERVER_BE NULL
-#define OPTION_VAL_NETWORK_CLIENT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_BE NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_BE "Дазваляе націскаць/хутка змяняць/адначасова заціскаць кірункі налева і направа (ці ўверх і ўніз). Можа выклікаць глітчы, злучаныя з перасоўваннем."
+#define GAMBATTE_TURBO_PERIOD_LABEL_BE "Перыяд турба-кнопкі"
+#define GAMBATTE_TURBO_PERIOD_INFO_0_BE "Усталёўвае інтэрвал паўтору (у кадрах) пры ўтрыманні турба-кнопак A/B."
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_BE "Інтэнсіўнасць аддачы кантролера"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_BE "Уключае эфекты тактыльнай аддачы для гульняў з падтрымкай (Pokemon Pinball, Perfect Dark...)."
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_BE "Паказваць налады Game Link"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_BE "Уключае настройку сеткавых параметраў (мультыплэера) Game Link. Для прымянення змен патрабуецца пераключыць хуткае меню."
+#define GAMBATTE_GB_LINK_MODE_LABEL_BE "Рэжым Game Link"
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_BE "Рэжым сувязі"
+#define GAMBATTE_GB_LINK_MODE_INFO_0_BE "Пры ўключэнні Game Link усталёўвае рэжым сервера або кліента для запушчанага ядра."
+#define OPTION_VAL_NOT_CONNECTED_BE "Падлучэнне адсутнічае"
+#define OPTION_VAL_NETWORK_SERVER_BE "Сеткавы сервер"
+#define OPTION_VAL_NETWORK_CLIENT_BE "Сеткавы кліент"
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_BE "Сеткавы порт сувязі"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_BE "Порт"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_BE NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_BE NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_BE "Устанаўлівае порт, які выкарыстоўваецца для сувязі з Game Link."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_BE "Адрас сеткавага сервера сувязі з. 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_BE "Адрас сервера ч. 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_BE "1-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_BE "1-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_BE "Адрас сеткавага сервера сувязі з. 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_BE "Адрас сервера ч. 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_BE "2-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_BE "2-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_BE "Адрас сеткавага сервера сувязі з. 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_BE "Адрас сервера ч. 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_BE "3-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_BE "3-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_BE "Адрас сеткавага сервера сувязі з. 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_BE "Адрас сервера ч. 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_BE "4-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_BE "4-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_BE "Адрас сеткавага сервера сувязі з. 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_BE "Адрас сервера ч. 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_BE "5-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_BE "5-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_BE "Адрас сеткавага сервера сувязі з. 06: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_BE "Адрас сервера ч. 06: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_BE "6-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_BE "6-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_BE "Адрас сеткавага сервера сувязі з. 07: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_BE "Адрас сервера ч. 07: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_BE "7-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_BE "7-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_BE "Адрас сеткавага сервера сувязі з. 08: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_BE "Адрас сервера ч. 08: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_BE "8-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_BE "8-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_BE "Адрас сеткавага сервера сувязі з. 09: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_BE "Адрас сервера ч. 09: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_BE "9-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_BE "9-я лічба IP-адраса аддаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_BE "Адрас сеткавага сервера сувязі з. 10: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_BE "Адрас сервера ч. 10: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_BE "10-я лічба IP-адраса выдаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_BE "10-я лічба IP-адраса выдаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_BE "Адрас сеткавага сервера сувязі з. 11: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_BE "Адрас сервера ч. 11: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_BE "11-я лічба IP-адраса выдаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_BE "11-я лічба IP-адраса выдаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_BE "Адрас сеткавага сервера сувязі з. 12: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_BE "Адрас сервера ч. 12: ___._x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_BE "12-я лічба IP-адраса выдаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым Game Link' усталяваны ў 'Сеткавы кліент'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_BE "12-я лічба IP-адраса выдаленага сервера Game Link. Выкарыстоўваецца толькі калі 'Рэжым сувязі' усталяваны ў 'Сеткавы кліент'."
 
 struct retro_core_option_v2_category option_cats_be[] = {
    {
@@ -60575,7 +60575,7 @@ struct retro_core_options_v2 options_tr = {
 #define CATEGORY_GB_LINK_INFO_0_TT NULL
 #define GAMBATTE_GB_COLORIZATION_LABEL_TT NULL
 #define GAMBATTE_GB_COLORIZATION_INFO_0_TT NULL
-#define OPTION_VAL_AUTO_TT NULL
+#define OPTION_VAL_AUTO_TT "Автоматик"
 #define OPTION_VAL_GBC_TT NULL
 #define OPTION_VAL_SGB_TT NULL
 #define OPTION_VAL_INTERNAL_TT NULL
@@ -61035,7 +61035,7 @@ struct retro_core_options_v2 options_tr = {
 #define OPTION_VAL_NETWORK_SERVER_TT NULL
 #define OPTION_VAL_NETWORK_CLIENT_TT NULL
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_TT NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_TT NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_TT "Порт"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_TT NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_TT NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_TT NULL
