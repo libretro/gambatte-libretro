@@ -7036,9 +7036,9 @@ struct retro_core_options_v2 options_bg = {
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_CA NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_CA "Duració del botó Turbo"
 #define GAMBATTE_TURBO_PERIOD_INFO_0_CA NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_CA NULL
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_CA "Força de la vibració del controlador"
 #define GAMBATTE_RUMBLE_LEVEL_INFO_0_CA NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_CA NULL
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_CA "Mostrar la configuració de Game Link"
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_CA NULL
 #define GAMBATTE_GB_LINK_MODE_LABEL_CA "Mode de cable Game Link"
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_CA "Mode de connexió"
