@@ -39727,7 +39727,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_GBC_ONLY_JA "GBC のみ"
 #define OPTION_VAL_ALWAYS_JA "常に"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_JA "色補正モード"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_JA "色補正の実行時に使用される方法を指定します。[正確] は実際のゲームボーイカラーの液晶パネルとほとんど区別できない映像を出力します。[高速] は単に色を濃くして彩度を下げるだけです。[正確] では遅すぎる場合、ローエンドハードウェアで使用することができます。"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_JA "色補正の実行時に使用される方法を指定します。[正確] は実際のゲームボーイカラーの液晶パネルとほとんど区別できない映像を出力します。[高速] は単に色を濃くして彩度を下げるだけです。旧世代のハードウェアで動かしている時に[正確] に設定して動作が遅すぎる場合は、[高速] に設定してください。"
 #define OPTION_VAL_ACCURATE_JA "正確"
 #define OPTION_VAL_FAST_JA "高速"
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_JA "色補正 - フロントライト位置"
@@ -39736,7 +39736,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_ABOVE_SCREEN_JA "画面の上"
 #define OPTION_VAL_BELOW_SCREEN_JA "画面の下"
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_JA "ダークフィルターレベル (%)"
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_JA "輝度ベースの明るさ軽減を有効にします。白背景のゲームをプレイする際に、まぶしさや目の負担を軽減するために使用されることがあります。これらのゲームはバックライトのないゲームボーイカラーでの表示を想定して開発されたため、現代的なバックライト付き画面で見ると不快な明るさに見えることがあります。"
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_JA "輝度ベースの明るさ軽減を有効にします。白背景のゲームをプレイする際に、まぶしさや目の負担を軽減するために使用します。ゲームボーイカラーのゲームはバックライトがない状態での表示を想定して開発されたため、現代のバックライト付き画面で見ると不快な明るさに見えることがあります。"
 #define GAMBATTE_MIX_FRAMES_LABEL_JA "フレーム間合成"
 #define GAMBATTE_MIX_FRAMES_INFO_0_JA "液晶ディスプレイの残像効果をシミュレートします。[シンプル] は現在と以前のフレームを半々の割合で合成します。[液晶ディスプレイ残像] は、複数のバッファ付きフレームを組み合わせることで、より自然に液晶ディスプレイの応答速度を再現します。残像を利用した透明効果のあるゲームをプレイする場合、[シンプル] を選択してください。"
 #define OPTION_VAL_MIX_JA "シンプル"
@@ -57720,9 +57720,9 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_PIXELSHIFT_45_WISH_SV NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_SV "Färgkorrigering"
 #define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_SV NULL
-#define OPTION_VAL_GBC_ONLY_SV NULL
+#define OPTION_VAL_GBC_ONLY_SV "Endast GBC"
 #define OPTION_VAL_ALWAYS_SV "Alltid"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_SV NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_SV "Färgkorrigeringsläge"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_SV NULL
 #define OPTION_VAL_ACCURATE_SV NULL
 #define OPTION_VAL_FAST_SV "Snabb"
