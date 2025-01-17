@@ -6650,7 +6650,7 @@ struct retro_core_options_v2 options_bg = {
 #define OPTION_VAL_TWB64_PACK_3_CA NULL
 #define OPTION_VAL_PIXELSHIFT_PACK_1_CA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_CA NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_CA NULL
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_CA "Selecciona la paleta de colors interna a 'TWB64 - Pack 1'."
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_CA NULL
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_CA NULL
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_CA NULL
@@ -6752,7 +6752,7 @@ struct retro_core_options_v2 options_bg = {
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_CA NULL
 #define OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_CA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_CA NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_CA NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_CA "Selecciona la paleta de colors interna a 'TWB64 - Pack 2'."
 #define OPTION_VAL_TWB64_101_765PRO_PINK_CA NULL
 #define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_CA NULL
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_CA NULL
@@ -6854,7 +6854,7 @@ struct retro_core_options_v2 options_bg = {
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_CA NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_CA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_CA NULL
-#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_CA NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_CA "Selecciona la paleta de colors interna a 'TWB64 - Pack 3'."
 #define OPTION_VAL_TWB64_201_DMG_GOLD_CA NULL
 #define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_CA NULL
 #define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_CA NULL
@@ -6956,7 +6956,7 @@ struct retro_core_options_v2 options_bg = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_CA NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_CA NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_CA NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_CA NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_CA "Selecciona la paleta de colors interna a 'PixelShift - Pack 1'."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_CA NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_CA NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_CA NULL
@@ -7007,96 +7007,96 @@ struct retro_core_options_v2 options_bg = {
 #define OPTION_VAL_GBC_ONLY_CA "Només GBC"
 #define OPTION_VAL_ALWAYS_CA "Sempre"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_CA "Mode de correcció de color"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_CA NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_CA "Especifica el mètode utilitzat per la correcció de color. 'Acurat' produeix una imatge quasi indistingible de la imatge real de la Game Boy Color. 'Ràpid' es limita a enfosquir els colors i reduir la saturació. L'opció 'Ràpid' es pot utilitzar en maquinari de gamma baixa si l'opció 'Acurat' és massa lenta."
 #define OPTION_VAL_ACCURATE_CA "Precís"
 #define OPTION_VAL_FAST_CA "Ràpida"
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_CA "Correcció de color - Posició de la llum frontal"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_CA NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_CA "Simula la resposta física del panell LCD d'una Game Boy Color quan s'il·lumina des de diferents angles. 'Centrada' representa la reproducció estàndard de color. 'Per sobre de la pantalla' augmenta la brillantor i 'Per sota de la pantalla' disminueix la brillantor. Aquest ajustament s'aplica només quan el mode de correcció de color està configurat com 'Precís'."
 #define OPTION_VAL_CENTRAL_CA NULL
 #define OPTION_VAL_ABOVE_SCREEN_CA "Per sobre la pantalla"
 #define OPTION_VAL_BELOW_SCREEN_CA "Per sota la pantalla"
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_CA "Nivell del filtre fosc (%)"
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_CA NULL
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_CA "Permet reduir la brillantor mitjançant la lluminositat. Pot evitar reflexos o cansament de la vista en executar jocs amb el fons blanc que estan pensats per un Game Boy Color sense retroil·luminació i que poden mostrar una brillantor excessiva en una pantalla retroil·luminada moderna."
 #define GAMBATTE_MIX_FRAMES_LABEL_CA "Fusió de fotogrames"
-#define GAMBATTE_MIX_FRAMES_INFO_0_CA NULL
+#define GAMBATTE_MIX_FRAMES_INFO_0_CA "Simula els efectes fantasma del LCD. 'Simple' mescla al 50% el fotograma actual i el fotograma anterior. 'Fantasmeig LCD' imita el temps de resposta real de la pantalla LCD combinant diferents fotogrames. 'Simple' és necessari per executar jocs que necessiten el fantasmeig LCD per efectes de transparència (Wave Race, Balllistic, Chikyuu Kaihou Gun ZAS...)."
 #define OPTION_VAL_MIX_CA NULL
 #define OPTION_VAL_LCD_GHOSTING_CA "Imatge fantasma de LCD (Acurat)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_CA "Imatge fantasma del LCD (ràpid)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_CA "Remostreig d'àudio"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_CA NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_CA "Especifica l'algoritme utilitzat per remostrejar l'àudio generat (la ratio d'àudio de Game Boy està limitat per la velocitat de lectura de la CPU, pel qual les freqüències natives no son pràctiques en dispositius moderns). 'Sinc' produeix una millor qualitat. 'Cosine' millora el rendiment en sistemes de gamma baixa."
 #define OPTION_VAL_SINC_CA NULL
 #define OPTION_VAL_CC_CA NULL
 #define GAMBATTE_GB_HWMODE_LABEL_CA "Maquinari emulat (Es requereix reinici)"
-#define GAMBATTE_GB_HWMODE_INFO_0_CA NULL
+#define GAMBATTE_GB_HWMODE_INFO_0_CA "Especifica el tipus de maquinari a emular. Es recomana l'opció 'Auto'. Seleccionar 'GBA' desbloqueja algunes funcions extres en aquells jocs de Game Boy Color que tinguin el mode 'GBA Enhanced' (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_CA NULL
 #define OPTION_VAL_GBA_CA NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_CA "Fes servir el carregador d'arrancada oficial (Es requereix reinici)"
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_CA NULL
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_CA "Activa el suport pels programes d'arrancada oficials de Game Boy i Game Boy Color amb les corresponents animacions inicials."
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_CA "Permet direccions oposades"
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_CA NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_CA "Habilita aquesta opció per permetre alternar o mantenir les direccions esquerra i dreta (o amunt i avall) al mateix temps. Pot provocar errors en el moviment."
 #define GAMBATTE_TURBO_PERIOD_LABEL_CA "Duració del botó Turbo"
-#define GAMBATTE_TURBO_PERIOD_INFO_0_CA NULL
+#define GAMBATTE_TURBO_PERIOD_INFO_0_CA "Especifica l'interval (en fotogrames) en el qual es repetirà la pulsació dels botons A o B al mantenir polsats els botons de turbo equivalents."
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_CA "Força de la vibració del controlador"
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_CA NULL
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_CA "Activa els efectes de resposta hàptica en aquells jocs que siguin compatibles (Pokemon Pinball, Perfect Dark,...)."
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_CA "Mostrar la configuració de Game Link"
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_CA NULL
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_CA "Activa la configuració d'opcions del cable Game Link. NOTA: És necessari sortir i tornar a entrar al menú ràpid per a que el canvi tingui efecte."
 #define GAMBATTE_GB_LINK_MODE_LABEL_CA "Mode de cable Game Link"
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_CA "Mode de connexió"
-#define GAMBATTE_GB_LINK_MODE_INFO_0_CA NULL
+#define GAMBATTE_GB_LINK_MODE_INFO_0_CA "En activar la funció de xarxa del cable Game Link, aquesta opció especifica quina instància ha de fer de servidor i quina de client."
 #define OPTION_VAL_NOT_CONNECTED_CA "Sense connexió"
 #define OPTION_VAL_NETWORK_SERVER_CA "Servidor de xarxa"
 #define OPTION_VAL_NETWORK_CLIENT_CA "Client de xarxa"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CA "Port d'enllaç a la xarxa"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_CA "Especifica el port de xarxa que es farà servir per Game Link."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CA "Valor 01 de l'adreça de servidor: x__.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_CA "Valor 01 de l'adreça del servidor: x__.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_CA "El primer dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_CA "El primer dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CA "Valor 02 de l'adreça de servidor: _x_.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_CA "Valor 02 de l'adreça del servidor: _x_.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_CA "El segon dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_CA "El segon dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CA "Valor 03 de l'adreça de servidor: __x.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_CA "Valor 03 de l'adreça del servidor: __x.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_CA "El tercer dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_CA "El tercer dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CA "Valor 04 de l'adreça de servidor: ___.x__.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_CA "Valor 04 de l'adreça del servidor: ___.x__.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_CA "El quart dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_CA "El quart dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CA "Valor 05 de l'adreça de servidor: ___._x_.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_CA "Valor 05 de l'adreça del servidor: ___._x_.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_CA "El cinquè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_CA "El cinquè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CA "Valor 06 de l'adreça de servidor: ___.__x.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_CA "Valor 06 de l'adreça del servidor: ___._x.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_CA "El sisè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_CA "El sisè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CA "Valor 07 de l'adreça de servidor: ___.___.x__.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_CA "Valor 07 de l'adreça del servidor: ___.___.x__.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_CA "El setè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_CA "El setè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CA "Valor 08 de l'adreça de servidor: ___.___._x_.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_CA "Valor 08 de l'adreça del servidor: ___.___._x_.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_CA "El vuitè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_CA "El vuitè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CA "Valor 09 de l'adreça de servidor: ___.___.__x.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_CA "Valor 09 de l'adreça del servidor: ___.___.__x.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_CA "El novè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_CA "El novè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CA "Valor 10 de l'adreça de servidor: ___.___.___.x__"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_CA "Valor 10 de l'adreça del servidor: ___.___.___.x__"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_CA "El desè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_CA "El desè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CA "Valor 11 de l'adreça de servidor: ___.___.___._x_"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_CA "Valor 11 de l'adreça del servidor: ___.___.___._x_"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_CA "El onzè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_CA "El onzè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CA "Valor 12 de l'adreça de servidor: ___.___.___.__x"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_CA "Valor 12 de l'adreça del servidor: ___.___.___.__x"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_CA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_CA NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_CA "El dotzè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de cable Game Lint estigui configurat com 'Client de xarxa'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_CA "El dotzè dígit de l'adreça IP del servidor de xarxa del cable Game Link. Només s'utilitzarà quan el mode de connexió sigui 'Client de xarxa'."
 
 struct retro_core_option_v2_category option_cats_ca[] = {
    {
