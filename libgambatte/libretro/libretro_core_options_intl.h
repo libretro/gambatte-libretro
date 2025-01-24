@@ -2122,7 +2122,7 @@ struct retro_core_options_v2 options_ar = {
 #define GAMBATTE_GB_HWMODE_INFO_0_AST NULL
 #define OPTION_VAL_GB_AST NULL
 #define OPTION_VAL_GBA_AST NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_AST NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_AST "Usar el cargador d'arrinque oficial (ye obligatorio reaniciar)"
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_AST "Activa la compatibilidá colos xestores d'arrinque de Game Boy y Game Boy Color xunto colos sos logos animaos del aniciu."
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_AST "Permitir les direiciones opuestes"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_AST NULL
@@ -6586,14 +6586,14 @@ struct retro_core_options_v2 options_bg = {
 #define CATEGORY_GB_LINK_LABEL_CA NULL
 #define CATEGORY_GB_LINK_INFO_0_CA "Canvia les opcions de connexió (multijugador) mitjançant el cable Game Link."
 #define GAMBATTE_GB_COLORIZATION_LABEL_CA "Coloració de GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_CA NULL
+#define GAMBATTE_GB_COLORIZATION_INFO_0_CA "Habilita la coloració dels jocs de Game Boy. 'Automàtic' selecciona la millor paleta de colors (més apropiada). 'GBC' selecciona la paleta específica de Game Boy Color si està definida, si no, es fa servir 'GBC- Dark Green'. 'SGB' selecciona la paleta dissenyada per Super Game Boy si està definida, si no, es fa servir 'SGB 1A'. 'Interna' fa servir la paleta interna del nucli. 'Personalitzar' carrega una paleta de colors personalitzada de la carpeta del sistema."
 #define OPTION_VAL_AUTO_CA "Automàtic"
 #define OPTION_VAL_GBC_CA NULL
 #define OPTION_VAL_SGB_CA NULL
 #define OPTION_VAL_INTERNAL_CA "Intern"
 #define OPTION_VAL_CUSTOM_CA "Personalitzat"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_CA "Paleta de colors interna"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_CA NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_CA "Selecciona la paleta amb la qual acolorir els jocs de Game Boy quan l'opció d'acolorir de Game Boy està configurada com a 'Interna' o 'Automàtica', però el joc no té una paleta de colors definida per SGB o GBC. Les paletes de colors de GB emulen la pantalla original de Game Boy. Les paletes de colors de GBC son idèntiques a les predefinides en una Game Boy Color. Les paletes de color de SGB son idèntiques a les predefinides en una Super Game Boy."
 #define OPTION_VAL_GB_DMG_CA NULL
 #define OPTION_VAL_GB_POCKET_CA "GB - Butxaca"
 #define OPTION_VAL_GB_LIGHT_CA "GB - Brillant"
@@ -7003,7 +7003,7 @@ struct retro_core_options_v2 options_bg = {
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_CA NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_CA NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_CA "Correcció de color"
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_CA NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_CA "Ajusta els colors de sortida del vídeo perquè s'assemblin als colors del maquinari real d'una Game Boy Color. 'Només per GBC' fa que només s'apliqui la correcció de color en executar jocs de Game Boy Color o en fer servir una paleta de colors de Game Boy Color en un joc de Game Boy. 'Sempre' aplicarà la correcció de color sobre tots els continguts, pot produir resultats inesperats o deficients en fer servir paletes internes de GB o SGB."
 #define OPTION_VAL_GBC_ONLY_CA "Només GBC"
 #define OPTION_VAL_ALWAYS_CA "Sempre"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_CA "Mode de correcció de color"
@@ -41266,7 +41266,7 @@ struct retro_core_options_v2 options_ja = {
 #define OPTION_VAL_TWB64_253_KENTUCKY_FRIED_RED_KO "TWB64 253 - 켄터키 프라이드 레드"
 #define OPTION_VAL_TWB64_254_CHEETO_ORANGE_KO NULL
 #define OPTION_VAL_TWB64_255_NAMCO_IDOL_PINK_KO "TWB64 255 - 남코 아이돌 핑크"
-#define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_KO NULL
+#define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_KO "TWB64 256 - 도미노 피자 버전"
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_KO "TWB64 257 - 팩맨 비젼"
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_KO "TWB64 258 - 빌의 PC 화면"
 #define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_KO "TWB64 259 - 소닉 메가 블루"
