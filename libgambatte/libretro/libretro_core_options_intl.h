@@ -57743,13 +57743,13 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_SINC_SV NULL
 #define OPTION_VAL_CC_SV NULL
 #define GAMBATTE_GB_HWMODE_LABEL_SV "Emulerad hårdvara (Omstart krävs)"
-#define GAMBATTE_GB_HWMODE_INFO_0_SV NULL
+#define GAMBATTE_GB_HWMODE_INFO_0_SV "Ange vilken typ av maskinvara som ska emuleras. 'Auto' rekommenderas. Om du väljer 'GBA' låses extrafunktioner upp i vissa 'GBA Enhanced' Game Boy Color-spel (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_SV NULL
 #define OPTION_VAL_GBA_SV NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_SV NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_SV NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_SV "Använd officiell bootloader (omstart krävs)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_SV "Aktivera stöd för officiella bootloaders för Game Boy och Game Boy Color, med motsvarande logotypanimationer för start."
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_SV "Tillåt motsatta riktningar"
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_SV NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_SV "Om du aktiverar detta kan du trycka/snabbt växla/hålla i både vänster och höger (eller upp och ner) riktning samtidigt. Detta kan orsaka rörelsebaserade glitches."
 #define GAMBATTE_TURBO_PERIOD_LABEL_SV NULL
 #define GAMBATTE_TURBO_PERIOD_INFO_0_SV NULL
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_SV NULL
@@ -57809,10 +57809,10 @@ struct retro_core_options_v2 options_sr = {
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_SV "Serveradress för nätverkslänk Pt. 12: ___.___.___.___.__x"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_SV "Serveradress Pt. 12: ___.___.___.__x"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_SV "12: e siffran i IP-adressen för nätverksservern för fjärrspelet Game Link. Används endast när ”Game Link Mode” är inställt på ”Network Client”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_SV "12: e siffran i IP-adressen för nätverksservern för fjärrspelet Game Link. Används endast när ”Link Mode” är inställt på ”Network Client”."
 
 struct retro_core_option_v2_category option_cats_sv[] = {
    {
