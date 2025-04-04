@@ -57672,7 +57672,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_SV NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_SV NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_SV NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_SV NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_SV "Väljer intern färgsättningspalett när ”Intern palett” är inställd på ”PixelShift - Pack 1”."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_SV NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_SV NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_SV NULL
@@ -57719,29 +57719,29 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_SV NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_SV NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_SV "Färgkorrigering"
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_SV NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_SV "Justerar utgångsfärgerna så att de matchar visningen på en riktig Game Boy Color-hårdvara. ”Endast GBC” säkerställer att korrigeringen endast tillämpas när du spelar Game Boy Color-spel eller när du använder en Game Boy Color-palett för att färglägga ett Game Boy-spel. 'Always' tillämpar färgkorrigering på allt innehåll och ger oväntade/suboptimala resultat när du använder interna färgpaletter av typen 'GB' eller 'SGB'."
 #define OPTION_VAL_GBC_ONLY_SV "Endast GBC"
 #define OPTION_VAL_ALWAYS_SV "Alltid"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_SV "Färgkorrigeringsläge"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_SV NULL
-#define OPTION_VAL_ACCURATE_SV NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_SV "Anger vilken metod som används vid färgkorrigering. ”Exakt” ger ett resultat som nästan inte går att skilja från en riktig Game Boy Color LCD-panel. ”Fast” gör bara färgerna mörkare och minskar mättnaden, och kan användas på mindre avancerad maskinvara om ’Exakt’-metoden är för långsam."
+#define OPTION_VAL_ACCURATE_SV "Exakt"
 #define OPTION_VAL_FAST_SV "Snabb"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_SV NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_SV NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_SV "Färgkorrigering - Frontlight-position"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_SV "Simulerar den fysiska responsen hos Game Boy Color LCD-panelen när den belyses från olika vinklar. ”Central” representerar standard färgåtergivning. ”Ovanför skärmen” ökar ljusstyrkan. ”Nedanför skärmen” minskar ljusstyrkan. Denna inställning gäller endast när ”Färgkorrigeringsläget” är inställt på ”Exakt”."
 #define OPTION_VAL_CENTRAL_SV NULL
 #define OPTION_VAL_ABOVE_SCREEN_SV "Över skärmen"
 #define OPTION_VAL_BELOW_SCREEN_SV "Nedanför skärmen"
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_SV "Mörkerfilternivå (%)"
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_SV NULL
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_SV "Aktiverar luminositetsbaserad minskning av ljusstyrkan. Kan användas för att undvika bländning när du spelar spel med vit bakgrund, som är avsedda att visas på en icke-bakgrundsbelyst Game Boy Color och därför kan verka obehagligt ljusa när de visas på en modern bakgrundsbelyst skärm."
 #define GAMBATTE_MIX_FRAMES_LABEL_SV "Mellanbildsblandning"
-#define GAMBATTE_MIX_FRAMES_INFO_0_SV NULL
+#define GAMBATTE_MIX_FRAMES_INFO_0_SV "Simulerar LCD-spökeffekter. ”Enkel” utför en 50:50-mix av den aktuella och föregående bildrutan. 'LCD-spökeffekt' efterliknar naturliga LCD-svarstider genom att kombinera flera buffrade bildrutor. 'Enkel'-blandning krävs när du spelar spel som förlitar sig på LCD-spökeffekter för transparenseffekter (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
 #define OPTION_VAL_MIX_SV "Simpel"
 #define OPTION_VAL_LCD_GHOSTING_SV "LCD-efterbilder (Träffsäker noggrannhet)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_SV "LCD-efterbilder (Snabb)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_SV "Ljudomsamplare"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_SV NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_SV "Ange vilken algoritm som ska användas vid omsampling av genererat ljud (Game Boys ljudfrekvens begränsas endast av processorns skrivhastighet, vilket innebär att ”ursprungliga” frekvenser är opraktiska på moderna ljudenheter och måste nedsamplas). ”Sinc” ger den högsta kvaliteten. ”Cosinus” förbättrar prestandan på mindre avancerad hårdvara."
 #define OPTION_VAL_SINC_SV NULL
-#define OPTION_VAL_CC_SV NULL
+#define OPTION_VAL_CC_SV "Cosinus"
 #define GAMBATTE_GB_HWMODE_LABEL_SV "Emulerad hårdvara (Omstart krävs)"
 #define GAMBATTE_GB_HWMODE_INFO_0_SV "Ange vilken typ av maskinvara som ska emuleras. 'Auto' rekommenderas. Om du väljer 'GBA' låses extrafunktioner upp i vissa 'GBA Enhanced' Game Boy Color-spel (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_SV NULL
@@ -57750,64 +57750,64 @@ struct retro_core_options_v2 options_sr = {
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_SV "Aktivera stöd för officiella bootloaders för Game Boy och Game Boy Color, med motsvarande logotypanimationer för start."
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_SV "Tillåt motsatta riktningar"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_SV "Om du aktiverar detta kan du trycka/snabbt växla/hålla i både vänster och höger (eller upp och ner) riktning samtidigt. Detta kan orsaka rörelsebaserade glitches."
-#define GAMBATTE_TURBO_PERIOD_LABEL_SV NULL
-#define GAMBATTE_TURBO_PERIOD_INFO_0_SV NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_SV NULL
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_SV NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_SV NULL
+#define GAMBATTE_TURBO_PERIOD_LABEL_SV "Period för turbo-knapp"
+#define GAMBATTE_TURBO_PERIOD_INFO_0_SV "Ange repetitionsintervallet (i bildrutor) när du håller Turbo A/B-knapparna nedtryckta."
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_SV "Styrka för handkontrollerns Rumble"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_SV "Aktiverar haptiska återkopplingseffekter för spel som stöds (Pokemon Pinball, Perfect Dark...)."
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_SV "Visa Game Link-inställningar"
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_SV NULL
+#define GAMBATTE_GB_LINK_MODE_LABEL_SV "Game Link-läge"
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_SV "Länkläge"
 #define GAMBATTE_GB_LINK_MODE_INFO_0_SV NULL
 #define OPTION_VAL_NOT_CONNECTED_SV "Inte ansluten"
 #define OPTION_VAL_NETWORK_SERVER_SV "Nätverksserver"
 #define OPTION_VAL_NETWORK_CLIENT_SV "Nätverksklient"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_SV "Port för nätverkslänk"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_SV "Ange den port som används för nätverkskommunikation med Game Link."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_SV "Serveradress del 01: x__.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_SV "Serveradress del 02: _x_.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_SV "Serveradress del 03: __x.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_SV "Serveradress del 04: ___.x__.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_SV "Serveradress del 05: ___._x_.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_SV "Serveradress del 06: ___.__x.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_SV "Serveradress del 07: ___.___.x__.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_SV "Serveradress del 08: ___.___._x_.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_SV "Serveradress del 09: ___.___.__x.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_SV "Serveradress del 10: ___.___.___.x__"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_SV "Serveradress del 11: ___.___.___._x_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_SV "11: e siffran i IP-adressen för Game Link-fjärrserverns nätverksserver. Används endast när ”Game Link Mode” är inställt på ”Network Client”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_SV NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_SV "Serveradress för nätverkslänk Pt. 12: ___.___.___.___.__x"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_SV "Serveradress Pt. 12: ___.___.___.__x"
