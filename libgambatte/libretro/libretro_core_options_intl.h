@@ -57302,7 +57302,7 @@ struct retro_core_options_v2 options_sr = {
 #define CATEGORY_GB_LINK_LABEL_SV "Spellänk"
 #define CATEGORY_GB_LINK_INFO_0_SV "Ändra inställningar för nätverksspel (flerspelarläge)."
 #define GAMBATTE_GB_COLORIZATION_LABEL_SV "GB Färgläggning"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_SV "Aktiverar färgläggning av Game Boy-spel. \"Auto\" väljer den \"bästa\" (mest färgglada/lämpliga) paletten. \"GBC\" väljer spel-specifik Game Boy Color-palett om definierad, annars \"GBC - Mörkgrön\". \"SGB\" väljer spel-specifik Super Game Boy-palett om definierad, annars \"SGB - 1A\". \"Intern\" använder \"Intern Palett\" kärninställningen. \"Anpassad\" laddar in användar skapad palett från systemkatalogen."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_SV "Aktiverar färgläggning av Game Boy-spel. \"Auto\" väljer den \"bästa\" (mest färgglada/lämpliga) paletten. \"GBC\" väljer spelspecifik Game Boy Color-palett om definierad, annars \"GBC - Mörkgrön\". \"SGB\" väljer spelspecifik Super Game Boy-palett om definierad, annars \"SGB - 1A\". \"Intern\" använder \"Intern palett\" kärninställningen. \"Anpassad\" läser in användarskapad palett från systemkatalogen."
 #define OPTION_VAL_AUTO_SV NULL
 #define OPTION_VAL_GBC_SV NULL
 #define OPTION_VAL_SGB_SV NULL
@@ -57755,7 +57755,7 @@ struct retro_core_options_v2 options_sr = {
 #define GAMBATTE_RUMBLE_LEVEL_LABEL_SV "Styrka för handkontrollerns Rumble"
 #define GAMBATTE_RUMBLE_LEVEL_INFO_0_SV "Aktiverar haptiska återkopplingseffekter för spel som stöds (Pokemon Pinball, Perfect Dark...)."
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_SV "Visa Game Link-inställningar"
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_SV NULL
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_SV "Aktivera konfiguration av nätverksbaserade Game Link-alternativ (flerspelare). OBS: Snabbmenyn kan behöva växlas för att denna inställning ska börja gälla."
 #define GAMBATTE_GB_LINK_MODE_LABEL_SV "Game Link-läge"
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_SV "Länkläge"
 #define GAMBATTE_GB_LINK_MODE_INFO_0_SV NULL
