@@ -57758,7 +57758,7 @@ struct retro_core_options_v2 options_sr = {
 #define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_SV "Aktivera konfiguration av nätverksbaserade Game Link-alternativ (flerspelare). OBS: Snabbmenyn kan behöva växlas för att denna inställning ska börja gälla."
 #define GAMBATTE_GB_LINK_MODE_LABEL_SV "Game Link-läge"
 #define GAMBATTE_GB_LINK_MODE_LABEL_CAT_SV "Länkläge"
-#define GAMBATTE_GB_LINK_MODE_INFO_0_SV NULL
+#define GAMBATTE_GB_LINK_MODE_INFO_0_SV "När du aktiverar nätverksfunktionen Spellänk (Game Link) ska du ange om den aktuella instansen ska köras som server eller klient."
 #define OPTION_VAL_NOT_CONNECTED_SV "Inte ansluten"
 #define OPTION_VAL_NETWORK_SERVER_SV "Nätverksserver"
 #define OPTION_VAL_NETWORK_CLIENT_SV "Nätverksklient"
@@ -57767,52 +57767,52 @@ struct retro_core_options_v2 options_sr = {
 #define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_SV "Ange den port som används för nätverkskommunikation med Game Link."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_SV "Serveradress för nätverkslänk del 01: x__.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_SV "Serveradress del 01: x__.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_SV "1:a siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_SV "1:a siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_SV "Serveradress för nätverkslänk del 02: _x_.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_SV "Serveradress del 02: _x_.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_SV "2:a siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_SV "2:a siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_SV "Serveradress för nätverkslänk del 03: __x.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_SV "Serveradress del 03: __x.___.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_SV "3:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_SV "3:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_SV "Serveradress för nätverkslänk del 04: ___.x__.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_SV "Serveradress del 04: ___.x__.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_SV "4:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_SV "4:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_SV "Serveradress för nätverkslänk del 05: ___._x_.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_SV "Serveradress del 05: ___._x_.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_SV "5:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_SV "5:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_SV "Serveradress för nätverkslänk del 06: ___.__x.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_SV "Serveradress del 06: ___.__x.___.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_SV "6:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_SV "6:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_SV "Serveradress för nätverkslänk del 07: ___.___.x__.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_SV "Serveradress del 07: ___.___.x__.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_SV "7:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_SV "7:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_SV "Serveradress för nätverkslänk del 08: ___.___._x_.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_SV "Serveradress del 08: ___.___._x_.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_SV "8:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_SV "8:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_SV "Serveradress för nätverkslänk del 09: ___.___.__x.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_SV "Serveradress del 09: ___.___.__x.___"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_SV "9:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_SV "9:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_SV "Serveradress för nätverkslänk del 10: ___.___.___.x__"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_SV "Serveradress del 10: ___.___.___.x__"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_SV NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_SV "10:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_SV "10:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_SV "Serveradress för nätverkslänk del 11: ___.___.___._x_"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_SV "Serveradress del 11: ___.___.___._x_"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_SV "11: e siffran i IP-adressen för Game Link-fjärrserverns nätverksserver. Används endast när ”Game Link Mode” är inställt på ”Network Client”."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_SV NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_SV "11:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_SV "11:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_SV "Serveradress för nätverkslänk Pt. 12: ___.___.___.___.__x"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_SV "Serveradress Pt. 12: ___.___.___.__x"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_SV "12: e siffran i IP-adressen för nätverksservern för fjärrspelet Game Link. Används endast när ”Game Link Mode” är inställt på ”Network Client”."
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_SV "12: e siffran i IP-adressen för nätverksservern för fjärrspelet Game Link. Används endast när ”Link Mode” är inställt på ”Network Client”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_SV "12:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Spellänk-läge” är inställt på ”Nätverksklient”."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_SV "12:e siffran i IP-adressen för fjärransluten Game Link-nätverksserver. Används endast när ”Länk-läge” är inställt på ”Nätverksklient”."
 
 struct retro_core_option_v2_category option_cats_sv[] = {
    {
