@@ -29487,32 +29487,32 @@ struct retro_core_options_v2 options_fr = {
 
 /* RETRO_LANGUAGE_GA */
 
-#define CATEGORY_GB_LINK_LABEL_GA NULL
-#define CATEGORY_GB_LINK_INFO_0_GA NULL
-#define GAMBATTE_GB_COLORIZATION_LABEL_GA NULL
-#define GAMBATTE_GB_COLORIZATION_INFO_0_GA NULL
-#define OPTION_VAL_AUTO_GA NULL
+#define CATEGORY_GB_LINK_LABEL_GA "Nasc Cluiche"
+#define CATEGORY_GB_LINK_INFO_0_GA "Athraigh socruithe líonraithe Game Link (il-imreoir)."
+#define GAMBATTE_GB_COLORIZATION_LABEL_GA "Dathú GB"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_GA "Cumasaíonn sé dathú cluichí Game Boy. Roghnaíonn 'Auto' an pailéad 'is fearr' (is ildaite/is oiriúnaí). Roghnaíonn 'GBC' pailéad datha Game Boy atá sainiúil don chluiche má tá sé sainmhínithe, nó 'GBC - Glas Dorcha'. Roghnaíonn 'SGB' pailéad Super Game Boy atá sainiúil don chluiche má tá sé sainmhínithe, nó 'SGB - 1A'. Úsáideann 'Internal' an rogha lárnach 'Internal Palette'. Luchtóidh 'Saincheaptha' pailéad a chruthaigh an t-úsáideoir ón eolaire córais."
+#define OPTION_VAL_AUTO_GA "Uathoibríoch"
 #define OPTION_VAL_GBC_GA NULL
 #define OPTION_VAL_SGB_GA NULL
-#define OPTION_VAL_INTERNAL_GA NULL
-#define OPTION_VAL_CUSTOM_GA NULL
-#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_GA NULL
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_GA NULL
+#define OPTION_VAL_INTERNAL_GA "Inmheánach"
+#define OPTION_VAL_CUSTOM_GA "Saincheaptha"
+#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_GA "Pailéad Inmheánach"
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_GA "Roghnaíonn sé seo an pailéad a úsáidtear chun cluichí Game Boy a dhathú nuair a bhíonn 'GB Colorization' socraithe go 'Internal', nó nuair a bhíonn 'GB Colorization' socraithe go 'Auto' agus nach bhfuil pailéad SGB/GBC réamhshainithe ag an gcluiche. Déanann pailéid 'GB' aithris ar thaispeántas crua-earraí bunaidh Game Boy. Tá pailéid 'GBC' comhionann leis na réamhshocruithe ionsuite den Game Boy Color. Tá pailéid 'SGB' comhionann leis na réamhshocruithe ionsuite den Super Game Boy."
 #define OPTION_VAL_GB_DMG_GA NULL
 #define OPTION_VAL_GB_POCKET_GA NULL
 #define OPTION_VAL_GB_LIGHT_GA NULL
-#define OPTION_VAL_GBC_BLUE_GA NULL
-#define OPTION_VAL_GBC_BROWN_GA NULL
-#define OPTION_VAL_GBC_DARK_BLUE_GA NULL
-#define OPTION_VAL_GBC_DARK_BROWN_GA NULL
-#define OPTION_VAL_GBC_DARK_GREEN_GA NULL
-#define OPTION_VAL_GBC_GRAYSCALE_GA NULL
-#define OPTION_VAL_GBC_GREEN_GA NULL
-#define OPTION_VAL_GBC_INVERTED_GA NULL
-#define OPTION_VAL_GBC_ORANGE_GA NULL
-#define OPTION_VAL_GBC_PASTEL_MIX_GA NULL
-#define OPTION_VAL_GBC_RED_GA NULL
-#define OPTION_VAL_GBC_YELLOW_GA NULL
+#define OPTION_VAL_GBC_BLUE_GA "GBC - Gorm"
+#define OPTION_VAL_GBC_BROWN_GA "GBC - Donn"
+#define OPTION_VAL_GBC_DARK_BLUE_GA "GBC - Gorm Dorcha"
+#define OPTION_VAL_GBC_DARK_BROWN_GA "GBC - Donn Dorcha"
+#define OPTION_VAL_GBC_DARK_GREEN_GA "GBC - Glas Dorcha"
+#define OPTION_VAL_GBC_GRAYSCALE_GA "GBC - Liathscála"
+#define OPTION_VAL_GBC_GREEN_GA "GBC - Glas"
+#define OPTION_VAL_GBC_INVERTED_GA "GBC - Inbhéartaithe"
+#define OPTION_VAL_GBC_ORANGE_GA "GBC - Oráiste"
+#define OPTION_VAL_GBC_PASTEL_MIX_GA "GBC - Meascán Pastel"
+#define OPTION_VAL_GBC_RED_GA "GBC - Dearg"
+#define OPTION_VAL_GBC_YELLOW_GA "GBC - Buí"
 #define OPTION_VAL_SGB_1A_GA NULL
 #define OPTION_VAL_SGB_1B_GA NULL
 #define OPTION_VAL_SGB_1C_GA NULL
@@ -29545,16 +29545,16 @@ struct retro_core_options_v2 options_fr = {
 #define OPTION_VAL_SGB_4F_GA NULL
 #define OPTION_VAL_SGB_4G_GA NULL
 #define OPTION_VAL_SGB_4H_GA NULL
-#define OPTION_VAL_SPECIAL_1_GA NULL
-#define OPTION_VAL_SPECIAL_2_GA NULL
-#define OPTION_VAL_SPECIAL_3_GA NULL
-#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_GA NULL
-#define OPTION_VAL_TWB64_PACK_1_GA NULL
-#define OPTION_VAL_TWB64_PACK_2_GA NULL
-#define OPTION_VAL_TWB64_PACK_3_GA NULL
-#define OPTION_VAL_PIXELSHIFT_PACK_1_GA NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_GA NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_GA NULL
+#define OPTION_VAL_SPECIAL_1_GA "Speisialta 1"
+#define OPTION_VAL_SPECIAL_2_GA "Speisialta 2"
+#define OPTION_VAL_SPECIAL_3_GA "Speisialta 3"
+#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_GA "Speisialta 4 (TI-83 Oidhreacht)"
+#define OPTION_VAL_TWB64_PACK_1_GA "TWB64 - Pacáiste 1"
+#define OPTION_VAL_TWB64_PACK_2_GA "TWB64 - Pacáiste 2"
+#define OPTION_VAL_TWB64_PACK_3_GA "TWB64 - Pacáiste 3"
+#define OPTION_VAL_PIXELSHIFT_PACK_1_GA "PicteilínShift - Pacáiste 1"
+#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_GA "> TWB64 - Pacáiste 1 Pailéad"
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_GA "Roghnaíonn sé pailéad dathanna inmheánach nuair a bhíonn 'Pailéad Inmheánach' socraithe go 'TWB64 - Pacáiste 1'."
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_GA NULL
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_GA NULL
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_GA NULL
@@ -29581,10 +29581,10 @@ struct retro_core_options_v2 options_fr = {
 #define OPTION_VAL_TWB64_024_SUPER_SAIYAN_GOD_GA NULL
 #define OPTION_VAL_TWB64_025_SUPER_SAIYAN_BLUE_GA NULL
 #define OPTION_VAL_TWB64_026_ANIMAX_BLUE_GA NULL
-#define OPTION_VAL_TWB64_027_BMO_VER_GA NULL
-#define OPTION_VAL_TWB64_028_GAME_COM_VER_GA NULL
-#define OPTION_VAL_TWB64_029_SANRIO_PINK_GA NULL
-#define OPTION_VAL_TWB64_030_TIMMY_TURNER_PINK_GA NULL
+#define OPTION_VAL_TWB64_027_BMO_VER_GA "TWB64 027 - BMO Leagan."
+#define OPTION_VAL_TWB64_028_GAME_COM_VER_GA "TWB64 028 - Game.com Leagan."
+#define OPTION_VAL_TWB64_029_SANRIO_PINK_GA "TWB64 029 - Sanrio Bándearg"
+#define OPTION_VAL_TWB64_030_TIMMY_TURNER_PINK_GA "TWB64 030 - Timmy Turner Bándearg"
 #define OPTION_VAL_TWB64_031_FAIRLY_ODDPALETTE_GA NULL
 #define OPTION_VAL_TWB64_032_DANNY_PHANTOM_SILVER_GA NULL
 #define OPTION_VAL_TWB64_033_LINK_S_AWAKENING_DX_VER_GA NULL
@@ -29656,7 +29656,7 @@ struct retro_core_options_v2 options_fr = {
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_GA NULL
 #define OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_GA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_GA NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_GA NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_GA "Roghnaíonn sé pailéad dathanna inmheánach nuair a bhíonn 'Pailéad Inmheánach' socraithe go 'TWB64 - Pacáiste 2'."
 #define OPTION_VAL_TWB64_101_765PRO_PINK_GA NULL
 #define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_GA NULL
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_GA NULL
@@ -29860,7 +29860,7 @@ struct retro_core_options_v2 options_fr = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_GA NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_GA NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_GA NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_GA NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_GA "Roghnaíonn sé pailéad dathanna inmheánach nuair a bhíonn 'Pailéad Inmheánach' socraithe go 'AistriúPicteilíní - Pacáiste 1'."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_GA NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_GA NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_GA NULL
@@ -29906,101 +29906,101 @@ struct retro_core_options_v2 options_fr = {
 #define OPTION_VAL_PIXELSHIFT_43_VAPORWAVE_GA NULL
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_GA NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_GA NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_GA NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_GA NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_GA "Ceartú Dath"
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_GA "Coigeartaíonn sé dathanna an aschuir chun iad a mheaitseáil le taispeáint fíor-chrua-earraí Game Boy Color. Cinntíonn 'GBC Amháin' nach gcuirfear ceartú i bhfeidhm ach amháin nuair a bhíonn cluichí Game Boy Color á n-imirt, nó nuair a úsáidtear pailéad Game Boy Color chun cluiche Game Boy a dhathú. Cuireann 'I gcónaí' ceartú datha i bhfeidhm ar an ábhar go léir, agus tabharfaidh sé torthaí gan choinne/fo-optamacha nuair a úsáidtear pailéid dathanna inmheánacha 'GB' nó 'SGB'."
 #define OPTION_VAL_GBC_ONLY_GA NULL
-#define OPTION_VAL_ALWAYS_GA NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_GA NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_GA NULL
-#define OPTION_VAL_ACCURATE_GA NULL
-#define OPTION_VAL_FAST_GA NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_GA NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_GA NULL
-#define OPTION_VAL_CENTRAL_GA NULL
-#define OPTION_VAL_ABOVE_SCREEN_GA NULL
-#define OPTION_VAL_BELOW_SCREEN_GA NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_GA NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_GA NULL
-#define GAMBATTE_MIX_FRAMES_LABEL_GA NULL
-#define GAMBATTE_MIX_FRAMES_INFO_0_GA NULL
-#define OPTION_VAL_MIX_GA NULL
-#define OPTION_VAL_LCD_GHOSTING_GA NULL
-#define OPTION_VAL_LCD_GHOSTING_FAST_GA NULL
+#define OPTION_VAL_ALWAYS_GA "I gcónaí"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_GA "Mód Ceartúcháin Dathanna"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_GA "Sonraíonn sé an modh a úsáidtear agus ceartú datha á dhéanamh. Táirgeann 'Cruinn' aschur nach féidir a idirdhealú ó phainéal LCD Game Boy Color fíor. Ní dhéanann 'Measg' ach dathanna a dhorchú agus sáithiú a laghdú, agus féadfar é a úsáid ar chrua-earraí íseal-deireadh má tá an modh 'Cruinn' ró-mhall."
+#define OPTION_VAL_ACCURATE_GA "Cruinn"
+#define OPTION_VAL_FAST_GA "Tapa"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_GA "Ceartú Datha - Suíomh an tSolais Tosaigh"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_GA "Insamhlaíonn sé freagairt fhisiciúil phainéal LCD an Game Boy Color nuair a shoilsithear é ó uillinneacha difriúla. Seasann 'Lárnach' don atáirgeadh datha caighdeánach. Méadaíonn 'Os cionn an Scáileáin' an gile. Laghdaíonn 'Faoi bhun an Scáileáin' an gile. Ní bhaineann an socrú seo ach nuair a bhíonn 'Mód Ceartúcháin Datha' socraithe go 'Cruinn'."
+#define OPTION_VAL_CENTRAL_GA "Lárnach"
+#define OPTION_VAL_ABOVE_SCREEN_GA "Os cionn an Scáileáin"
+#define OPTION_VAL_BELOW_SCREEN_GA "Faoin Scáileán"
+#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_GA "Leibhéal Scagaire Dorcha (%)"
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_GA "Cumasaigh laghdú gile bunaithe ar lonrúlacht. Is féidir é seo a úsáid chun dalladh/strus súl a sheachaint agus cluichí á n-imirt le cúlra bán, atá beartaithe lena thaispeáint ar Game Boy Color gan chúlra agus dá bhrí sin is féidir leo a bheith geal go míchompordach nuair a fhéachtar orthu ar scáileán cúlra nua-aimseartha."
+#define GAMBATTE_MIX_FRAMES_LABEL_GA "Cumasc Idirfhráma"
+#define GAMBATTE_MIX_FRAMES_INFO_0_GA "Insamhlaíonn sé éifeachtaí taibhsí LCD. Déanann 'Simple' meascán 50:50 de na frámaí reatha agus roimhe seo. Déanann 'LCD Ghosting' aithris ar amanna freagartha nádúrtha LCD trí ilfhrámaí maolánaithe a chomhcheangal. Tá cumasc 'Simple' ag teastáil agus cluichí á n-imirt a bhraitheann ar thaibhsí LCD le haghaidh éifeachtaí trédhearcachta (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
+#define OPTION_VAL_MIX_GA "Simplí"
+#define OPTION_VAL_LCD_GHOSTING_GA "LCD Ghosting (Cruinn)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_GA "LCD Ghosting (Gasta)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_GA "Athshamplóir Fuaime"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_GA NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_GA "Sonraigh cén algartam atá le húsáid agus fuaim ghinte á hathshampláil (níl teorainn le ráta fuaime an Game Boy ach amháin ag luas scríbhneoireachta a LAP, sa chaoi is nach bhfuil minicíochtaí 'dúchasacha' praiticiúil ar fheistí fuaime nua-aimseartha agus ní mór iad a laghdú). Tugann 'Sinc' an caighdeán is airde. Feabhsaíonn 'Cosine' feidhmíocht ar chrua-earraí íseal-deireadh."
 #define OPTION_VAL_SINC_GA NULL
-#define OPTION_VAL_CC_GA NULL
-#define GAMBATTE_GB_HWMODE_LABEL_GA NULL
-#define GAMBATTE_GB_HWMODE_INFO_0_GA NULL
+#define OPTION_VAL_CC_GA "Comhshíneas"
+#define GAMBATTE_GB_HWMODE_LABEL_GA "Crua-earraí Aithrisithe (Atosú Riachtanach)"
+#define GAMBATTE_GB_HWMODE_INFO_0_GA "Sonraigh cén cineál crua-earraí atá le haithris. Moltar 'Auto'. Díghlasálann roghnú 'GBA' gnéithe breise i gcluichí Game Boy Color áirithe 'GBA Enhanced' (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_GA NULL
 #define OPTION_VAL_GBA_GA NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_GA NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_GA NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_GA NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_GA NULL
-#define GAMBATTE_TURBO_PERIOD_LABEL_GA NULL
-#define GAMBATTE_TURBO_PERIOD_INFO_0_GA NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_GA NULL
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_GA NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_GA NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_MODE_INFO_0_GA NULL
-#define OPTION_VAL_NOT_CONNECTED_GA NULL
-#define OPTION_VAL_NETWORK_SERVER_GA NULL
-#define OPTION_VAL_NETWORK_CLIENT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_GA NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_GA "Bain úsáid as an Tosaitheoir Oifigiúil (Atosú Riachtanach)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_GA "Cumasaigh tacaíocht do luchtóirí tosaithe oifigiúla Game Boy agus Game Boy Color, le beochana lógó tosaithe comhfhreagracha."
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_GA "Ceadaigh Treoracha Codarsnacha"
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_GA "Trí seo a chumasú, beidh tú in ann an dá threo ar chlé agus ar dheis (nó suas agus síos) a bhrú/a mhalartú go tapa/a choinneáil ag an am céanna. D’fhéadfadh sé seo fabhtanna gluaiseachta a chur faoi deara."
+#define GAMBATTE_TURBO_PERIOD_LABEL_GA "Tréimhse Cnaipe Turbo"
+#define GAMBATTE_TURBO_PERIOD_INFO_0_GA "Sonraigh an t-eatramh athrá (i bhfrámaí) agus na cnaipí Turbo A/B á gcoinneáil síos."
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_GA "Neart Rumble an Rialaitheora"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_GA "Cumasaíonn sé éifeachtaí aiseolais haptic do chluichí a dtacaítear leo (Pokémon Pinball, Perfect Dark...)."
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_GA "Taispeáin Socruithe Nasc Cluiche"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_GA "Cumasaigh cumraíocht roghanna Game Link líonraithe (il-imreoir). TABHAIR FAOI DEARA: B’fhéidir go mbeadh ort an Roghchlár Tapa a athrú chun an socrú seo a chur i bhfeidhm."
+#define GAMBATTE_GB_LINK_MODE_LABEL_GA "Mód Nasc Cluiche"
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_GA "Mód Nasc"
+#define GAMBATTE_GB_LINK_MODE_INFO_0_GA "Agus feidhmiúlacht Game Link líonraithe á cumasú, sonraigh an rithfidh an t-eiseamláir reatha mar fhreastalaí nó mar chliant."
+#define OPTION_VAL_NOT_CONNECTED_GA "Gan Ceangail"
+#define OPTION_VAL_NETWORK_SERVER_GA "Freastalaí Líonra"
+#define OPTION_VAL_NETWORK_CLIENT_GA "Cliant Líonra"
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_GA "Port Nasc Líonra"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_GA NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_GA NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_GA "Sonraigh an port a úsáidtear le haghaidh cumarsáide líonra Game Link."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_GA "1ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_GA "1ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_GA "An dara dhigit de sheoladh IP an fhreastalaí líonra Game Link iargúlta. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_GA "An dara dhigit de sheoladh IP an fhreastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_GA "3ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_GA "An 3ú dhigit de sheoladh IP an fhreastalaí líonra Game Link iargúlta. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_GA "An 4ú dhigit de sheoladh IP an fhreastalaí líonra Game Link iargúlta. Ní úsáidtear é ach amháin nuair atá 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_GA "An 4ú dhigit de sheoladh IP an fhreastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_GA "5ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_GA "5ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 06: ___.__x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 06: ___.__x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_GA "6ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_GA "6ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 07: ___.___.x__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 07: ___.___.x__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_GA "7ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_GA "7ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 08: ___.___._x_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 08: ___.___._x_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_GA "An 8ú digit de sheoladh IP an fhreastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_GA "An 8ú digit de sheoladh IP an fhreastalaí líonra Game Link iargúlta. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 09: ___.___.__x.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 09: ___.___.__x.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_GA "9ú digit de sheoladh IP freastalaí líonra cianda Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_GA "9ú digit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 10: ___.___.___.x__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 10: ___.___.___.x__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_GA "10ú digit de sheoladh IP freastalaí líonra cianda Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_GA "10ú digit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 11: ___.___.___._x_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 11: ___.___.___._x_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_GA "11ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_GA "11ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair a bhíonn 'Mód Nasc' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_GA "Seoladh Freastalaí Nasc Líonra Cuid 12: ___.___.___.__x"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_GA "Seoladh an Fhreastalaí Cuid 12: ___.___.___.__x"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_GA "An 12ú dhigit de sheoladh IP an fhreastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Game Link' socraithe go 'Cliant Líonra'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_GA "An 12ú dhigit de sheoladh IP freastalaí líonra iargúlta Game Link. Ní úsáidtear é ach amháin nuair atá 'Mód Nasc' socraithe go 'Cliant Líonra'."
 
 struct retro_core_option_v2_category option_cats_ga[] = {
    {
