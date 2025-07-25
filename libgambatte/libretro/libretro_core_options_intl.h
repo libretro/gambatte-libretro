@@ -39742,7 +39742,7 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_MIX_IT "Semplice"
 #define OPTION_VAL_LCD_GHOSTING_IT "Ghosting LCD (preciso)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_IT "Ghosting LCD (veloce)"
-#define GAMBATTE_AUDIO_RESAMPLER_LABEL_IT "Driver per il Riamplificatore Audio"
+#define GAMBATTE_AUDIO_RESAMPLER_LABEL_IT "Ridiscretizzatore audio"
 #define GAMBATTE_AUDIO_RESAMPLER_INFO_0_IT "Specifica quale algoritmo usare quando si ricampiona l'audio generato (la velocità di Game Boy è limitata solo dalla velocità di scrittura della CPU, in modo che le frequenze 'native' non siano pratiche sui moderni dispositivi sonori e debbano essere sottoposte a campionamento). 'Sinc' produce la massima qualità. 'Cosine' migliora le prestazioni su hardware di fascia bassa."
 #define OPTION_VAL_SINC_IT NULL
 #define OPTION_VAL_CC_IT NULL
