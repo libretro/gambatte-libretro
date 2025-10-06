@@ -159,7 +159,11 @@ namespace gambatte
          Rtc rtc_;
          HuC3Chip huc3_;
 
+#if __cplusplus >= 201103L
+         std::unique_ptr<Mbc> mbc;
+#else
          std::auto_ptr<Mbc> mbc;
+#endif
 
          std::vector<AddrData> ggUndoList_;
 
