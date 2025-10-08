@@ -171,13 +171,13 @@ video_pixel_t GB::gbcToRgb32(const unsigned bgr15) {
 }
 
 
-void GB::setGameGenie(const std::string &codes) {
- p_->cpu.setGameGenie(codes);
-}
-
-void GB::setGameShark(const std::string &codes) {
- p_->cpu.setGameShark(codes);
-}
+// void GB::setGameGenie(const std::string &codes) {
+//  p_->cpu.setGameGenie(codes);
+// }
+// 
+// void GB::setGameShark(const std::string &codes) {
+//  p_->cpu.setGameShark(codes);
+// }
 
 void GB::clearCheats() {
  p_->cpu.clearCheats();

@@ -63,8 +63,8 @@ public:
    void *zeropage_ptr() const { return (void*)(ioamhram_ + 0x0180); }
    void *oamram_ptr() const { return (void*)ioamhram_; }
 #else
-   void loadSavedata() { cart_.loadSavedata(); }
-   void saveSavedata() { cart_.saveSavedata(); }
+   // void loadSavedata() { cart_.loadSavedata(); }
+   // void saveSavedata() { cart_.saveSavedata(); }
 #endif
 	std::string const saveBasePath() const { return cart_.saveBasePath(); }
 

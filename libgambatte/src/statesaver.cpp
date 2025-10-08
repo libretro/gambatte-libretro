@@ -275,7 +275,7 @@ public:
 static void pushSaver(SaverList::list_t &list, const char *label,
 		void (*save)(omemstream &file, const SaveState &state),
 		void (*load)(imemstream &file, SaveState &state), unsigned labelsize) {
-	const Saver saver = { label, save, load, labelsize };
+	const Saver saver = { label, save, load, labelsize }; // NARROWING FIXUP
 	list.push_back(saver);
 }
 

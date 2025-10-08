@@ -24,8 +24,9 @@
 #include "serial_io.h"
 #endif
 #include "gbint.h"
-#include <string>
+// #include <string>
 #include <cstddef>
+#include <stdint.h>
 
 namespace gambatte {
 #if defined(VIDEO_RGB565) || defined(VIDEO_ABGR1555)
@@ -98,7 +99,7 @@ public:
 #endif
 	
 	/** Sets the directory used for storing save data. The default is the same directory as the ROM Image file. */
-	void setSaveDir(const std::string &sdir);
+	// void setSaveDir(const std::string &sdir);
 
    void *savedata_ptr();
    unsigned savedata_size();
@@ -124,12 +125,12 @@ public:
    /** Set Game Genie codes to apply to currently loaded ROM image. Cleared on ROM load.
     * @param codes Game Genie codes in format HHH-HHH-HHH;HHH-HHH-HHH;... where H is [0-9]|[A-F]
     */
-   void setGameGenie(const std::string &codes);
+   // void setGameGenie(const std::string &codes);
 
    /** Set Game Shark codes to apply to currently loaded ROM image. Cleared on ROM load.
     * @param codes Game Shark codes in format 01HHHHHH;01HHHHHH;... where H is [0-9]|[A-F]
     */
-   void setGameShark(const std::string &codes);
+   // void setGameShark(const std::string &codes);
 
    void clearCheats();
    
@@ -149,7 +150,7 @@ private:
 	struct Priv;
 	Priv *const p_;
 
-	void loadState(const std::string &filepath, bool osdMessage);
+	// void loadState(const std::string &filepath, bool osdMessage);
 	GB(const GB &);
 	GB & operator=(const GB &);
 };

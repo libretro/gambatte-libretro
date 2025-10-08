@@ -3,7 +3,7 @@
 #include <cstring>
 #include <fstream>
 
-#include <libretro.h>
+// #include <libretro.h>
 
 namespace gambatte
 {

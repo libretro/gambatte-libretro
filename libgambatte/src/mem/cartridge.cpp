@@ -21,9 +21,11 @@
 #include <cstring>
 #include <string.h>
 #include <algorithm>
-#include "gambatte_log.h"
+// #include "gambatte_log.h"
+#include "log.h"
 
-extern void cartridge_set_rumble(unsigned active);
+// disabled
+void cartridge_set_rumble(unsigned active){}
 
 namespace gambatte
 {
