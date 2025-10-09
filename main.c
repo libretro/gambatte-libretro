@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
       puts("Frame");
       frame();
       puts("render");
-      SDL_UpdateTexture(texture, 0, framebuffer() + 256*8*BYTES_PER_PIXEL, 256*BYTES_PER_PIXEL);
+      SDL_UpdateTexture(texture, 0, framebuffer(), 160*BYTES_PER_PIXEL);
       SDL_RenderCopy(renderer, texture, 0, 0);
       SDL_RenderPresent(renderer);
       // soundcard_queue(&soundcard, audio_buffer, audio_bytes);
