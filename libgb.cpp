@@ -9,8 +9,10 @@
 #endif
 
 gambatte::GB *gameboy_ = nullptr;
-uint32_t fbuffer[160 * 144];
-const int FB_PITCH_PX = 160;
+const int DISPLAY_WIDTH = 160;
+const int DISPLAY_HEIGHT = 144;
+const int FB_PITCH_PX = 256;
+uint32_t fbuffer[FB_PITCH_PX * 144];
 const size_t SOUND_SAMPLES_PER_RUN = 2064;
 const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
