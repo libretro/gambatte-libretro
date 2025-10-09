@@ -1,5 +1,12 @@
 #include "corelib.h"
 #include "libgambatte/include/gambatte.h"
+#include <stdlib.h>
+
+#define DBG 1
+
+#ifdef DBG
+#include <stdio.h>
+#endif
 
 gambatte::GB *gameboy_ = nullptr;
 uint32_t fbuffer[160 * 144];
@@ -8,9 +15,21 @@ const size_t SOUND_SAMPLES_PER_RUN = 2064;
 const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
 
+void log(const char* msg) {
+#ifdef DBG
+    puts(msg);
+#endif
+}
+
 extern "C" 
 __attribute__((visibility("default")))
 void set_key(size_t key, char val) {
+}
+
+void strncpy(const char* src, char* dst, size_t bytes) {
+    for(size_t i = 0; i < bytes; i++) {
+        dst[i] = src[i];
+    }
 }
 
 extern "C" 
@@ -21,6 +40,15 @@ void init(const uint8_t* data, size_t len) {
         gameboy_ = nullptr;
     }
     gameboy_ = new gambatte::GB();
+    int flags = 0;
+    char internal_game_name[17];
+    strncpy((const char*)(data + 0x134), internal_game_name, sizeof(internal_game_name));
+    internal_game_name[16] = 0;
+    log(internal_game_name);
+    if (gameboy_->load(data, len, flags) != 0) {
+        log("gb load failed.");
+        exit(1);
+    }
 }
 
 // Note: Framebuffer creates a BGR565 formatted buffer.
@@ -34,9 +62,12 @@ extern "C"
 __attribute__((visibility("default")))
 void frame() {
     if (gameboy_ == nullptr) return;
-    unsigned samples;
+    unsigned samples = SOUND_SAMPLES_PER_RUN;
     while (-1 == gameboy_->runFor((long unsigned int*)fbuffer, FB_PITCH_PX,
-                /*soundbuf*/ sbuffer, /*soundBufSize*/SOUND_BUFF_SIZE, samples)) {}
+                /*soundbuf*/ sbuffer, /*soundBufSize*/SOUND_BUFF_SIZE, samples)) {
+        printf("got samples: %u\n", samples);
+        samples = SOUND_SAMPLES_PER_RUN;
+    }
 }
 
 extern "C"
