@@ -43,6 +43,26 @@ void log(const char* msg) {
 extern "C" 
 __attribute__((visibility("default")))
 void set_key(size_t key, char val) {
+    // gambatte keys are slightly out of order.
+    // corelib uses a=0, ab sel start updownleftright
+    // gambatte uses a=1, ab sel start right left up down
+    // corelib has 0 1 2 3 corresponding with shifts
+    // gambatte uses masks directly.
+    switch (key) {
+        case Keys::BTN_A:     key = gambatte::InputGetter::A; break;
+        case Keys::BTN_B:     key = gambatte::InputGetter::B; break;
+        case Keys::BTN_Sel:   key = gambatte::InputGetter::SELECT; break;
+        case Keys::BTN_Start: key = gambatte::InputGetter::START; break;
+        case Keys::BTN_Up:    key = gambatte::InputGetter::UP; break;
+        case Keys::BTN_Down:  key = gambatte::InputGetter::DOWN; break;
+        case Keys::BTN_Left:  key = gambatte::InputGetter::LEFT; break;
+        case Keys::BTN_Right: key = gambatte::InputGetter::RIGHT; break;
+    }
+
+    if (val) 
+        s_input_getter.value |= key;
+    else
+        s_input_getter.value &= ~key;
 }
 
 void strncpy(const char* src, char* dst, size_t bytes) {
