@@ -2,6 +2,8 @@
 #include "libgambatte/include/gambatte.h"
 #include "libgambatte/include/inputgetter.h"
 #include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 #define DBG 1
 
@@ -111,14 +113,93 @@ void frame() {
     }
 }
 
+void checksum(uint8_t* data, size_t len) {
+    uint8_t sum = 0;
+    for (size_t i = 0; i < len; i++) {
+       sum += data[i];
+    }
+    printf("checksum: %d\n", sum);
+} 
+
 extern "C"
 __attribute__((visibility("default")))
-void dump_state(const char* save_path) {
+void save(int fd) {
+    if (gameboy_ == nullptr)
+        return;
+    size_t state_size = gameboy_->stateSize();
+    printf("save state is %ld bytes\n", state_size);
+    uint8_t *buffer = (uint8_t*)malloc(state_size);
+    uint8_t* const orig_buffer = buffer;
+    gameboy_->saveState(buffer);
+    // checksum(buffer, state_size);
+    while (state_size > 0) {
+        ssize_t written = write(fd, buffer, state_size);
+        if (written <= 0) {
+            perror("Save failed: ");
+            return;
+        }
+        state_size -= written;
+        buffer += written;
+    }
+    free(orig_buffer);
+    close(fd);
+}
+
+
+extern "C"
+__attribute__((visibility("default")))
+void dump_state(const char* filename) {
+    int fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY , 0700);
+    if (fd == -1) {
+        perror("failed to open:");
+        return;
+    }
+    printf("saving to %s\n", filename);
+    save(fd);
 }
 
 extern "C"
 __attribute__((visibility("default")))
-void load_state(const char* save_path) {
+void load(int fd) {
+    ssize_t bytes = lseek(fd, 0, SEEK_END);
+    if (bytes <= 0) {
+        perror("Failed to seek while loading: ");
+        return;
+    }
+    printf("Loading %ld bytes\n", bytes);
+    size_t state_size = gameboy_->stateSize();
+    if (bytes != state_size) {
+        puts("Invalid state size");
+        return;
+    }
+    lseek(fd, 0, SEEK_SET);
+    uint8_t *buffer = (uint8_t*)malloc(bytes);
+    uint8_t *write = buffer;
+    while (bytes > 0) {
+        ssize_t read_bytes = read(fd, write, bytes);
+        if (read_bytes <= 0) {
+            perror("Read failure during load: ");
+            return;
+        }
+        printf("read returned %ld bytes\n", read_bytes);
+        write += read_bytes;
+        bytes -= read_bytes;
+    }
+    // checksum(buffer, state_size);
+    gameboy_->loadState(buffer);
+    free(buffer);
+    close(fd);
+}
+
+extern "C"
+__attribute__((visibility("default")))
+void load_state(const char* filename) {
+    int fd = open(filename,  O_RDONLY , 0700);
+    if (fd == -1) {
+        perror("Failed to open: ");
+        return;
+    }
+    load(fd);
 }
 
 extern "C"

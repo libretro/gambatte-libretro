@@ -100,6 +100,7 @@ int main(int argc, char **argv) {
   if (argc == 3) {
       printf("skipping load.\n");
   } else {
+      printf("Loading %s\n", save_file);
       load_state(save_file);
   }
 
