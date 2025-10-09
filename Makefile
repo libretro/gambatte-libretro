@@ -6,7 +6,7 @@ CFLAGS=-fvisibility=hidden -fPIC -Wfatal-errors -Werror -Wno-narrowing
 # CFLAGS=-fvisibility=hidden -ffreestanding -nostdlib -fPIC -O3 -Wfatal-errors -Werror
 SRCS := $(wildcard libgambatte/src/**/*.cpp libgambatte/src/*.cpp)
 libgb.so: libgb.cpp $(SRCS)
-	time $(CXX) $(CFLAGS) -D__LIBRETRO__ -I libgambatte/include -I libgambatte/src -I common/ -shared -o libgb.so $(SRCS) libgb.cpp
+	time $(CXX) $(CFLAGS) -DVIDEO_RGB565 -D__LIBRETRO__ -I libgambatte/include -I libgambatte/src -I common/ -shared -o libgb.so $(SRCS) libgb.cpp
 
 
 main: libgb.so

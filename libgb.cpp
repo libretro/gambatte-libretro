@@ -28,7 +28,7 @@ gambatte::GB *gameboy_ = nullptr;
 const int DISPLAY_WIDTH = 160;
 const int DISPLAY_HEIGHT = 144;
 const int FB_PITCH_PX = DISPLAY_WIDTH;
-uint32_t fbuffer[FB_PITCH_PX * 144];
+uint16_t fbuffer[FB_PITCH_PX * 144];
 const size_t SOUND_SAMPLES_PER_FRAME = 35112;
 const size_t SOUND_SAMPLES_PER_RUN = SOUND_SAMPLES_PER_FRAME;
 const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
