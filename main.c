@@ -84,6 +84,9 @@ void soundcard_queue(SoundCard *snd, uint8_t* data, size_t bytes) {
 }
 
 const int BYTES_PER_PIXEL=4;
+const int VIDEO_WIDTH = 160;
+const int VIDEO_HEIGHT = 144;
+const int SCALE = 2;
 int main(int argc, char **argv) {
   uint8_t buffer[1024 * 1024];
   size_t bytes_read = slurp(argv[1], buffer, sizeof(buffer));
@@ -101,27 +104,21 @@ int main(int argc, char **argv) {
   }
 
   SDL_Init(SDL_INIT_VIDEO);
-  // Create window 1024x840. The framebuffer is 256x240, but we don't draw the
-  // top or bottom 8 rows. Scaling up by 4x gives 1024x960, but that looks
-  // squished because the NES doesn't have square pixels. So shrink it by 7/8.
   SDL_Renderer *renderer = SDL_CreateRenderer(
-      SDL_CreateWindow("picoboy", 0, 0, 1024, 840, SDL_WINDOW_SHOWN), -1,
+      SDL_CreateWindow("picoboy", 0, 0, VIDEO_WIDTH*SCALE, VIDEO_HEIGHT*SCALE, SDL_WINDOW_SHOWN), -1,
       SDL_RENDERER_ACCELERATED);
   SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32,
   // void *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGR565,
-                                    SDL_TEXTUREACCESS_STREAMING, 256, 224);
+                                    SDL_TEXTUREACCESS_STREAMING, VIDEO_WIDTH, VIDEO_HEIGHT);
   SoundCard soundcard;
   soundcard_init(&soundcard);
   // soundcard_test();
 
   clock_t last = clock();
   while(run) {
-      puts("input");
       input();
-      puts("Frame");
       frame();
-      puts("render");
-      SDL_UpdateTexture(texture, 0, framebuffer(), 160*BYTES_PER_PIXEL);
+      SDL_UpdateTexture(texture, 0, framebuffer(), VIDEO_WIDTH*BYTES_PER_PIXEL);
       SDL_RenderCopy(renderer, texture, 0, 0);
       SDL_RenderPresent(renderer);
       // soundcard_queue(&soundcard, audio_buffer, audio_bytes);
