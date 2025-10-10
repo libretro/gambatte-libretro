@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <mutex>
 
 #define DBG 1
 
@@ -34,7 +35,14 @@ uint16_t fbuffer[FB_PITCH_PX * 144];
 const size_t SOUND_SAMPLES_PER_FRAME = 35112;
 const size_t SOUND_SAMPLES_PER_RUN = SOUND_SAMPLES_PER_FRAME;
 const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
+// sbuffer is the sound buffer written to by the core during a frame
+// each sample consists of 16 bit left, right sample pair. 
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
+// abuffer is the sound ring buffer read by the audio callback.
+// Note, this copy is a slow but correc solution for MVP.
+static std::mutex abuff_mutex;
+size_t abuf_first, abuf_size;
+uint16_t abuffer[SOUND_BUFF_SIZE*2];
 
 void log(const char* msg) {
 #ifdef DBG
@@ -101,6 +109,51 @@ const uint8_t *framebuffer() {
     return (const uint8_t*)fbuffer;
 }
 
+void queue_samples(size_t num_samples) {
+    std::lock_guard guard(abuff_mutex);
+    constexpr size_t capacity = sizeof(abuffer) / sizeof(abuffer[0]);
+    if (abuf_size + num_samples > capacity) {
+        printf("Buffer overrun! size=%ld adding=%ld\n", abuf_size, num_samples);
+        puts("Clearing buffer.");
+        abuf_size = 0;
+        return;
+    }
+    size_t out = (abuf_first + abuf_size) % capacity;
+    for (size_t i = 0; i < num_samples; i++) {
+        uint32_t s = abuffer[i];
+        uint16_t left = s & 0xFFFF;
+        uint16_t right = (s >> 16) & 0xFFFF;
+        uint16_t avg = (left + right) / 2;
+        abuffer[out] = avg;
+        out = (out + 1) % capacity;
+    }
+    abuf_size += num_samples;
+    printf("new buffer size: %ld\n", abuf_size);
+}
+
+extern "C"
+__attribute__((visibility("default")))
+long apu_sample_variable(int16_t *output, int32_t frames) {
+    std::lock_guard guard(abuff_mutex);
+    const int32_t requested_frames = frames;
+    if (frames > abuf_size) {
+        printf("Buffer underflow. size=%ld, wanted = %d\n", abuf_size, frames);
+        frames = abuf_size;
+    }
+    size_t first = abuf_first;
+    constexpr size_t capacity = sizeof(abuffer) / sizeof(abuffer[0]);
+    for (int i = 0; i < frames; i++) {
+        output[i] = abuffer[first + i];
+    }
+    for (int i = frames; i < requested_frames; i++) {
+        // fill rest of buffer with silence.
+        output[i] = 0;
+    }
+    abuf_first = (first + frames) % capacity;
+    abuf_size -= frames;
+    return 0;
+}
+
 extern "C"
 __attribute__((visibility("default")))
 void frame() {
@@ -109,9 +162,11 @@ void frame() {
     while (-1 == gameboy_->runFor((gambatte::video_pixel_t*)fbuffer, FB_PITCH_PX,
                 /*soundbuf*/ sbuffer, /*soundBufSize*/SOUND_BUFF_SIZE, samples)) {
         printf("got samples: %u\n", samples);
+        queue_samples(samples);
         samples = SOUND_SAMPLES_PER_RUN;
     }
 }
+
 
 void checksum(uint8_t* data, size_t len) {
     uint8_t sum = 0;
@@ -203,16 +258,10 @@ void load_state(const char* filename) {
 }
 
 extern "C"
-void apu_tick_60hz() {
-}
+__attribute__((visibility("default")))
+void apu_tick_60hz() { /* unused */ }
 
 extern "C"
 __attribute__((visibility("default")))
-void apu_sample_60hz(int16_t *output) {
-}
+void apu_sample_60hz(int16_t *output) { /* unused */ }
 
-extern "C"
-__attribute__((visibility("default")))
-long apu_sample_variable(int16_t *output, int32_t frames) {
-    return 0;
-}

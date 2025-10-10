@@ -53,6 +53,7 @@ typedef struct {
 
 void audio_callback(void *userdata, uint8_t* data, int bytes) {
     // puts("Audio");
+    printf("attempt to dequeue %d bytes\n", bytes);
     apu_sample_variable((int16_t*)data, bytes / sizeof(uint16_t));
 }
 
