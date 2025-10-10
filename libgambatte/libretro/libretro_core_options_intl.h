@@ -67118,14 +67118,14 @@ struct retro_core_options_v2 options_val = {
 #define CATEGORY_GB_LINK_LABEL_VN NULL
 #define CATEGORY_GB_LINK_INFO_0_VN "Thay đổi cài đặt mạng Game Link (chơi nhiều người)."
 #define GAMBATTE_GB_COLORIZATION_LABEL_VN "Chỉnh màu GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_VN NULL
+#define GAMBATTE_GB_COLORIZATION_INFO_0_VN "Bật tô màu cho trò chơi Game BoyTự động: Chọn bảng màu “tốt nhất” (nhiều màu / phù hợp nhất).GBC: Chọn bảng màu Game Boy Color theo từng trò chơi nếu có định nghĩa, nếu không sẽ dùng GBC - Dark Green.SGB: Chọn bảng màu Super Game Boy theo trò chơi nếu có định nghĩa, nếu không sẽ dùng SGB - 1A.Nội bộ: Dùng tùy chọn Internal Palette của core.Tùy chỉnh: Tải bảng màu do người dùng tạo từ thư mục hệ thống."
 #define OPTION_VAL_AUTO_VN "Tự động"
 #define OPTION_VAL_GBC_VN NULL
 #define OPTION_VAL_SGB_VN NULL
-#define OPTION_VAL_INTERNAL_VN NULL
+#define OPTION_VAL_INTERNAL_VN "Nội bộ"
 #define OPTION_VAL_CUSTOM_VN "Tùy chỉnh"
-#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_VN NULL
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_VN NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_VN "Bảng màu nội bộ"
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_VN "Chọn bảng màu được sử dụng để tô màu trò chơi Game Boy khi:GB Colorization được đặt là Internal, hoặcGB Colorization đặt là Auto mà trò chơi không có bảng màu SGB/GBC định sẵn.Bảng màu GB mô phỏng hiển thị của phần cứng Game Boy gốc.Bảng màu GBC giống hệt các preset có sẵn trên Game Boy Color.Bảng màu SGB giống hệt các preset có sẵn trên Super Game Boy."
 #define OPTION_VAL_GB_DMG_VN NULL
 #define OPTION_VAL_GB_POCKET_VN NULL
 #define OPTION_VAL_GB_LIGHT_VN NULL
@@ -67137,10 +67137,10 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_GBC_GRAYSCALE_VN NULL
 #define OPTION_VAL_GBC_GREEN_VN NULL
 #define OPTION_VAL_GBC_INVERTED_VN NULL
-#define OPTION_VAL_GBC_ORANGE_VN NULL
-#define OPTION_VAL_GBC_PASTEL_MIX_VN NULL
-#define OPTION_VAL_GBC_RED_VN NULL
-#define OPTION_VAL_GBC_YELLOW_VN NULL
+#define OPTION_VAL_GBC_ORANGE_VN "GBC - Cam"
+#define OPTION_VAL_GBC_PASTEL_MIX_VN "GBC - Pha trộn Pastel"
+#define OPTION_VAL_GBC_RED_VN "GBC - Đỏ"
+#define OPTION_VAL_GBC_YELLOW_VN "GBC - Vàng"
 #define OPTION_VAL_SGB_1A_VN NULL
 #define OPTION_VAL_SGB_1B_VN NULL
 #define OPTION_VAL_SGB_1C_VN NULL
@@ -67173,18 +67173,18 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_SGB_4F_VN NULL
 #define OPTION_VAL_SGB_4G_VN NULL
 #define OPTION_VAL_SGB_4H_VN NULL
-#define OPTION_VAL_SPECIAL_1_VN NULL
-#define OPTION_VAL_SPECIAL_2_VN NULL
-#define OPTION_VAL_SPECIAL_3_VN NULL
-#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_VN NULL
+#define OPTION_VAL_SPECIAL_1_VN "Đặc biệt 1"
+#define OPTION_VAL_SPECIAL_2_VN "Đặc biệt 2"
+#define OPTION_VAL_SPECIAL_3_VN "Đặc biệt 3"
+#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_VN "Đặc biệt 4 (TI-83 Legacy)"
 #define OPTION_VAL_TWB64_PACK_1_VN "TWB64 - Gói 1"
 #define OPTION_VAL_TWB64_PACK_2_VN "TWB64 - Gói 2"
-#define OPTION_VAL_TWB64_PACK_3_VN NULL
-#define OPTION_VAL_PIXELSHIFT_PACK_1_VN NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_VN NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_VN NULL
-#define OPTION_VAL_TWB64_001_AQOURS_BLUE_VN NULL
-#define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_VN NULL
+#define OPTION_VAL_TWB64_PACK_3_VN "TWB64 - Gói 3"
+#define OPTION_VAL_PIXELSHIFT_PACK_1_VN "PixelShift - Gói 1"
+#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_VN "> TWB64 - Bảng màu Gói 1"
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_VN "Chọn bảng màu nội bộ khi 'Bảng màu nội bộ' được đặt thành 'TWB64 - Gói 1'."
+#define OPTION_VAL_TWB64_001_AQOURS_BLUE_VN "TWB64 001 - Aqours Xanh dương"
+#define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_VN "TWB64 002 - Phiên bản Anime Expo."
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_VN NULL
 #define OPTION_VAL_TWB64_004_PATRICK_STAR_PINK_VN NULL
 #define OPTION_VAL_TWB64_005_NEON_RED_VN NULL
@@ -67200,22 +67200,22 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_VN NULL
 #define OPTION_VAL_TWB64_016_765_PRODUCTION_VER_VN NULL
 #define OPTION_VAL_TWB64_017_SUPERBALL_IVORY_VN NULL
-#define OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_VN NULL
-#define OPTION_VAL_TWB64_019_MUSE_PINK_VN NULL
-#define OPTION_VAL_TWB64_020_SCHOOL_IDOL_BLUE_VN NULL
-#define OPTION_VAL_TWB64_021_GAMATE_VER_VN NULL
-#define OPTION_VAL_TWB64_022_GREENSCALE_VER_VN NULL
-#define OPTION_VAL_TWB64_023_ODYSSEY_GOLD_VN NULL
+#define OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_VN "TWB64 018 - Cam Crunchyroll"
+#define OPTION_VAL_TWB64_019_MUSE_PINK_VN "TWB64 019 - Hồng Muse"
+#define OPTION_VAL_TWB64_020_SCHOOL_IDOL_BLUE_VN "TWB64 020 - Xanh School Idol"
+#define OPTION_VAL_TWB64_021_GAMATE_VER_VN "TWB64 021 - Phiên bản Gamate."
+#define OPTION_VAL_TWB64_022_GREENSCALE_VER_VN "TWB64 022 - Phiên bản Greenscale."
+#define OPTION_VAL_TWB64_023_ODYSSEY_GOLD_VN "TWB64 023 - Vàng Odyssey"
 #define OPTION_VAL_TWB64_024_SUPER_SAIYAN_GOD_VN NULL
 #define OPTION_VAL_TWB64_025_SUPER_SAIYAN_BLUE_VN NULL
-#define OPTION_VAL_TWB64_026_ANIMAX_BLUE_VN NULL
-#define OPTION_VAL_TWB64_027_BMO_VER_VN NULL
-#define OPTION_VAL_TWB64_028_GAME_COM_VER_VN NULL
-#define OPTION_VAL_TWB64_029_SANRIO_PINK_VN NULL
-#define OPTION_VAL_TWB64_030_TIMMY_TURNER_PINK_VN NULL
-#define OPTION_VAL_TWB64_031_FAIRLY_ODDPALETTE_VN NULL
-#define OPTION_VAL_TWB64_032_DANNY_PHANTOM_SILVER_VN NULL
-#define OPTION_VAL_TWB64_033_LINK_S_AWAKENING_DX_VER_VN NULL
+#define OPTION_VAL_TWB64_026_ANIMAX_BLUE_VN "TWB64 026 - Xanh ANIMAX"
+#define OPTION_VAL_TWB64_027_BMO_VER_VN "TWB64 027 - Phiên bản BMO."
+#define OPTION_VAL_TWB64_028_GAME_COM_VER_VN "TWB64 028 - Phiên bản Game.com."
+#define OPTION_VAL_TWB64_029_SANRIO_PINK_VN "TWB64 029 - Hồng Sanrio"
+#define OPTION_VAL_TWB64_030_TIMMY_TURNER_PINK_VN "TWB64 030 - Hồng Timmy Turner"
+#define OPTION_VAL_TWB64_031_FAIRLY_ODDPALETTE_VN "TWB64 031 - Palette Fairly Odd"
+#define OPTION_VAL_TWB64_032_DANNY_PHANTOM_SILVER_VN "TWB64 032 - Bạc Danny Phantom"
+#define OPTION_VAL_TWB64_033_LINK_S_AWAKENING_DX_VER_VN "TWB64 033 - Phiên bản Link's Awakening DX."
 #define OPTION_VAL_TWB64_034_TRAVEL_WOOD_VN NULL
 #define OPTION_VAL_TWB64_035_POKEMON_VER_VN NULL
 #define OPTION_VAL_TWB64_036_GAME_GRUMP_ORANGE_VN NULL
@@ -67284,7 +67284,7 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_VN NULL
 #define OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_VN NULL
 #define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_VN NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_VN NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_VN "Chọn bảng màu nội bộ khi 'Bảng màu nội bộ' được đặt thành 'TWB64 - Gói 2'."
 #define OPTION_VAL_TWB64_101_765PRO_PINK_VN NULL
 #define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_VN NULL
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_VN NULL
@@ -67305,21 +67305,21 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_118_FRUITY_ORANGE_VN NULL
 #define OPTION_VAL_TWB64_119_AKB48_PINK_VN NULL
 #define OPTION_VAL_TWB64_120_MIKU_BLUE_VN NULL
-#define OPTION_VAL_TWB64_121_TRI_DIGIVICE_VER_VN NULL
-#define OPTION_VAL_TWB64_122_SURVEY_CORPS_UNIFORM_VN NULL
-#define OPTION_VAL_TWB64_123_ISLAND_GREEN_VN NULL
-#define OPTION_VAL_TWB64_124_NOGIZAKA46_PURPLE_VN NULL
-#define OPTION_VAL_TWB64_125_NINJA_TURTLE_GREEN_VN NULL
-#define OPTION_VAL_TWB64_126_SLIME_BLUE_VN NULL
-#define OPTION_VAL_TWB64_127_LIME_MIDORI_VN NULL
-#define OPTION_VAL_TWB64_128_GHOSTLY_AOI_VN NULL
+#define OPTION_VAL_TWB64_121_TRI_DIGIVICE_VER_VN "TWB64 121 - Phiên bản Tri Digivice."
+#define OPTION_VAL_TWB64_122_SURVEY_CORPS_UNIFORM_VN "TWB64 122 - Bộ đồng phục Survey Corps"
+#define OPTION_VAL_TWB64_123_ISLAND_GREEN_VN "TWB64 123 - Xanh lá đảo"
+#define OPTION_VAL_TWB64_124_NOGIZAKA46_PURPLE_VN "TWB64 124 - Tím Nogizaka46"
+#define OPTION_VAL_TWB64_125_NINJA_TURTLE_GREEN_VN "TWB64 125 - Xanh Ninja Turtle"
+#define OPTION_VAL_TWB64_126_SLIME_BLUE_VN "TWB64 126 - Xanh Slime"
+#define OPTION_VAL_TWB64_127_LIME_MIDORI_VN "TWB64 127 - Xanh chanh Midori"
+#define OPTION_VAL_TWB64_128_GHOSTLY_AOI_VN "TWB64 128 - Xanh ma Aoi"
 #define OPTION_VAL_TWB64_129_RETRO_BOGEDA_VN NULL
-#define OPTION_VAL_TWB64_130_ROYAL_BLUE_VN NULL
-#define OPTION_VAL_TWB64_131_NEON_PURPLE_VN NULL
-#define OPTION_VAL_TWB64_132_NEON_ORANGE_VN NULL
-#define OPTION_VAL_TWB64_133_MOONLIGHT_VISION_VN NULL
-#define OPTION_VAL_TWB64_134_RISING_SUN_RED_VN NULL
-#define OPTION_VAL_TWB64_135_BURGER_KING_COLOR_COMBO_VN NULL
+#define OPTION_VAL_TWB64_130_ROYAL_BLUE_VN "TWB64 130 - Xanh hoàng gia"
+#define OPTION_VAL_TWB64_131_NEON_PURPLE_VN "TWB64 131 - Tím Neon"
+#define OPTION_VAL_TWB64_132_NEON_ORANGE_VN "TWB64 132 - Cam Neon"
+#define OPTION_VAL_TWB64_133_MOONLIGHT_VISION_VN "TWB64 133 - Tầm nhìn Ánh trăng"
+#define OPTION_VAL_TWB64_134_RISING_SUN_RED_VN "TWB64 134 - Đỏ Mặt trời mọc"
+#define OPTION_VAL_TWB64_135_BURGER_KING_COLOR_COMBO_VN "TWB64 135 - Combo màu Burger King"
 #define OPTION_VAL_TWB64_136_GRAND_ZENO_COAT_VN NULL
 #define OPTION_VAL_TWB64_137_PAC_MAN_YELLOW_VN NULL
 #define OPTION_VAL_TWB64_138_IRISH_GREEN_VN NULL
@@ -67386,7 +67386,7 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_VN NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_VN NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_VN NULL
-#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_VN NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_VN "Chọn bảng màu nội bộ khi 'Bảng màu nội bộ' được đặt thành 'TWB64 - Gói 3'."
 #define OPTION_VAL_TWB64_201_DMG_GOLD_VN NULL
 #define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_VN NULL
 #define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_VN NULL
@@ -67488,10 +67488,10 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_VN NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_VN NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_VN NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_VN NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_VN "Chọn bảng màu nội bộ khi 'Bảng màu nội bộ' được đặt thành 'PixelShift - Gói 1'."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_VN NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_VN NULL
-#define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_VN NULL
+#define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_VN "PixelShift 08 - Easy Greens"
 #define OPTION_VAL_PIXELSHIFT_04_CAMOUFLAGE_VN NULL
 #define OPTION_VAL_PIXELSHIFT_05_CHOCOLATE_BAR_VN NULL
 #define OPTION_VAL_PIXELSHIFT_06_CMYK_VN NULL
@@ -67534,101 +67534,101 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_PIXELSHIFT_43_VAPORWAVE_VN NULL
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_VN NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_VN NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_VN NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_VN NULL
-#define OPTION_VAL_GBC_ONLY_VN NULL
-#define OPTION_VAL_ALWAYS_VN NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_VN NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_VN NULL
-#define OPTION_VAL_ACCURATE_VN NULL
-#define OPTION_VAL_FAST_VN NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_VN NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_VN NULL
-#define OPTION_VAL_CENTRAL_VN NULL
-#define OPTION_VAL_ABOVE_SCREEN_VN NULL
-#define OPTION_VAL_BELOW_SCREEN_VN NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_VN NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_VN NULL
-#define GAMBATTE_MIX_FRAMES_LABEL_VN NULL
-#define GAMBATTE_MIX_FRAMES_INFO_0_VN NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_VN "Hiệu chỉnh Màu Sắc"
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_VN "Điều chỉnh màu xuất để khớp với màn hình phần cứng Game Boy Color thật. 'Chỉ GBC' đảm bảo hiệu chỉnh chỉ được áp dụng khi chơi game Game Boy Color, hoặc khi dùng bảng màu Game Boy Color để tô màu game Game Boy. 'Luôn luôn' áp dụng hiệu chỉnh màu cho tất cả nội dung, và sẽ tạo ra kết quả bất ngờ/không tối ưu khi dùng bảng màu nội bộ 'GB' hoặc 'SGB'."
+#define OPTION_VAL_GBC_ONLY_VN "Chỉ GBC"
+#define OPTION_VAL_ALWAYS_VN "Luôn luôn"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_VN "Chế độ hiệu chỉnh màu"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_VN "Chỉ định phương pháp sử dụng khi thực hiện hiệu chỉnh màu. 'Chính xác' tạo ra hình ảnh gần như không phân biệt được so với màn hình LCD Game Boy Color thật. 'Nhanh' chỉ làm màu tối hơn và giảm độ bão hòa, và có thể dùng trên phần cứng yếu nếu phương pháp 'Chính xác' quá chậm."
+#define OPTION_VAL_ACCURATE_VN "Chính xác"
+#define OPTION_VAL_FAST_VN "Nhanh"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_VN "Hiệu chỉnh màu – Vị trí đèn trước"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_VN "Mô phỏng phản ứng vật lý của màn hình LCD Game Boy Color khi được chiếu sáng từ các góc khác nhau. 'Trung tâm' biểu thị tái tạo màu tiêu chuẩn. 'Trên màn hình' tăng độ sáng. 'Dưới màn hình' giảm độ sáng. Thiết lập này chỉ áp dụng khi 'Chế độ hiệu chỉnh màu' đặt là 'Chính xác'."
+#define OPTION_VAL_CENTRAL_VN "Trung tâm"
+#define OPTION_VAL_ABOVE_SCREEN_VN "Trên màn hình"
+#define OPTION_VAL_BELOW_SCREEN_VN "Dưới màn hình"
+#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_VN "Cấp độ Bộ lọc Tối (%)"
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_VN "Bật giảm độ sáng dựa trên độ sáng. Có thể dùng để tránh chói/mỏi mắt khi chơi các trò có nền trắng, vốn được thiết kế cho Game Boy Color không có đèn nền và có thể quá sáng trên màn hình hiện đại có đèn nền."
+#define GAMBATTE_MIX_FRAMES_LABEL_VN "Pha Trộn Khung Hình Liên Tiếp"
+#define GAMBATTE_MIX_FRAMES_INFO_0_VN "Mô phỏng hiệu ứng bóng mờ LCD. 'Simple' trộn 50:50 giữa khung hình hiện tại và khung hình trước. 'LCD Ghosting' mô phỏng thời gian phản hồi tự nhiên của LCD bằng cách kết hợp nhiều khung hình đã lưu. Cần dùng trộn 'Simple' khi chơi các trò dựa vào bóng mờ LCD để hiển thị trong suốt (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
 #define OPTION_VAL_MIX_VN "Đơn giản"
-#define OPTION_VAL_LCD_GHOSTING_VN NULL
-#define OPTION_VAL_LCD_GHOSTING_FAST_VN NULL
+#define OPTION_VAL_LCD_GHOSTING_VN "LCD Ghosting (Chính xác)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_VN "LCD Ghosting (Nhanh)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_VN "Âm thanh Resampler Driver"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_VN NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_VN "Chọn thuật toán dùng khi tái lấy mẫu âm thanh (tốc độ âm thanh Game Boy bị giới hạn bởi tốc độ ghi CPU, nên tần số ‘native’ không thực tế trên thiết bị âm thanh hiện đại và cần giảm mẫu). 'Sinc' cho chất lượng cao nhất. 'Cosine' cải thiện hiệu năng trên phần cứng yếu."
 #define OPTION_VAL_SINC_VN NULL
 #define OPTION_VAL_CC_VN NULL
-#define GAMBATTE_GB_HWMODE_LABEL_VN NULL
-#define GAMBATTE_GB_HWMODE_INFO_0_VN NULL
+#define GAMBATTE_GB_HWMODE_LABEL_VN "Phần cứng giả lập (cần khởi động lại)"
+#define GAMBATTE_GB_HWMODE_INFO_0_VN "Chọn loại phần cứng giả lập. Khuyến nghị dùng 'Auto'. Chọn 'GBA' mở thêm tính năng trong một số trò Game Boy Color ‘GBA Enhanced’ (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_VN NULL
 #define OPTION_VAL_GBA_VN NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_VN NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_VN NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_VN NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_VN NULL
-#define GAMBATTE_TURBO_PERIOD_LABEL_VN NULL
-#define GAMBATTE_TURBO_PERIOD_INFO_0_VN NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_VN NULL
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_VN NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_VN NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_MODE_INFO_0_VN NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_VN "Dùng Bootloader chính thức (cần khởi động lại)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_VN "Bật hỗ trợ bootloader chính thức của Game Boy và Game Boy Color, kèm hiệu ứng logo khởi động tương ứng."
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_VN "Cho phép Hướng Ngược Lại"
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_VN "Bật tùy chọn này sẽ cho phép nhấn/nhấn luân phiên nhanh/giữ đồng thời cả trái và phải (hoặc lên và xuống). Điều này có thể gây lỗi liên quan đến di chuyển."
+#define GAMBATTE_TURBO_PERIOD_LABEL_VN "Chu kỳ nút tự động nhấn nhanh"
+#define GAMBATTE_TURBO_PERIOD_INFO_0_VN "Chỉ định khoảng lặp lại (tính theo khung hình) khi giữ nút tự động nhấn nhanh A/B."
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_VN "Độ mạnh rung của tay cầm"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_VN "Bật hiệu ứng phản hồi rung cho các trò chơi được hỗ trợ (Pokemon Pinball, Perfect Dark...)."
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_VN "Hiện cài đặt Game Link"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_VN "Bật cấu hình các tùy chọn Game Link qua mạng (nhiều người chơi). LƯU Ý: Có thể cần bật lại Menu Nhanh để thiết lập có hiệu lực."
+#define GAMBATTE_GB_LINK_MODE_LABEL_VN "Chế độ Game Link"
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_VN "Chế độ liên kết"
+#define GAMBATTE_GB_LINK_MODE_INFO_0_VN "Khi bật chức năng Game Link qua mạng, chỉ định thể hiện hiện tại sẽ chạy như máy chủ hoặc máy khách."
 #define OPTION_VAL_NOT_CONNECTED_VN "Chưa kết nối"
 #define OPTION_VAL_NETWORK_SERVER_VN "Mạng máy chủ"
 #define OPTION_VAL_NETWORK_CLIENT_VN "Mạng máy khách"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_VN NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_VN "Cổng mạng Game Link"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_VN "Cổng"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_VN NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_VN NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_VN "Chỉ định cổng dùng cho truyền thông mạng Game Link."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_VN "Địa chỉ máy chủ mạng Game Link 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_VN "Địa chỉ máy chủ Pt. 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_VN "Chữ số thứ nhất của địa chỉ IP máy chủ Game Link từ xa. Chỉ sử dụng khi 'Chế độ Game Link' được đặt thành 'Máy khách mạng'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_VN "Chữ số thứ 1 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Link Mode’ được đặt là ‘Network Client’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_VN "Địa chỉ máy chủ Phần 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_VN "Địa chỉ máy chủ Network Link Phần 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_VN "Chữ số thứ 2 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Game Link Mode’ được đặt là ‘Network Client’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_VN "Chữ số thứ 2 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Link Mode’ được đặt là ‘Network Client’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_VN "Địa chỉ máy chủ Network Link Phần 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_VN "Địa chỉ máy chủ Phần 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_VN "Chữ số thứ 3 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Game Link Mode’ được đặt là ‘Network Client’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_VN "Chữ số thứ 3 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Link Mode’ được đặt là ‘Network Client’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_VN "Địa chỉ máy chủ Network Link Phần 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_VN "Địa chỉ máy chủ Phần 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_VN "Chữ số thứ 4 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Game Link Mode’ được đặt là ‘Network Client’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_VN "Chữ số thứ 4 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Link Mode’ được đặt là ‘Network Client’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_VN "Địa chỉ máy chủ Network Link Phần 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_VN "Địa chỉ máy chủ Phần 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_VN "Chữ số thứ 5 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi 'Game Link Mode' được đặt là 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_VN "Chữ số thứ 5 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi 'Link Mode' được đặt là 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_VN "Địa chỉ máy chủ Network Link Pt. 06: ___.__x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_VN "Địa chỉ máy chủ Pt. 06: ___.__x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_VN "Chữ số thứ 6 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi 'Game Link Mode' được đặt là 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_VN "Chữ số thứ 6 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi 'Link Mode' được đặt là 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_VN "Địa chỉ máy chủ Network Link Pt. 07: ___.___.x__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_VN "Địa chỉ máy chủ Pt. 07: ___.___.x__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_VN "Chữ số thứ 7 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi 'Game Link Mode' được đặt là 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_VN "Chữ số thứ 7 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi 'Link Mode' được đặt là 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_VN "Địa chỉ máy chủ Network Link Pt. 08: ___.___._x_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_VN "Địa chỉ máy chủ Pt. 08: ___.___._x_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_VN "Chữ số thứ 8 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi 'Game Link Mode' được đặt là 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_VN "Chữ số thứ 8 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi 'Link Mode' được đặt là 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_VN "Địa chỉ máy chủ Network Link Pt. 09: ___.___.__x.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_VN "Địa chỉ máy chủ Pt. 09: ___.___.__x.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_VN "Chữ số thứ 9 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Chế độ Game Link’ được đặt thành ‘Khách mạng’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_VN "Chữ số thứ 9 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Chế độ Liên kết’ được đặt thành ‘Khách mạng’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_VN "Địa chỉ máy chủ Liên kết mạng Pt. 10: ___.___.___.x__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_VN "Địa chỉ máy chủ Pt. 10: ___.___.___.x__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_VN "Chữ số thứ 10 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Chế độ Game Link’ được đặt thành ‘Khách mạng’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_VN "Chữ số thứ 10 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Chế độ Liên kết’ được đặt thành ‘Khách mạng’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_VN "Địa chỉ máy chủ Liên kết mạng Pt. 11: ___.___.___._x_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_VN "Địa chỉ máy chủ Pt. 11: ___.___.___._x_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_VN "Chữ số thứ 11 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Chế độ Game Link’ được đặt thành ‘Khách mạng’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_VN "Chữ số thứ 11 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Chế độ Liên kết’ được đặt thành ‘Khách mạng’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_VN "Địa chỉ máy chủ Liên kết mạng Pt. 12: ___.___.___.__x"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_VN "Địa chỉ máy chủ Pt. 12: ___.___.___.__x"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_VN "Chữ số thứ 12 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Chế độ Game Link’ được đặt thành ‘Khách mạng’."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_VN "Chữ số thứ 12 của địa chỉ IP máy chủ Game Link từ xa. Chỉ dùng khi ‘Chế độ Liên kết’ được đặt thành ‘Khách mạng’."
 
 struct retro_core_option_v2_category option_cats_vn[] = {
    {
