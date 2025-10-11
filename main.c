@@ -53,7 +53,7 @@ typedef struct {
 
 void audio_callback(void *userdata, uint8_t* data, int bytes) {
     // puts("Audio");
-    printf("attempt to dequeue %d bytes\n", bytes);
+    // printf("attempt to dequeue %d bytes\n", bytes);
     apu_sample_variable((int16_t*)data, bytes / sizeof(uint16_t));
 }
 
@@ -84,7 +84,7 @@ void soundcard_queue(SoundCard *snd, uint8_t* data, size_t bytes) {
     SDL_PauseAudioDevice(snd->device, 0);
 }
 
-const int BYTES_PER_PIXEL=2;
+const int BYTES_PER_PIXEL=4;
 const int VIDEO_WIDTH = 160;
 const int VIDEO_HEIGHT = 144;
 const int SCALE = 2;
@@ -95,6 +95,7 @@ int main(int argc, char **argv) {
   init(buffer, bytes_read);
 
   sdlkeys = (uint8_t*)SDL_GetKeyboardState(0);
+
 
   char save_file[1024];
   snprintf(save_file, 1023, "%s.sav", argv[1]);
@@ -109,8 +110,8 @@ int main(int argc, char **argv) {
   SDL_Renderer *renderer = SDL_CreateRenderer(
       SDL_CreateWindow("picoboy", 0, 0, VIDEO_WIDTH*SCALE, VIDEO_HEIGHT*SCALE, SDL_WINDOW_SHOWN), -1,
       SDL_RENDERER_ACCELERATED);
-  // SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32,
-  SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB565,
+  SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
+  // SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB565,
                                     SDL_TEXTUREACCESS_STREAMING, VIDEO_WIDTH, VIDEO_HEIGHT);
   SoundCard soundcard;
   soundcard_init(&soundcard);

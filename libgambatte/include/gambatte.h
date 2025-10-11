@@ -32,7 +32,7 @@ namespace gambatte {
 #if defined(VIDEO_RGB565) || defined(VIDEO_ABGR1555)
 typedef uint16_t video_pixel_t;
 #else
-typedef uint_least32_t video_pixel_t;
+typedef uint32_t video_pixel_t;
 #endif
 enum { BG_PALETTE = 0, SP1_PALETTE = 1, SP2_PALETTE = 2 };
 
