@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <mutex>
+// #include <mutex>
 
 #define DBG 1
 
@@ -31,7 +31,7 @@ gambatte::GB *gameboy_ = nullptr;
 const int DISPLAY_WIDTH = 160;
 const int DISPLAY_HEIGHT = 144;
 const int FB_PITCH_PX = DISPLAY_WIDTH;
-uint16_t fbuffer[FB_PITCH_PX * 144];
+uint32_t fbuffer[FB_PITCH_PX * 144];
 const size_t SOUND_SAMPLES_PER_FRAME = 35112;
 const size_t SOUND_SAMPLES_PER_RUN = 2064;
 const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
@@ -40,7 +40,7 @@ const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
 // abuffer is the sound ring buffer read by the audio callback.
 // Note, this copy is a slow but correc solution for MVP.
-static std::mutex abuff_mutex;
+// static std::mutex abuff_mutex;
 size_t abuf_first, abuf_size;
 uint16_t abuffer[SOUND_BUFF_SIZE*2];
 
@@ -121,7 +121,7 @@ const uint8_t *framebuffer() {
 // core should result in 2064/48 = 43 samples.
 void queue_samples(size_t num_samples) {
     return; // fixme
-    std::lock_guard guard(abuff_mutex);
+    // std::lock_guard guard(abuff_mutex);
     constexpr size_t capacity = sizeof(abuffer) / sizeof(abuffer[0]);
     const size_t DOWNSAMPLE_MULTIPLE = 48;
     if (abuf_size + num_samples > capacity) {
@@ -154,7 +154,7 @@ extern "C"
 __attribute__((visibility("default")))
 long apu_sample_variable(int16_t *output, int32_t frames) {
     return 0;  // FIXME;
-    std::lock_guard guard(abuff_mutex);
+    // std::lock_guard guard(abuff_mutex);
     const int32_t requested_frames = frames;
     if (frames > abuf_size) {
         printf("Buffer underflow. size=%zu, wanted = %d\n", abuf_size, frames);

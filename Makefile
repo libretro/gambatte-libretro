@@ -1,8 +1,8 @@
 # force rebuild, while deps isn't working
-.PHONY: libgb.so clean
+.PHONY: libgb.so clean run runc
 
 # TODO: re-add O3
-EMBEDFLAGS=-fvisibility=hidden -fPIC -Wfatal-errors -Werror -Wno-narrowing
+EMBEDFLAGS=-g -fvisibility=hidden -static-libstdc++ -fPIC -Wfatal-errors -Werror -Wno-narrowing
 # CFLAGS=-fvisibility=hidden -ffreestanding -nostdlib -fPIC -O3 -Wfatal-errors -Werror
 SRCS := $(wildcard libgambatte/src/**/*.cpp libgambatte/src/*.cpp)
 libgb.so: libgb.cpp $(SRCS)
@@ -15,3 +15,9 @@ main: libgb.so
 
 clean:
 	rm -f libgb.so
+
+run:
+	LD_LIBRARY_PATH=$(shell pwd) ./main "$(ROM)"
+runc:
+	LD_LIBRARY_PATH=$(shell pwd) ./main "$(ROM)" c
+	
