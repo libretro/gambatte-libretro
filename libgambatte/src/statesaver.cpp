@@ -465,13 +465,16 @@ static void writeSnapShot(omemstream &file) {
 	put24(file, 0);
 }
 
-static SaverList list;
+static SaverList *list = nullptr;
 
 } // anon namespace
 
 namespace gambatte {
 
 void StateSaver::saveState(const SaveState &state, void *data) {
+    if (list == nullptr) {
+        list = new SaverList();
+    }
    omemstream file(data);
 	
 	if (file.fail())
@@ -481,13 +484,16 @@ void StateSaver::saveState(const SaveState &state, void *data) {
 	
 	writeSnapShot(file);
 	
-	for (SaverList::const_iterator it = list.begin(); it != list.end(); ++it) {
+	for (SaverList::const_iterator it = list->begin(); it != list->end(); ++it) {
 		file.write(it->label, it->labelsize);
 		(*it->save)(file, state);
 	}
 }
 
 bool StateSaver::loadState(SaveState &state, const void *data) {
+    if (list == nullptr) {
+        list = new SaverList();
+    }
    imemstream file(data);
 
    if (file.fail() || file.get() != 0)
@@ -496,20 +502,20 @@ bool StateSaver::loadState(SaveState &state, const void *data) {
    file.ignore();
    file.ignore(get24(file));
 
-   const Array<char> labelbuf(list.maxLabelsize());
-   const Saver labelbufSaver = { labelbuf, 0, 0, (unsigned char)list.maxLabelsize() };
+   const Array<char> labelbuf(list->maxLabelsize());
+   const Saver labelbufSaver = { labelbuf, 0, 0, (unsigned char)list->maxLabelsize() };
 
-   SaverList::const_iterator done = list.begin();
+   SaverList::const_iterator done = list->begin();
 
-   while (file.good() && done != list.end()) {
-      file.getline(labelbuf, list.maxLabelsize(), NUL);
+   while (file.good() && done != list->end()) {
+      file.getline(labelbuf, list->maxLabelsize(), NUL);
 
       SaverList::const_iterator it = done;
 
       if (std::strcmp(labelbuf, it->label)) {
-         it = std::lower_bound(it + 1, list.end(), labelbufSaver);
+         it = std::lower_bound(it + 1, list->end(), labelbufSaver);
 
-         if (it == list.end() || std::strcmp(labelbuf, it->label)) {
+         if (it == list->end() || std::strcmp(labelbuf, it->label)) {
             file.ignore(get24(file));
             continue;
          }
@@ -526,6 +532,9 @@ bool StateSaver::loadState(SaveState &state, const void *data) {
 }
 
 size_t StateSaver::stateSize(const SaveState &state) {
+    if (list == nullptr) {
+        list = new SaverList();
+    }
    omemstream file(0);
 
    if (file.fail())
@@ -535,7 +544,7 @@ size_t StateSaver::stateSize(const SaveState &state) {
 
    writeSnapShot(file);
 
-   for (SaverList::const_iterator it = list.begin(); it != list.end(); ++it) {
+   for (SaverList::const_iterator it = list->begin(); it != list->end(); ++it) {
       file.write(it->label, it->labelsize);
       (*it->save)(file, state);
    }
