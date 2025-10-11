@@ -31,7 +31,7 @@ public:
 		virtual void operator()(unsigned long /*cc*/) {}
 	};
 
-	explicit EnvelopeUnit(VolOnOffEvent &volOnOffEvent = nullEvent_);
+	explicit EnvelopeUnit(VolOnOffEvent *volOnOffEvent = nullptr);
 	void event();
 	bool dacIsOn() const { return nr2_ & 0xF8; }
 	unsigned getVolume() const { return volume_; }
@@ -42,8 +42,7 @@ public:
 	void loadState(SaveState::SPU::Env const &estate, unsigned nr2, unsigned long cc);
 
 private:
-	static VolOnOffEvent nullEvent_;
-	VolOnOffEvent &volOnOffEvent_;
+	VolOnOffEvent *volOnOffEvent_ = nullptr;
 	unsigned char nr2_;
 	unsigned char volume_;
 };

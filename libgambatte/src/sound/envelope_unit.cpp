@@ -21,9 +21,7 @@
 
 namespace gambatte {
 
-EnvelopeUnit::VolOnOffEvent EnvelopeUnit::nullEvent_;
-
-EnvelopeUnit::EnvelopeUnit(VolOnOffEvent &volOnOffEvent)
+EnvelopeUnit::EnvelopeUnit(VolOnOffEvent *volOnOffEvent)
 : volOnOffEvent_(volOnOffEvent)
 , nr2_(0)
 , volume_(0)
@@ -58,7 +56,8 @@ void EnvelopeUnit::event() {
 		if (newVol < 0x10U) {
 			volume_ = newVol;
 			if (volume_ < 2)
-				volOnOffEvent_(counter_);
+                if (volOnOffEvent_)
+                    (*volOnOffEvent_)(counter_);
 
 			counter_ += period << 15;
 		} else
