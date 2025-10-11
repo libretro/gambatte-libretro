@@ -12,28 +12,28 @@
 #include <stdio.h>
 #endif
 
+unsigned input_value = 0;
 class CInputGetter : public gambatte::InputGetter {
     public:
         virtual ~CInputGetter() = default;
         virtual unsigned operator()() {
-            return value;
+            return input_value;
         }
-        unsigned value = 0;
 };
 
-static CInputGetter s_input_getter;
 
 bool bootloader_getter(void *, bool is_gbc, uint8_t* data, unsigned size) {
     return false;
 }
 
+CInputGetter *s_input_getter = nullptr;
 gambatte::GB *gameboy_ = nullptr;
 const int DISPLAY_WIDTH = 160;
 const int DISPLAY_HEIGHT = 144;
 const int FB_PITCH_PX = DISPLAY_WIDTH;
 uint16_t fbuffer[FB_PITCH_PX * 144];
 const size_t SOUND_SAMPLES_PER_FRAME = 35112;
-const size_t SOUND_SAMPLES_PER_RUN = SOUND_SAMPLES_PER_FRAME;
+const size_t SOUND_SAMPLES_PER_RUN = 2064;
 const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 // sbuffer is the sound buffer written to by the core during a frame
 // each sample consists of 16 bit left, right sample pair. 
@@ -70,9 +70,9 @@ void set_key(size_t key, char val) {
     }
 
     if (val) 
-        s_input_getter.value |= key;
+        input_value |= key;
     else
-        s_input_getter.value &= ~key;
+        input_value &= ~key;
 }
 
 void strncpy(const char* src, char* dst, size_t bytes) {
@@ -87,10 +87,13 @@ void init(const uint8_t* data, size_t len) {
     if (gameboy_ != nullptr) {
         delete gameboy_;
         gameboy_ = nullptr;
+        delete s_input_getter;
+        s_input_getter = nullptr;
     }
     gameboy_ = new gambatte::GB();
+    s_input_getter = new CInputGetter();
     gameboy_->setBootloaderGetter(bootloader_getter);
-    gameboy_->setInputGetter(&s_input_getter);
+    gameboy_->setInputGetter(s_input_getter);
     int flags = 0;
     char internal_game_name[17];
     strncpy((const char*)(data + 0x134), internal_game_name, sizeof(internal_game_name));
@@ -109,35 +112,52 @@ const uint8_t *framebuffer() {
     return (const uint8_t*)fbuffer;
 }
 
+// Buffer and downsample.
+// Incoming audio is at a rate of 35112 per 59.727hz frame,
+// or 20.97 mHz
+// To get to approximately 44100 hz, we downsample by
+// 48x (47.554 would be perfect).
+// With incoming buffers of 2064, each chunk from the
+// core should result in 2064/48 = 43 samples.
 void queue_samples(size_t num_samples) {
+    return; // fixme
     std::lock_guard guard(abuff_mutex);
     constexpr size_t capacity = sizeof(abuffer) / sizeof(abuffer[0]);
+    const size_t DOWNSAMPLE_MULTIPLE = 48;
     if (abuf_size + num_samples > capacity) {
-        printf("Buffer overrun! size=%ld adding=%ld\n", abuf_size, num_samples);
+        printf("Buffer overrun! size=%zu adding=%zu\n", abuf_size, num_samples);
         puts("Clearing buffer.");
         abuf_size = 0;
         return;
     }
     size_t out = (abuf_first + abuf_size) % capacity;
     for (size_t i = 0; i < num_samples; i++) {
+        uint16_t avg = 0; 
+        // for (size_t j = 0; j < DOWNSAMPLE_MULTIPLE; j++) {
+        //     uint32_t s = abuffer[i+j];
+        //     uint16_t left = s & 0xFFFF;
+        //     uint16_t right = (s >> 16) & 0xFFFF;
+        //     avg = (left + right) / 2;
+        // }
         uint32_t s = abuffer[i];
         uint16_t left = s & 0xFFFF;
         uint16_t right = (s >> 16) & 0xFFFF;
-        uint16_t avg = (left + right) / 2;
+        avg = (left + right) / 2;
         abuffer[out] = avg;
         out = (out + 1) % capacity;
     }
     abuf_size += num_samples;
-    printf("new buffer size: %ld\n", abuf_size);
+    printf("new buffer size: %zu\n", abuf_size);
 }
 
 extern "C"
 __attribute__((visibility("default")))
 long apu_sample_variable(int16_t *output, int32_t frames) {
+    return 0;  // FIXME;
     std::lock_guard guard(abuff_mutex);
     const int32_t requested_frames = frames;
     if (frames > abuf_size) {
-        printf("Buffer underflow. size=%ld, wanted = %d\n", abuf_size, frames);
+        printf("Buffer underflow. size=%zu, wanted = %d\n", abuf_size, frames);
         frames = abuf_size;
     }
     size_t first = abuf_first;
@@ -182,7 +202,7 @@ void save(int fd) {
     if (gameboy_ == nullptr)
         return;
     size_t state_size = gameboy_->stateSize();
-    printf("save state is %ld bytes\n", state_size);
+    printf("save state is %zu bytes\n", state_size);
     uint8_t *buffer = (uint8_t*)malloc(state_size);
     uint8_t* const orig_buffer = buffer;
     gameboy_->saveState(buffer);
@@ -221,7 +241,7 @@ void load(int fd) {
         perror("Failed to seek while loading: ");
         return;
     }
-    printf("Loading %ld bytes\n", bytes);
+    printf("Loading %zu bytes\n", bytes);
     size_t state_size = gameboy_->stateSize();
     if (bytes != state_size) {
         puts("Invalid state size");
@@ -236,7 +256,7 @@ void load(int fd) {
             perror("Read failure during load: ");
             return;
         }
-        printf("read returned %ld bytes\n", read_bytes);
+        printf("read returned %zu bytes\n", read_bytes);
         write += read_bytes;
         bytes -= read_bytes;
     }
