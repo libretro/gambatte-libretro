@@ -7,6 +7,7 @@ EMBEDFLAGS=-fvisibility=hidden -fPIC -Wfatal-errors -Werror -Wno-narrowing
 SRCS := $(wildcard libgambatte/src/**/*.cpp libgambatte/src/*.cpp)
 libgb.so: libgb.cpp $(SRCS)
 	time $(CXX) $(CFLAGS) $(EMBEDFLAGS) -DVIDEO_RGB565 -D__LIBRETRO__ -I libgambatte/include -I libgambatte/src -I common/ -shared -o libgb.so libgb.cpp $(SRCS)
+	cp libgb.so libapu.so
 
 main: libgb.so
 	time $(CXX) -O3 -o main main.c -L. -l:libgb.so -lSDL2 -lc -lm ${WARN}
