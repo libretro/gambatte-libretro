@@ -144,14 +144,14 @@ static void put32(omemstream &file, const unsigned long data) {
 }
 
 static void write(omemstream &file, const unsigned char data) {
-	static const char inf[] = { 0x00, 0x00, 0x01 };
+	const char inf[] = { 0x00, 0x00, 0x01 };
 	
 	file.write(inf, sizeof(inf));
 	file.put(data & 0xFF);
 }
 
 static void write(omemstream &file, const unsigned short data) {
-	static const char inf[] = { 0x00, 0x00, 0x02 };
+	const char inf[] = { 0x00, 0x00, 0x02 };
 	
 	file.write(inf, sizeof(inf));
 	file.put(data >> 8 & 0xFF);
@@ -159,7 +159,7 @@ static void write(omemstream &file, const unsigned short data) {
 }
 
 static void write(omemstream &file, const unsigned long data) {
-	static const char inf[] = { 0x00, 0x00, 0x04 };
+	const char inf[] = { 0x00, 0x00, 0x04 };
 	
 	file.write(inf, sizeof(inf));
 	put32(file, data);
@@ -275,168 +275,172 @@ public:
 static void pushSaver(SaverList::list_t &list, const char *label,
 		void (*save)(omemstream &file, const SaveState &state),
 		void (*load)(imemstream &file, SaveState &state), unsigned labelsize) {
-	const Saver saver = { label, save, load, (unsigned char)labelsize }; // NARROWING FIXUP
+    // Labels have temporary duration, need to copy them into the saver list
+    // or the memory may be corrupted.
+    char *cloneLabel = (char*)malloc(labelsize);
+    memcpy(cloneLabel, label, labelsize);
+	const Saver saver = { cloneLabel, save, load, (unsigned char)labelsize }; // NARROWING FIXUP
 	list.push_back(saver);
 }
 
 SaverList::SaverList() {
-#define ADD(arg) do { \
+#define ADD(label, labelsize, arg) do { \
 	struct Func { \
 		static void save(omemstream &file, const SaveState &state) { write(file, state.arg); } \
 		static void load(imemstream &file, SaveState &state) { read(file, state.arg); } \
 	}; \
 	\
-	pushSaver(list, label, Func::save, Func::load, sizeof label); \
+	pushSaver(list, label, Func::save, Func::load, labelsize); \
 } while (0)
 
-#define ADDPTR(arg) do { \
+#define ADDPTR(label, labelsize, arg) do { \
 	struct Func { \
 		static void save(omemstream &file, const SaveState &state) { write(file, state.arg.get(), state.arg.size()); } \
 		static void load(imemstream &file, SaveState &state) { read(file, state.arg.ptr, state.arg.size()); } \
 	}; \
 	\
-	pushSaver(list, label, Func::save, Func::load, sizeof label); \
+	pushSaver(list, label, Func::save, Func::load, labelsize); \
 } while (0)
 
-#define ADDARRAY(arg) do { \
+#define ADDARRAY(label, labelsize, arg) do { \
 	struct Func { \
 		static void save(omemstream &file, const SaveState &state) { write(file, state.arg, sizeof(state.arg)); } \
 		static void load(imemstream &file, SaveState &state) { read(file, state.arg, sizeof(state.arg)); } \
 	}; \
 	\
-	pushSaver(list, label, Func::save, Func::load, sizeof label); \
+	pushSaver(list, label, Func::save, Func::load, labelsize); \
 } while (0)
 	
-	{ static const char label[] = { c,c,           NUL }; ADD(cpu.cycleCounter); }
-	{ static const char label[] = { p,c,           NUL }; ADD(cpu.pc); }
-	{ static const char label[] = { s,p,           NUL }; ADD(cpu.sp); }
-	{ static const char label[] = { a,             NUL }; ADD(cpu.a); }
-	{ static const char label[] = { b,             NUL }; ADD(cpu.b); }
-	{ static const char label[] = { c,             NUL }; ADD(cpu.c); }
-	{ static const char label[] = { d,             NUL }; ADD(cpu.d); }
-	{ static const char label[] = { e,             NUL }; ADD(cpu.e); }
-	{ static const char label[] = { f,             NUL }; ADD(cpu.f); }
-	{ static const char label[] = { h,             NUL }; ADD(cpu.h); }
-	{ static const char label[] = { l,             NUL }; ADD(cpu.l); }
-	{ static const char label[] = { s,k,i,p,       NUL }; ADD(cpu.skip); }
-	{ static const char label[] = { h,a,l,t,       NUL }; ADD(mem.halted); }
-	{ static const char label[] = { v,r,a,m,       NUL }; ADDPTR(mem.vram); }
-	{ static const char label[] = { s,r,a,m,       NUL }; ADDPTR(mem.sram); }
-	{ static const char label[] = { w,r,a,m,       NUL }; ADDPTR(mem.wram); }
-	{ static const char label[] = { h,r,a,m,       NUL }; ADDPTR(mem.ioamhram); }
-	{ static const char label[] = { l,d,i,v,u,p,   NUL }; ADD(mem.divLastUpdate); }
-	{ static const char label[] = { l,t,i,m,a,u,p, NUL }; ADD(mem.timaLastUpdate); }
-	{ static const char label[] = { t,m,a,t,i,m,e, NUL }; ADD(mem.tmatime); }
-	{ static const char label[] = { s,e,r,i,a,l,t, NUL }; ADD(mem.nextSerialtime); }
-	{ static const char label[] = { l,o,d,m,a,u,p, NUL }; ADD(mem.lastOamDmaUpdate); }
-	{ static const char label[] = { m,i,n,i,n,t,t, NUL }; ADD(mem.minIntTime); }
-	{ static const char label[] = { u,n,h,a,l,t,t, NUL }; ADD(mem.unhaltTime); }
-	{ static const char label[] = { r,o,m,b,a,n,k, NUL }; ADD(mem.rombank); }
-	{ static const char label[] = { d,m,a,s,r,c,   NUL }; ADD(mem.dmaSource); }
-	{ static const char label[] = { d,m,a,d,s,t,   NUL }; ADD(mem.dmaDestination); }
-	{ static const char label[] = { r,a,m,b,a,n,k, NUL }; ADD(mem.rambank); }
-	{ static const char label[] = { o,d,m,a,p,o,s, NUL }; ADD(mem.oamDmaPos); }
+	{ const char label[] = { c,c,           NUL }; ADD(label, sizeof label,cpu.cycleCounter); }
+	{ const char label[] = { p,c,           NUL }; ADD(label, sizeof label,cpu.pc); }
+	{ const char label[] = { s,p,           NUL }; ADD(label, sizeof label,cpu.sp); }
+	{ const char label[] = { a,             NUL }; ADD(label, sizeof label,cpu.a); }
+	{ const char label[] = { b,             NUL }; ADD(label, sizeof label,cpu.b); }
+	{ const char label[] = { c,             NUL }; ADD(label, sizeof label,cpu.c); }
+	{ const char label[] = { d,             NUL }; ADD(label, sizeof label,cpu.d); }
+	{ const char label[] = { e,             NUL }; ADD(label, sizeof label,cpu.e); }
+	{ const char label[] = { f,             NUL }; ADD(label, sizeof label,cpu.f); }
+	{ const char label[] = { h,             NUL }; ADD(label, sizeof label,cpu.h); }
+	{ const char label[] = { l,             NUL }; ADD(label, sizeof label,cpu.l); }
+	{ const char label[] = { s,k,i,p,       NUL }; ADD(label, sizeof label,cpu.skip); }
+	{ const char label[] = { h,a,l,t,       NUL }; ADD(label, sizeof label,mem.halted); }
+	{ const char label[] = { v,r,a,m,       NUL }; ADDPTR(label, sizeof label, mem.vram); }
+	{ const char label[] = { s,r,a,m,       NUL }; ADDPTR(label, sizeof label, mem.sram); }
+	{ const char label[] = { w,r,a,m,       NUL }; ADDPTR(label, sizeof label,mem.wram); }
+	{ const char label[] = { h,r,a,m,       NUL }; ADDPTR(label, sizeof label,mem.ioamhram); }
+	{ const char label[] = { l,d,i,v,u,p,   NUL }; ADD(label, sizeof label,mem.divLastUpdate); }
+	{ const char label[] = { l,t,i,m,a,u,p, NUL }; ADD(label, sizeof label,mem.timaLastUpdate); }
+	{ const char label[] = { t,m,a,t,i,m,e, NUL }; ADD(label, sizeof label,mem.tmatime); }
+	{ const char label[] = { s,e,r,i,a,l,t, NUL }; ADD(label, sizeof label,mem.nextSerialtime); }
+	{ const char label[] = { l,o,d,m,a,u,p, NUL }; ADD(label, sizeof label,mem.lastOamDmaUpdate); }
+	{ const char label[] = { m,i,n,i,n,t,t, NUL }; ADD(label, sizeof label,mem.minIntTime); }
+	{ const char label[] = { u,n,h,a,l,t,t, NUL }; ADD(label, sizeof label,mem.unhaltTime); }
+	{ const char label[] = { r,o,m,b,a,n,k, NUL }; ADD(label, sizeof label,mem.rombank); }
+	{ const char label[] = { d,m,a,s,r,c,   NUL }; ADD(label, sizeof label,mem.dmaSource); }
+	{ const char label[] = { d,m,a,d,s,t,   NUL }; ADD(label, sizeof label,mem.dmaDestination); }
+	{ const char label[] = { r,a,m,b,a,n,k, NUL }; ADD(label, sizeof label,mem.rambank); }
+	{ const char label[] = { o,d,m,a,p,o,s, NUL }; ADD(label, sizeof label,mem.oamDmaPos); }
 #ifdef HAVE_NETWORK
-	{ static const char label[] = { n,e,t,s,v,     NUL }; ADD(mem.serialize_value); }
-	{ static const char label[] = { n,e,t,s,f,c,   NUL }; ADD(mem.serialize_is_fastcgb); }
+	{ const char label[] = { n,e,t,s,v,     NUL }; ADD(label, sizeof label,mem.serialize_value); }
+	{ const char label[] = { n,e,t,s,f,c,   NUL }; ADD(label, sizeof label,mem.serialize_is_fastcgb); }
 #endif
-	{ static const char label[] = { i,m,e,         NUL }; ADD(mem.IME); }
-	{ static const char label[] = { s,r,a,m,o,n,   NUL }; ADD(mem.enableRam); }
-	{ static const char label[] = { r,a,m,b,m,o,d, NUL }; ADD(mem.rambankMode); }
-	{ static const char label[] = { h,d,m,a,       NUL }; ADD(mem.hdmaTransfer); }
-	{ static const char label[] = { h,u,c,NO3,r,a,m, NUL }; ADD(mem.HuC3RAMflag); }
-	{ static const char label[] = { b,g,p,         NUL }; ADDPTR(ppu.bgpData); }
-	{ static const char label[] = { o,b,j,p,       NUL }; ADDPTR(ppu.objpData); }
-	{ static const char label[] = { s,p,o,s,b,u,f, NUL }; ADDPTR(ppu.oamReaderBuf); }
-	{ static const char label[] = { s,p,s,z,b,u,f, NUL }; ADDPTR(ppu.oamReaderSzbuf); }
-   { static const char label[] = { d,m,g,p,a,l,   NUL }; ADDARRAY(ppu.dmgPalette); }
-	{ static const char label[] = { s,p,a,t,t,r,   NUL }; ADDARRAY(ppu.spAttribList); }
-	{ static const char label[] = { s,p,b,y,t,e,NO0, NUL }; ADDARRAY(ppu.spByte0List); }
-	{ static const char label[] = { s,p,b,y,t,e,NO1, NUL }; ADDARRAY(ppu.spByte1List); }
-	{ static const char label[] = { v,c,y,c,l,e,s, NUL }; ADD(ppu.videoCycles); }
-	{ static const char label[] = { e,d,M,NO0,t,i,m, NUL }; ADD(ppu.enableDisplayM0Time); }
-	{ static const char label[] = { m,NO0,t,i,m,e, NUL }; ADD(ppu.lastM0Time); }
-	{ static const char label[] = { n,m,NO0,i,r,q, NUL }; ADD(ppu.nextM0Irq); }
-	{ static const char label[] = { b,g,t,w,       NUL }; ADD(ppu.tileword); }
-	{ static const char label[] = { b,g,n,t,w,     NUL }; ADD(ppu.ntileword); }
-	{ static const char label[] = { w,i,n,y,p,o,s, NUL }; ADD(ppu.winYPos); }
-	{ static const char label[] = { x,p,o,s,       NUL }; ADD(ppu.xpos); }
-	{ static const char label[] = { e,n,d,x,       NUL }; ADD(ppu.endx); }
-	{ static const char label[] = { p,p,u,r,NO0,   NUL }; ADD(ppu.reg0); }
-	{ static const char label[] = { p,p,u,r,NO1,   NUL }; ADD(ppu.reg1); }
-	{ static const char label[] = { b,g,a,t,r,b,   NUL }; ADD(ppu.attrib); }
-	{ static const char label[] = { b,g,n,a,t,r,b, NUL }; ADD(ppu.nattrib); }
-	{ static const char label[] = { p,p,u,s,t,a,t, NUL }; ADD(ppu.state); }
-	{ static const char label[] = { n,s,p,r,i,t,e, NUL }; ADD(ppu.nextSprite); }
-	{ static const char label[] = { c,s,p,r,i,t,e, NUL }; ADD(ppu.currentSprite); }
-	{ static const char label[] = { l,y,c,         NUL }; ADD(ppu.lyc); }
-	{ static const char label[] = { m,NO0,l,y,c,   NUL }; ADD(ppu.m0lyc); }
-	{ static const char label[] = { o,l,d,w,y,     NUL }; ADD(ppu.oldWy); }
-	{ static const char label[] = { w,i,n,d,r,a,w, NUL }; ADD(ppu.winDrawState); }
-	{ static const char label[] = { w,s,c,x,       NUL }; ADD(ppu.wscx); }
-	{ static const char label[] = { w,e,m,a,s,t,r, NUL }; ADD(ppu.weMaster); }
-	{ static const char label[] = { l,c,d,s,i,r,q, NUL }; ADD(ppu.pendingLcdstatIrq); }
-	{ static const char label[] = { s,p,u,c,n,t,r, NUL }; ADD(spu.cycleCounter); }
-	{ static const char label[] = { s,w,p,c,n,t,r, NUL }; ADD(spu.ch1.sweep.counter); }
-	{ static const char label[] = { s,w,p,s,h,d,w, NUL }; ADD(spu.ch1.sweep.shadow); }
-	{ static const char label[] = { s,w,p,n,e,g,   NUL }; ADD(spu.ch1.sweep.negging); }
-	{ static const char label[] = { d,u,t,NO1,c,t,r, NUL }; ADD(spu.ch1.duty.nextPosUpdate); }
-	{ static const char label[] = { d,u,t,NO1,p,o,s, NUL }; ADD(spu.ch1.duty.pos); }
-	{ static char const label[] = { d,u,t,NO1,h,i,   NUL }; ADD(spu.ch1.duty.high); }
-	{ static const char label[] = { e,n,v,NO1,c,t,r, NUL }; ADD(spu.ch1.env.counter); }
-	{ static const char label[] = { e,n,v,NO1,v,o,l, NUL }; ADD(spu.ch1.env.volume); }
-	{ static const char label[] = { l,e,n,NO1,c,t,r, NUL }; ADD(spu.ch1.lcounter.counter); }
-	{ static const char label[] = { l,e,n,NO1,v,a,l, NUL }; ADD(spu.ch1.lcounter.lengthCounter); }
-	{ static const char label[] = { n,r,NO1,NO0,       NUL }; ADD(spu.ch1.sweep.nr0); }
-	{ static const char label[] = { n,r,NO1,NO3,       NUL }; ADD(spu.ch1.duty.nr3); }
-	{ static const char label[] = { n,r,NO1,NO4,       NUL }; ADD(spu.ch1.nr4); }
-	{ static const char label[] = { c,NO1,m,a,s,t,r, NUL }; ADD(spu.ch1.master); }
-	{ static const char label[] = { d,u,t,NO2,c,t,r, NUL }; ADD(spu.ch2.duty.nextPosUpdate); }
-	{ static const char label[] = { d,u,t,NO2,p,o,s, NUL }; ADD(spu.ch2.duty.pos); }
-	{ static char const label[] = { d,u,t,NO2,h,i,   NUL }; ADD(spu.ch2.duty.high); }
-	{ static const char label[] = { e,n,v,NO2,c,t,r, NUL }; ADD(spu.ch2.env.counter); }
-	{ static const char label[] = { e,n,v,NO2,v,o,l, NUL }; ADD(spu.ch2.env.volume); }
-	{ static const char label[] = { l,e,n,NO2,c,t,r, NUL }; ADD(spu.ch2.lcounter.counter); }
-	{ static const char label[] = { l,e,n,NO2,v,a,l, NUL }; ADD(spu.ch2.lcounter.lengthCounter); }
-	{ static const char label[] = { n,r,NO2,NO3,       NUL }; ADD(spu.ch2.duty.nr3); }
-	{ static const char label[] = { n,r,NO2,NO4,       NUL }; ADD(spu.ch2.nr4); }
-	{ static const char label[] = { c,NO2,m,a,s,t,r, NUL }; ADD(spu.ch2.master); }
-	{ static const char label[] = { w,a,v,e,r,a,m, NUL }; ADDPTR(spu.ch3.waveRam); }
-	{ static const char label[] = { l,e,n,NO3,c,t,r, NUL }; ADD(spu.ch3.lcounter.counter); }
-	{ static const char label[] = { l,e,n,NO3,v,a,l, NUL }; ADD(spu.ch3.lcounter.lengthCounter); }
-	{ static const char label[] = { w,a,v,e,c,t,r, NUL }; ADD(spu.ch3.waveCounter); }
-	{ static const char label[] = { l,w,a,v,r,d,t, NUL }; ADD(spu.ch3.lastReadTime); }
-	{ static const char label[] = { w,a,v,e,p,o,s, NUL }; ADD(spu.ch3.wavePos); }
-	{ static const char label[] = { w,a,v,s,m,p,l, NUL }; ADD(spu.ch3.sampleBuf); }
-	{ static const char label[] = { n,r,NO3,NO3,       NUL }; ADD(spu.ch3.nr3); }
-	{ static const char label[] = { n,r,NO3,NO4,       NUL }; ADD(spu.ch3.nr4); }
-	{ static const char label[] = { c,NO3,m,a,s,t,r, NUL }; ADD(spu.ch3.master); }
-	{ static const char label[] = { l,f,s,r,c,t,r, NUL }; ADD(spu.ch4.lfsr.counter); }
-	{ static const char label[] = { l,f,s,r,r,e,g, NUL }; ADD(spu.ch4.lfsr.reg); }
-	{ static const char label[] = { e,n,v,NO4,c,t,r, NUL }; ADD(spu.ch4.env.counter); }
-	{ static const char label[] = { e,n,v,NO4,v,o,l, NUL }; ADD(spu.ch4.env.volume); }
-	{ static const char label[] = { l,e,n,NO4,c,t,r, NUL }; ADD(spu.ch4.lcounter.counter); }
-	{ static const char label[] = { l,e,n,NO4,v,a,l, NUL }; ADD(spu.ch4.lcounter.lengthCounter); }
-	{ static const char label[] = { n,r,NO4,NO4,       NUL }; ADD(spu.ch4.nr4); }
-	{ static const char label[] = { c,NO4,m,a,s,t,r, NUL }; ADD(spu.ch4.master); }
-	{ static const char label[] = { r,t,c,b,a,s,e, NUL }; ADD(rtc.baseTime); }
-	{ static const char label[] = { r,t,c,h,a,l,t, NUL }; ADD(rtc.haltTime); }
-	{ static const char label[] = { r,t,c,d,h,     NUL }; ADD(rtc.dataDh); }
-	{ static const char label[] = { r,t,c,d,l,     NUL }; ADD(rtc.dataDl); }
-	{ static const char label[] = { r,t,c,h,       NUL }; ADD(rtc.dataH); }
-	{ static const char label[] = { r,t,c,m,       NUL }; ADD(rtc.dataM); }
-	{ static const char label[] = { r,t,c,s,       NUL }; ADD(rtc.dataS); }
-	{ static const char label[] = { r,t,c,l,l,d,   NUL }; ADD(rtc.lastLatchData); }
-	{ static char const label[] = { h,NO3,b,a,s,e,t, NUL }; ADD(huc3.baseTime); }
-	{ static const char label[] = { h,NO3,h,a,l,t,t, NUL }; ADD(huc3.haltTime); }
-	{ static const char label[] = { h,NO3,d,a,t,a,t, NUL }; ADD(huc3.dataTime); }
-	{ static const char label[] = { h,NO3,w,r,i,t,t, NUL }; ADD(huc3.writingTime); }
-	{ static const char label[] = { h,NO3,h,a,l,t, NUL }; ADD(huc3.halted); }
-	{ static const char label[] = { h,NO3,s,h,f,t, NUL }; ADD(huc3.shift); }
-	{ static const char label[] = { h,NO3,r,v,     NUL }; ADD(huc3.ramValue); }
-	{ static const char label[] = { h,NO3,m,f,     NUL }; ADD(huc3.modeflag); }
-	{ static const char label[] = { h,NO3,i,r,c,y, NUL }; ADD(huc3.irBaseCycle); }
-	{ static const char label[] = { h,NO3,i,r,a,c, NUL }; ADD(huc3.irReceivingPulse); }
+	{ const char label[] = { i,m,e,         NUL }; ADD(label, sizeof label,mem.IME); }
+	{ const char label[] = { s,r,a,m,o,n,   NUL }; ADD(label, sizeof label,mem.enableRam); }
+	{ const char label[] = { r,a,m,b,m,o,d, NUL }; ADD(label, sizeof label,mem.rambankMode); }
+	{ const char label[] = { h,d,m,a,       NUL }; ADD(label, sizeof label,mem.hdmaTransfer); }
+	{ const char label[] = { h,u,c,NO3,r,a,m, NUL }; ADD(label, sizeof label,mem.HuC3RAMflag); }
+	{ const char label[] = { b,g,p,         NUL }; ADDPTR(label, sizeof label,ppu.bgpData); }
+	{ const char label[] = { o,b,j,p,       NUL }; ADDPTR(label, sizeof label,ppu.objpData); }
+	{ const char label[] = { s,p,o,s,b,u,f, NUL }; ADDPTR(label, sizeof label,ppu.oamReaderBuf); }
+	{ const char label[] = { s,p,s,z,b,u,f, NUL }; ADDPTR(label, sizeof label,ppu.oamReaderSzbuf); }
+   {  const char label[] = { d,m,g,p,a,l,   NUL }; ADDARRAY(label, sizeof label,ppu.dmgPalette); }
+	{ const char label[] = { s,p,a,t,t,r,   NUL }; ADDARRAY(label, sizeof label,ppu.spAttribList); }
+	{ const char label[] = { s,p,b,y,t,e,NO0, NUL }; ADDARRAY(label, sizeof label,ppu.spByte0List); }
+	{ const char label[] = { s,p,b,y,t,e,NO1, NUL }; ADDARRAY(label, sizeof label,ppu.spByte1List); }
+	{ const char label[] = { v,c,y,c,l,e,s, NUL }; ADD(label, sizeof label,ppu.videoCycles); }
+	{ const char label[] = { e,d,M,NO0,t,i,m, NUL }; ADD(label, sizeof label,ppu.enableDisplayM0Time); }
+	{ const char label[] = { m,NO0,t,i,m,e, NUL }; ADD(label, sizeof label,ppu.lastM0Time); }
+	{ const char label[] = { n,m,NO0,i,r,q, NUL }; ADD(label, sizeof label,ppu.nextM0Irq); }
+	{ const char label[] = { b,g,t,w,       NUL }; ADD(label, sizeof label,ppu.tileword); }
+	{ const char label[] = { b,g,n,t,w,     NUL }; ADD(label, sizeof label,ppu.ntileword); }
+	{ const char label[] = { w,i,n,y,p,o,s, NUL }; ADD(label, sizeof label,ppu.winYPos); }
+	{ const char label[] = { x,p,o,s,       NUL }; ADD(label, sizeof label,ppu.xpos); }
+	{ const char label[] = { e,n,d,x,       NUL }; ADD(label, sizeof label,ppu.endx); }
+	{ const char label[] = { p,p,u,r,NO0,   NUL }; ADD(label, sizeof label,ppu.reg0); }
+	{ const char label[] = { p,p,u,r,NO1,   NUL }; ADD(label, sizeof label,ppu.reg1); }
+	{ const char label[] = { b,g,a,t,r,b,   NUL }; ADD(label, sizeof label,ppu.attrib); }
+	{ const char label[] = { b,g,n,a,t,r,b, NUL }; ADD(label, sizeof label,ppu.nattrib); }
+	{ const char label[] = { p,p,u,s,t,a,t, NUL }; ADD(label, sizeof label,ppu.state); }
+	{ const char label[] = { n,s,p,r,i,t,e, NUL }; ADD(label, sizeof label,ppu.nextSprite); }
+	{ const char label[] = { c,s,p,r,i,t,e, NUL }; ADD(label, sizeof label,ppu.currentSprite); }
+	{ const char label[] = { l,y,c,         NUL }; ADD(label, sizeof label,ppu.lyc); }
+	{ const char label[] = { m,NO0,l,y,c,   NUL }; ADD(label, sizeof label,ppu.m0lyc); }
+	{ const char label[] = { o,l,d,w,y,     NUL }; ADD(label, sizeof label,ppu.oldWy); }
+	{ const char label[] = { w,i,n,d,r,a,w, NUL }; ADD(label, sizeof label,ppu.winDrawState); }
+	{ const char label[] = { w,s,c,x,       NUL }; ADD(label, sizeof label,ppu.wscx); }
+	{ const char label[] = { w,e,m,a,s,t,r, NUL }; ADD(label, sizeof label,ppu.weMaster); }
+	{ const char label[] = { l,c,d,s,i,r,q, NUL }; ADD(label, sizeof label,ppu.pendingLcdstatIrq); }
+	{ const char label[] = { s,p,u,c,n,t,r, NUL }; ADD(label, sizeof label,spu.cycleCounter); }
+	{ const char label[] = { s,w,p,c,n,t,r, NUL }; ADD(label, sizeof label,spu.ch1.sweep.counter); }
+	{ const char label[] = { s,w,p,s,h,d,w, NUL }; ADD(label, sizeof label,spu.ch1.sweep.shadow); }
+	{ const char label[] = { s,w,p,n,e,g,   NUL }; ADD(label, sizeof label,spu.ch1.sweep.negging); }
+	{ const char label[] = { d,u,t,NO1,c,t,r, NUL }; ADD(label, sizeof label,spu.ch1.duty.nextPosUpdate); }
+	{ const char label[] = { d,u,t,NO1,p,o,s, NUL }; ADD(label, sizeof label,spu.ch1.duty.pos); }
+	{ char const label[] = { d,u,t,NO1,h,i,   NUL }; ADD(label, sizeof label,spu.ch1.duty.high); }
+	{ const char label[] = { e,n,v,NO1,c,t,r, NUL }; ADD(label, sizeof label,spu.ch1.env.counter); }
+	{ const char label[] = { e,n,v,NO1,v,o,l, NUL }; ADD(label, sizeof label,spu.ch1.env.volume); }
+	{ const char label[] = { l,e,n,NO1,c,t,r, NUL }; ADD(label, sizeof label,spu.ch1.lcounter.counter); }
+	{ const char label[] = { l,e,n,NO1,v,a,l, NUL }; ADD(label, sizeof label,spu.ch1.lcounter.lengthCounter); }
+	{ const char label[] = { n,r,NO1,NO0,       NUL }; ADD(label, sizeof label,spu.ch1.sweep.nr0); }
+	{ const char label[] = { n,r,NO1,NO3,       NUL }; ADD(label, sizeof label,spu.ch1.duty.nr3); }
+	{ const char label[] = { n,r,NO1,NO4,       NUL }; ADD(label, sizeof label,spu.ch1.nr4); }
+	{ const char label[] = { c,NO1,m,a,s,t,r, NUL }; ADD(label, sizeof label,spu.ch1.master); }
+	{ const char label[] = { d,u,t,NO2,c,t,r, NUL }; ADD(label, sizeof label,spu.ch2.duty.nextPosUpdate); }
+	{ const char label[] = { d,u,t,NO2,p,o,s, NUL }; ADD(label, sizeof label,spu.ch2.duty.pos); }
+	{ char const label[] = { d,u,t,NO2,h,i,   NUL }; ADD(label, sizeof label,spu.ch2.duty.high); }
+	{ const char label[] = { e,n,v,NO2,c,t,r, NUL }; ADD(label, sizeof label,spu.ch2.env.counter); }
+	{ const char label[] = { e,n,v,NO2,v,o,l, NUL }; ADD(label, sizeof label,spu.ch2.env.volume); }
+	{ const char label[] = { l,e,n,NO2,c,t,r, NUL }; ADD(label, sizeof label,spu.ch2.lcounter.counter); }
+	{ const char label[] = { l,e,n,NO2,v,a,l, NUL }; ADD(label, sizeof label,spu.ch2.lcounter.lengthCounter); }
+	{ const char label[] = { n,r,NO2,NO3,       NUL }; ADD(label, sizeof label,spu.ch2.duty.nr3); }
+	{ const char label[] = { n,r,NO2,NO4,       NUL }; ADD(label, sizeof label,spu.ch2.nr4); }
+	{ const char label[] = { c,NO2,m,a,s,t,r, NUL }; ADD(label, sizeof label,spu.ch2.master); }
+	{ const char label[] = { w,a,v,e,r,a,m, NUL }; ADDPTR(label, sizeof label,spu.ch3.waveRam); }
+	{ const char label[] = { l,e,n,NO3,c,t,r, NUL }; ADD(label, sizeof label,spu.ch3.lcounter.counter); }
+	{ const char label[] = { l,e,n,NO3,v,a,l, NUL }; ADD(label, sizeof label,spu.ch3.lcounter.lengthCounter); }
+	{ const char label[] = { w,a,v,e,c,t,r, NUL }; ADD(label, sizeof label,spu.ch3.waveCounter); }
+	{ const char label[] = { l,w,a,v,r,d,t, NUL }; ADD(label, sizeof label,spu.ch3.lastReadTime); }
+	{ const char label[] = { w,a,v,e,p,o,s, NUL }; ADD(label, sizeof label,spu.ch3.wavePos); }
+	{ const char label[] = { w,a,v,s,m,p,l, NUL }; ADD(label, sizeof label,spu.ch3.sampleBuf); }
+	{ const char label[] = { n,r,NO3,NO3,       NUL }; ADD(label, sizeof label,spu.ch3.nr3); }
+	{ const char label[] = { n,r,NO3,NO4,       NUL }; ADD(label, sizeof label,spu.ch3.nr4); }
+	{ const char label[] = { c,NO3,m,a,s,t,r, NUL }; ADD(label, sizeof label,spu.ch3.master); }
+	{ const char label[] = { l,f,s,r,c,t,r, NUL }; ADD(label, sizeof label,spu.ch4.lfsr.counter); }
+	{ const char label[] = { l,f,s,r,r,e,g, NUL }; ADD(label, sizeof label,spu.ch4.lfsr.reg); }
+	{ const char label[] = { e,n,v,NO4,c,t,r, NUL }; ADD(label, sizeof label,spu.ch4.env.counter); }
+	{ const char label[] = { e,n,v,NO4,v,o,l, NUL }; ADD(label, sizeof label,spu.ch4.env.volume); }
+	{ const char label[] = { l,e,n,NO4,c,t,r, NUL }; ADD(label, sizeof label,spu.ch4.lcounter.counter); }
+	{ const char label[] = { l,e,n,NO4,v,a,l, NUL }; ADD(label, sizeof label,spu.ch4.lcounter.lengthCounter); }
+	{ const char label[] = { n,r,NO4,NO4,       NUL }; ADD(label, sizeof label,spu.ch4.nr4); }
+	{ const char label[] = { c,NO4,m,a,s,t,r, NUL }; ADD(label, sizeof label,spu.ch4.master); }
+	{ const char label[] = { r,t,c,b,a,s,e, NUL }; ADD(label, sizeof label,rtc.baseTime); }
+	{ const char label[] = { r,t,c,h,a,l,t, NUL }; ADD(label, sizeof label,rtc.haltTime); }
+	{ const char label[] = { r,t,c,d,h,     NUL }; ADD(label, sizeof label,rtc.dataDh); }
+	{ const char label[] = { r,t,c,d,l,     NUL }; ADD(label, sizeof label,rtc.dataDl); }
+	{ const char label[] = { r,t,c,h,       NUL }; ADD(label, sizeof label,rtc.dataH); }
+	{ const char label[] = { r,t,c,m,       NUL }; ADD(label, sizeof label,rtc.dataM); }
+	{ const char label[] = { r,t,c,s,       NUL }; ADD(label, sizeof label,rtc.dataS); }
+	{ const char label[] = { r,t,c,l,l,d,   NUL }; ADD(label, sizeof label,rtc.lastLatchData); }
+	{ char const label[] = { h,NO3,b,a,s,e,t, NUL }; ADD(label, sizeof label,huc3.baseTime); }
+	{ const char label[] = { h,NO3,h,a,l,t,t, NUL }; ADD(label, sizeof label,huc3.haltTime); }
+	{ const char label[] = { h,NO3,d,a,t,a,t, NUL }; ADD(label, sizeof label,huc3.dataTime); }
+	{ const char label[] = { h,NO3,w,r,i,t,t, NUL }; ADD(label, sizeof label,huc3.writingTime); }
+	{ const char label[] = { h,NO3,h,a,l,t, NUL }; ADD(label, sizeof label,huc3.halted); }
+	{ const char label[] = { h,NO3,s,h,f,t, NUL }; ADD(label, sizeof label,huc3.shift); }
+	{ const char label[] = { h,NO3,r,v,     NUL }; ADD(label, sizeof label,huc3.ramValue); }
+	{ const char label[] = { h,NO3,m,f,     NUL }; ADD(label, sizeof label,huc3.modeflag); }
+	{ const char label[] = { h,NO3,i,r,c,y, NUL }; ADD(label, sizeof label,huc3.irBaseCycle); }
+	{ const char label[] = { h,NO3,i,r,a,c, NUL }; ADD(label, sizeof label,huc3.irReceivingPulse); }
 	
 #undef ADD
 #undef ADDPTR
@@ -473,7 +477,7 @@ void StateSaver::saveState(const SaveState &state, void *data) {
 	if (file.fail())
 		return;
 	
-	{ static const char ver[] = { 0, 1 }; file.write(ver, sizeof(ver)); }
+	{ const char ver[] = { 0, 1 }; file.write(ver, sizeof(ver)); }
 	
 	writeSnapShot(file);
 	
@@ -527,7 +531,7 @@ size_t StateSaver::stateSize(const SaveState &state) {
    if (file.fail())
       return 0;
 
-   { static const char ver[] = { 0, 1 }; file.write(ver, sizeof(ver)); }
+   { const char ver[] = { 0, 1 }; file.write(ver, sizeof(ver)); }
 
    writeSnapShot(file);
 
