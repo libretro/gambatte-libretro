@@ -149,23 +149,6 @@ const uint8_t *framebuffer() {
 //     printf("new buffer size: %zu / %u\n", abuf_size, ABUF_CAPACITY);
 // }
 
-void queue_samples(size_t num_samples) {
-    // For audio debug, copy uint32 (l,r) to another buffer for later
-    // consumption.
-    // Milestones:
-    // - dump raw audio from core (2mhz), confirm
-    // - dump computed mono audio, confirm
-    // - dump downsampled mono, confirm
-    // std::lock_guard guard(abuff_mutex);
-    if (abuf_size + num_samples > ABUF_CAPACITY) {
-        puts("buffer overflow.");
-        exit(1);
-    }
-    for (size_t i = 0; i < num_samples; i++) {
-        abuffer[abuf_first + i] = sbuffer[i];
-    }
-    abuf_size += num_samples;
-}
 
 
 void writeall(int fd, uint8_t* buff, size_t count) {
@@ -183,22 +166,33 @@ void writeall(int fd, uint8_t* buff, size_t count) {
 size_t min(size_t a, size_t b) {
     return a < b ? a : b;
 }
+
+int debug_audio_fd = 0;
 extern "C"
 __attribute__((visibility("default")))
 long apu_sample_variable(int16_t* output, int32_t unused) {
     // std::lock_guard guard(abuff_mutex);
     int fd = *(int*)output;
-    // Debug: write out entire queued buffer.
-    printf("writing %lu bytes\n", abuf_size);
-    while (abuf_size > 0) {
-        size_t rem = min(abuf_size,
-                ABUF_CAPACITY - abuf_first);
-        writeall(fd, (uint8_t*)(abuffer + abuf_first), rem*sizeof(uint32_t));
-        abuf_first = (abuf_first + rem) % ABUF_CAPACITY;
-        abuf_size -= rem;
-        printf("wrote %lu bytes\n", rem);
-    }
+    debug_audio_fd = fd;
     return unused;
+}
+
+void queue_samples(size_t num_samples) {
+    // For audio debug, copy uint32 (l,r) to another buffer for later
+    // consumption.
+    // Milestones:
+    // - dump raw audio from core (2mhz), confirm
+    // - dump computed mono audio, confirm
+    // - dump downsampled mono, confirm
+    // std::lock_guard guard(abuff_mutex);
+    if (abuf_size + num_samples > ABUF_CAPACITY) {
+        puts("buffer overflow.");
+        exit(1);
+    }
+    for (size_t i = 0; i < num_samples; i++) {
+        abuffer[i] = sbuffer[i];
+    }
+    writeall(debug_audio_fd, (uint8_t*)abuffer, num_samples * sizeof(int32_t));
 }
 // long apu_sample_variable(int16_t *output, int32_t frames) {
 //     std::lock_guard guard(abuff_mutex);

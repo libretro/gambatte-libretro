@@ -128,10 +128,10 @@ int main(int argc, char **argv) {
   clock_t last = clock();
   clock_t start = clock();
   assert(CLOCKS_PER_SEC == 1'000'000);
+  apu_sample_variable((int16_t*)&audio_raw_lr, 0); // DEBUG FIXME
   while(run) {
       input();
       frame();
-      apu_sample_variable((int16_t*)&audio_raw_lr, 0); // DEBUG FIXME
       SDL_UpdateTexture(texture, 0, framebuffer(), VIDEO_WIDTH*BYTES_PER_PIXEL);
       SDL_RenderCopy(renderer, texture, 0, 0);
       SDL_RenderPresent(renderer);
