@@ -54,7 +54,8 @@ typedef struct {
 void audio_callback(void *userdata, uint8_t* data, int bytes) {
     // puts("Audio");
     // printf("attempt to dequeue %d bytes\n", bytes);
-    apu_sample_variable((int16_t*)data, bytes / sizeof(uint16_t));
+    // apu_sample_variable((int16_t*)data, bytes / sizeof(uint16_t));
+    // FIXME
 }
 
 void soundcard_init(SoundCard *snd) {
@@ -94,6 +95,13 @@ int main(int argc, char **argv) {
   printf("read bytes: %lu\n", bytes_read);
   init(buffer, bytes_read);
 
+  int audio_raw_lr = open("audio_raw_lr.bin", 
+          O_CREAT | O_TRUNC | O_WRONLY , 0700);
+  if (audio_raw_lr == -1) {
+      perror("raw open failed.");
+      return 1;
+  }
+
   sdlkeys = (uint8_t*)SDL_GetKeyboardState(0);
 
 
@@ -118,9 +126,12 @@ int main(int argc, char **argv) {
   // soundcard_test();
 
   clock_t last = clock();
+  clock_t start = clock();
+  assert(CLOCKS_PER_SEC == 1'000'000);
   while(run) {
       input();
       frame();
+      apu_sample_variable((int16_t*)&audio_raw_lr, 0); // DEBUG FIXME
       SDL_UpdateTexture(texture, 0, framebuffer(), VIDEO_WIDTH*BYTES_PER_PIXEL);
       SDL_RenderCopy(renderer, texture, 0, 0);
       SDL_RenderPresent(renderer);
@@ -129,7 +140,8 @@ int main(int argc, char **argv) {
       // SDL_RenderCopy(renderer, texture, 0, 0);
       // SDL_RenderPresent(renderer);
       clock_t now = clock();
-      ssize_t delay = (last + 16666) - now;
+      // printf("now: %ld\n", now);
+      ssize_t delay = (last + 166'666) - now;
       if (delay > 0) {
           usleep(delay);
       } else {
@@ -139,4 +151,5 @@ int main(int argc, char **argv) {
   }
   printf("save file: %s\n", save_file);
   dump_state(save_file);
+  close(audio_raw_lr);
 }

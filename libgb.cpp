@@ -4,12 +4,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-// #include <mutex>
+#include <mutex>
 
-#define DBG 1
+#define DBG true
 
-#ifdef DBG
+#if DBG
 #include <stdio.h>
+#else
+void printf(const char* msg, ...) {}
 #endif
 
 unsigned input_value = 0;
@@ -39,14 +41,15 @@ const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 // each sample consists of 16 bit left, right sample pair. 
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
 // abuffer is the sound ring buffer read by the audio callback.
-// Note, this copy is a slow but correc solution for MVP.
-// static std::mutex abuff_mutex;
-size_t abuf_first, abuf_size;
-uint16_t abuffer[SOUND_BUFF_SIZE*2];
+static std::mutex abuff_mutex;
+size_t abuf_first = 0, abuf_size = 0;
+const int ABUF_CAPACITY = SOUND_SAMPLES_PER_FRAME*2;
+uint32_t abuffer[ABUF_CAPACITY];
+//uint16_t abuffer[ABUF_CAPACITY];
 
 void log(const char* msg) {
 #ifdef DBG
-    puts(msg);
+    printf("%s\n", msg);
 #endif
 }
 
@@ -105,7 +108,7 @@ void init(const uint8_t* data, size_t len) {
     }
 }
 
-// Note: Framebuffer creates a BGR565 formatted buffer.
+// Note: Framebuffer creates a u32 RGBA buffer.
 extern "C" 
 __attribute__((visibility("default")))
 const uint8_t *framebuffer() {
@@ -114,65 +117,109 @@ const uint8_t *framebuffer() {
 
 // Buffer and downsample.
 // Incoming audio is at a rate of 35112 per 59.727hz frame,
-// or 20.97 mHz
+// or 2.097 mHz
 // To get to approximately 44100 hz, we downsample by
 // 48x (47.554 would be perfect).
 // With incoming buffers of 2064, each chunk from the
 // core should result in 2064/48 = 43 samples.
+// void queue_samples(size_t num_samples) {
+//     std::lock_guard guard(abuff_mutex);
+//     const size_t DOWNSAMPLE_MULTIPLE = 48;
+//     if (abuf_size + num_samples > ABUF_CAPACITY) {
+//         printf("Buffer overrun! size=%zu adding=%zu\n", abuf_size, num_samples);
+//         printf("Clearing buffer.\n");
+//         abuf_size = 0;
+//         return;
+//     }
+//     size_t out = (abuf_first + abuf_size) % ABUF_CAPACITY;
+//     for (size_t i = 0; i < num_samples; i += DOWNSAMPLE_MULTIPLE) {
+//         double avg = 0; 
+//         for (size_t j = 0; j < DOWNSAMPLE_MULTIPLE && i + j < num_samples; j++) {
+//             uint32_t s = abuffer[i+j];
+//             // extract the two 16 bit samples from the u32.
+//             uint16_t left = s & 0xFFFF;
+//             uint16_t right = (s >> 16) & 0xFFFF;
+//             double sample = (left + right) / 2;
+//             avg += sample / DOWNSAMPLE_MULTIPLE;
+//         }
+//         abuffer[out] = avg;
+//         abuf_size ++;
+//         out = (out + 1) % ABUF_CAPACITY;
+//     }
+//     printf("new buffer size: %zu / %u\n", abuf_size, ABUF_CAPACITY);
+// }
+
 void queue_samples(size_t num_samples) {
-    return; // fixme
+    // For audio debug, copy uint32 (l,r) to another buffer for later
+    // consumption.
+    // Milestones:
+    // - dump raw audio from core (2mhz), confirm
+    // - dump computed mono audio, confirm
+    // - dump downsampled mono, confirm
     // std::lock_guard guard(abuff_mutex);
-    constexpr size_t capacity = sizeof(abuffer) / sizeof(abuffer[0]);
-    const size_t DOWNSAMPLE_MULTIPLE = 48;
-    if (abuf_size + num_samples > capacity) {
-        printf("Buffer overrun! size=%zu adding=%zu\n", abuf_size, num_samples);
-        puts("Clearing buffer.");
-        abuf_size = 0;
-        return;
+    if (abuf_size + num_samples > ABUF_CAPACITY) {
+        puts("buffer overflow.");
+        exit(1);
     }
-    size_t out = (abuf_first + abuf_size) % capacity;
     for (size_t i = 0; i < num_samples; i++) {
-        uint16_t avg = 0; 
-        // for (size_t j = 0; j < DOWNSAMPLE_MULTIPLE; j++) {
-        //     uint32_t s = abuffer[i+j];
-        //     uint16_t left = s & 0xFFFF;
-        //     uint16_t right = (s >> 16) & 0xFFFF;
-        //     avg = (left + right) / 2;
-        // }
-        uint32_t s = abuffer[i];
-        uint16_t left = s & 0xFFFF;
-        uint16_t right = (s >> 16) & 0xFFFF;
-        avg = (left + right) / 2;
-        abuffer[out] = avg;
-        out = (out + 1) % capacity;
+        abuffer[abuf_first + i] = sbuffer[i];
     }
     abuf_size += num_samples;
-    printf("new buffer size: %zu\n", abuf_size);
 }
 
+
+void writeall(int fd, uint8_t* buff, size_t count) {
+    while (count > 0) {
+        ssize_t written = write(fd, buff, count);
+        if (written <= 0) {
+            perror("write fail.");
+            exit(1);
+        }
+        count -= written;
+        buff += written;
+    }
+}
+
+size_t min(size_t a, size_t b) {
+    return a < b ? a : b;
+}
 extern "C"
 __attribute__((visibility("default")))
-long apu_sample_variable(int16_t *output, int32_t frames) {
-    return 0;  // FIXME;
+long apu_sample_variable(int16_t* output, int32_t unused) {
     // std::lock_guard guard(abuff_mutex);
-    const int32_t requested_frames = frames;
-    if (frames > abuf_size) {
-        printf("Buffer underflow. size=%zu, wanted = %d\n", abuf_size, frames);
-        frames = abuf_size;
+    int fd = *(int*)output;
+    // Debug: write out entire queued buffer.
+    printf("writing %lu bytes\n", abuf_size);
+    while (abuf_size > 0) {
+        size_t rem = min(abuf_size,
+                ABUF_CAPACITY - abuf_first);
+        writeall(fd, (uint8_t*)(abuffer + abuf_first), rem*sizeof(uint32_t));
+        abuf_first = (abuf_first + rem) % ABUF_CAPACITY;
+        abuf_size -= rem;
+        printf("wrote %lu bytes\n", rem);
     }
-    size_t first = abuf_first;
-    constexpr size_t capacity = sizeof(abuffer) / sizeof(abuffer[0]);
-    for (int i = 0; i < frames; i++) {
-        output[i] = abuffer[first + i];
-    }
-    for (int i = frames; i < requested_frames; i++) {
-        // fill rest of buffer with silence.
-        output[i] = 0;
-    }
-    abuf_first = (first + frames) % capacity;
-    abuf_size -= frames;
-    return 0;
+    return unused;
 }
+// long apu_sample_variable(int16_t *output, int32_t frames) {
+//     std::lock_guard guard(abuff_mutex);
+//     const int32_t requested_frames = frames;
+//     if (frames > abuf_size) {
+//         printf("Buffer underflow. size=%zu, wanted = %d\n", abuf_size, frames);
+//         frames = abuf_size;
+//     }
+//     size_t first = abuf_first;
+//     for (int i = 0; i < frames; i++) {
+//         output[i] = abuffer[first + i];
+//     }
+//     for (int i = frames; i < requested_frames; i++) {
+//         // fill rest of buffer with silence.
+//         output[i] = 0;
+//     }
+//     printf("Played %d samples\n", frames);
+//     abuf_first = (first + frames) % ABUF_CAPACITY;
+//     abuf_size -= frames;
+//     return 0;
+// }
 
 extern "C"
 __attribute__((visibility("default")))
@@ -181,7 +228,7 @@ void frame() {
     unsigned samples = SOUND_SAMPLES_PER_RUN;
     while (-1 == gameboy_->runFor((gambatte::video_pixel_t*)fbuffer, FB_PITCH_PX,
                 /*soundbuf*/ sbuffer, /*soundBufSize*/SOUND_BUFF_SIZE, samples)) {
-        printf("got samples: %u\n", samples);
+        // printf("got samples: %u\n", samples);
         queue_samples(samples);
         samples = SOUND_SAMPLES_PER_RUN;
     }
