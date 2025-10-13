@@ -26,7 +26,8 @@ extern "C" void dump_state(const char* save_path);
 extern "C" void load_state(const char* save_path);
 
 // APU
-const int SAMPLE_RATE = 44100;
+// const int SAMPLE_RATE = 35112 * 59.727 / 64;
+const int SAMPLE_RATE = 44100; // Original
 const int SAMPLES_PER_FRAME = SAMPLE_RATE / 60;
 extern "C" void apu_tick_60hz();
 extern "C" void apu_sample_60hz(int16_t *output);

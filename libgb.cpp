@@ -47,7 +47,7 @@ const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 // With incoming buffers of 2064, each chunk from the
 // core should result in 2064/48 = 43 samples.
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
-const size_t DOWNSAMPLE_MULTIPLE = 64;  // FIXME try 48.
+const size_t DOWNSAMPLE_MULTIPLE = 64;
 const size_t BLIP_BUFFER_SIZE = SOUND_SAMPLES_PER_FRAME*2;
 blipper_t *resampler_left = nullptr;
 blipper_t *resampler_right = nullptr;
@@ -143,6 +143,7 @@ extern "C"
 __attribute__((visibility("default")))
 long apu_sample_variable(int16_t* output, int32_t samples) {
     // std::lock_guard guard(abuff_mutex);
+    const int requested = samples;
     unsigned avail = blipper_read_avail(resampler_left);
     if (avail < samples) {
         samples = avail;
@@ -153,14 +154,17 @@ long apu_sample_variable(int16_t* output, int32_t samples) {
 
     constexpr int stride = 1; // TODO: fixup for l + r
     blipper_read(resampler_left, output, samples, 1);
+    for (int i = 0; i < requested - samples; i++) {
+        output[i*stride] = 0;
+    }
     return samples;
 }
 
 void queue_samples(size_t num_samples) {
-    puts("queue");
     // Milestones:
     // x dump raw audio from core (2mhz), confirm
-    // - resampler for left (mono) audio (64x)
+    // x resampler for left (mono) audio (64x)
+    // - mono audio distortions
     // - resampler for left (mono) audio (48x)
     // - resampler for right (mono)
     // - merged audio
@@ -174,7 +178,6 @@ void queue_samples(size_t num_samples) {
 extern "C"
 __attribute__((visibility("default")))
 void frame() {
-    puts("frame");
     if (gameboy_ == nullptr) return;
     unsigned samples = SOUND_SAMPLES_PER_RUN;
     while (-1 == gameboy_->runFor((gambatte::video_pixel_t*)fbuffer, FB_PITCH_PX,

@@ -52,7 +52,6 @@ typedef struct {
 } SoundCard;
 
 void audio_callback(void *userdata, uint8_t* data, int bytes) {
-    puts("Audio");
     // printf("attempt to dequeue %d bytes\n", bytes);
     apu_sample_variable((int16_t*)data, bytes / sizeof(uint16_t));
 }
@@ -60,7 +59,7 @@ void audio_callback(void *userdata, uint8_t* data, int bytes) {
 void soundcard_init(SoundCard *snd) {
     SDL_AudioSpec desired;
     desired.freq = SAMPLE_RATE;
-    desired.format = AUDIO_U16LSB;   // intel and aarch64 are both LE
+    desired.format = AUDIO_S16LSB;   // intel and aarch64 are both LE
     desired.channels = 1;
     desired.samples = 0;
     desired.callback = audio_callback;
