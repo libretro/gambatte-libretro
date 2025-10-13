@@ -11,7 +11,6 @@
 
 #if DBG
 #include <stdio.h>
-#include <assert.h>
 #else
 void printf(const char* msg, ...) {}
 #endif
@@ -30,7 +29,6 @@ bool bootloader_getter(void *, bool is_gbc, uint8_t* data, unsigned size) {
     return false;
 }
 
-std::mutex abuff_mutex;
 CInputGetter *s_input_getter = nullptr;
 gambatte::GB *gameboy_ = nullptr;
 const int DISPLAY_WIDTH = 160;
@@ -141,20 +139,16 @@ size_t min(size_t a, size_t b) {
     return a < b ? a : b;
 }
 
-int workers = 0; // debug: check for overlapping sample/queue
 extern "C"
 __attribute__((visibility("default")))
 long apu_sample_variable(int16_t* output, int32_t samples) {
-    std::lock_guard guard(abuff_mutex);
-    workers++;
-    assert(workers==1);
+    // std::lock_guard guard(abuff_mutex);
     const int requested = samples;
     unsigned avail = blipper_read_avail(resampler_left);
     if (avail < samples) {
         samples = avail;
     }
     if (samples == 0) {
-        workers--;
         return 0;
     }
 
@@ -163,14 +157,10 @@ long apu_sample_variable(int16_t* output, int32_t samples) {
     for (int i = 0; i < requested - samples; i++) {
         output[i*stride] = 0;
     }
-    workers--;
     return samples;
 }
 
 void queue_samples(size_t num_samples) {
-    std::lock_guard guard(abuff_mutex);
-    workers++;
-    assert(workers == 1);
     // Milestones:
     // x dump raw audio from core (2mhz), confirm
     // x resampler for left (mono) audio (64x)
@@ -179,10 +169,10 @@ void queue_samples(size_t num_samples) {
     // - resampler for right (mono)
     // - merged audio
     // - working in android
+    // std::lock_guard guard(abuff_mutex);
     const int16_t* samples = (const int16_t*)&sbuffer;
     blipper_push_samples(resampler_left, samples + 0, num_samples, 2);
     // blipper_push_samples(resampler_right, samples + 1, num_samples, 2);
-    workers--;
 }
 
 extern "C"
