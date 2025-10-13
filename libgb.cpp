@@ -1,5 +1,6 @@
 #include "corelib.h"
 #include "libgambatte/include/gambatte.h"
+#include "libgambatte/libretro/blipper.h"
 #include "libgambatte/include/inputgetter.h"
 #include <stdlib.h>
 #include <unistd.h>
@@ -37,14 +38,19 @@ uint32_t fbuffer[FB_PITCH_PX * 144];
 const size_t SOUND_SAMPLES_PER_FRAME = 35112;
 const size_t SOUND_SAMPLES_PER_RUN = 2064;
 const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
-// sbuffer is the sound buffer written to by the core during a frame
-// each sample consists of 16 bit left, right sample pair. 
+
+// Audio buffering and downsampling.
+// Incoming audio is at a rate of 35112 per 59.727hz frame,
+// or 2.097 mHz
+// To get to approximately 44100 hz, we downsample by
+// 48x (47.554 would be perfect).
+// With incoming buffers of 2064, each chunk from the
+// core should result in 2064/48 = 43 samples.
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
-// abuffer is the sound ring buffer read by the audio callback.
-static std::mutex abuff_mutex;
-size_t abuf_first = 0, abuf_size = 0;
-const int ABUF_CAPACITY = SOUND_SAMPLES_PER_FRAME*2;
-uint16_t abuffer[ABUF_CAPACITY];
+const size_t DOWNSAMPLE_MULTIPLE = 64;  // FIXME try 48.
+const size_t BLIP_BUFFER_SIZE = SOUND_SAMPLES_PER_FRAME*2;
+blipper_t *resampler_left = nullptr;
+blipper_t *resampler_right = nullptr;
 
 void log(const char* msg) {
 #ifdef DBG
@@ -91,9 +97,12 @@ void init(const uint8_t* data, size_t len) {
         gameboy_ = nullptr;
         delete s_input_getter;
         s_input_getter = nullptr;
+        blipper_free(resampler_left);
+        blipper_free(resampler_right);
     }
     gameboy_ = new gambatte::GB();
     s_input_getter = new CInputGetter();
+    resampler_left = blipper_new(32, 0.85, 6.5, DOWNSAMPLE_MULTIPLE, BLIP_BUFFER_SIZE, 0);
     gameboy_->setBootloaderGetter(bootloader_getter);
     gameboy_->setInputGetter(s_input_getter);
     int flags = 0;
@@ -114,42 +123,6 @@ const uint8_t *framebuffer() {
     return (const uint8_t*)fbuffer;
 }
 
-// Buffer and downsample.
-// Incoming audio is at a rate of 35112 per 59.727hz frame,
-// or 2.097 mHz
-// To get to approximately 44100 hz, we downsample by
-// 48x (47.554 would be perfect).
-// With incoming buffers of 2064, each chunk from the
-// core should result in 2064/48 = 43 samples.
-const size_t DOWNSAMPLE_MULTIPLE = 48;
-// void queue_samples(size_t num_samples) {
-//     std::lock_guard guard(abuff_mutex);
-//     if (abuf_size + num_samples > ABUF_CAPACITY) {
-//         printf("Buffer overrun! size=%zu adding=%zu\n", abuf_size, num_samples);
-//         printf("Clearing buffer.\n");
-//         abuf_size = 0;
-//         return;
-//     }
-//     size_t out = (abuf_first + abuf_size) % ABUF_CAPACITY;
-//     for (size_t i = 0; i < num_samples; i += DOWNSAMPLE_MULTIPLE) {
-//         double avg = 0; 
-//         for (size_t j = 0; j < DOWNSAMPLE_MULTIPLE && i + j < num_samples; j++) {
-//             uint32_t s = abuffer[i+j];
-//             // extract the two 16 bit samples from the u32.
-//             uint16_t left = s & 0xFFFF;
-//             uint16_t right = (s >> 16) & 0xFFFF;
-//             double sample = (left + right) / 2;
-//             avg += sample / DOWNSAMPLE_MULTIPLE;
-//         }
-//         abuffer[out] = avg;
-//         abuf_size ++;
-//         out = (out + 1) % ABUF_CAPACITY;
-//     }
-//     printf("new buffer size: %zu / %u\n", abuf_size, ABUF_CAPACITY);
-// }
-
-
-
 void writeall(int fd, uint8_t* buff, size_t count) {
     while (count > 0) {
         ssize_t written = write(fd, buff, count);
@@ -166,68 +139,42 @@ size_t min(size_t a, size_t b) {
     return a < b ? a : b;
 }
 
-int debug_audio_fd = 0;
 extern "C"
 __attribute__((visibility("default")))
-long apu_sample_variable(int16_t* output, int32_t unused) {
+long apu_sample_variable(int16_t* output, int32_t samples) {
     // std::lock_guard guard(abuff_mutex);
-    int fd = *(int*)output;
-    debug_audio_fd = fd;
-    return unused;
+    unsigned avail = blipper_read_avail(resampler_left);
+    if (avail < samples) {
+        samples = avail;
+    }
+    if (samples == 0) {
+        return 0;
+    }
+
+    constexpr int stride = 1; // TODO: fixup for l + r
+    blipper_read(resampler_left, output, samples, 1);
+    return samples;
 }
 
 void queue_samples(size_t num_samples) {
-    // For audio debug, copy uint32 (l,r) to another buffer for later
-    // consumption.
+    puts("queue");
     // Milestones:
     // x dump raw audio from core (2mhz), confirm
-    // - dump computed mono audio, confirm
-    // - dump downsampled mono, confirm
+    // - resampler for left (mono) audio (64x)
+    // - resampler for left (mono) audio (48x)
+    // - resampler for right (mono)
+    // - merged audio
+    // - working in android
     // std::lock_guard guard(abuff_mutex);
-    if (abuf_size + num_samples > ABUF_CAPACITY) {
-        puts("buffer overflow.");
-        exit(1);
-    }
-    size_t out = 0;
-    for (size_t i = 0; i < num_samples; i += DOWNSAMPLE_MULTIPLE) {
-        float avg = 0;
-        size_t count = 0;
-        for (size_t j = 0; j < DOWNSAMPLE_MULTIPLE && i + j < num_samples; j++) {
-            // MVP: left channel for simpler debugging.
-            uint16_t l = sbuffer[i] & 0xFFFF;
-            uint16_t r = (sbuffer[i] >> 16) & 0xFFFF;
-            avg += r;
-            count += 1;
-        }
-        abuffer[out] = avg;
-        out++;
-    }
-    writeall(debug_audio_fd, (uint8_t*)abuffer, out * sizeof(int16_t));
+    const int16_t* samples = (const int16_t*)&sbuffer;
+    blipper_push_samples(resampler_left, samples + 0, num_samples, 2);
+    // blipper_push_samples(resampler_right, samples + 1, num_samples, 2);
 }
-// long apu_sample_variable(int16_t *output, int32_t frames) {
-//     std::lock_guard guard(abuff_mutex);
-//     const int32_t requested_frames = frames;
-//     if (frames > abuf_size) {
-//         printf("Buffer underflow. size=%zu, wanted = %d\n", abuf_size, frames);
-//         frames = abuf_size;
-//     }
-//     size_t first = abuf_first;
-//     for (int i = 0; i < frames; i++) {
-//         output[i] = abuffer[first + i];
-//     }
-//     for (int i = frames; i < requested_frames; i++) {
-//         // fill rest of buffer with silence.
-//         output[i] = 0;
-//     }
-//     printf("Played %d samples\n", frames);
-//     abuf_first = (first + frames) % ABUF_CAPACITY;
-//     abuf_size -= frames;
-//     return 0;
-// }
 
 extern "C"
 __attribute__((visibility("default")))
 void frame() {
+    puts("frame");
     if (gameboy_ == nullptr) return;
     unsigned samples = SOUND_SAMPLES_PER_RUN;
     while (-1 == gameboy_->runFor((gambatte::video_pixel_t*)fbuffer, FB_PITCH_PX,

@@ -52,10 +52,9 @@ typedef struct {
 } SoundCard;
 
 void audio_callback(void *userdata, uint8_t* data, int bytes) {
-    // puts("Audio");
+    puts("Audio");
     // printf("attempt to dequeue %d bytes\n", bytes);
-    // apu_sample_variable((int16_t*)data, bytes / sizeof(uint16_t));
-    // FIXME
+    apu_sample_variable((int16_t*)data, bytes / sizeof(uint16_t));
 }
 
 void soundcard_init(SoundCard *snd) {
@@ -128,7 +127,6 @@ int main(int argc, char **argv) {
   clock_t last = clock();
   clock_t start = clock();
   assert(CLOCKS_PER_SEC == 1'000'000);
-  apu_sample_variable((int16_t*)&audio_raw_lr, 0); // DEBUG FIXME
   while(run) {
       input();
       frame();
@@ -141,7 +139,7 @@ int main(int argc, char **argv) {
       // SDL_RenderPresent(renderer);
       clock_t now = clock();
       // printf("now: %ld\n", now);
-      ssize_t delay = (last + 166'666) - now;
+      ssize_t delay = (last + 16'666) - now;
       if (delay > 0) {
           usleep(delay);
       } else {
