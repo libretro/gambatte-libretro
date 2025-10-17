@@ -54,7 +54,7 @@ const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
 int16_t mono_buffer[SOUND_BUFF_SIZE];
 int16_t resampled_buffer[SOUND_BUFF_SIZE];  // written to by resampler each frame
-Ring<int16_t, SOUND_SAMPLES_PER_FRAME> audio_ring;
+Ring<int16_t, SOUND_SAMPLES_PER_FRAME> *audio_ring = nullptr;
 LinintCore<1> *resampler_left = nullptr;
 // blipper_t *resampler_left = nullptr;
 // blipper_t *resampler_right = nullptr;
@@ -109,6 +109,7 @@ void init(const uint8_t* data, size_t len) {
     }
     gameboy_ = new gambatte::GB();
     s_input_getter = new CInputGetter();
+    audio_ring = new Ring<int16_t, SOUND_SAMPLES_PER_FRAME>();
     resampler_left = new LinintCore<1>(AUDIO_INPUT_RATE, AUDIO_OUTPUT_RATE);
     gameboy_->setBootloaderGetter(bootloader_getter);
     gameboy_->setInputGetter(s_input_getter);
@@ -149,12 +150,12 @@ size_t min(size_t a, size_t b) {
 extern "C"
 __attribute__((visibility("default")))
 long apu_sample_variable(int16_t* output, int32_t samples) {
-    size_t count = audio_ring.pull(output, samples);
+    size_t count = audio_ring->pull(output, samples);
     int16_t last = count > 0 ? output[count-1] : 0;
     for (int i = count; i < samples; i++) {
         output[i] = last;
     }
-    return last;
+    return samples;
 }
 
 void queue_samples(size_t num_samples) {
@@ -175,7 +176,7 @@ void queue_samples(size_t num_samples) {
     size_t avail = resampler_left->resample(resampled_buffer, mono_buffer, /*inlen=*/num_samples);
 
     // push to ring buffer
-    audio_ring.push(resampled_buffer, avail);
+    audio_ring->push(resampled_buffer, avail);
 }
 
 extern "C"
