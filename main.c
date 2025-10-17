@@ -63,7 +63,7 @@ void soundcard_init(SoundCard *snd) {
     desired.format = AUDIO_S16LSB;   // intel and aarch64 are both LE
     desired.channels = 1;
     desired.samples = 0;
-    desired.callback = audio_callback;
+    desired.callback = audio_callback;  // async audio
     SDL_AudioSpec actual;
     int res = SDL_OpenAudio(&desired, &actual);
     assert(res == 0);

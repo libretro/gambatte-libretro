@@ -152,6 +152,7 @@ __attribute__((visibility("default")))
 long apu_sample_variable(int16_t* output, int32_t samples) {
     size_t count = audio_ring->pull(output, samples);
     int16_t last = count > 0 ? output[count-1] : 0;
+    // printf("autofill %ld samples\n", samples - count); // autofills 0 in practice
     for (int i = count; i < samples; i++) {
         output[i] = last;
     }
@@ -169,9 +170,10 @@ void queue_samples(size_t num_samples) {
     // - working in android
     // std::lock_guard guard(abuff_mutex);
     // a) 16bit x2 channels 2mhz -> b) 16bit mono 2mhz -> c) 16bit mono 44.1khz
-    const int16_t* samples = (const int16_t*)&sbuffer;
+    // static_assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));  // THIS ASSERT FAILS
+    // const int16_t* samples = (const int16_t*)&sbuffer;
     for (size_t i = 0; i < num_samples; i++) {
-        mono_buffer[i] = samples[i*2]; // grab every even aka left sample
+        mono_buffer[i] = sbuffer[i]&0xffff; // grab every even aka left sample
     }
     size_t avail = resampler_left->resample(resampled_buffer, mono_buffer, /*inlen=*/num_samples);
 
