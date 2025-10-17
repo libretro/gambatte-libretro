@@ -1,6 +1,7 @@
 #include "corelib.h"
 #include "libgambatte/include/gambatte.h"
-#include "libgambatte/libretro/blipper.h"
+// #include "libgambatte/libretro/blipper.h"
+#include "libgambatte/src/linint.h"
 #include "libgambatte/include/inputgetter.h"
 #include "ring.hpp"
 #include <stdlib.h>
@@ -38,6 +39,8 @@ const int DISPLAY_HEIGHT = 144;
 const int FB_PITCH_PX = DISPLAY_WIDTH;
 uint32_t fbuffer[FB_PITCH_PX * 144];
 const size_t SOUND_SAMPLES_PER_FRAME = 35112;
+const size_t AUDIO_INPUT_RATE = SOUND_SAMPLES_PER_FRAME * 60;
+const size_t AUDIO_OUTPUT_RATE = 44100;
 const size_t SOUND_SAMPLES_PER_RUN = 2064;
 const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 
@@ -49,12 +52,12 @@ const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 // With incoming buffers of 2064, each chunk from the
 // core should result in 2064/48 = 43 samples.
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
+int16_t mono_buffer[SOUND_BUFF_SIZE];
 int16_t resampled_buffer[SOUND_BUFF_SIZE];  // written to by resampler each frame
-const size_t DOWNSAMPLE_MULTIPLE = 64;
-const size_t BLIP_BUFFER_SIZE = SOUND_SAMPLES_PER_FRAME*2;
 Ring<int16_t, SOUND_SAMPLES_PER_FRAME> audio_ring;
-blipper_t *resampler_left = nullptr;
-blipper_t *resampler_right = nullptr;
+LinintCore<1> *resampler_left = nullptr;
+// blipper_t *resampler_left = nullptr;
+// blipper_t *resampler_right = nullptr;
 
 void log(const char* msg) {
 #ifdef DBG
@@ -101,12 +104,12 @@ void init(const uint8_t* data, size_t len) {
         gameboy_ = nullptr;
         delete s_input_getter;
         s_input_getter = nullptr;
-        blipper_free(resampler_left);
-        blipper_free(resampler_right);
+        delete resampler_left;
+        resampler_left = nullptr;
     }
     gameboy_ = new gambatte::GB();
     s_input_getter = new CInputGetter();
-    resampler_left = blipper_new(64, 0.85, 6.5, DOWNSAMPLE_MULTIPLE, BLIP_BUFFER_SIZE, 0);
+    resampler_left = new LinintCore<1>(AUDIO_INPUT_RATE, AUDIO_OUTPUT_RATE);
     gameboy_->setBootloaderGetter(bootloader_getter);
     gameboy_->setInputGetter(s_input_getter);
     int flags = 0;
@@ -154,31 +157,6 @@ long apu_sample_variable(int16_t* output, int32_t samples) {
     return last;
 }
 
-// extern "C"
-// __attribute__((visibility("default")))
-// long apu_sample_variable(int16_t* output, int32_t samples) {
-//     // mvp: read from sampler on callback
-//     // std::lock_guard guard(abuff_mutex);
-//     const int requested = samples;
-//     unsigned avail = blipper_read_avail(resampler_left);
-//     if (avail < samples) {
-//         // puts("underflow");
-//         samples = avail;
-//     }
-//     if (samples == 0) {
-//         puts("zero samples!");
-//         return 0;
-//     }
-// 
-//     constexpr int stride = 1; // TODO: fixup for l + r
-//     blipper_read(resampler_left, output, samples, 1);
-//     int16_t last = output[samples-1];
-//     for (int i = 0; i < requested - samples; i++) {
-//         output[samples + i*stride] = last;
-//     }
-//     return samples;
-// }
-
 void queue_samples(size_t num_samples) {
     // Milestones:
     // x dump raw audio from core (2mhz), confirm
@@ -189,10 +167,12 @@ void queue_samples(size_t num_samples) {
     // - merged audio
     // - working in android
     // std::lock_guard guard(abuff_mutex);
+    // a) 16bit x2 channels 2mhz -> b) 16bit mono 2mhz -> c) 16bit mono 44.1khz
     const int16_t* samples = (const int16_t*)&sbuffer;
-    blipper_push_samples(resampler_left, samples + 0, num_samples, 2); // input is strided, 2ch
-    size_t avail = blipper_read_avail(resampler_left);
-    blipper_read(resampler_left, resampled_buffer, avail, 1);  // output is 1 ch
+    for (size_t i = 0; i < num_samples; i++) {
+        mono_buffer[i] = samples[i*2]; // grab every even aka left sample
+    }
+    size_t avail = resampler_left->resample(resampled_buffer, mono_buffer, /*inlen=*/num_samples);
 
     // push to ring buffer
     audio_ring.push(resampled_buffer, avail);
