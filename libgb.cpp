@@ -2,6 +2,7 @@
 #include "libgambatte/include/gambatte.h"
 #include "libgambatte/libretro/blipper.h"
 #include "libgambatte/include/inputgetter.h"
+#include "ring.hpp"
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -31,6 +32,7 @@ bool bootloader_getter(void *, bool is_gbc, uint8_t* data, unsigned size) {
 
 CInputGetter *s_input_getter = nullptr;
 gambatte::GB *gameboy_ = nullptr;
+// std::mutex abuff_mutex;
 const int DISPLAY_WIDTH = 160;
 const int DISPLAY_HEIGHT = 144;
 const int FB_PITCH_PX = DISPLAY_WIDTH;
@@ -47,8 +49,10 @@ const size_t SOUND_BUFF_SIZE = (SOUND_SAMPLES_PER_RUN + 2064);
 // With incoming buffers of 2064, each chunk from the
 // core should result in 2064/48 = 43 samples.
 gambatte::uint_least32_t sbuffer[SOUND_BUFF_SIZE];
+int16_t resampled_buffer[SOUND_BUFF_SIZE];  // written to by resampler each frame
 const size_t DOWNSAMPLE_MULTIPLE = 64;
 const size_t BLIP_BUFFER_SIZE = SOUND_SAMPLES_PER_FRAME*2;
+Ring<int16_t, SOUND_SAMPLES_PER_FRAME> audio_ring;
 blipper_t *resampler_left = nullptr;
 blipper_t *resampler_right = nullptr;
 
@@ -102,7 +106,7 @@ void init(const uint8_t* data, size_t len) {
     }
     gameboy_ = new gambatte::GB();
     s_input_getter = new CInputGetter();
-    resampler_left = blipper_new(32, 0.85, 6.5, DOWNSAMPLE_MULTIPLE, BLIP_BUFFER_SIZE, 0);
+    resampler_left = blipper_new(64, 0.85, 6.5, DOWNSAMPLE_MULTIPLE, BLIP_BUFFER_SIZE, 0);
     gameboy_->setBootloaderGetter(bootloader_getter);
     gameboy_->setInputGetter(s_input_getter);
     int flags = 0;
@@ -142,23 +146,38 @@ size_t min(size_t a, size_t b) {
 extern "C"
 __attribute__((visibility("default")))
 long apu_sample_variable(int16_t* output, int32_t samples) {
-    // std::lock_guard guard(abuff_mutex);
-    const int requested = samples;
-    unsigned avail = blipper_read_avail(resampler_left);
-    if (avail < samples) {
-        samples = avail;
+    size_t count = audio_ring.pull(output, samples);
+    int16_t last = count > 0 ? output[count-1] : 0;
+    for (int i = count; i < samples; i++) {
+        output[i] = last;
     }
-    if (samples == 0) {
-        return 0;
-    }
-
-    constexpr int stride = 1; // TODO: fixup for l + r
-    blipper_read(resampler_left, output, samples, 1);
-    for (int i = 0; i < requested - samples; i++) {
-        output[i*stride] = 0;
-    }
-    return samples;
+    return last;
 }
+
+// extern "C"
+// __attribute__((visibility("default")))
+// long apu_sample_variable(int16_t* output, int32_t samples) {
+//     // mvp: read from sampler on callback
+//     // std::lock_guard guard(abuff_mutex);
+//     const int requested = samples;
+//     unsigned avail = blipper_read_avail(resampler_left);
+//     if (avail < samples) {
+//         // puts("underflow");
+//         samples = avail;
+//     }
+//     if (samples == 0) {
+//         puts("zero samples!");
+//         return 0;
+//     }
+// 
+//     constexpr int stride = 1; // TODO: fixup for l + r
+//     blipper_read(resampler_left, output, samples, 1);
+//     int16_t last = output[samples-1];
+//     for (int i = 0; i < requested - samples; i++) {
+//         output[samples + i*stride] = last;
+//     }
+//     return samples;
+// }
 
 void queue_samples(size_t num_samples) {
     // Milestones:
@@ -171,8 +190,12 @@ void queue_samples(size_t num_samples) {
     // - working in android
     // std::lock_guard guard(abuff_mutex);
     const int16_t* samples = (const int16_t*)&sbuffer;
-    blipper_push_samples(resampler_left, samples + 0, num_samples, 2);
-    // blipper_push_samples(resampler_right, samples + 1, num_samples, 2);
+    blipper_push_samples(resampler_left, samples + 0, num_samples, 2); // input is strided, 2ch
+    size_t avail = blipper_read_avail(resampler_left);
+    blipper_read(resampler_left, resampled_buffer, avail, 1);  // output is 1 ch
+
+    // push to ring buffer
+    audio_ring.push(resampled_buffer, avail);
 }
 
 extern "C"
