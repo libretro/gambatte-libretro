@@ -161,18 +161,6 @@ long apu_sample_variable(int16_t* output, int32_t samples) {
 }
 
 void queue_samples(size_t num_samples) {
-    // Milestones:
-    // x dump raw audio from core (2mhz), confirm
-    // x resampler for left (mono) audio (64x)
-    // - mono audio distortions
-    // - resampler for left (mono) audio (48x)
-    // - resampler for right (mono)
-    // - merged audio
-    // - working in android
-    // std::lock_guard guard(abuff_mutex);
-    // a) 16bit x2 channels 2mhz -> b) 16bit mono 2mhz -> c) 16bit mono 44.1khz
-    // static_assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));  // THIS ASSERT FAILS
-    // const int16_t* samples = (const int16_t*)&sbuffer;
     for (size_t i = 0; i < num_samples; i++) {
         mono_buffer[i] = sbuffer[i]&0xffff; // grab every even aka left sample
     }
@@ -214,7 +202,6 @@ void save(int fd) {
     uint8_t *buffer = (uint8_t*)malloc(state_size);
     uint8_t* const orig_buffer = buffer;
     gameboy_->saveState(buffer);
-    // checksum(buffer, state_size);
     while (state_size > 0) {
         ssize_t written = write(fd, buffer, state_size);
         if (written <= 0) {
@@ -268,7 +255,6 @@ void load(int fd) {
         write += read_bytes;
         bytes -= read_bytes;
     }
-    // checksum(buffer, state_size);
     gameboy_->loadState(buffer);
     free(buffer);
     close(fd);
