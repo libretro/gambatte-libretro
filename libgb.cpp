@@ -82,6 +82,7 @@ void set_key(size_t key, char val) {
         case Keys::BTN_Down:  key = gambatte::InputGetter::DOWN; break;
         case Keys::BTN_Left:  key = gambatte::InputGetter::LEFT; break;
         case Keys::BTN_Right: key = gambatte::InputGetter::RIGHT; break;
+        default: return;  // ignore unsupported keys.
     }
 
     if (val) 
