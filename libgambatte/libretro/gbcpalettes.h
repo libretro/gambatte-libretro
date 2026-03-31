@@ -2864,7 +2864,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 150 - Olympic Bronze", twb64_150_olympic_bronze },
 	{ "TWB64 151 - ANA Flight Blue", twb64_151_ana_flight_blue },
 	{ "TWB64 152 - Nijigasaki Orange", twb64_152_nijigasaki_orange },
-	{ "TWB64 153 - holoblue", twb64_153_holoblue },
+	{ "TWB64 153 - Holoblue", twb64_153_holoblue },
 	{ "TWB64 154 - WWE White and Red", twb64_154_wwe_white_and_red },
 	{ "TWB64 155 - Yoshi Egg Green", twb64_155_yoshi_egg_green },
 	{ "TWB64 156 - Pokedex Red", twb64_156_pokedex_red },
@@ -2909,7 +2909,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 195 - EVA-01", twb64_195_eva_01 },
 	{ "TWB64 196 - Wild West Vision", twb64_196_wild_west_vision },
 	{ "TWB64 197 - Optimus Prime Palette", twb64_197_optimus_prime_palette },
-	{ "TWB64 198 - niconico sea green", twb64_198_niconico_sea_green },
+	{ "TWB64 198 - Niconico Sea Green", twb64_198_niconico_sea_green },
 	{ "TWB64 199 - Duracell Copper", twb64_199_duracell_copper },
 	{ "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", twb64_200_tokyo_skytree_cloudy_blue },
 	{ "TWB64 201 - DMG-GOLD", twb64_201_dmg_gold },
@@ -2932,7 +2932,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 218 - Timing Hero Ver.", twb64_218_timing_hero_ver },
 	{ "TWB64 219 - Invincible Yellow and Blue", twb64_219_invincible_yellow_and_blue },
 	{ "TWB64 220 - Grinchy Green", twb64_220_grinchy_green },
-	{ "TWB64 221 - animate vision", twb64_221_animate_vision },
+	{ "TWB64 221 - Animate Vision", twb64_221_animate_vision },
 	{ "TWB64 222 - School Idol Mix", twb64_222_school_idol_mix },
 	{ "TWB64 223 - Green Awakening", twb64_223_green_awakening },
 	{ "TWB64 224 - Goomba Brown", twb64_224_goomba_brown },
@@ -2970,7 +2970,7 @@ static const GbcPaletteEntry gbcDirPalettes[] = {
 	{ "TWB64 256 - Domino's Pizza Vision", twb64_256_dominos_pizza_vision },
 	{ "TWB64 257 - Pac-Man Vision", twb64_257_pac_man_vision },
 	{ "TWB64 258 - Bill's PC Screen", twb64_258_bills_pc_screen },
-	{ "TWB64 259 - Sonic Mega Blue", twb64_259_ebott_prolouge },
+	{ "TWB64 259 - Ebott Prolouge", twb64_259_ebott_prolouge },
 	{ "TWB64 260 - Fool's Gold and Silver", twb64_260_fools_gold_and_silver },
 	{ "TWB64 261 - UTA VISION", twb64_261_uta_vision },
 	{ "TWB64 262 - Metallic Paldea Brass", twb64_262_metallic_paldea_brass },
@@ -3304,3 +3304,4 @@ static const unsigned short *findGbcPal(const char *const title)
 }
 
 }
+
