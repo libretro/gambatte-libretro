@@ -369,7 +369,7 @@ extern "C" {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_AR NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_AR NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_AR NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_AR NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_AR NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_AR NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_AR NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_AR NULL
@@ -820,7 +820,7 @@ struct retro_core_option_v2_definition option_defs_ar[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_AR },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_AR },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_AR },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_AR },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_AR },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_AR },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_AR },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_AR },
@@ -865,7 +865,7 @@ struct retro_core_option_v2_definition option_defs_ar[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_AR },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_AR },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_AR },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_AR },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_AR },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_AR },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_AR },
          { NULL, NULL },
@@ -900,7 +900,7 @@ struct retro_core_option_v2_definition option_defs_ar[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_AR },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_AR },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_AR },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_AR },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_AR },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_AR },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_AR },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_AR },
@@ -938,7 +938,7 @@ struct retro_core_option_v2_definition option_defs_ar[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_AR },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_AR },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_AR },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_AR },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_AR },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_AR },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_AR },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_AR },
@@ -2005,7 +2005,7 @@ struct retro_core_options_v2 options_ar = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_AST NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_AST NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_AST NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_AST NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_AST NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_AST NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_AST NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_AST NULL
@@ -2456,7 +2456,7 @@ struct retro_core_option_v2_definition option_defs_ast[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_AST },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_AST },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_AST },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_AST },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_AST },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_AST },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_AST },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_AST },
@@ -2501,7 +2501,7 @@ struct retro_core_option_v2_definition option_defs_ast[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_AST },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_AST },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_AST },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_AST },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_AST },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_AST },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_AST },
          { NULL, NULL },
@@ -2536,7 +2536,7 @@ struct retro_core_option_v2_definition option_defs_ast[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_AST },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_AST },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_AST },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_AST },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_AST },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_AST },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_AST },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_AST },
@@ -2574,7 +2574,7 @@ struct retro_core_option_v2_definition option_defs_ast[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_AST },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_AST },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_AST },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_AST },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_AST },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_AST },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_AST },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_AST },
@@ -3641,7 +3641,7 @@ struct retro_core_options_v2 options_ast = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_BE NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_BE NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_BE NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_BE NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_BE NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_BE NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_BE NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_BE NULL
@@ -4092,7 +4092,7 @@ struct retro_core_option_v2_definition option_defs_be[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_BE },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_BE },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_BE },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_BE },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_BE },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_BE },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_BE },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_BE },
@@ -4137,7 +4137,7 @@ struct retro_core_option_v2_definition option_defs_be[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_BE },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_BE },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_BE },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_BE },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_BE },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_BE },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_BE },
          { NULL, NULL },
@@ -4172,7 +4172,7 @@ struct retro_core_option_v2_definition option_defs_be[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_BE },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_BE },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_BE },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_BE },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_BE },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_BE },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_BE },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_BE },
@@ -4210,7 +4210,7 @@ struct retro_core_option_v2_definition option_defs_be[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_BE },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_BE },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_BE },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_BE },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_BE },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_BE },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_BE },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_BE },
@@ -5277,7 +5277,7 @@ struct retro_core_options_v2 options_be = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_BG NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_BG NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_BG NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_BG NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_BG NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_BG NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_BG NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_BG NULL
@@ -5728,7 +5728,7 @@ struct retro_core_option_v2_definition option_defs_bg[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_BG },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_BG },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_BG },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_BG },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_BG },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_BG },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_BG },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_BG },
@@ -5773,7 +5773,7 @@ struct retro_core_option_v2_definition option_defs_bg[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_BG },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_BG },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_BG },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_BG },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_BG },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_BG },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_BG },
          { NULL, NULL },
@@ -5808,7 +5808,7 @@ struct retro_core_option_v2_definition option_defs_bg[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_BG },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_BG },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_BG },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_BG },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_BG },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_BG },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_BG },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_BG },
@@ -5846,7 +5846,7 @@ struct retro_core_option_v2_definition option_defs_bg[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_BG },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_BG },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_BG },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_BG },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_BG },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_BG },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_BG },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_BG },
@@ -6913,7 +6913,7 @@ struct retro_core_options_v2 options_bg = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CA NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_CA NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CA NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CA NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CA NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CA NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_CA NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CA NULL
@@ -7364,7 +7364,7 @@ struct retro_core_option_v2_definition option_defs_ca[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_CA },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_CA },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_CA },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CA },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CA },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_CA },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_CA },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_CA },
@@ -7409,7 +7409,7 @@ struct retro_core_option_v2_definition option_defs_ca[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_CA },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_CA },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_CA },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CA },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CA },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_CA },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_CA },
          { NULL, NULL },
@@ -7444,7 +7444,7 @@ struct retro_core_option_v2_definition option_defs_ca[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_CA },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_CA },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_CA },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CA },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CA },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_CA },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_CA },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_CA },
@@ -7482,7 +7482,7 @@ struct retro_core_option_v2_definition option_defs_ca[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CA },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_CA },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CA },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CA },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CA },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CA },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_CA },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CA },
@@ -8486,7 +8486,7 @@ struct retro_core_options_v2 options_ca = {
 #define OPTION_VAL_TWB64_195_EVA_01_CHS NULL
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_CHS "TWB64 196 - 荒野西部视觉"
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_CHS "TWB64 197 - 擎天柱主调色板"
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CHS "TWB64 198 - niconico 海绿"
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CHS NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_CHS "TWB64 199 - Duracell 铜"
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_CHS "TWB64 200 - 东京晴空塔阴天蓝"
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_CHS "> TWB64 - Pack 3 调色板"
@@ -8511,7 +8511,7 @@ struct retro_core_options_v2 options_ca = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_CHS "TWB64 218 - 计时英雄版"
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_CHS "TWB64 219 - 无敌黄与蓝"
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_CHS "TWB64 220 - Grinchy 绿"
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_CHS "TWB64 221 - 动画视觉"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_CHS NULL
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_CHS "TWB64 222 - 学园偶像混合"
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_CHS "TWB64 223 - 绿色觉醒"
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_CHS "TWB64 224 - Goomba 棕"
@@ -8549,7 +8549,7 @@ struct retro_core_options_v2 options_ca = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CHS "TWB64 256 - 达美乐披萨视觉"
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_CHS "TWB64 257 - 吃豆人视觉"
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CHS "TWB64 258 - Bill 的电脑屏幕"
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CHS "TWB64 259 - 索尼克超级蓝"
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CHS NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CHS "TWB64 260 - 笨蛋的金与银"
 #define OPTION_VAL_TWB64_261_UTA_VISION_CHS "TWB64 261 - UTA 视觉"
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CHS "TWB64 262 - 金属帕尔迪亚黄铜"
@@ -9000,7 +9000,7 @@ struct retro_core_option_v2_definition option_defs_chs[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_CHS },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_CHS },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_CHS },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CHS },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CHS },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_CHS },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_CHS },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_CHS },
@@ -9045,7 +9045,7 @@ struct retro_core_option_v2_definition option_defs_chs[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_CHS },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_CHS },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_CHS },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CHS },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CHS },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_CHS },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_CHS },
          { NULL, NULL },
@@ -9080,7 +9080,7 @@ struct retro_core_option_v2_definition option_defs_chs[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_CHS },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_CHS },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_CHS },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CHS },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CHS },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_CHS },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_CHS },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_CHS },
@@ -9118,7 +9118,7 @@ struct retro_core_option_v2_definition option_defs_chs[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CHS },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_CHS },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CHS },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CHS },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CHS },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CHS },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_CHS },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CHS },
@@ -10185,7 +10185,7 @@ struct retro_core_options_v2 options_chs = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CHT NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_CHT NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CHT NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CHT NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CHT NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CHT NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_CHT NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CHT NULL
@@ -10636,7 +10636,7 @@ struct retro_core_option_v2_definition option_defs_cht[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_CHT },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_CHT },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_CHT },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CHT },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CHT },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_CHT },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_CHT },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_CHT },
@@ -10681,7 +10681,7 @@ struct retro_core_option_v2_definition option_defs_cht[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_CHT },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_CHT },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_CHT },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CHT },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CHT },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_CHT },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_CHT },
          { NULL, NULL },
@@ -10716,7 +10716,7 @@ struct retro_core_option_v2_definition option_defs_cht[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_CHT },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_CHT },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_CHT },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CHT },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CHT },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_CHT },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_CHT },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_CHT },
@@ -10754,7 +10754,7 @@ struct retro_core_option_v2_definition option_defs_cht[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CHT },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_CHT },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CHT },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CHT },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CHT },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CHT },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_CHT },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CHT },
@@ -11783,7 +11783,7 @@ struct retro_core_options_v2 options_cht = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_CS NULL
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_CS "TWB64 219 - Neporazitelná žlutá a modrá"
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_CS NULL
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_CS "TWB64 221 - animovaná vize"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_CS NULL
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_CS NULL
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_CS NULL
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_CS NULL
@@ -11821,7 +11821,7 @@ struct retro_core_options_v2 options_cht = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CS "TWB64 256 - Vize Domino's Pizza"
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_CS NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CS NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CS NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CS NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CS NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_CS NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CS NULL
@@ -12272,7 +12272,7 @@ struct retro_core_option_v2_definition option_defs_cs[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_CS },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_CS },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_CS },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CS },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CS },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_CS },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_CS },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_CS },
@@ -12317,7 +12317,7 @@ struct retro_core_option_v2_definition option_defs_cs[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_CS },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_CS },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_CS },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CS },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CS },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_CS },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_CS },
          { NULL, NULL },
@@ -12352,7 +12352,7 @@ struct retro_core_option_v2_definition option_defs_cs[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_CS },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_CS },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_CS },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CS },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CS },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_CS },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_CS },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_CS },
@@ -12390,7 +12390,7 @@ struct retro_core_option_v2_definition option_defs_cs[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CS },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_CS },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CS },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CS },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CS },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CS },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_CS },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CS },
@@ -13457,7 +13457,7 @@ struct retro_core_options_v2 options_cs = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CY NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_CY NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CY NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CY NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CY NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CY NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_CY NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CY NULL
@@ -13908,7 +13908,7 @@ struct retro_core_option_v2_definition option_defs_cy[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_CY },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_CY },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_CY },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CY },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_CY },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_CY },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_CY },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_CY },
@@ -13953,7 +13953,7 @@ struct retro_core_option_v2_definition option_defs_cy[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_CY },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_CY },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_CY },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CY },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_CY },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_CY },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_CY },
          { NULL, NULL },
@@ -13988,7 +13988,7 @@ struct retro_core_option_v2_definition option_defs_cy[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_CY },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_CY },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_CY },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CY },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_CY },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_CY },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_CY },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_CY },
@@ -14026,7 +14026,7 @@ struct retro_core_option_v2_definition option_defs_cy[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_CY },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_CY },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_CY },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_CY },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_CY },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_CY },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_CY },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_CY },
@@ -15093,7 +15093,7 @@ struct retro_core_options_v2 options_cy = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_DA NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_DA NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_DA NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_DA NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_DA NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_DA NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_DA NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_DA NULL
@@ -15544,7 +15544,7 @@ struct retro_core_option_v2_definition option_defs_da[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_DA },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_DA },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_DA },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_DA },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_DA },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_DA },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_DA },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_DA },
@@ -15589,7 +15589,7 @@ struct retro_core_option_v2_definition option_defs_da[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_DA },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_DA },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_DA },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_DA },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_DA },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_DA },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_DA },
          { NULL, NULL },
@@ -15624,7 +15624,7 @@ struct retro_core_option_v2_definition option_defs_da[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_DA },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_DA },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_DA },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_DA },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_DA },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_DA },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_DA },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_DA },
@@ -15662,7 +15662,7 @@ struct retro_core_option_v2_definition option_defs_da[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_DA },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_DA },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_DA },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_DA },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_DA },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_DA },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_DA },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_DA },
@@ -16621,7 +16621,7 @@ struct retro_core_options_v2 options_da = {
 #define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_DE "TWB64 150 - Olympische Bronze"
 #define OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_DE "TWB64 151 - ANA Flight Blau"
 #define OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_DE "TWB64 152 - Nijigasaki-Orange"
-#define OPTION_VAL_TWB64_153_HOLOBLUE_DE "TWB64 153 - Holoblau"
+#define OPTION_VAL_TWB64_153_HOLOBLUE_DE NULL
 #define OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_DE "TWB64 154 - WWE Weiß und Rot"
 #define OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_DE NULL
 #define OPTION_VAL_TWB64_156_POKEDEX_RED_DE "TWB64 156 - Pokedex-Rot"
@@ -16666,7 +16666,7 @@ struct retro_core_options_v2 options_da = {
 #define OPTION_VAL_TWB64_195_EVA_01_DE NULL
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_DE "TWB64 196 - Wilder Westen Vision"
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_DE NULL
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_DE "TWB64 198 - Niconico Meeresgrün"
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_DE NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_DE "TWB64 199 - Duracell Kupfer"
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_DE NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_DE "> TWB64 - Pack 3-Farbpalette"
@@ -16691,7 +16691,7 @@ struct retro_core_options_v2 options_da = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_DE NULL
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_DE "TWB64 219 - Unbesiegbares Gelb und Blau"
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_DE "TWB64 220 - Grinch Grün"
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_DE "TWB64 221 - animierende vision"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_DE NULL
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_DE NULL
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_DE "TWB64 223 - Grünes Erwachen"
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_DE "TWB64 224 - Goomba Braun"
@@ -16729,7 +16729,7 @@ struct retro_core_options_v2 options_da = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_DE NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_DE NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_DE "TWB64 258 - Bills PC-Bildschirm"
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_DE "TWB64 259 - Sonic Mega Blau"
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_DE NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_DE "TWB64 260 - Fools Gold und Silber"
 #define OPTION_VAL_TWB64_261_UTA_VISION_DE NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_DE "TWB64 262 - Metallisches Paldea-Messing"
@@ -17180,7 +17180,7 @@ struct retro_core_option_v2_definition option_defs_de[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_DE },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_DE },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_DE },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_DE },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_DE },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_DE },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_DE },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_DE },
@@ -17225,7 +17225,7 @@ struct retro_core_option_v2_definition option_defs_de[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_DE },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_DE },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_DE },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_DE },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_DE },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_DE },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_DE },
          { NULL, NULL },
@@ -17260,7 +17260,7 @@ struct retro_core_option_v2_definition option_defs_de[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_DE },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_DE },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_DE },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_DE },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_DE },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_DE },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_DE },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_DE },
@@ -17298,7 +17298,7 @@ struct retro_core_option_v2_definition option_defs_de[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_DE },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_DE },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_DE },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_DE },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_DE },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_DE },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_DE },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_DE },
@@ -18365,7 +18365,7 @@ struct retro_core_options_v2 options_de = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_EL NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_EL NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_EL NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_EL NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_EL NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_EL NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_EL NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_EL NULL
@@ -18816,7 +18816,7 @@ struct retro_core_option_v2_definition option_defs_el[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_EL },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_EL },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_EL },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_EL },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_EL },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_EL },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_EL },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_EL },
@@ -18861,7 +18861,7 @@ struct retro_core_option_v2_definition option_defs_el[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_EL },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_EL },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_EL },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_EL },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_EL },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_EL },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_EL },
          { NULL, NULL },
@@ -18896,7 +18896,7 @@ struct retro_core_option_v2_definition option_defs_el[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_EL },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_EL },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_EL },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_EL },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_EL },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_EL },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_EL },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_EL },
@@ -18934,7 +18934,7 @@ struct retro_core_option_v2_definition option_defs_el[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_EL },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_EL },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_EL },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_EL },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_EL },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_EL },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_EL },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_EL },
@@ -20001,7 +20001,7 @@ struct retro_core_options_v2 options_el = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_EN NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_EN NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_EN NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_EN NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_EN NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_EN NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_EN NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_EN NULL
@@ -20452,7 +20452,7 @@ struct retro_core_option_v2_definition option_defs_en[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_EN },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_EN },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_EN },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_EN },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_EN },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_EN },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_EN },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_EN },
@@ -20497,7 +20497,7 @@ struct retro_core_option_v2_definition option_defs_en[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_EN },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_EN },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_EN },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_EN },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_EN },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_EN },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_EN },
          { NULL, NULL },
@@ -20532,7 +20532,7 @@ struct retro_core_option_v2_definition option_defs_en[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_EN },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_EN },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_EN },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_EN },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_EN },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_EN },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_EN },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_EN },
@@ -20570,7 +20570,7 @@ struct retro_core_option_v2_definition option_defs_en[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_EN },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_EN },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_EN },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_EN },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_EN },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_EN },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_EN },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_EN },
@@ -21637,7 +21637,7 @@ struct retro_core_options_v2 options_en = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_EO NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_EO NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_EO NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_EO NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_EO NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_EO NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_EO NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_EO NULL
@@ -22088,7 +22088,7 @@ struct retro_core_option_v2_definition option_defs_eo[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_EO },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_EO },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_EO },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_EO },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_EO },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_EO },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_EO },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_EO },
@@ -22133,7 +22133,7 @@ struct retro_core_option_v2_definition option_defs_eo[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_EO },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_EO },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_EO },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_EO },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_EO },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_EO },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_EO },
          { NULL, NULL },
@@ -22168,7 +22168,7 @@ struct retro_core_option_v2_definition option_defs_eo[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_EO },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_EO },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_EO },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_EO },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_EO },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_EO },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_EO },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_EO },
@@ -22206,7 +22206,7 @@ struct retro_core_option_v2_definition option_defs_eo[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_EO },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_EO },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_EO },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_EO },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_EO },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_EO },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_EO },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_EO },
@@ -23273,7 +23273,7 @@ struct retro_core_options_v2 options_eo = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_ES "TWB64 256 (visión Domino's Pizza)"
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_ES "TWB64 257 (visión de Pac-Man)"
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_ES "TWB64 258 (pantalla del PC de Bill)"
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_ES "TWB64 259 (azul Sonic Mega)"
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_ES "TWB64 259 (prólogo en Ebott)"
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_ES "TWB64 260 (oro y plata falsos)"
 #define OPTION_VAL_TWB64_261_UTA_VISION_ES "TWB64 261 (VISIÓN UTA)"
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_ES "TWB64 262 (latón metálico de Paldea)"
@@ -23724,7 +23724,7 @@ struct retro_core_option_v2_definition option_defs_es[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_ES },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_ES },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_ES },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_ES },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_ES },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_ES },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_ES },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_ES },
@@ -23769,7 +23769,7 @@ struct retro_core_option_v2_definition option_defs_es[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_ES },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_ES },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_ES },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_ES },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_ES },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_ES },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_ES },
          { NULL, NULL },
@@ -23804,7 +23804,7 @@ struct retro_core_option_v2_definition option_defs_es[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_ES },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_ES },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_ES },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_ES },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_ES },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_ES },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_ES },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_ES },
@@ -23842,7 +23842,7 @@ struct retro_core_option_v2_definition option_defs_es[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_ES },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_ES },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_ES },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_ES },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_ES },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_ES },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_ES },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_ES },
@@ -24909,7 +24909,7 @@ struct retro_core_options_v2 options_es = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_FA NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_FA NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_FA NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_FA NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_FA NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_FA NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_FA NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_FA NULL
@@ -25360,7 +25360,7 @@ struct retro_core_option_v2_definition option_defs_fa[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_FA },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_FA },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_FA },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_FA },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_FA },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_FA },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_FA },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_FA },
@@ -25405,7 +25405,7 @@ struct retro_core_option_v2_definition option_defs_fa[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_FA },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_FA },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_FA },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_FA },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_FA },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_FA },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_FA },
          { NULL, NULL },
@@ -25440,7 +25440,7 @@ struct retro_core_option_v2_definition option_defs_fa[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_FA },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_FA },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_FA },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_FA },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_FA },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_FA },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_FA },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_FA },
@@ -25478,7 +25478,7 @@ struct retro_core_option_v2_definition option_defs_fa[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_FA },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_FA },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_FA },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_FA },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_FA },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_FA },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_FA },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_FA },
@@ -26545,7 +26545,7 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_FI NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_FI NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_FI NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_FI NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_FI NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_FI NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_FI NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_FI NULL
@@ -26996,7 +26996,7 @@ struct retro_core_option_v2_definition option_defs_fi[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_FI },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_FI },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_FI },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_FI },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_FI },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_FI },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_FI },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_FI },
@@ -27041,7 +27041,7 @@ struct retro_core_option_v2_definition option_defs_fi[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_FI },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_FI },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_FI },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_FI },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_FI },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_FI },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_FI },
          { NULL, NULL },
@@ -27076,7 +27076,7 @@ struct retro_core_option_v2_definition option_defs_fi[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_FI },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_FI },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_FI },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_FI },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_FI },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_FI },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_FI },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_FI },
@@ -27114,7 +27114,7 @@ struct retro_core_option_v2_definition option_defs_fi[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_FI },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_FI },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_FI },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_FI },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_FI },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_FI },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_FI },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_FI },
@@ -28073,7 +28073,7 @@ struct retro_core_options_v2 options_fi = {
 #define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_FR "TWB64 150 - Bronze olympique"
 #define OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_FR "TWB64 151 - Bleu avion ANA"
 #define OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_FR "TWB64 152 - Orange Nijigasaki"
-#define OPTION_VAL_TWB64_153_HOLOBLUE_FR "TWB64 153 - HoloBleu"
+#define OPTION_VAL_TWB64_153_HOLOBLUE_FR NULL
 #define OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_FR "TWB64 154 - Blanc et rouge WWE"
 #define OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_FR "TWB64 155 - Vert œuf de Yoshi"
 #define OPTION_VAL_TWB64_156_POKEDEX_RED_FR "TWB64 156 - Rouge Pokédex"
@@ -28143,7 +28143,7 @@ struct retro_core_options_v2 options_fi = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_FR "TWB64 218 - Version Timing Hero"
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_FR "TWB64 219 - Jaune et Bleu Invincible"
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_FR "TWB64 220 - Vert du Grinch"
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_FR "TWB64 221 - Animate Vision"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_FR NULL
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_FR "TWB64 222 - Mix Idole Écolière"
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_FR "TWB64 223 - Vert Awakening"
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_FR "TWB64 224 - Marron Goomba"
@@ -28181,7 +28181,7 @@ struct retro_core_options_v2 options_fi = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_FR NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_FR NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_FR "TWB64 258 - Écran du PC de Bill"
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_FR "TWB64 259 - Mega Bleu Sonic"
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_FR "TWB64 259 - Prologue d'Ebott"
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_FR "TWB64 260 - Or et Argent des Fous"
 #define OPTION_VAL_TWB64_261_UTA_VISION_FR NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_FR "TWB64 262 - Laiton Paldea métallique"
@@ -28632,7 +28632,7 @@ struct retro_core_option_v2_definition option_defs_fr[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_FR },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_FR },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_FR },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_FR },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_FR },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_FR },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_FR },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_FR },
@@ -28677,7 +28677,7 @@ struct retro_core_option_v2_definition option_defs_fr[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_FR },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_FR },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_FR },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_FR },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_FR },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_FR },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_FR },
          { NULL, NULL },
@@ -28712,7 +28712,7 @@ struct retro_core_option_v2_definition option_defs_fr[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_FR },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_FR },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_FR },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_FR },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_FR },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_FR },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_FR },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_FR },
@@ -28750,7 +28750,7 @@ struct retro_core_option_v2_definition option_defs_fr[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_FR },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_FR },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_FR },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_FR },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_FR },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_FR },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_FR },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_FR },
@@ -29754,7 +29754,7 @@ struct retro_core_options_v2 options_fr = {
 #define OPTION_VAL_TWB64_195_EVA_01_GA NULL
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_GA NULL
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_GA NULL
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_GA NULL
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_GA "TWB64 198 - Glas na Mara Niconico"
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_GA NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_GA NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_GA NULL
@@ -29779,7 +29779,7 @@ struct retro_core_options_v2 options_fr = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_GA NULL
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_GA NULL
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_GA NULL
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_GA NULL
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_GA "TWB64 221 - Beochan Fís"
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_GA NULL
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_GA NULL
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_GA NULL
@@ -29817,7 +29817,7 @@ struct retro_core_options_v2 options_fr = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_GA NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_GA NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_GA NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_GA NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_GA NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_GA NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_GA NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_GA NULL
@@ -30268,7 +30268,7 @@ struct retro_core_option_v2_definition option_defs_ga[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_GA },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_GA },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_GA },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_GA },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_GA },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_GA },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_GA },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_GA },
@@ -30313,7 +30313,7 @@ struct retro_core_option_v2_definition option_defs_ga[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_GA },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_GA },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_GA },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_GA },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_GA },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_GA },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_GA },
          { NULL, NULL },
@@ -30348,7 +30348,7 @@ struct retro_core_option_v2_definition option_defs_ga[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_GA },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_GA },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_GA },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_GA },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_GA },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_GA },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_GA },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_GA },
@@ -30386,7 +30386,7 @@ struct retro_core_option_v2_definition option_defs_ga[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_GA },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_GA },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_GA },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_GA },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_GA },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_GA },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_GA },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_GA },
@@ -31345,7 +31345,7 @@ struct retro_core_options_v2 options_ga = {
 #define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_GL "TWB64 150 - Bronce olímpico"
 #define OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_GL "TWB64 151 - ANA Voo Azul"
 #define OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_GL "TWB64 152 - O arco da vella é o primeiro laranxa"
-#define OPTION_VAL_TWB64_153_HOLOBLUE_GL "TWB64 153 - holoazul"
+#define OPTION_VAL_TWB64_153_HOLOBLUE_GL "TWB64 153 - Holoazul"
 #define OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_GL "TWB64 154 - WWE Branco e Vermello"
 #define OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_GL "TWB64 155 - Yoshi Ovo Verde"
 #define OPTION_VAL_TWB64_156_POKEDEX_RED_GL "TWB64 156 - Pokedex Vermella"
@@ -31390,7 +31390,7 @@ struct retro_core_options_v2 options_ga = {
 #define OPTION_VAL_TWB64_195_EVA_01_GL NULL
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_GL "TWB64 196 - Visión do salvaxe oeste"
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_GL "TWB64 197 - Paleta Optimus Prime"
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_GL "TWB64 198 - verde mar niconico"
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_GL "TWB64 198 - Verde mar Niconico"
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_GL "TWB64 199 - Duracell Cobre"
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_GL "TWB64 200 - TOKYO SKYTREE AZUL NUBRADO"
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_GL "> TWB64 - Paleta Pack 3"
@@ -31415,7 +31415,7 @@ struct retro_core_options_v2 options_ga = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_GL NULL
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_GL "TWB64 219 - Amarelo e azul invencibles"
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_GL "TWB64 220 - Grinchy Verde"
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_GL "TWB64 221 - visión animada"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_GL "TWB64 221 - Visión animada"
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_GL "TWB64 222 - Mezcla de ídolos escolares"
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_GL "TWB64 223 - Despertar Verde"
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_GL "TWB64 224 - Goomba Marrón"
@@ -31453,7 +31453,7 @@ struct retro_core_options_v2 options_ga = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_GL NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_GL NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_GL "TWB64 258 - Pantalla de PC de Bill"
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_GL "TWB64 259 - Sonic Mega Azul"
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_GL "TWB64 259 - Prólogo de Ebott"
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_GL "TWB64 260 - Ouro e prata dos tolos"
 #define OPTION_VAL_TWB64_261_UTA_VISION_GL NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_GL "TWB64 262 - Paldea Metálico Latón"
@@ -31904,7 +31904,7 @@ struct retro_core_option_v2_definition option_defs_gl[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_GL },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_GL },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_GL },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_GL },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_GL },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_GL },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_GL },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_GL },
@@ -31949,7 +31949,7 @@ struct retro_core_option_v2_definition option_defs_gl[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_GL },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_GL },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_GL },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_GL },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_GL },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_GL },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_GL },
          { NULL, NULL },
@@ -31984,7 +31984,7 @@ struct retro_core_option_v2_definition option_defs_gl[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_GL },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_GL },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_GL },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_GL },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_GL },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_GL },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_GL },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_GL },
@@ -32022,7 +32022,7 @@ struct retro_core_option_v2_definition option_defs_gl[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_GL },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_GL },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_GL },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_GL },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_GL },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_GL },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_GL },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_GL },
@@ -33089,7 +33089,7 @@ struct retro_core_options_v2 options_gl = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_HE NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_HE NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_HE NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_HE NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_HE NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_HE NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_HE NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_HE NULL
@@ -33540,7 +33540,7 @@ struct retro_core_option_v2_definition option_defs_he[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_HE },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_HE },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_HE },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_HE },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_HE },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_HE },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_HE },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_HE },
@@ -33585,7 +33585,7 @@ struct retro_core_option_v2_definition option_defs_he[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_HE },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_HE },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_HE },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HE },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HE },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_HE },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_HE },
          { NULL, NULL },
@@ -33620,7 +33620,7 @@ struct retro_core_option_v2_definition option_defs_he[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_HE },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_HE },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_HE },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_HE },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_HE },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_HE },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_HE },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_HE },
@@ -33658,7 +33658,7 @@ struct retro_core_option_v2_definition option_defs_he[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_HE },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_HE },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_HE },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_HE },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_HE },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_HE },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_HE },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_HE },
@@ -34725,7 +34725,7 @@ struct retro_core_options_v2 options_he = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_HR NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_HR NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_HR NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_HR NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_HR NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_HR NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_HR NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_HR NULL
@@ -35176,7 +35176,7 @@ struct retro_core_option_v2_definition option_defs_hr[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_HR },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_HR },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_HR },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_HR },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_HR },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_HR },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_HR },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_HR },
@@ -35221,7 +35221,7 @@ struct retro_core_option_v2_definition option_defs_hr[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_HR },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_HR },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_HR },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HR },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HR },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_HR },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_HR },
          { NULL, NULL },
@@ -35256,7 +35256,7 @@ struct retro_core_option_v2_definition option_defs_hr[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_HR },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_HR },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_HR },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_HR },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_HR },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_HR },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_HR },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_HR },
@@ -35294,7 +35294,7 @@ struct retro_core_option_v2_definition option_defs_hr[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_HR },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_HR },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_HR },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_HR },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_HR },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_HR },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_HR },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_HR },
@@ -36298,7 +36298,7 @@ struct retro_core_options_v2 options_hr = {
 #define OPTION_VAL_TWB64_195_EVA_01_HU NULL
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_HU NULL
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_HU NULL
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HU "TWB64 198 - Niconico Sea Green"
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HU NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_HU NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_HU NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_HU "> TWB64 - Pack 3 paletta"
@@ -36361,7 +36361,7 @@ struct retro_core_options_v2 options_hr = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_HU NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_HU NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_HU NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_HU NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_HU NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_HU NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_HU NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_HU NULL
@@ -36812,7 +36812,7 @@ struct retro_core_option_v2_definition option_defs_hu[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_HU },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_HU },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_HU },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_HU },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_HU },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_HU },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_HU },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_HU },
@@ -36857,7 +36857,7 @@ struct retro_core_option_v2_definition option_defs_hu[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_HU },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_HU },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_HU },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HU },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_HU },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_HU },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_HU },
          { NULL, NULL },
@@ -36892,7 +36892,7 @@ struct retro_core_option_v2_definition option_defs_hu[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_HU },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_HU },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_HU },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_HU },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_HU },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_HU },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_HU },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_HU },
@@ -36930,7 +36930,7 @@ struct retro_core_option_v2_definition option_defs_hu[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_HU },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_HU },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_HU },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_HU },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_HU },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_HU },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_HU },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_HU },
@@ -37997,7 +37997,7 @@ struct retro_core_options_v2 options_hu = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_ID NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_ID NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_ID NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_ID NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_ID NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_ID NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_ID NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_ID NULL
@@ -38448,7 +38448,7 @@ struct retro_core_option_v2_definition option_defs_id[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_ID },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_ID },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_ID },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_ID },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_ID },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_ID },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_ID },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_ID },
@@ -38493,7 +38493,7 @@ struct retro_core_option_v2_definition option_defs_id[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_ID },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_ID },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_ID },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_ID },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_ID },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_ID },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_ID },
          { NULL, NULL },
@@ -38528,7 +38528,7 @@ struct retro_core_option_v2_definition option_defs_id[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_ID },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_ID },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_ID },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_ID },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_ID },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_ID },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_ID },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_ID },
@@ -38566,7 +38566,7 @@ struct retro_core_option_v2_definition option_defs_id[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_ID },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_ID },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_ID },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_ID },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_ID },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_ID },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_ID },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_ID },
@@ -39570,7 +39570,7 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_TWB64_195_EVA_01_IT NULL
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_IT "TWB64 196 - Visione Wild West"
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_IT "TWB64 197 - Tavolozza Optimus Prime"
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_IT "TWB64 198 - verde mare niconico"
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_IT NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_IT NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_IT NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_IT "> TWB64 - Pacco Palette 3"
@@ -39595,7 +39595,7 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_IT "TWB64 218 - Versione Timing Hero"
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_IT "TWB64 219 - Giallo e Blu Invincibile"
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_IT "TWB64 220 - Verde Grinch"
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_IT "TWB64 221 - visione animate"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_IT NULL
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_IT NULL
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_IT "TWB64 223 - Verde Awakening"
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_IT "TWB64 224 - Marrone Goomba"
@@ -39633,7 +39633,7 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_IT "TWB64 256 - Visione Domino's Pizza"
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_IT "TWB64 257 - Visione di Pac-Man"
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_IT "TWB64 258 - Schermo PC di Bill"
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_IT "TWB64 259 - Blu Sonic Mega"
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_IT NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_IT "TWB64 260 - Pirite e Argento"
 #define OPTION_VAL_TWB64_261_UTA_VISION_IT "TWB64 261 - VISIONE UTA"
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_IT "TWB64 262 - Ottone Metallico di Paldea"
@@ -40084,7 +40084,7 @@ struct retro_core_option_v2_definition option_defs_it[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_IT },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_IT },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_IT },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_IT },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_IT },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_IT },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_IT },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_IT },
@@ -40129,7 +40129,7 @@ struct retro_core_option_v2_definition option_defs_it[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_IT },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_IT },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_IT },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_IT },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_IT },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_IT },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_IT },
          { NULL, NULL },
@@ -40164,7 +40164,7 @@ struct retro_core_option_v2_definition option_defs_it[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_IT },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_IT },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_IT },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_IT },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_IT },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_IT },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_IT },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_IT },
@@ -40202,7 +40202,7 @@ struct retro_core_option_v2_definition option_defs_it[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_IT },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_IT },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_IT },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_IT },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_IT },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_IT },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_IT },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_IT },
@@ -41269,7 +41269,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_JA NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_JA NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_JA NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_JA NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_JA NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_JA NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_JA NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_JA NULL
@@ -41720,7 +41720,7 @@ struct retro_core_option_v2_definition option_defs_ja[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_JA },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_JA },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_JA },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_JA },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_JA },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_JA },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_JA },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_JA },
@@ -41765,7 +41765,7 @@ struct retro_core_option_v2_definition option_defs_ja[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_JA },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_JA },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_JA },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_JA },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_JA },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_JA },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_JA },
          { NULL, NULL },
@@ -41800,7 +41800,7 @@ struct retro_core_option_v2_definition option_defs_ja[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_JA },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_JA },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_JA },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_JA },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_JA },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_JA },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_JA },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_JA },
@@ -41838,7 +41838,7 @@ struct retro_core_option_v2_definition option_defs_ja[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_JA },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_JA },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_JA },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_JA },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_JA },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_JA },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_JA },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_JA },
@@ -42905,7 +42905,7 @@ struct retro_core_options_v2 options_ja = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_KO NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_KO NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_KO NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_KO NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_KO NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_KO NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_KO NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_KO NULL
@@ -43356,7 +43356,7 @@ struct retro_core_option_v2_definition option_defs_ko[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_KO },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_KO },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_KO },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_KO },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_KO },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_KO },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_KO },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_KO },
@@ -43401,7 +43401,7 @@ struct retro_core_option_v2_definition option_defs_ko[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_KO },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_KO },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_KO },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_KO },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_KO },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_KO },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_KO },
          { NULL, NULL },
@@ -43436,7 +43436,7 @@ struct retro_core_option_v2_definition option_defs_ko[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_KO },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_KO },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_KO },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_KO },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_KO },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_KO },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_KO },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_KO },
@@ -43474,7 +43474,7 @@ struct retro_core_option_v2_definition option_defs_ko[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_KO },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_KO },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_KO },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_KO },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_KO },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_KO },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_KO },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_KO },
@@ -44541,7 +44541,7 @@ struct retro_core_options_v2 options_ko = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_NL NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_NL NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_NL NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_NL NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_NL NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_NL NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_NL NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_NL NULL
@@ -44992,7 +44992,7 @@ struct retro_core_option_v2_definition option_defs_nl[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_NL },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_NL },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_NL },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_NL },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_NL },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_NL },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_NL },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_NL },
@@ -45037,7 +45037,7 @@ struct retro_core_option_v2_definition option_defs_nl[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_NL },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_NL },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_NL },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_NL },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_NL },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_NL },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_NL },
          { NULL, NULL },
@@ -45072,7 +45072,7 @@ struct retro_core_option_v2_definition option_defs_nl[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_NL },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_NL },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_NL },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_NL },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_NL },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_NL },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_NL },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_NL },
@@ -45110,7 +45110,7 @@ struct retro_core_option_v2_definition option_defs_nl[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_NL },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_NL },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_NL },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_NL },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_NL },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_NL },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_NL },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_NL },
@@ -46177,7 +46177,7 @@ struct retro_core_options_v2 options_nl = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_NO NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_NO NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_NO NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_NO NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_NO NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_NO NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_NO NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_NO NULL
@@ -46628,7 +46628,7 @@ struct retro_core_option_v2_definition option_defs_no[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_NO },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_NO },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_NO },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_NO },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_NO },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_NO },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_NO },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_NO },
@@ -46673,7 +46673,7 @@ struct retro_core_option_v2_definition option_defs_no[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_NO },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_NO },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_NO },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_NO },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_NO },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_NO },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_NO },
          { NULL, NULL },
@@ -46708,7 +46708,7 @@ struct retro_core_option_v2_definition option_defs_no[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_NO },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_NO },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_NO },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_NO },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_NO },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_NO },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_NO },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_NO },
@@ -46746,7 +46746,7 @@ struct retro_core_option_v2_definition option_defs_no[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_NO },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_NO },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_NO },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_NO },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_NO },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_NO },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_NO },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_NO },
@@ -47813,7 +47813,7 @@ struct retro_core_options_v2 options_no = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_OR NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_OR NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_OR NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_OR NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_OR NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_OR NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_OR NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_OR NULL
@@ -48264,7 +48264,7 @@ struct retro_core_option_v2_definition option_defs_or[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_OR },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_OR },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_OR },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_OR },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_OR },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_OR },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_OR },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_OR },
@@ -48309,7 +48309,7 @@ struct retro_core_option_v2_definition option_defs_or[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_OR },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_OR },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_OR },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_OR },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_OR },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_OR },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_OR },
          { NULL, NULL },
@@ -48344,7 +48344,7 @@ struct retro_core_option_v2_definition option_defs_or[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_OR },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_OR },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_OR },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_OR },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_OR },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_OR },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_OR },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_OR },
@@ -48382,7 +48382,7 @@ struct retro_core_option_v2_definition option_defs_or[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_OR },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_OR },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_OR },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_OR },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_OR },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_OR },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_OR },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_OR },
@@ -49449,7 +49449,7 @@ struct retro_core_options_v2 options_or = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_PL NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_PL NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_PL NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_PL NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_PL NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_PL NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_PL NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_PL NULL
@@ -49900,7 +49900,7 @@ struct retro_core_option_v2_definition option_defs_pl[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_PL },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_PL },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_PL },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_PL },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_PL },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_PL },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_PL },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_PL },
@@ -49945,7 +49945,7 @@ struct retro_core_option_v2_definition option_defs_pl[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_PL },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_PL },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_PL },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_PL },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_PL },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_PL },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_PL },
          { NULL, NULL },
@@ -49980,7 +49980,7 @@ struct retro_core_option_v2_definition option_defs_pl[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_PL },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_PL },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_PL },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_PL },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_PL },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_PL },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_PL },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_PL },
@@ -50018,7 +50018,7 @@ struct retro_core_option_v2_definition option_defs_pl[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_PL },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_PL },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_PL },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_PL },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_PL },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_PL },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_PL },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_PL },
@@ -50977,7 +50977,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_PT_BR "150 — Olimpíada (bronze)"
 #define OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_PT_BR "151 — ANA (azul)"
 #define OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_PT_BR "152 — Nijigasaki (laranja)"
-#define OPTION_VAL_TWB64_153_HOLOBLUE_PT_BR "153 — HoloLive (azul)"
+#define OPTION_VAL_TWB64_153_HOLOBLUE_PT_BR NULL
 #define OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_PT_BR "154 — WWE (branco e vermelho)"
 #define OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_PT_BR "155 — Ovo do Yoshi (verde)"
 #define OPTION_VAL_TWB64_156_POKEDEX_RED_PT_BR "156 — Pokedex (vermelho)"
@@ -51022,7 +51022,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TWB64_195_EVA_01_PT_BR "195 — EVA 01"
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_PT_BR "196 — Visual Velho Oeste"
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_PT_BR "197 — Optimus Prime"
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_PT_BR "198 — niconico (verde água)"
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_PT_BR NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_PT_BR "199 — Duracell (cobre)"
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_PT_BR "200 — Tokyo Sky Tree (azul)"
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_PT_BR "> TWB64 — Pacote de paleta 3"
@@ -51047,7 +51047,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_PT_BR "218 — Versão Timing Hero"
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_PT_BR "219 — Invencível (amarelo e azul)"
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_PT_BR "220 — Grinchy (verde)"
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_PT_BR "221 — Visual animate"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_PT_BR NULL
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_PT_BR "222 — School Idol (combinação)"
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_PT_BR "223 — Awakening (verde)"
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_PT_BR "224 — Goomba (marrom)"
@@ -51085,7 +51085,7 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_PT_BR "256 — Visual Domino's Pizza"
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_PT_BR "257 — Visual Pac-Man"
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_PT_BR "258 — Tela do PC do Bill"
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_PT_BR "259 — Mega Sonic (azul)"
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_PT_BR NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_PT_BR "260 — Ouro e Prata de Tolo"
 #define OPTION_VAL_TWB64_261_UTA_VISION_PT_BR "261 — Visual UTA"
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_PT_BR "262 — Paldea (bronze metálico)"
@@ -51536,7 +51536,7 @@ struct retro_core_option_v2_definition option_defs_pt_br[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_PT_BR },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_PT_BR },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_PT_BR },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_PT_BR },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_PT_BR },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_PT_BR },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_PT_BR },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_PT_BR },
@@ -51581,7 +51581,7 @@ struct retro_core_option_v2_definition option_defs_pt_br[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_PT_BR },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_PT_BR },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_PT_BR },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_PT_BR },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_PT_BR },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_PT_BR },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_PT_BR },
          { NULL, NULL },
@@ -51616,7 +51616,7 @@ struct retro_core_option_v2_definition option_defs_pt_br[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_PT_BR },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_PT_BR },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_PT_BR },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_PT_BR },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_PT_BR },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_PT_BR },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_PT_BR },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_PT_BR },
@@ -51654,7 +51654,7 @@ struct retro_core_option_v2_definition option_defs_pt_br[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_PT_BR },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_PT_BR },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_PT_BR },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_PT_BR },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_PT_BR },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_PT_BR },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_PT_BR },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_PT_BR },
@@ -52721,7 +52721,7 @@ struct retro_core_options_v2 options_pt_br = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_PT_PT NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_PT_PT NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_PT_PT NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_PT_PT NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_PT_PT NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_PT_PT NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_PT_PT NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_PT_PT NULL
@@ -53172,7 +53172,7 @@ struct retro_core_option_v2_definition option_defs_pt_pt[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_PT_PT },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_PT_PT },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_PT_PT },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_PT_PT },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_PT_PT },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_PT_PT },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_PT_PT },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_PT_PT },
@@ -53217,7 +53217,7 @@ struct retro_core_option_v2_definition option_defs_pt_pt[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_PT_PT },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_PT_PT },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_PT_PT },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_PT_PT },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_PT_PT },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_PT_PT },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_PT_PT },
          { NULL, NULL },
@@ -53252,7 +53252,7 @@ struct retro_core_option_v2_definition option_defs_pt_pt[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_PT_PT },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_PT_PT },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_PT_PT },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_PT_PT },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_PT_PT },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_PT_PT },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_PT_PT },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_PT_PT },
@@ -53290,7 +53290,7 @@ struct retro_core_option_v2_definition option_defs_pt_pt[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_PT_PT },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_PT_PT },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_PT_PT },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_PT_PT },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_PT_PT },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_PT_PT },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_PT_PT },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_PT_PT },
@@ -54357,7 +54357,7 @@ struct retro_core_options_v2 options_pt_pt = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_RU NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_RU NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_RU NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_RU NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_RU NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_RU NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_RU NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_RU NULL
@@ -54808,7 +54808,7 @@ struct retro_core_option_v2_definition option_defs_ru[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_RU },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_RU },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_RU },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_RU },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_RU },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_RU },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_RU },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_RU },
@@ -54853,7 +54853,7 @@ struct retro_core_option_v2_definition option_defs_ru[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_RU },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_RU },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_RU },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_RU },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_RU },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_RU },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_RU },
          { NULL, NULL },
@@ -54888,7 +54888,7 @@ struct retro_core_option_v2_definition option_defs_ru[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_RU },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_RU },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_RU },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_RU },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_RU },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_RU },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_RU },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_RU },
@@ -54926,7 +54926,7 @@ struct retro_core_option_v2_definition option_defs_ru[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_RU },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_RU },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_RU },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_RU },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_RU },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_RU },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_RU },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_RU },
@@ -55993,7 +55993,7 @@ struct retro_core_options_v2 options_ru = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_SK NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_SK NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_SK NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_SK NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_SK NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_SK NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_SK NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_SK NULL
@@ -56444,7 +56444,7 @@ struct retro_core_option_v2_definition option_defs_sk[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_SK },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_SK },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_SK },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_SK },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_SK },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_SK },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_SK },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_SK },
@@ -56489,7 +56489,7 @@ struct retro_core_option_v2_definition option_defs_sk[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_SK },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_SK },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_SK },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_SK },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_SK },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_SK },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_SK },
          { NULL, NULL },
@@ -56524,7 +56524,7 @@ struct retro_core_option_v2_definition option_defs_sk[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_SK },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_SK },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_SK },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_SK },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_SK },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_SK },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_SK },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_SK },
@@ -56562,7 +56562,7 @@ struct retro_core_option_v2_definition option_defs_sk[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_SK },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_SK },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_SK },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_SK },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_SK },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_SK },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_SK },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_SK },
@@ -57629,7 +57629,7 @@ struct retro_core_options_v2 options_sk = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_SR NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_SR NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_SR NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_SR NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_SR NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_SR NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_SR NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_SR NULL
@@ -58080,7 +58080,7 @@ struct retro_core_option_v2_definition option_defs_sr[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_SR },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_SR },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_SR },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_SR },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_SR },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_SR },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_SR },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_SR },
@@ -58125,7 +58125,7 @@ struct retro_core_option_v2_definition option_defs_sr[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_SR },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_SR },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_SR },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_SR },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_SR },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_SR },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_SR },
          { NULL, NULL },
@@ -58160,7 +58160,7 @@ struct retro_core_option_v2_definition option_defs_sr[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_SR },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_SR },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_SR },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_SR },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_SR },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_SR },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_SR },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_SR },
@@ -58198,7 +58198,7 @@ struct retro_core_option_v2_definition option_defs_sr[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_SR },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_SR },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_SR },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_SR },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_SR },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_SR },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_SR },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_SR },
@@ -59265,7 +59265,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_SV NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_SV NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_SV NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_SV NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_SV NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_SV NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_SV NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_SV NULL
@@ -59716,7 +59716,7 @@ struct retro_core_option_v2_definition option_defs_sv[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_SV },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_SV },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_SV },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_SV },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_SV },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_SV },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_SV },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_SV },
@@ -59761,7 +59761,7 @@ struct retro_core_option_v2_definition option_defs_sv[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_SV },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_SV },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_SV },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_SV },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_SV },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_SV },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_SV },
          { NULL, NULL },
@@ -59796,7 +59796,7 @@ struct retro_core_option_v2_definition option_defs_sv[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_SV },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_SV },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_SV },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_SV },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_SV },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_SV },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_SV },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_SV },
@@ -59834,7 +59834,7 @@ struct retro_core_option_v2_definition option_defs_sv[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_SV },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_SV },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_SV },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_SV },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_SV },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_SV },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_SV },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_SV },
@@ -60569,6 +60569,1642 @@ struct retro_core_options_v2 options_sv = {
    option_defs_sv
 };
 
+/* RETRO_LANGUAGE_TH */
+
+#define CATEGORY_GB_LINK_LABEL_TH NULL
+#define CATEGORY_GB_LINK_INFO_0_TH NULL
+#define GAMBATTE_GB_COLORIZATION_LABEL_TH NULL
+#define GAMBATTE_GB_COLORIZATION_INFO_0_TH NULL
+#define OPTION_VAL_AUTO_TH NULL
+#define OPTION_VAL_GBC_TH NULL
+#define OPTION_VAL_SGB_TH NULL
+#define OPTION_VAL_INTERNAL_TH NULL
+#define OPTION_VAL_CUSTOM_TH NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_TH NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_TH NULL
+#define OPTION_VAL_GB_DMG_TH NULL
+#define OPTION_VAL_GB_POCKET_TH NULL
+#define OPTION_VAL_GB_LIGHT_TH NULL
+#define OPTION_VAL_GBC_BLUE_TH NULL
+#define OPTION_VAL_GBC_BROWN_TH NULL
+#define OPTION_VAL_GBC_DARK_BLUE_TH NULL
+#define OPTION_VAL_GBC_DARK_BROWN_TH NULL
+#define OPTION_VAL_GBC_DARK_GREEN_TH NULL
+#define OPTION_VAL_GBC_GRAYSCALE_TH NULL
+#define OPTION_VAL_GBC_GREEN_TH NULL
+#define OPTION_VAL_GBC_INVERTED_TH NULL
+#define OPTION_VAL_GBC_ORANGE_TH NULL
+#define OPTION_VAL_GBC_PASTEL_MIX_TH NULL
+#define OPTION_VAL_GBC_RED_TH NULL
+#define OPTION_VAL_GBC_YELLOW_TH NULL
+#define OPTION_VAL_SGB_1A_TH NULL
+#define OPTION_VAL_SGB_1B_TH NULL
+#define OPTION_VAL_SGB_1C_TH NULL
+#define OPTION_VAL_SGB_1D_TH NULL
+#define OPTION_VAL_SGB_1E_TH NULL
+#define OPTION_VAL_SGB_1F_TH NULL
+#define OPTION_VAL_SGB_1G_TH NULL
+#define OPTION_VAL_SGB_1H_TH NULL
+#define OPTION_VAL_SGB_2A_TH NULL
+#define OPTION_VAL_SGB_2B_TH NULL
+#define OPTION_VAL_SGB_2C_TH NULL
+#define OPTION_VAL_SGB_2D_TH NULL
+#define OPTION_VAL_SGB_2E_TH NULL
+#define OPTION_VAL_SGB_2F_TH NULL
+#define OPTION_VAL_SGB_2G_TH NULL
+#define OPTION_VAL_SGB_2H_TH NULL
+#define OPTION_VAL_SGB_3A_TH NULL
+#define OPTION_VAL_SGB_3B_TH NULL
+#define OPTION_VAL_SGB_3C_TH NULL
+#define OPTION_VAL_SGB_3D_TH NULL
+#define OPTION_VAL_SGB_3E_TH NULL
+#define OPTION_VAL_SGB_3F_TH NULL
+#define OPTION_VAL_SGB_3G_TH NULL
+#define OPTION_VAL_SGB_3H_TH NULL
+#define OPTION_VAL_SGB_4A_TH NULL
+#define OPTION_VAL_SGB_4B_TH NULL
+#define OPTION_VAL_SGB_4C_TH NULL
+#define OPTION_VAL_SGB_4D_TH NULL
+#define OPTION_VAL_SGB_4E_TH NULL
+#define OPTION_VAL_SGB_4F_TH NULL
+#define OPTION_VAL_SGB_4G_TH NULL
+#define OPTION_VAL_SGB_4H_TH NULL
+#define OPTION_VAL_SPECIAL_1_TH NULL
+#define OPTION_VAL_SPECIAL_2_TH NULL
+#define OPTION_VAL_SPECIAL_3_TH NULL
+#define OPTION_VAL_SPECIAL_4_TI_83_LEGACY_TH NULL
+#define OPTION_VAL_TWB64_PACK_1_TH NULL
+#define OPTION_VAL_TWB64_PACK_2_TH NULL
+#define OPTION_VAL_TWB64_PACK_3_TH NULL
+#define OPTION_VAL_PIXELSHIFT_PACK_1_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_TH NULL
+#define OPTION_VAL_TWB64_001_AQOURS_BLUE_TH NULL
+#define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_TH NULL
+#define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_004_PATRICK_STAR_PINK_TH NULL
+#define OPTION_VAL_TWB64_005_NEON_RED_TH NULL
+#define OPTION_VAL_TWB64_006_NEON_BLUE_TH NULL
+#define OPTION_VAL_TWB64_007_NEON_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_008_NEON_GREEN_TH NULL
+#define OPTION_VAL_TWB64_009_NEON_PINK_TH NULL
+#define OPTION_VAL_TWB64_010_MARIO_RED_TH NULL
+#define OPTION_VAL_TWB64_011_NICK_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_012_VIRTUAL_VISION_TH NULL
+#define OPTION_VAL_TWB64_013_GOLDEN_WILD_TH NULL
+#define OPTION_VAL_TWB64_014_DMG_099_TH NULL
+#define OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_TH NULL
+#define OPTION_VAL_TWB64_016_765_PRODUCTION_VER_TH NULL
+#define OPTION_VAL_TWB64_017_SUPERBALL_IVORY_TH NULL
+#define OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_019_MUSE_PINK_TH NULL
+#define OPTION_VAL_TWB64_020_SCHOOL_IDOL_BLUE_TH NULL
+#define OPTION_VAL_TWB64_021_GAMATE_VER_TH NULL
+#define OPTION_VAL_TWB64_022_GREENSCALE_VER_TH NULL
+#define OPTION_VAL_TWB64_023_ODYSSEY_GOLD_TH NULL
+#define OPTION_VAL_TWB64_024_SUPER_SAIYAN_GOD_TH NULL
+#define OPTION_VAL_TWB64_025_SUPER_SAIYAN_BLUE_TH NULL
+#define OPTION_VAL_TWB64_026_ANIMAX_BLUE_TH NULL
+#define OPTION_VAL_TWB64_027_BMO_VER_TH NULL
+#define OPTION_VAL_TWB64_028_GAME_COM_VER_TH NULL
+#define OPTION_VAL_TWB64_029_SANRIO_PINK_TH NULL
+#define OPTION_VAL_TWB64_030_TIMMY_TURNER_PINK_TH NULL
+#define OPTION_VAL_TWB64_031_FAIRLY_ODDPALETTE_TH NULL
+#define OPTION_VAL_TWB64_032_DANNY_PHANTOM_SILVER_TH NULL
+#define OPTION_VAL_TWB64_033_LINK_S_AWAKENING_DX_VER_TH NULL
+#define OPTION_VAL_TWB64_034_TRAVEL_WOOD_TH NULL
+#define OPTION_VAL_TWB64_035_POKEMON_VER_TH NULL
+#define OPTION_VAL_TWB64_036_GAME_GRUMP_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_037_SCOOBY_DOO_MYSTERY_VER_TH NULL
+#define OPTION_VAL_TWB64_038_POKEMON_MINI_VER_TH NULL
+#define OPTION_VAL_TWB64_039_SUPERVISION_VER_TH NULL
+#define OPTION_VAL_TWB64_040_DMG_VER_TH NULL
+#define OPTION_VAL_TWB64_041_POCKET_VER_TH NULL
+#define OPTION_VAL_TWB64_042_LIGHT_VER_TH NULL
+#define OPTION_VAL_TWB64_043_ALL_MIGHT_HERO_PALETTE_TH NULL
+#define OPTION_VAL_TWB64_044_U_A_HIGH_SCHOOL_UNIFORM_TH NULL
+#define OPTION_VAL_TWB64_045_PIKACHU_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_046_EEVEE_BROWN_TH NULL
+#define OPTION_VAL_TWB64_047_MICROVISION_VER_TH NULL
+#define OPTION_VAL_TWB64_048_TI_83_VER_TH NULL
+#define OPTION_VAL_TWB64_049_AEGIS_CHERRY_TH NULL
+#define OPTION_VAL_TWB64_050_LABO_FAWN_TH NULL
+#define OPTION_VAL_TWB64_051_MILLION_LIVE_GOLD_TH NULL
+#define OPTION_VAL_TWB64_052_SQUIDWARD_SEA_FOAM_GREEN_TH NULL
+#define OPTION_VAL_TWB64_053_VMU_VER_TH NULL
+#define OPTION_VAL_TWB64_054_GAME_MASTER_VER_TH NULL
+#define OPTION_VAL_TWB64_055_ANDROID_GREEN_TH NULL
+#define OPTION_VAL_TWB64_056_AMAZON_VISION_TH NULL
+#define OPTION_VAL_TWB64_057_GOOGLE_RED_TH NULL
+#define OPTION_VAL_TWB64_058_GOOGLE_BLUE_TH NULL
+#define OPTION_VAL_TWB64_059_GOOGLE_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_060_GOOGLE_GREEN_TH NULL
+#define OPTION_VAL_TWB64_061_WONDERSWAN_VER_TH NULL
+#define OPTION_VAL_TWB64_062_NEO_GEO_POCKET_VER_TH NULL
+#define OPTION_VAL_TWB64_063_DEW_GREEN_TH NULL
+#define OPTION_VAL_TWB64_064_COCA_COLA_VISION_TH NULL
+#define OPTION_VAL_TWB64_065_GAMEKING_VER_TH NULL
+#define OPTION_VAL_TWB64_066_DO_THE_DEW_VER_TH NULL
+#define OPTION_VAL_TWB64_067_DIGIVICE_VER_TH NULL
+#define OPTION_VAL_TWB64_068_BIKINI_BOTTOM_VER_TH NULL
+#define OPTION_VAL_TWB64_069_BLOSSOM_PINK_TH NULL
+#define OPTION_VAL_TWB64_070_BUBBLES_BLUE_TH NULL
+#define OPTION_VAL_TWB64_071_BUTTERCUP_GREEN_TH NULL
+#define OPTION_VAL_TWB64_072_NASCAR_VER_TH NULL
+#define OPTION_VAL_TWB64_073_LEMON_LIME_GREEN_TH NULL
+#define OPTION_VAL_TWB64_074_MEGA_MAN_V_VER_TH NULL
+#define OPTION_VAL_TWB64_075_TAMAGOTCHI_VER_TH NULL
+#define OPTION_VAL_TWB64_076_PHANTOM_RED_TH NULL
+#define OPTION_VAL_TWB64_077_HALLOWEEN_VER_TH NULL
+#define OPTION_VAL_TWB64_078_CHRISTMAS_VER_TH NULL
+#define OPTION_VAL_TWB64_079_CARDCAPTOR_PINK_TH NULL
+#define OPTION_VAL_TWB64_080_PRETTY_GUARDIAN_GOLD_TH NULL
+#define OPTION_VAL_TWB64_081_CAMOUFLAGE_VER_TH NULL
+#define OPTION_VAL_TWB64_082_LEGENDARY_SUPER_SAIYAN_TH NULL
+#define OPTION_VAL_TWB64_083_SUPER_SAIYAN_ROSE_TH NULL
+#define OPTION_VAL_TWB64_084_SUPER_SAIYAN_TH NULL
+#define OPTION_VAL_TWB64_085_PERFECTED_ULTRA_INSTINCT_TH NULL
+#define OPTION_VAL_TWB64_086_SAINT_SNOW_RED_TH NULL
+#define OPTION_VAL_TWB64_087_YELLOW_BANANA_TH NULL
+#define OPTION_VAL_TWB64_088_GREEN_BANANA_TH NULL
+#define OPTION_VAL_TWB64_089_SUPER_SAIYAN_3_TH NULL
+#define OPTION_VAL_TWB64_090_SUPER_SAIYAN_BLUE_EVOLVED_TH NULL
+#define OPTION_VAL_TWB64_091_POCKET_TALES_VER_TH NULL
+#define OPTION_VAL_TWB64_092_INVESTIGATION_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_093_S_E_E_S_BLUE_TH NULL
+#define OPTION_VAL_TWB64_094_ULTRA_INSTINCT_SIGN_TH NULL
+#define OPTION_VAL_TWB64_095_HOKAGE_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_096_STRAW_HAT_RED_TH NULL
+#define OPTION_VAL_TWB64_097_SWORD_ART_CYAN_TH NULL
+#define OPTION_VAL_TWB64_098_DEKU_ALPHA_EMERALD_TH NULL
+#define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_TH NULL
+#define OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_TH NULL
+#define OPTION_VAL_TWB64_101_765PRO_PINK_TH NULL
+#define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_TH NULL
+#define OPTION_VAL_TWB64_103_MILLION_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_104_SIDEM_GREEN_TH NULL
+#define OPTION_VAL_TWB64_105_SHINY_SKY_BLUE_TH NULL
+#define OPTION_VAL_TWB64_106_ANGRY_VOLCANO_VER_TH NULL
+#define OPTION_VAL_TWB64_107_NBA_VISION_TH NULL
+#define OPTION_VAL_TWB64_108_NFL_VISION_TH NULL
+#define OPTION_VAL_TWB64_109_MLB_VISION_TH NULL
+#define OPTION_VAL_TWB64_110_ANIME_DIGIVICE_VER_TH NULL
+#define OPTION_VAL_TWB64_111_AQUATIC_IRO_TH NULL
+#define OPTION_VAL_TWB64_112_TEA_MIDORI_TH NULL
+#define OPTION_VAL_TWB64_113_SAKURA_PINK_TH NULL
+#define OPTION_VAL_TWB64_114_WISTERIA_MURASAKI_TH NULL
+#define OPTION_VAL_TWB64_115_ONI_AKA_TH NULL
+#define OPTION_VAL_TWB64_116_GOLDEN_KIIRO_TH NULL
+#define OPTION_VAL_TWB64_117_SILVER_SHIRO_TH NULL
+#define OPTION_VAL_TWB64_118_FRUITY_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_119_AKB48_PINK_TH NULL
+#define OPTION_VAL_TWB64_120_MIKU_BLUE_TH NULL
+#define OPTION_VAL_TWB64_121_TRI_DIGIVICE_VER_TH NULL
+#define OPTION_VAL_TWB64_122_SURVEY_CORPS_UNIFORM_TH NULL
+#define OPTION_VAL_TWB64_123_ISLAND_GREEN_TH NULL
+#define OPTION_VAL_TWB64_124_NOGIZAKA46_PURPLE_TH NULL
+#define OPTION_VAL_TWB64_125_NINJA_TURTLE_GREEN_TH NULL
+#define OPTION_VAL_TWB64_126_SLIME_BLUE_TH NULL
+#define OPTION_VAL_TWB64_127_LIME_MIDORI_TH NULL
+#define OPTION_VAL_TWB64_128_GHOSTLY_AOI_TH NULL
+#define OPTION_VAL_TWB64_129_RETRO_BOGEDA_TH NULL
+#define OPTION_VAL_TWB64_130_ROYAL_BLUE_TH NULL
+#define OPTION_VAL_TWB64_131_NEON_PURPLE_TH NULL
+#define OPTION_VAL_TWB64_132_NEON_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_133_MOONLIGHT_VISION_TH NULL
+#define OPTION_VAL_TWB64_134_RISING_SUN_RED_TH NULL
+#define OPTION_VAL_TWB64_135_BURGER_KING_COLOR_COMBO_TH NULL
+#define OPTION_VAL_TWB64_136_GRAND_ZENO_COAT_TH NULL
+#define OPTION_VAL_TWB64_137_PAC_MAN_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_138_IRISH_GREEN_TH NULL
+#define OPTION_VAL_TWB64_139_GOKU_GI_TH NULL
+#define OPTION_VAL_TWB64_140_DRAGON_BALL_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_141_CHRISTMAS_GOLD_TH NULL
+#define OPTION_VAL_TWB64_142_PEPSI_VISION_TH NULL
+#define OPTION_VAL_TWB64_143_BUBBLUN_GREEN_TH NULL
+#define OPTION_VAL_TWB64_144_BOBBLUN_BLUE_TH NULL
+#define OPTION_VAL_TWB64_145_BAJA_BLAST_STORM_TH NULL
+#define OPTION_VAL_TWB64_146_OLYMPIC_GOLD_TH NULL
+#define OPTION_VAL_TWB64_147_LISANI_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_148_LIELLA_PURPLE_TH NULL
+#define OPTION_VAL_TWB64_149_OLYMPIC_SILVER_TH NULL
+#define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_TH NULL
+#define OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_TH NULL
+#define OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_153_HOLOBLUE_TH NULL
+#define OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_TH NULL
+#define OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_TH NULL
+#define OPTION_VAL_TWB64_156_POKEDEX_RED_TH NULL
+#define OPTION_VAL_TWB64_157_FAMILYMART_VISION_TH NULL
+#define OPTION_VAL_TWB64_158_XBOX_GREEN_TH NULL
+#define OPTION_VAL_TWB64_159_SONIC_MEGA_BLUE_TH NULL
+#define OPTION_VAL_TWB64_160_SPRITE_GREEN_TH NULL
+#define OPTION_VAL_TWB64_161_SCARLETT_GREEN_TH NULL
+#define OPTION_VAL_TWB64_162_GLITCHY_BLUE_TH NULL
+#define OPTION_VAL_TWB64_163_CLASSIC_LCD_TH NULL
+#define OPTION_VAL_TWB64_164_3DS_VIRTUAL_CONSOLE_VER_TH NULL
+#define OPTION_VAL_TWB64_165_POCKETSTATION_VER_TH NULL
+#define OPTION_VAL_TWB64_166_TIMELESS_GOLD_AND_RED_TH NULL
+#define OPTION_VAL_TWB64_167_SMURFY_BLUE_TH NULL
+#define OPTION_VAL_TWB64_168_SWAMPY_OGRE_GREEN_TH NULL
+#define OPTION_VAL_TWB64_169_SAILOR_SPINACH_GREEN_TH NULL
+#define OPTION_VAL_TWB64_170_SHENRON_GREEN_TH NULL
+#define OPTION_VAL_TWB64_171_BERSERK_BLOOD_TH NULL
+#define OPTION_VAL_TWB64_172_SUPER_STAR_PINK_TH NULL
+#define OPTION_VAL_TWB64_173_GAMEBUINO_CLASSIC_VER_TH NULL
+#define OPTION_VAL_TWB64_174_BARBIE_PINK_TH NULL
+#define OPTION_VAL_TWB64_175_YOASOBI_AMARANTH_TH NULL
+#define OPTION_VAL_TWB64_176_NOKIA_3310_VER_TH NULL
+#define OPTION_VAL_TWB64_177_CLOVER_GREEN_TH NULL
+#define OPTION_VAL_TWB64_178_GOKU_GT_GI_TH NULL
+#define OPTION_VAL_TWB64_179_FAMICOM_DISK_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_180_TEAM_ROCKET_UNIFORM_TH NULL
+#define OPTION_VAL_TWB64_181_SEIKO_TIMELY_VISION_TH NULL
+#define OPTION_VAL_TWB64_182_PASTEL109_TH NULL
+#define OPTION_VAL_TWB64_183_DORAEMON_TRICOLOR_TH NULL
+#define OPTION_VAL_TWB64_184_FURY_BLUE_TH NULL
+#define OPTION_VAL_TWB64_185_GOOD_SMILE_VISION_TH NULL
+#define OPTION_VAL_TWB64_186_PUYO_PUYO_GREEN_TH NULL
+#define OPTION_VAL_TWB64_187_CIRCLE_K_COLOR_COMBO_TH NULL
+#define OPTION_VAL_TWB64_188_PIZZA_HUT_RED_TH NULL
+#define OPTION_VAL_TWB64_189_EMERALD_GREEN_TH NULL
+#define OPTION_VAL_TWB64_190_GRAND_IVORY_TH NULL
+#define OPTION_VAL_TWB64_191_DEMON_S_GOLD_TH NULL
+#define OPTION_VAL_TWB64_192_SEGA_TOKYO_BLUE_TH NULL
+#define OPTION_VAL_TWB64_193_CHAMPION_S_TUNIC_TH NULL
+#define OPTION_VAL_TWB64_194_DK_BARREL_BROWN_TH NULL
+#define OPTION_VAL_TWB64_195_EVA_01_TH NULL
+#define OPTION_VAL_TWB64_196_WILD_WEST_VISION_TH NULL
+#define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_TH NULL
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_TH NULL
+#define OPTION_VAL_TWB64_199_DURACELL_COPPER_TH NULL
+#define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_TH NULL
+#define OPTION_VAL_TWB64_201_DMG_GOLD_TH NULL
+#define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_TH NULL
+#define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_TH NULL
+#define OPTION_VAL_TWB64_204_DK_ARCADE_BLUE_TH NULL
+#define OPTION_VAL_TWB64_205_ADVANCED_INDIGO_TH NULL
+#define OPTION_VAL_TWB64_206_ULTRA_BLACK_TH NULL
+#define OPTION_VAL_TWB64_207_CHAOS_EMERALD_GREEN_TH NULL
+#define OPTION_VAL_TWB64_208_BLUE_BOMBER_VISION_TH NULL
+#define OPTION_VAL_TWB64_209_KRISPY_KREME_VISION_TH NULL
+#define OPTION_VAL_TWB64_210_STEAM_GRAY_TH NULL
+#define OPTION_VAL_TWB64_211_DREAM_LAND_GB_VER_TH NULL
+#define OPTION_VAL_TWB64_212_POKEMON_PINBALL_VER_TH NULL
+#define OPTION_VAL_TWB64_213_POKETCH_VER_TH NULL
+#define OPTION_VAL_TWB64_214_COLLECTION_OF_SAGA_VER_TH NULL
+#define OPTION_VAL_TWB64_215_ROCKY_VALLEY_HOLIDAY_TH NULL
+#define OPTION_VAL_TWB64_216_GIGA_KIWI_DMG_TH NULL
+#define OPTION_VAL_TWB64_217_DMG_PEA_GREEN_TH NULL
+#define OPTION_VAL_TWB64_218_TIMING_HERO_VER_TH NULL
+#define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_TH NULL
+#define OPTION_VAL_TWB64_220_GRINCHY_GREEN_TH NULL
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_TH NULL
+#define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_TH NULL
+#define OPTION_VAL_TWB64_223_GREEN_AWAKENING_TH NULL
+#define OPTION_VAL_TWB64_224_GOOMBA_BROWN_TH NULL
+#define OPTION_VAL_TWB64_225_WARIOWARE_MICROBLUE_TH NULL
+#define OPTION_VAL_TWB64_226_KONOSUBA_SHERBET_TH NULL
+#define OPTION_VAL_TWB64_227_SPOOKY_PURPLE_TH NULL
+#define OPTION_VAL_TWB64_228_TREASURE_GOLD_TH NULL
+#define OPTION_VAL_TWB64_229_CHERRY_BLOSSOM_PINK_TH NULL
+#define OPTION_VAL_TWB64_230_GOLDEN_TROPHY_TH NULL
+#define OPTION_VAL_TWB64_231_GLACIAL_WINTER_BLUE_TH NULL
+#define OPTION_VAL_TWB64_232_LEPRECHAUN_GREEN_TH NULL
+#define OPTION_VAL_TWB64_233_SAITAMA_SUPER_BLUE_TH NULL
+#define OPTION_VAL_TWB64_234_SAITAMA_SUPER_GREEN_TH NULL
+#define OPTION_VAL_TWB64_235_DUOLINGO_GREEN_TH NULL
+#define OPTION_VAL_TWB64_236_SUPER_MUSHROOM_VISION_TH NULL
+#define OPTION_VAL_TWB64_237_ANCIENT_HISUIAN_BROWN_TH NULL
+#define OPTION_VAL_TWB64_238_SKY_POP_IVORY_TH NULL
+#define OPTION_VAL_TWB64_239_LAWSON_BLUE_TH NULL
+#define OPTION_VAL_TWB64_240_ANIME_EXPO_RED_TH NULL
+#define OPTION_VAL_TWB64_241_BRILLIANT_DIAMOND_BLUE_TH NULL
+#define OPTION_VAL_TWB64_242_SHINING_PEARL_PINK_TH NULL
+#define OPTION_VAL_TWB64_243_FUNIMATION_MELON_TH NULL
+#define OPTION_VAL_TWB64_244_TEYVAT_BROWN_TH NULL
+#define OPTION_VAL_TWB64_245_CHOZO_BLUE_TH NULL
+#define OPTION_VAL_TWB64_246_SPOTIFY_GREEN_TH NULL
+#define OPTION_VAL_TWB64_247_DR_PEPPER_RED_TH NULL
+#define OPTION_VAL_TWB64_248_NHK_SILVER_GRAY_TH NULL
+#define OPTION_VAL_TWB64_249_DUNKIN_VISION_TH NULL
+#define OPTION_VAL_TWB64_250_DEKU_GAMMA_PALETTE_TH NULL
+#define OPTION_VAL_TWB64_251_UNIVERSAL_STUDIOS_BLUE_TH NULL
+#define OPTION_VAL_TWB64_252_HOGWARTS_GOLDIUS_TH NULL
+#define OPTION_VAL_TWB64_253_KENTUCKY_FRIED_RED_TH NULL
+#define OPTION_VAL_TWB64_254_CHEETO_ORANGE_TH NULL
+#define OPTION_VAL_TWB64_255_NAMCO_IDOL_PINK_TH NULL
+#define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_TH NULL
+#define OPTION_VAL_TWB64_257_PAC_MAN_VISION_TH NULL
+#define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_TH NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_TH NULL
+#define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_TH NULL
+#define OPTION_VAL_TWB64_261_UTA_VISION_TH NULL
+#define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_TH NULL
+#define OPTION_VAL_TWB64_263_CLASSY_CHRISTMAS_TH NULL
+#define OPTION_VAL_TWB64_264_WINTER_CHRISTMAS_TH NULL
+#define OPTION_VAL_TWB64_265_IDOL_WORLD_TRICOLOR_TH NULL
+#define OPTION_VAL_TWB64_266_INKLING_TRICOLOR_TH NULL
+#define OPTION_VAL_TWB64_267_7_ELEVEN_COLOR_COMBO_TH NULL
+#define OPTION_VAL_TWB64_268_PAC_PALETTE_TH NULL
+#define OPTION_VAL_TWB64_269_VULNERABLE_BLUE_TH NULL
+#define OPTION_VAL_TWB64_270_NIGHTVISION_GREEN_TH NULL
+#define OPTION_VAL_TWB64_271_BANDAI_NAMCO_TRICOLOR_TH NULL
+#define OPTION_VAL_TWB64_272_GOLD_SILVER_AND_BRONZE_TH NULL
+#define OPTION_VAL_TWB64_273_DEKU_VIGILANTE_PALETTE_TH NULL
+#define OPTION_VAL_TWB64_274_SUPER_FAMICOM_SUPREME_TH NULL
+#define OPTION_VAL_TWB64_275_ABSORBENT_AND_YELLOW_TH NULL
+#define OPTION_VAL_TWB64_276_765PRO_TRICOLOR_TH NULL
+#define OPTION_VAL_TWB64_277_GAMECUBE_GLIMMER_TH NULL
+#define OPTION_VAL_TWB64_278_1ST_VISION_PASTEL_TH NULL
+#define OPTION_VAL_TWB64_279_PERFECT_MAJIN_EMPEROR_TH NULL
+#define OPTION_VAL_TWB64_280_J_POP_IDOL_SHERBET_TH NULL
+#define OPTION_VAL_TWB64_281_RYUUGUU_SUNSET_TH NULL
+#define OPTION_VAL_TWB64_282_TROPICAL_STARFALL_TH NULL
+#define OPTION_VAL_TWB64_283_COLORFUL_HORIZONS_TH NULL
+#define OPTION_VAL_TWB64_284_BLACKPINK_BLINK_PINK_TH NULL
+#define OPTION_VAL_TWB64_285_DMG_SWITCH_TH NULL
+#define OPTION_VAL_TWB64_286_POCKET_SWITCH_TH NULL
+#define OPTION_VAL_TWB64_287_SUNNY_PASSION_PARADISE_TH NULL
+#define OPTION_VAL_TWB64_288_SAIYAN_BEAST_SILVER_TH NULL
+#define OPTION_VAL_TWB64_289_RADIANT_SMILE_RAMP_TH NULL
+#define OPTION_VAL_TWB64_290_A_RISE_BLUE_TH NULL
+#define OPTION_VAL_TWB64_291_TROPICAL_TWICE_APRICOT_TH NULL
+#define OPTION_VAL_TWB64_292_ODYSSEY_BOY_TH NULL
+#define OPTION_VAL_TWB64_293_FROG_COIN_GREEN_TH NULL
+#define OPTION_VAL_TWB64_294_GARFIELD_VISION_TH NULL
+#define OPTION_VAL_TWB64_295_BEDROCK_CAVEMAN_VISION_TH NULL
+#define OPTION_VAL_TWB64_296_BANGTAN_ARMY_PURPLE_TH NULL
+#define OPTION_VAL_TWB64_297_LE_SSERAFIM_FEARLESS_BLUE_TH NULL
+#define OPTION_VAL_TWB64_298_BAJA_BLAST_BEACH_TH NULL
+#define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_TH NULL
+#define OPTION_VAL_TWB64_300_WONDER_PURPLE_TH NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_TH NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_TH NULL
+#define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_TH NULL
+#define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_TH NULL
+#define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_TH NULL
+#define OPTION_VAL_PIXELSHIFT_04_CAMOUFLAGE_TH NULL
+#define OPTION_VAL_PIXELSHIFT_05_CHOCOLATE_BAR_TH NULL
+#define OPTION_VAL_PIXELSHIFT_06_CMYK_TH NULL
+#define OPTION_VAL_PIXELSHIFT_07_COTTON_CANDY_TH NULL
+#define OPTION_VAL_PIXELSHIFT_08_EASY_GREENS_TH NULL
+#define OPTION_VAL_PIXELSHIFT_09_GAMATE_TH NULL
+#define OPTION_VAL_PIXELSHIFT_10_GAME_BOY_LIGHT_TH NULL
+#define OPTION_VAL_PIXELSHIFT_11_GAME_BOY_POCKET_TH NULL
+#define OPTION_VAL_PIXELSHIFT_12_GAME_BOY_POCKET_ALT_TH NULL
+#define OPTION_VAL_PIXELSHIFT_13_GAME_POCKET_COMPUTER_TH NULL
+#define OPTION_VAL_PIXELSHIFT_14_GAME_WATCH_BALL_TH NULL
+#define OPTION_VAL_PIXELSHIFT_15_GB_BACKLIGHT_BLUE_TH NULL
+#define OPTION_VAL_PIXELSHIFT_16_GB_BACKLIGHT_FADED_TH NULL
+#define OPTION_VAL_PIXELSHIFT_17_GB_BACKLIGHT_ORANGE_TH NULL
+#define OPTION_VAL_PIXELSHIFT_18_GB_BACKLIGHT_WHITE__TH NULL
+#define OPTION_VAL_PIXELSHIFT_19_GB_BACKLIGHT_YELLOW_DARK_TH NULL
+#define OPTION_VAL_PIXELSHIFT_20_GB_BOOTLEG_TH NULL
+#define OPTION_VAL_PIXELSHIFT_21_GB_HUNTER_TH NULL
+#define OPTION_VAL_PIXELSHIFT_22_GB_KIOSK_TH NULL
+#define OPTION_VAL_PIXELSHIFT_23_GB_KIOSK_2_TH NULL
+#define OPTION_VAL_PIXELSHIFT_24_GB_NEW_TH NULL
+#define OPTION_VAL_PIXELSHIFT_25_GB_NUKED_TH NULL
+#define OPTION_VAL_PIXELSHIFT_26_GB_OLD_TH NULL
+#define OPTION_VAL_PIXELSHIFT_27_GBP_BIVERT_TH NULL
+#define OPTION_VAL_PIXELSHIFT_28_GB_WASHED_YELLOW_BACKLIGHT_TH NULL
+#define OPTION_VAL_PIXELSHIFT_29_GHOST_TH NULL
+#define OPTION_VAL_PIXELSHIFT_30_GLOW_IN_THE_DARK_TH NULL
+#define OPTION_VAL_PIXELSHIFT_31_GOLD_BAR_TH NULL
+#define OPTION_VAL_PIXELSHIFT_32_GRAPEFRUIT_TH NULL
+#define OPTION_VAL_PIXELSHIFT_33_GRAY_GREEN_MIX_TH NULL
+#define OPTION_VAL_PIXELSHIFT_34_MISSINGNO_TH NULL
+#define OPTION_VAL_PIXELSHIFT_35_MS_DOS_TH NULL
+#define OPTION_VAL_PIXELSHIFT_36_NEWSPAPER_TH NULL
+#define OPTION_VAL_PIXELSHIFT_37_PIP_BOY_TH NULL
+#define OPTION_VAL_PIXELSHIFT_38_POCKET_GIRL_TH NULL
+#define OPTION_VAL_PIXELSHIFT_39_SILHOUETTE_TH NULL
+#define OPTION_VAL_PIXELSHIFT_40_SUNBURST_TH NULL
+#define OPTION_VAL_PIXELSHIFT_41_TECHNICOLOR_TH NULL
+#define OPTION_VAL_PIXELSHIFT_42_TRON_TH NULL
+#define OPTION_VAL_PIXELSHIFT_43_VAPORWAVE_TH NULL
+#define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_TH NULL
+#define OPTION_VAL_PIXELSHIFT_45_WISH_TH NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_TH NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_TH NULL
+#define OPTION_VAL_GBC_ONLY_TH NULL
+#define OPTION_VAL_ALWAYS_TH NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_TH NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_TH NULL
+#define OPTION_VAL_ACCURATE_TH NULL
+#define OPTION_VAL_FAST_TH NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_TH NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_TH NULL
+#define OPTION_VAL_CENTRAL_TH NULL
+#define OPTION_VAL_ABOVE_SCREEN_TH NULL
+#define OPTION_VAL_BELOW_SCREEN_TH NULL
+#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_TH NULL
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_TH NULL
+#define GAMBATTE_MIX_FRAMES_LABEL_TH NULL
+#define GAMBATTE_MIX_FRAMES_INFO_0_TH NULL
+#define OPTION_VAL_MIX_TH NULL
+#define OPTION_VAL_LCD_GHOSTING_TH NULL
+#define OPTION_VAL_LCD_GHOSTING_FAST_TH NULL
+#define GAMBATTE_AUDIO_RESAMPLER_LABEL_TH NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_TH NULL
+#define OPTION_VAL_SINC_TH NULL
+#define OPTION_VAL_CC_TH NULL
+#define GAMBATTE_GB_HWMODE_LABEL_TH NULL
+#define GAMBATTE_GB_HWMODE_INFO_0_TH NULL
+#define OPTION_VAL_GB_TH NULL
+#define OPTION_VAL_GBA_TH NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_TH NULL
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_TH NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_TH NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_TH NULL
+#define GAMBATTE_TURBO_PERIOD_LABEL_TH NULL
+#define GAMBATTE_TURBO_PERIOD_INFO_0_TH NULL
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_TH NULL
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_TH NULL
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_TH NULL
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_MODE_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_MODE_INFO_0_TH NULL
+#define OPTION_VAL_NOT_CONNECTED_TH NULL
+#define OPTION_VAL_NETWORK_SERVER_TH NULL
+#define OPTION_VAL_NETWORK_CLIENT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_TH NULL
+
+struct retro_core_option_v2_category option_cats_th[] = {
+   {
+      "gb_link",
+      CATEGORY_GB_LINK_LABEL_TH,
+      CATEGORY_GB_LINK_INFO_0_TH
+   },
+   { NULL, NULL, NULL },
+};
+struct retro_core_option_v2_definition option_defs_th[] = {
+   {
+      "gambatte_gb_colorization",
+      GAMBATTE_GB_COLORIZATION_LABEL_TH,
+      NULL,
+      GAMBATTE_GB_COLORIZATION_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "auto",     OPTION_VAL_AUTO_TH },
+         { "GBC",      OPTION_VAL_GBC_TH },
+         { "SGB",      OPTION_VAL_SGB_TH },
+         { "internal", OPTION_VAL_INTERNAL_TH },
+         { "custom",   OPTION_VAL_CUSTOM_TH },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "gambatte_gb_internal_palette",
+      GAMBATTE_GB_INTERNAL_PALETTE_LABEL_TH,
+      NULL,
+      GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "GB - DMG",                 OPTION_VAL_GB_DMG_TH },
+         { "GB - Pocket",              OPTION_VAL_GB_POCKET_TH },
+         { "GB - Light",               OPTION_VAL_GB_LIGHT_TH },
+         { "GBC - Blue",               OPTION_VAL_GBC_BLUE_TH },
+         { "GBC - Brown",              OPTION_VAL_GBC_BROWN_TH },
+         { "GBC - Dark Blue",          OPTION_VAL_GBC_DARK_BLUE_TH },
+         { "GBC - Dark Brown",         OPTION_VAL_GBC_DARK_BROWN_TH },
+         { "GBC - Dark Green",         OPTION_VAL_GBC_DARK_GREEN_TH },
+         { "GBC - Grayscale",          OPTION_VAL_GBC_GRAYSCALE_TH },
+         { "GBC - Green",              OPTION_VAL_GBC_GREEN_TH },
+         { "GBC - Inverted",           OPTION_VAL_GBC_INVERTED_TH },
+         { "GBC - Orange",             OPTION_VAL_GBC_ORANGE_TH },
+         { "GBC - Pastel Mix",         OPTION_VAL_GBC_PASTEL_MIX_TH },
+         { "GBC - Red",                OPTION_VAL_GBC_RED_TH },
+         { "GBC - Yellow",             OPTION_VAL_GBC_YELLOW_TH },
+         { "SGB - 1A",                 OPTION_VAL_SGB_1A_TH },
+         { "SGB - 1B",                 OPTION_VAL_SGB_1B_TH },
+         { "SGB - 1C",                 OPTION_VAL_SGB_1C_TH },
+         { "SGB - 1D",                 OPTION_VAL_SGB_1D_TH },
+         { "SGB - 1E",                 OPTION_VAL_SGB_1E_TH },
+         { "SGB - 1F",                 OPTION_VAL_SGB_1F_TH },
+         { "SGB - 1G",                 OPTION_VAL_SGB_1G_TH },
+         { "SGB - 1H",                 OPTION_VAL_SGB_1H_TH },
+         { "SGB - 2A",                 OPTION_VAL_SGB_2A_TH },
+         { "SGB - 2B",                 OPTION_VAL_SGB_2B_TH },
+         { "SGB - 2C",                 OPTION_VAL_SGB_2C_TH },
+         { "SGB - 2D",                 OPTION_VAL_SGB_2D_TH },
+         { "SGB - 2E",                 OPTION_VAL_SGB_2E_TH },
+         { "SGB - 2F",                 OPTION_VAL_SGB_2F_TH },
+         { "SGB - 2G",                 OPTION_VAL_SGB_2G_TH },
+         { "SGB - 2H",                 OPTION_VAL_SGB_2H_TH },
+         { "SGB - 3A",                 OPTION_VAL_SGB_3A_TH },
+         { "SGB - 3B",                 OPTION_VAL_SGB_3B_TH },
+         { "SGB - 3C",                 OPTION_VAL_SGB_3C_TH },
+         { "SGB - 3D",                 OPTION_VAL_SGB_3D_TH },
+         { "SGB - 3E",                 OPTION_VAL_SGB_3E_TH },
+         { "SGB - 3F",                 OPTION_VAL_SGB_3F_TH },
+         { "SGB - 3G",                 OPTION_VAL_SGB_3G_TH },
+         { "SGB - 3H",                 OPTION_VAL_SGB_3H_TH },
+         { "SGB - 4A",                 OPTION_VAL_SGB_4A_TH },
+         { "SGB - 4B",                 OPTION_VAL_SGB_4B_TH },
+         { "SGB - 4C",                 OPTION_VAL_SGB_4C_TH },
+         { "SGB - 4D",                 OPTION_VAL_SGB_4D_TH },
+         { "SGB - 4E",                 OPTION_VAL_SGB_4E_TH },
+         { "SGB - 4F",                 OPTION_VAL_SGB_4F_TH },
+         { "SGB - 4G",                 OPTION_VAL_SGB_4G_TH },
+         { "SGB - 4H",                 OPTION_VAL_SGB_4H_TH },
+         { "Special 1",                OPTION_VAL_SPECIAL_1_TH },
+         { "Special 2",                OPTION_VAL_SPECIAL_2_TH },
+         { "Special 3",                OPTION_VAL_SPECIAL_3_TH },
+         { "Special 4 (TI-83 Legacy)", OPTION_VAL_SPECIAL_4_TI_83_LEGACY_TH },
+         { "TWB64 - Pack 1",           OPTION_VAL_TWB64_PACK_1_TH },
+         { "TWB64 - Pack 2",           OPTION_VAL_TWB64_PACK_2_TH },
+         { "TWB64 - Pack 3",           OPTION_VAL_TWB64_PACK_3_TH },
+         { "PixelShift - Pack 1",      OPTION_VAL_PIXELSHIFT_PACK_1_TH },
+         { NULL, NULL },
+      },
+      "GB - DMG"
+   },
+   {
+      "gambatte_gb_palette_twb64_1",
+      GAMBATTE_GB_PALETTE_TWB64_1_LABEL_TH,
+      NULL,
+      GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "TWB64 001 - Aqours Blue",               OPTION_VAL_TWB64_001_AQOURS_BLUE_TH },
+         { "TWB64 002 - Anime Expo Ver.",           OPTION_VAL_TWB64_002_ANIME_EXPO_VER_TH },
+         { "TWB64 003 - SpongeBob Yellow",          OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_TH },
+         { "TWB64 004 - Patrick Star Pink",         OPTION_VAL_TWB64_004_PATRICK_STAR_PINK_TH },
+         { "TWB64 005 - Neon Red",                  OPTION_VAL_TWB64_005_NEON_RED_TH },
+         { "TWB64 006 - Neon Blue",                 OPTION_VAL_TWB64_006_NEON_BLUE_TH },
+         { "TWB64 007 - Neon Yellow",               OPTION_VAL_TWB64_007_NEON_YELLOW_TH },
+         { "TWB64 008 - Neon Green",                OPTION_VAL_TWB64_008_NEON_GREEN_TH },
+         { "TWB64 009 - Neon Pink",                 OPTION_VAL_TWB64_009_NEON_PINK_TH },
+         { "TWB64 010 - Mario Red",                 OPTION_VAL_TWB64_010_MARIO_RED_TH },
+         { "TWB64 011 - Nick Orange",               OPTION_VAL_TWB64_011_NICK_ORANGE_TH },
+         { "TWB64 012 - Virtual Vision",            OPTION_VAL_TWB64_012_VIRTUAL_VISION_TH },
+         { "TWB64 013 - Golden Wild",               OPTION_VAL_TWB64_013_GOLDEN_WILD_TH },
+         { "TWB64 014 - DMG-099",                   OPTION_VAL_TWB64_014_DMG_099_TH },
+         { "TWB64 015 - Classic Blurple",           OPTION_VAL_TWB64_015_CLASSIC_BLURPLE_TH },
+         { "TWB64 016 - 765 Production Ver.",       OPTION_VAL_TWB64_016_765_PRODUCTION_VER_TH },
+         { "TWB64 017 - Superball Ivory",           OPTION_VAL_TWB64_017_SUPERBALL_IVORY_TH },
+         { "TWB64 018 - Crunchyroll Orange",        OPTION_VAL_TWB64_018_CRUNCHYROLL_ORANGE_TH },
+         { "TWB64 019 - Muse Pink",                 OPTION_VAL_TWB64_019_MUSE_PINK_TH },
+         { "TWB64 020 - School Idol Blue",          OPTION_VAL_TWB64_020_SCHOOL_IDOL_BLUE_TH },
+         { "TWB64 021 - Gamate Ver.",               OPTION_VAL_TWB64_021_GAMATE_VER_TH },
+         { "TWB64 022 - Greenscale Ver.",           OPTION_VAL_TWB64_022_GREENSCALE_VER_TH },
+         { "TWB64 023 - Odyssey Gold",              OPTION_VAL_TWB64_023_ODYSSEY_GOLD_TH },
+         { "TWB64 024 - Super Saiyan God",          OPTION_VAL_TWB64_024_SUPER_SAIYAN_GOD_TH },
+         { "TWB64 025 - Super Saiyan Blue",         OPTION_VAL_TWB64_025_SUPER_SAIYAN_BLUE_TH },
+         { "TWB64 026 - ANIMAX BLUE",               OPTION_VAL_TWB64_026_ANIMAX_BLUE_TH },
+         { "TWB64 027 - BMO Ver.",                  OPTION_VAL_TWB64_027_BMO_VER_TH },
+         { "TWB64 028 - Game.com Ver.",             OPTION_VAL_TWB64_028_GAME_COM_VER_TH },
+         { "TWB64 029 - Sanrio Pink",               OPTION_VAL_TWB64_029_SANRIO_PINK_TH },
+         { "TWB64 030 - Timmy Turner Pink",         OPTION_VAL_TWB64_030_TIMMY_TURNER_PINK_TH },
+         { "TWB64 031 - Fairly OddPalette",         OPTION_VAL_TWB64_031_FAIRLY_ODDPALETTE_TH },
+         { "TWB64 032 - Danny Phantom Silver",      OPTION_VAL_TWB64_032_DANNY_PHANTOM_SILVER_TH },
+         { "TWB64 033 - Link's Awakening DX Ver.",  OPTION_VAL_TWB64_033_LINK_S_AWAKENING_DX_VER_TH },
+         { "TWB64 034 - Travel Wood",               OPTION_VAL_TWB64_034_TRAVEL_WOOD_TH },
+         { "TWB64 035 - Pokemon Ver.",              OPTION_VAL_TWB64_035_POKEMON_VER_TH },
+         { "TWB64 036 - Game Grump Orange",         OPTION_VAL_TWB64_036_GAME_GRUMP_ORANGE_TH },
+         { "TWB64 037 - Scooby-Doo Mystery Ver.",   OPTION_VAL_TWB64_037_SCOOBY_DOO_MYSTERY_VER_TH },
+         { "TWB64 038 - Pokemon mini Ver.",         OPTION_VAL_TWB64_038_POKEMON_MINI_VER_TH },
+         { "TWB64 039 - Supervision Ver.",          OPTION_VAL_TWB64_039_SUPERVISION_VER_TH },
+         { "TWB64 040 - DMG Ver.",                  OPTION_VAL_TWB64_040_DMG_VER_TH },
+         { "TWB64 041 - Pocket Ver.",               OPTION_VAL_TWB64_041_POCKET_VER_TH },
+         { "TWB64 042 - Light Ver.",                OPTION_VAL_TWB64_042_LIGHT_VER_TH },
+         { "TWB64 043 - All Might Hero Palette",    OPTION_VAL_TWB64_043_ALL_MIGHT_HERO_PALETTE_TH },
+         { "TWB64 044 - U.A. High School Uniform",  OPTION_VAL_TWB64_044_U_A_HIGH_SCHOOL_UNIFORM_TH },
+         { "TWB64 045 - Pikachu Yellow",            OPTION_VAL_TWB64_045_PIKACHU_YELLOW_TH },
+         { "TWB64 046 - Eevee Brown",               OPTION_VAL_TWB64_046_EEVEE_BROWN_TH },
+         { "TWB64 047 - Microvision Ver.",          OPTION_VAL_TWB64_047_MICROVISION_VER_TH },
+         { "TWB64 048 - TI-83 Ver.",                OPTION_VAL_TWB64_048_TI_83_VER_TH },
+         { "TWB64 049 - Aegis Cherry",              OPTION_VAL_TWB64_049_AEGIS_CHERRY_TH },
+         { "TWB64 050 - Labo Fawn",                 OPTION_VAL_TWB64_050_LABO_FAWN_TH },
+         { "TWB64 051 - MILLION LIVE GOLD!",        OPTION_VAL_TWB64_051_MILLION_LIVE_GOLD_TH },
+         { "TWB64 052 - Squidward Sea Foam Green",  OPTION_VAL_TWB64_052_SQUIDWARD_SEA_FOAM_GREEN_TH },
+         { "TWB64 053 - VMU Ver.",                  OPTION_VAL_TWB64_053_VMU_VER_TH },
+         { "TWB64 054 - Game Master Ver.",          OPTION_VAL_TWB64_054_GAME_MASTER_VER_TH },
+         { "TWB64 055 - Android Green",             OPTION_VAL_TWB64_055_ANDROID_GREEN_TH },
+         { "TWB64 056 - Amazon Vision",             OPTION_VAL_TWB64_056_AMAZON_VISION_TH },
+         { "TWB64 057 - Google Red",                OPTION_VAL_TWB64_057_GOOGLE_RED_TH },
+         { "TWB64 058 - Google Blue",               OPTION_VAL_TWB64_058_GOOGLE_BLUE_TH },
+         { "TWB64 059 - Google Yellow",             OPTION_VAL_TWB64_059_GOOGLE_YELLOW_TH },
+         { "TWB64 060 - Google Green",              OPTION_VAL_TWB64_060_GOOGLE_GREEN_TH },
+         { "TWB64 061 - WonderSwan Ver.",           OPTION_VAL_TWB64_061_WONDERSWAN_VER_TH },
+         { "TWB64 062 - Neo Geo Pocket Ver.",       OPTION_VAL_TWB64_062_NEO_GEO_POCKET_VER_TH },
+         { "TWB64 063 - Dew Green",                 OPTION_VAL_TWB64_063_DEW_GREEN_TH },
+         { "TWB64 064 - Coca-Cola Vision",          OPTION_VAL_TWB64_064_COCA_COLA_VISION_TH },
+         { "TWB64 065 - GameKing Ver.",             OPTION_VAL_TWB64_065_GAMEKING_VER_TH },
+         { "TWB64 066 - Do The Dew Ver.",           OPTION_VAL_TWB64_066_DO_THE_DEW_VER_TH },
+         { "TWB64 067 - Digivice Ver.",             OPTION_VAL_TWB64_067_DIGIVICE_VER_TH },
+         { "TWB64 068 - Bikini Bottom Ver.",        OPTION_VAL_TWB64_068_BIKINI_BOTTOM_VER_TH },
+         { "TWB64 069 - Blossom Pink",              OPTION_VAL_TWB64_069_BLOSSOM_PINK_TH },
+         { "TWB64 070 - Bubbles Blue",              OPTION_VAL_TWB64_070_BUBBLES_BLUE_TH },
+         { "TWB64 071 - Buttercup Green",           OPTION_VAL_TWB64_071_BUTTERCUP_GREEN_TH },
+         { "TWB64 072 - NASCAR Ver.",               OPTION_VAL_TWB64_072_NASCAR_VER_TH },
+         { "TWB64 073 - Lemon-Lime Green",          OPTION_VAL_TWB64_073_LEMON_LIME_GREEN_TH },
+         { "TWB64 074 - Mega Man V Ver.",           OPTION_VAL_TWB64_074_MEGA_MAN_V_VER_TH },
+         { "TWB64 075 - Tamagotchi Ver.",           OPTION_VAL_TWB64_075_TAMAGOTCHI_VER_TH },
+         { "TWB64 076 - Phantom Red",               OPTION_VAL_TWB64_076_PHANTOM_RED_TH },
+         { "TWB64 077 - Halloween Ver.",            OPTION_VAL_TWB64_077_HALLOWEEN_VER_TH },
+         { "TWB64 078 - Christmas Ver.",            OPTION_VAL_TWB64_078_CHRISTMAS_VER_TH },
+         { "TWB64 079 - Cardcaptor Pink",           OPTION_VAL_TWB64_079_CARDCAPTOR_PINK_TH },
+         { "TWB64 080 - Pretty Guardian Gold",      OPTION_VAL_TWB64_080_PRETTY_GUARDIAN_GOLD_TH },
+         { "TWB64 081 - Camouflage Ver.",           OPTION_VAL_TWB64_081_CAMOUFLAGE_VER_TH },
+         { "TWB64 082 - Legendary Super Saiyan",    OPTION_VAL_TWB64_082_LEGENDARY_SUPER_SAIYAN_TH },
+         { "TWB64 083 - Super Saiyan Rose",         OPTION_VAL_TWB64_083_SUPER_SAIYAN_ROSE_TH },
+         { "TWB64 084 - Super Saiyan",              OPTION_VAL_TWB64_084_SUPER_SAIYAN_TH },
+         { "TWB64 085 - Perfected Ultra Instinct",  OPTION_VAL_TWB64_085_PERFECTED_ULTRA_INSTINCT_TH },
+         { "TWB64 086 - Saint Snow Red",            OPTION_VAL_TWB64_086_SAINT_SNOW_RED_TH },
+         { "TWB64 087 - Yellow Banana",             OPTION_VAL_TWB64_087_YELLOW_BANANA_TH },
+         { "TWB64 088 - Green Banana",              OPTION_VAL_TWB64_088_GREEN_BANANA_TH },
+         { "TWB64 089 - Super Saiyan 3",            OPTION_VAL_TWB64_089_SUPER_SAIYAN_3_TH },
+         { "TWB64 090 - Super Saiyan Blue Evolved", OPTION_VAL_TWB64_090_SUPER_SAIYAN_BLUE_EVOLVED_TH },
+         { "TWB64 091 - Pocket Tales Ver.",         OPTION_VAL_TWB64_091_POCKET_TALES_VER_TH },
+         { "TWB64 092 - Investigation Yellow",      OPTION_VAL_TWB64_092_INVESTIGATION_YELLOW_TH },
+         { "TWB64 093 - S.E.E.S. Blue",             OPTION_VAL_TWB64_093_S_E_E_S_BLUE_TH },
+         { "TWB64 094 - Ultra Instinct Sign",       OPTION_VAL_TWB64_094_ULTRA_INSTINCT_SIGN_TH },
+         { "TWB64 095 - Hokage Orange",             OPTION_VAL_TWB64_095_HOKAGE_ORANGE_TH },
+         { "TWB64 096 - Straw Hat Red",             OPTION_VAL_TWB64_096_STRAW_HAT_RED_TH },
+         { "TWB64 097 - Sword Art Cyan",            OPTION_VAL_TWB64_097_SWORD_ART_CYAN_TH },
+         { "TWB64 098 - Deku Alpha Emerald",        OPTION_VAL_TWB64_098_DEKU_ALPHA_EMERALD_TH },
+         { "TWB64 099 - Blue Stripes Ver.",         OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_TH },
+         { "TWB64 100 - Precure Marble Raspberry",  OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_TH },
+         { NULL, NULL },
+      },
+      "TWB64 001 - Aqours Blue"
+   },
+   {
+      "gambatte_gb_palette_twb64_2",
+      GAMBATTE_GB_PALETTE_TWB64_2_LABEL_TH,
+      NULL,
+      GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "TWB64 101 - 765PRO Pink",               OPTION_VAL_TWB64_101_765PRO_PINK_TH },
+         { "TWB64 102 - CINDERELLA Blue",           OPTION_VAL_TWB64_102_CINDERELLA_BLUE_TH },
+         { "TWB64 103 - MILLION Yellow!",           OPTION_VAL_TWB64_103_MILLION_YELLOW_TH },
+         { "TWB64 104 - SideM Green",               OPTION_VAL_TWB64_104_SIDEM_GREEN_TH },
+         { "TWB64 105 - SHINY Sky Blue",            OPTION_VAL_TWB64_105_SHINY_SKY_BLUE_TH },
+         { "TWB64 106 - Angry Volcano Ver.",        OPTION_VAL_TWB64_106_ANGRY_VOLCANO_VER_TH },
+         { "TWB64 107 - NBA Vision",                OPTION_VAL_TWB64_107_NBA_VISION_TH },
+         { "TWB64 108 - NFL Vision",                OPTION_VAL_TWB64_108_NFL_VISION_TH },
+         { "TWB64 109 - MLB Vision",                OPTION_VAL_TWB64_109_MLB_VISION_TH },
+         { "TWB64 110 - Anime Digivice Ver.",       OPTION_VAL_TWB64_110_ANIME_DIGIVICE_VER_TH },
+         { "TWB64 111 - Aquatic Iro",               OPTION_VAL_TWB64_111_AQUATIC_IRO_TH },
+         { "TWB64 112 - Tea Midori",                OPTION_VAL_TWB64_112_TEA_MIDORI_TH },
+         { "TWB64 113 - Sakura Pink",               OPTION_VAL_TWB64_113_SAKURA_PINK_TH },
+         { "TWB64 114 - Wisteria Murasaki",         OPTION_VAL_TWB64_114_WISTERIA_MURASAKI_TH },
+         { "TWB64 115 - Oni Aka",                   OPTION_VAL_TWB64_115_ONI_AKA_TH },
+         { "TWB64 116 - Golden Kiiro",              OPTION_VAL_TWB64_116_GOLDEN_KIIRO_TH },
+         { "TWB64 117 - Silver Shiro",              OPTION_VAL_TWB64_117_SILVER_SHIRO_TH },
+         { "TWB64 118 - Fruity Orange",             OPTION_VAL_TWB64_118_FRUITY_ORANGE_TH },
+         { "TWB64 119 - AKB48 Pink",                OPTION_VAL_TWB64_119_AKB48_PINK_TH },
+         { "TWB64 120 - Miku Blue",                 OPTION_VAL_TWB64_120_MIKU_BLUE_TH },
+         { "TWB64 121 - Tri Digivice Ver.",         OPTION_VAL_TWB64_121_TRI_DIGIVICE_VER_TH },
+         { "TWB64 122 - Survey Corps Uniform",      OPTION_VAL_TWB64_122_SURVEY_CORPS_UNIFORM_TH },
+         { "TWB64 123 - Island Green",              OPTION_VAL_TWB64_123_ISLAND_GREEN_TH },
+         { "TWB64 124 - Nogizaka46 Purple",         OPTION_VAL_TWB64_124_NOGIZAKA46_PURPLE_TH },
+         { "TWB64 125 - Ninja Turtle Green",        OPTION_VAL_TWB64_125_NINJA_TURTLE_GREEN_TH },
+         { "TWB64 126 - Slime Blue",                OPTION_VAL_TWB64_126_SLIME_BLUE_TH },
+         { "TWB64 127 - Lime Midori",               OPTION_VAL_TWB64_127_LIME_MIDORI_TH },
+         { "TWB64 128 - Ghostly Aoi",               OPTION_VAL_TWB64_128_GHOSTLY_AOI_TH },
+         { "TWB64 129 - Retro Bogeda",              OPTION_VAL_TWB64_129_RETRO_BOGEDA_TH },
+         { "TWB64 130 - Royal Blue",                OPTION_VAL_TWB64_130_ROYAL_BLUE_TH },
+         { "TWB64 131 - Neon Purple",               OPTION_VAL_TWB64_131_NEON_PURPLE_TH },
+         { "TWB64 132 - Neon Orange",               OPTION_VAL_TWB64_132_NEON_ORANGE_TH },
+         { "TWB64 133 - Moonlight Vision",          OPTION_VAL_TWB64_133_MOONLIGHT_VISION_TH },
+         { "TWB64 134 - Rising Sun Red",            OPTION_VAL_TWB64_134_RISING_SUN_RED_TH },
+         { "TWB64 135 - Burger King Color Combo",   OPTION_VAL_TWB64_135_BURGER_KING_COLOR_COMBO_TH },
+         { "TWB64 136 - Grand Zeno Coat",           OPTION_VAL_TWB64_136_GRAND_ZENO_COAT_TH },
+         { "TWB64 137 - Pac-Man Yellow",            OPTION_VAL_TWB64_137_PAC_MAN_YELLOW_TH },
+         { "TWB64 138 - Irish Green",               OPTION_VAL_TWB64_138_IRISH_GREEN_TH },
+         { "TWB64 139 - Goku Gi",                   OPTION_VAL_TWB64_139_GOKU_GI_TH },
+         { "TWB64 140 - Dragon Ball Orange",        OPTION_VAL_TWB64_140_DRAGON_BALL_ORANGE_TH },
+         { "TWB64 141 - Christmas Gold",            OPTION_VAL_TWB64_141_CHRISTMAS_GOLD_TH },
+         { "TWB64 142 - Pepsi Vision",              OPTION_VAL_TWB64_142_PEPSI_VISION_TH },
+         { "TWB64 143 - Bubblun Green",             OPTION_VAL_TWB64_143_BUBBLUN_GREEN_TH },
+         { "TWB64 144 - Bobblun Blue",              OPTION_VAL_TWB64_144_BOBBLUN_BLUE_TH },
+         { "TWB64 145 - Baja Blast Storm",          OPTION_VAL_TWB64_145_BAJA_BLAST_STORM_TH },
+         { "TWB64 146 - Olympic Gold",              OPTION_VAL_TWB64_146_OLYMPIC_GOLD_TH },
+         { "TWB64 147 - LisAni Orange!",            OPTION_VAL_TWB64_147_LISANI_ORANGE_TH },
+         { "TWB64 148 - Liella Purple!",            OPTION_VAL_TWB64_148_LIELLA_PURPLE_TH },
+         { "TWB64 149 - Olympic Silver",            OPTION_VAL_TWB64_149_OLYMPIC_SILVER_TH },
+         { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_TH },
+         { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_TH },
+         { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_TH },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_TH },
+         { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_TH },
+         { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_TH },
+         { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_TH },
+         { "TWB64 157 - FamilyMart Vision",         OPTION_VAL_TWB64_157_FAMILYMART_VISION_TH },
+         { "TWB64 158 - Xbox Green",                OPTION_VAL_TWB64_158_XBOX_GREEN_TH },
+         { "TWB64 159 - Sonic Mega Blue",           OPTION_VAL_TWB64_159_SONIC_MEGA_BLUE_TH },
+         { "TWB64 160 - Sprite Green",              OPTION_VAL_TWB64_160_SPRITE_GREEN_TH },
+         { "TWB64 161 - Scarlett Green",            OPTION_VAL_TWB64_161_SCARLETT_GREEN_TH },
+         { "TWB64 162 - Glitchy Blue",              OPTION_VAL_TWB64_162_GLITCHY_BLUE_TH },
+         { "TWB64 163 - Classic LCD",               OPTION_VAL_TWB64_163_CLASSIC_LCD_TH },
+         { "TWB64 164 - 3DS Virtual Console Ver.",  OPTION_VAL_TWB64_164_3DS_VIRTUAL_CONSOLE_VER_TH },
+         { "TWB64 165 - PocketStation Ver.",        OPTION_VAL_TWB64_165_POCKETSTATION_VER_TH },
+         { "TWB64 166 - Timeless Gold and Red",     OPTION_VAL_TWB64_166_TIMELESS_GOLD_AND_RED_TH },
+         { "TWB64 167 - Smurfy Blue",               OPTION_VAL_TWB64_167_SMURFY_BLUE_TH },
+         { "TWB64 168 - Swampy Ogre Green",         OPTION_VAL_TWB64_168_SWAMPY_OGRE_GREEN_TH },
+         { "TWB64 169 - Sailor Spinach Green",      OPTION_VAL_TWB64_169_SAILOR_SPINACH_GREEN_TH },
+         { "TWB64 170 - Shenron Green",             OPTION_VAL_TWB64_170_SHENRON_GREEN_TH },
+         { "TWB64 171 - Berserk Blood",             OPTION_VAL_TWB64_171_BERSERK_BLOOD_TH },
+         { "TWB64 172 - Super Star Pink",           OPTION_VAL_TWB64_172_SUPER_STAR_PINK_TH },
+         { "TWB64 173 - Gamebuino Classic Ver.",    OPTION_VAL_TWB64_173_GAMEBUINO_CLASSIC_VER_TH },
+         { "TWB64 174 - Barbie Pink",               OPTION_VAL_TWB64_174_BARBIE_PINK_TH },
+         { "TWB64 175 - YOASOBI AMARANTH",          OPTION_VAL_TWB64_175_YOASOBI_AMARANTH_TH },
+         { "TWB64 176 - Nokia 3310 Ver.",           OPTION_VAL_TWB64_176_NOKIA_3310_VER_TH },
+         { "TWB64 177 - Clover Green",              OPTION_VAL_TWB64_177_CLOVER_GREEN_TH },
+         { "TWB64 178 - Goku GT Gi",                OPTION_VAL_TWB64_178_GOKU_GT_GI_TH },
+         { "TWB64 179 - Famicom Disk Yellow",       OPTION_VAL_TWB64_179_FAMICOM_DISK_YELLOW_TH },
+         { "TWB64 180 - Team Rocket Uniform",       OPTION_VAL_TWB64_180_TEAM_ROCKET_UNIFORM_TH },
+         { "TWB64 181 - SEIKO Timely Vision",       OPTION_VAL_TWB64_181_SEIKO_TIMELY_VISION_TH },
+         { "TWB64 182 - PASTEL109",                 OPTION_VAL_TWB64_182_PASTEL109_TH },
+         { "TWB64 183 - Doraemon Tricolor",         OPTION_VAL_TWB64_183_DORAEMON_TRICOLOR_TH },
+         { "TWB64 184 - Fury Blue",                 OPTION_VAL_TWB64_184_FURY_BLUE_TH },
+         { "TWB64 185 - GOOD SMILE VISION",         OPTION_VAL_TWB64_185_GOOD_SMILE_VISION_TH },
+         { "TWB64 186 - Puyo Puyo Green",           OPTION_VAL_TWB64_186_PUYO_PUYO_GREEN_TH },
+         { "TWB64 187 - Circle K Color Combo",      OPTION_VAL_TWB64_187_CIRCLE_K_COLOR_COMBO_TH },
+         { "TWB64 188 - Pizza Hut Red",             OPTION_VAL_TWB64_188_PIZZA_HUT_RED_TH },
+         { "TWB64 189 - Emerald Green",             OPTION_VAL_TWB64_189_EMERALD_GREEN_TH },
+         { "TWB64 190 - Grand Ivory",               OPTION_VAL_TWB64_190_GRAND_IVORY_TH },
+         { "TWB64 191 - Demon's Gold",              OPTION_VAL_TWB64_191_DEMON_S_GOLD_TH },
+         { "TWB64 192 - SEGA Tokyo Blue",           OPTION_VAL_TWB64_192_SEGA_TOKYO_BLUE_TH },
+         { "TWB64 193 - Champion's Tunic",          OPTION_VAL_TWB64_193_CHAMPION_S_TUNIC_TH },
+         { "TWB64 194 - DK Barrel Brown",           OPTION_VAL_TWB64_194_DK_BARREL_BROWN_TH },
+         { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_TH },
+         { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_TH },
+         { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_TH },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_TH },
+         { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_TH },
+         { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_TH },
+         { NULL, NULL },
+      },
+      "TWB64 101 - 765PRO Pink"
+   },
+   {
+      "gambatte_gb_palette_twb64_3",
+      GAMBATTE_GB_PALETTE_TWB64_3_LABEL_TH,
+      NULL,
+      GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "TWB64 201 - DMG-GOLD",                  OPTION_VAL_TWB64_201_DMG_GOLD_TH },
+         { "TWB64 202 - LCD Clock Green",           OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_TH },
+         { "TWB64 203 - Famicom Frenzy",            OPTION_VAL_TWB64_203_FAMICOM_FRENZY_TH },
+         { "TWB64 204 - DK Arcade Blue",            OPTION_VAL_TWB64_204_DK_ARCADE_BLUE_TH },
+         { "TWB64 205 - Advanced Indigo",           OPTION_VAL_TWB64_205_ADVANCED_INDIGO_TH },
+         { "TWB64 206 - Ultra Black",               OPTION_VAL_TWB64_206_ULTRA_BLACK_TH },
+         { "TWB64 207 - Chaos Emerald Green",       OPTION_VAL_TWB64_207_CHAOS_EMERALD_GREEN_TH },
+         { "TWB64 208 - Blue Bomber Vision",        OPTION_VAL_TWB64_208_BLUE_BOMBER_VISION_TH },
+         { "TWB64 209 - Krispy Kreme Vision",       OPTION_VAL_TWB64_209_KRISPY_KREME_VISION_TH },
+         { "TWB64 210 - Steam Gray",                OPTION_VAL_TWB64_210_STEAM_GRAY_TH },
+         { "TWB64 211 - Dream Land GB Ver.",        OPTION_VAL_TWB64_211_DREAM_LAND_GB_VER_TH },
+         { "TWB64 212 - Pokemon Pinball Ver.",      OPTION_VAL_TWB64_212_POKEMON_PINBALL_VER_TH },
+         { "TWB64 213 - Poketch Ver.",              OPTION_VAL_TWB64_213_POKETCH_VER_TH },
+         { "TWB64 214 - COLLECTION of SaGa Ver.",   OPTION_VAL_TWB64_214_COLLECTION_OF_SAGA_VER_TH },
+         { "TWB64 215 - Rocky-Valley Holiday",      OPTION_VAL_TWB64_215_ROCKY_VALLEY_HOLIDAY_TH },
+         { "TWB64 216 - Giga Kiwi DMG",             OPTION_VAL_TWB64_216_GIGA_KIWI_DMG_TH },
+         { "TWB64 217 - DMG Pea Green",             OPTION_VAL_TWB64_217_DMG_PEA_GREEN_TH },
+         { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_TH },
+         { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_TH },
+         { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_TH },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_TH },
+         { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_TH },
+         { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_TH },
+         { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_TH },
+         { "TWB64 225 - WarioWare MicroBlue",       OPTION_VAL_TWB64_225_WARIOWARE_MICROBLUE_TH },
+         { "TWB64 226 - KonoSuba Sherbet",          OPTION_VAL_TWB64_226_KONOSUBA_SHERBET_TH },
+         { "TWB64 227 - Spooky Purple",             OPTION_VAL_TWB64_227_SPOOKY_PURPLE_TH },
+         { "TWB64 228 - Treasure Gold",             OPTION_VAL_TWB64_228_TREASURE_GOLD_TH },
+         { "TWB64 229 - Cherry Blossom Pink",       OPTION_VAL_TWB64_229_CHERRY_BLOSSOM_PINK_TH },
+         { "TWB64 230 - Golden Trophy",             OPTION_VAL_TWB64_230_GOLDEN_TROPHY_TH },
+         { "TWB64 231 - Glacial Winter Blue",       OPTION_VAL_TWB64_231_GLACIAL_WINTER_BLUE_TH },
+         { "TWB64 232 - Leprechaun Green",          OPTION_VAL_TWB64_232_LEPRECHAUN_GREEN_TH },
+         { "TWB64 233 - SAITAMA SUPER BLUE",        OPTION_VAL_TWB64_233_SAITAMA_SUPER_BLUE_TH },
+         { "TWB64 234 - SAITAMA SUPER GREEN",       OPTION_VAL_TWB64_234_SAITAMA_SUPER_GREEN_TH },
+         { "TWB64 235 - Duolingo Green",            OPTION_VAL_TWB64_235_DUOLINGO_GREEN_TH },
+         { "TWB64 236 - Super Mushroom Vision",     OPTION_VAL_TWB64_236_SUPER_MUSHROOM_VISION_TH },
+         { "TWB64 237 - Ancient Hisuian Brown",     OPTION_VAL_TWB64_237_ANCIENT_HISUIAN_BROWN_TH },
+         { "TWB64 238 - Sky Pop Ivory",             OPTION_VAL_TWB64_238_SKY_POP_IVORY_TH },
+         { "TWB64 239 - LAWSON BLUE",               OPTION_VAL_TWB64_239_LAWSON_BLUE_TH },
+         { "TWB64 240 - Anime Expo Red",            OPTION_VAL_TWB64_240_ANIME_EXPO_RED_TH },
+         { "TWB64 241 - Brilliant Diamond Blue",    OPTION_VAL_TWB64_241_BRILLIANT_DIAMOND_BLUE_TH },
+         { "TWB64 242 - Shining Pearl Pink",        OPTION_VAL_TWB64_242_SHINING_PEARL_PINK_TH },
+         { "TWB64 243 - Funimation Melon",          OPTION_VAL_TWB64_243_FUNIMATION_MELON_TH },
+         { "TWB64 244 - Teyvat Brown",              OPTION_VAL_TWB64_244_TEYVAT_BROWN_TH },
+         { "TWB64 245 - Chozo Blue",                OPTION_VAL_TWB64_245_CHOZO_BLUE_TH },
+         { "TWB64 246 - Spotify Green",             OPTION_VAL_TWB64_246_SPOTIFY_GREEN_TH },
+         { "TWB64 247 - Dr Pepper Red",             OPTION_VAL_TWB64_247_DR_PEPPER_RED_TH },
+         { "TWB64 248 - NHK Silver Gray",           OPTION_VAL_TWB64_248_NHK_SILVER_GRAY_TH },
+         { "TWB64 249 - Dunkin' Vision",            OPTION_VAL_TWB64_249_DUNKIN_VISION_TH },
+         { "TWB64 250 - Deku Gamma Palette",        OPTION_VAL_TWB64_250_DEKU_GAMMA_PALETTE_TH },
+         { "TWB64 251 - Universal Studios Blue",    OPTION_VAL_TWB64_251_UNIVERSAL_STUDIOS_BLUE_TH },
+         { "TWB64 252 - Hogwarts Goldius",          OPTION_VAL_TWB64_252_HOGWARTS_GOLDIUS_TH },
+         { "TWB64 253 - Kentucky Fried Red",        OPTION_VAL_TWB64_253_KENTUCKY_FRIED_RED_TH },
+         { "TWB64 254 - Cheeto Orange",             OPTION_VAL_TWB64_254_CHEETO_ORANGE_TH },
+         { "TWB64 255 - Namco Idol Pink",           OPTION_VAL_TWB64_255_NAMCO_IDOL_PINK_TH },
+         { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_TH },
+         { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_TH },
+         { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_TH },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_TH },
+         { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_TH },
+         { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_TH },
+         { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_TH },
+         { "TWB64 263 - Classy Christmas",          OPTION_VAL_TWB64_263_CLASSY_CHRISTMAS_TH },
+         { "TWB64 264 - Winter Christmas",          OPTION_VAL_TWB64_264_WINTER_CHRISTMAS_TH },
+         { "TWB64 265 - IDOL WORLD TRICOLOR!!!",    OPTION_VAL_TWB64_265_IDOL_WORLD_TRICOLOR_TH },
+         { "TWB64 266 - Inkling Tricolor",          OPTION_VAL_TWB64_266_INKLING_TRICOLOR_TH },
+         { "TWB64 267 - 7-Eleven Color Combo",      OPTION_VAL_TWB64_267_7_ELEVEN_COLOR_COMBO_TH },
+         { "TWB64 268 - PAC-PALETTE",               OPTION_VAL_TWB64_268_PAC_PALETTE_TH },
+         { "TWB64 269 - Vulnerable Blue",           OPTION_VAL_TWB64_269_VULNERABLE_BLUE_TH },
+         { "TWB64 270 - Nightvision Green",         OPTION_VAL_TWB64_270_NIGHTVISION_GREEN_TH },
+         { "TWB64 271 - Bandai Namco Tricolor",     OPTION_VAL_TWB64_271_BANDAI_NAMCO_TRICOLOR_TH },
+         { "TWB64 272 - Gold, Silver, and Bronze",  OPTION_VAL_TWB64_272_GOLD_SILVER_AND_BRONZE_TH },
+         { "TWB64 273 - Deku Vigilante Palette",    OPTION_VAL_TWB64_273_DEKU_VIGILANTE_PALETTE_TH },
+         { "TWB64 274 - Super Famicom Supreme",     OPTION_VAL_TWB64_274_SUPER_FAMICOM_SUPREME_TH },
+         { "TWB64 275 - Absorbent and Yellow",      OPTION_VAL_TWB64_275_ABSORBENT_AND_YELLOW_TH },
+         { "TWB64 276 - 765PRO TRICOLOR",           OPTION_VAL_TWB64_276_765PRO_TRICOLOR_TH },
+         { "TWB64 277 - GameCube Glimmer",          OPTION_VAL_TWB64_277_GAMECUBE_GLIMMER_TH },
+         { "TWB64 278 - 1st Vision Pastel",         OPTION_VAL_TWB64_278_1ST_VISION_PASTEL_TH },
+         { "TWB64 279 - Perfect Majin Emperor",     OPTION_VAL_TWB64_279_PERFECT_MAJIN_EMPEROR_TH },
+         { "TWB64 280 - J-Pop Idol Sherbet",        OPTION_VAL_TWB64_280_J_POP_IDOL_SHERBET_TH },
+         { "TWB64 281 - Ryuuguu Sunset",            OPTION_VAL_TWB64_281_RYUUGUU_SUNSET_TH },
+         { "TWB64 282 - Tropical Starfall",         OPTION_VAL_TWB64_282_TROPICAL_STARFALL_TH },
+         { "TWB64 283 - Colorful Horizons",         OPTION_VAL_TWB64_283_COLORFUL_HORIZONS_TH },
+         { "TWB64 284 - BLACKPINK BLINK PINK",      OPTION_VAL_TWB64_284_BLACKPINK_BLINK_PINK_TH },
+         { "TWB64 285 - DMG-SWITCH",                OPTION_VAL_TWB64_285_DMG_SWITCH_TH },
+         { "TWB64 286 - POCKET SWITCH",             OPTION_VAL_TWB64_286_POCKET_SWITCH_TH },
+         { "TWB64 287 - Sunny Passion Paradise",    OPTION_VAL_TWB64_287_SUNNY_PASSION_PARADISE_TH },
+         { "TWB64 288 - Saiyan Beast Silver",       OPTION_VAL_TWB64_288_SAIYAN_BEAST_SILVER_TH },
+         { "TWB64 289 - RADIANT SMILE RAMP",        OPTION_VAL_TWB64_289_RADIANT_SMILE_RAMP_TH },
+         { "TWB64 290 - A-RISE BLUE",               OPTION_VAL_TWB64_290_A_RISE_BLUE_TH },
+         { "TWB64 291 - TROPICAL TWICE APRICOT",    OPTION_VAL_TWB64_291_TROPICAL_TWICE_APRICOT_TH },
+         { "TWB64 292 - Odyssey Boy",               OPTION_VAL_TWB64_292_ODYSSEY_BOY_TH },
+         { "TWB64 293 - Frog Coin Green",           OPTION_VAL_TWB64_293_FROG_COIN_GREEN_TH },
+         { "TWB64 294 - Garfield Vision",           OPTION_VAL_TWB64_294_GARFIELD_VISION_TH },
+         { "TWB64 295 - Bedrock Caveman Vision",    OPTION_VAL_TWB64_295_BEDROCK_CAVEMAN_VISION_TH },
+         { "TWB64 296 - BANGTAN ARMY PURPLE",       OPTION_VAL_TWB64_296_BANGTAN_ARMY_PURPLE_TH },
+         { "TWB64 297 - LE SSERAFIM FEARLESS BLUE", OPTION_VAL_TWB64_297_LE_SSERAFIM_FEARLESS_BLUE_TH },
+         { "TWB64 298 - Baja Blast Beach",          OPTION_VAL_TWB64_298_BAJA_BLAST_BEACH_TH },
+         { "TWB64 299 - 3DS Virtual Console Green", OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_TH },
+         { "TWB64 300 - Wonder Purple",             OPTION_VAL_TWB64_300_WONDER_PURPLE_TH },
+         { NULL, NULL },
+      },
+      "TWB64 201 - DMG-GOLD"
+   },
+   {
+      "gambatte_gb_palette_pixelshift_1",
+      GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_TH,
+      NULL,
+      GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "PixelShift 01 - Arctic Green",               OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_TH },
+         { "PixelShift 02 - Arduboy",                    OPTION_VAL_PIXELSHIFT_02_ARDUBOY_TH },
+         { "PixelShift 03 - BGB 0.3 Emulator",           OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_TH },
+         { "PixelShift 04 - Camouflage",                 OPTION_VAL_PIXELSHIFT_04_CAMOUFLAGE_TH },
+         { "PixelShift 05 - Chocolate Bar",              OPTION_VAL_PIXELSHIFT_05_CHOCOLATE_BAR_TH },
+         { "PixelShift 06 - CMYK",                       OPTION_VAL_PIXELSHIFT_06_CMYK_TH },
+         { "PixelShift 07 - Cotton Candy",               OPTION_VAL_PIXELSHIFT_07_COTTON_CANDY_TH },
+         { "PixelShift 08 - Easy Greens",                OPTION_VAL_PIXELSHIFT_08_EASY_GREENS_TH },
+         { "PixelShift 09 - Gamate",                     OPTION_VAL_PIXELSHIFT_09_GAMATE_TH },
+         { "PixelShift 10 - Game Boy Light",             OPTION_VAL_PIXELSHIFT_10_GAME_BOY_LIGHT_TH },
+         { "PixelShift 11 - Game Boy Pocket",            OPTION_VAL_PIXELSHIFT_11_GAME_BOY_POCKET_TH },
+         { "PixelShift 12 - Game Boy Pocket Alt",        OPTION_VAL_PIXELSHIFT_12_GAME_BOY_POCKET_ALT_TH },
+         { "PixelShift 13 - Game Pocket Computer",       OPTION_VAL_PIXELSHIFT_13_GAME_POCKET_COMPUTER_TH },
+         { "PixelShift 14 - Game & Watch Ball",          OPTION_VAL_PIXELSHIFT_14_GAME_WATCH_BALL_TH },
+         { "PixelShift 15 - GB Backlight Blue",          OPTION_VAL_PIXELSHIFT_15_GB_BACKLIGHT_BLUE_TH },
+         { "PixelShift 16 - GB Backlight Faded",         OPTION_VAL_PIXELSHIFT_16_GB_BACKLIGHT_FADED_TH },
+         { "PixelShift 17 - GB Backlight Orange",        OPTION_VAL_PIXELSHIFT_17_GB_BACKLIGHT_ORANGE_TH },
+         { "PixelShift 18 - GB Backlight White ",        OPTION_VAL_PIXELSHIFT_18_GB_BACKLIGHT_WHITE__TH },
+         { "PixelShift 19 - GB Backlight Yellow Dark",   OPTION_VAL_PIXELSHIFT_19_GB_BACKLIGHT_YELLOW_DARK_TH },
+         { "PixelShift 20 - GB Bootleg",                 OPTION_VAL_PIXELSHIFT_20_GB_BOOTLEG_TH },
+         { "PixelShift 21 - GB Hunter",                  OPTION_VAL_PIXELSHIFT_21_GB_HUNTER_TH },
+         { "PixelShift 22 - GB Kiosk",                   OPTION_VAL_PIXELSHIFT_22_GB_KIOSK_TH },
+         { "PixelShift 23 - GB Kiosk 2",                 OPTION_VAL_PIXELSHIFT_23_GB_KIOSK_2_TH },
+         { "PixelShift 24 - GB New",                     OPTION_VAL_PIXELSHIFT_24_GB_NEW_TH },
+         { "PixelShift 25 - GB Nuked",                   OPTION_VAL_PIXELSHIFT_25_GB_NUKED_TH },
+         { "PixelShift 26 - GB Old",                     OPTION_VAL_PIXELSHIFT_26_GB_OLD_TH },
+         { "PixelShift 27 - GBP Bivert",                 OPTION_VAL_PIXELSHIFT_27_GBP_BIVERT_TH },
+         { "PixelShift 28 - GB Washed Yellow Backlight", OPTION_VAL_PIXELSHIFT_28_GB_WASHED_YELLOW_BACKLIGHT_TH },
+         { "PixelShift 29 - Ghost",                      OPTION_VAL_PIXELSHIFT_29_GHOST_TH },
+         { "PixelShift 30 - Glow In The Dark",           OPTION_VAL_PIXELSHIFT_30_GLOW_IN_THE_DARK_TH },
+         { "PixelShift 31 - Gold Bar",                   OPTION_VAL_PIXELSHIFT_31_GOLD_BAR_TH },
+         { "PixelShift 32 - Grapefruit",                 OPTION_VAL_PIXELSHIFT_32_GRAPEFRUIT_TH },
+         { "PixelShift 33 - Gray Green Mix",             OPTION_VAL_PIXELSHIFT_33_GRAY_GREEN_MIX_TH },
+         { "PixelShift 34 - Missingno",                  OPTION_VAL_PIXELSHIFT_34_MISSINGNO_TH },
+         { "PixelShift 35 - MS-Dos",                     OPTION_VAL_PIXELSHIFT_35_MS_DOS_TH },
+         { "PixelShift 36 - Newspaper",                  OPTION_VAL_PIXELSHIFT_36_NEWSPAPER_TH },
+         { "PixelShift 37 - Pip-Boy",                    OPTION_VAL_PIXELSHIFT_37_PIP_BOY_TH },
+         { "PixelShift 38 - Pocket Girl",                OPTION_VAL_PIXELSHIFT_38_POCKET_GIRL_TH },
+         { "PixelShift 39 - Silhouette",                 OPTION_VAL_PIXELSHIFT_39_SILHOUETTE_TH },
+         { "PixelShift 40 - Sunburst",                   OPTION_VAL_PIXELSHIFT_40_SUNBURST_TH },
+         { "PixelShift 41 - Technicolor",                OPTION_VAL_PIXELSHIFT_41_TECHNICOLOR_TH },
+         { "PixelShift 42 - Tron",                       OPTION_VAL_PIXELSHIFT_42_TRON_TH },
+         { "PixelShift 43 - Vaporwave",                  OPTION_VAL_PIXELSHIFT_43_VAPORWAVE_TH },
+         { "PixelShift 44 - Virtual Boy",                OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_TH },
+         { "PixelShift 45 - Wish",                       OPTION_VAL_PIXELSHIFT_45_WISH_TH },
+         { NULL, NULL },
+      },
+      "PixelShift 01 - Arctic Green"
+   },
+   {
+      "gambatte_gbc_color_correction",
+      GAMBATTE_GBC_COLOR_CORRECTION_LABEL_TH,
+      NULL,
+      GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "GBC only", OPTION_VAL_GBC_ONLY_TH },
+         { "always",   OPTION_VAL_ALWAYS_TH },
+         { "disabled", NULL },
+         { NULL, NULL },
+      },
+      "GBC only"
+   },
+   {
+      "gambatte_gbc_color_correction_mode",
+      GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_TH,
+      NULL,
+      GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "accurate", OPTION_VAL_ACCURATE_TH },
+         { "fast",     OPTION_VAL_FAST_TH },
+         { NULL, NULL },
+      },
+      "accurate"
+   },
+   {
+      "gambatte_gbc_frontlight_position",
+      GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_TH,
+      NULL,
+      GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "central",      OPTION_VAL_CENTRAL_TH },
+         { "above screen", OPTION_VAL_ABOVE_SCREEN_TH },
+         { "below screen", OPTION_VAL_BELOW_SCREEN_TH },
+         { NULL, NULL },
+      },
+      "central"
+   },
+   {
+      "gambatte_dark_filter_level",
+      GAMBATTE_DARK_FILTER_LEVEL_LABEL_TH,
+      NULL,
+      GAMBATTE_DARK_FILTER_LEVEL_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "0",  NULL },
+         { "5",  NULL },
+         { "10", NULL },
+         { "15", NULL },
+         { "20", NULL },
+         { "25", NULL },
+         { "30", NULL },
+         { "35", NULL },
+         { "40", NULL },
+         { "45", NULL },
+         { "50", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_mix_frames",
+      GAMBATTE_MIX_FRAMES_LABEL_TH,
+      NULL,
+      GAMBATTE_MIX_FRAMES_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "disabled",          NULL },
+         { "mix",               OPTION_VAL_MIX_TH },
+         { "lcd_ghosting",      OPTION_VAL_LCD_GHOSTING_TH },
+         { "lcd_ghosting_fast", OPTION_VAL_LCD_GHOSTING_FAST_TH },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "gambatte_audio_resampler",
+      GAMBATTE_AUDIO_RESAMPLER_LABEL_TH,
+      NULL,
+      GAMBATTE_AUDIO_RESAMPLER_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "sinc", OPTION_VAL_SINC_TH },
+         { "cc",   OPTION_VAL_CC_TH },
+         { NULL, NULL },
+      },
+#if (defined(PS2) || defined(PSP) || defined(VITA) || defined(_3DS) || defined(DINGUX))
+      "cc"
+#else
+      "sinc"
+#endif
+   },
+   {
+      "gambatte_gb_hwmode",
+      GAMBATTE_GB_HWMODE_LABEL_TH,
+      NULL,
+      GAMBATTE_GB_HWMODE_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "Auto", OPTION_VAL_AUTO_TH },
+         { "GB",   OPTION_VAL_GB_TH },
+         { "GBC",  OPTION_VAL_GBC_TH },
+         { "GBA",  OPTION_VAL_GBA_TH },
+         { NULL, NULL },
+      },
+      "Auto"
+   },
+   {
+      "gambatte_gb_bootloader",
+      GAMBATTE_GB_BOOTLOADER_LABEL_TH,
+      NULL,
+      GAMBATTE_GB_BOOTLOADER_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "enabled",  NULL },
+         { "disabled", NULL },
+         { NULL, NULL },
+      },
+      "enabled"
+   },
+   {
+      "gambatte_up_down_allowed",
+      GAMBATTE_UP_DOWN_ALLOWED_LABEL_TH,
+      NULL,
+      GAMBATTE_UP_DOWN_ALLOWED_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "gambatte_turbo_period",
+      GAMBATTE_TURBO_PERIOD_LABEL_TH,
+      NULL,
+      GAMBATTE_TURBO_PERIOD_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "4",   NULL },
+         { "5",   NULL },
+         { "6",   NULL },
+         { "7",   NULL },
+         { "8",   NULL },
+         { "9",   NULL },
+         { "10",  NULL },
+         { "11",  NULL },
+         { "12",  NULL },
+         { "13",  NULL },
+         { "14",  NULL },
+         { "15",  NULL },
+         { "16",  NULL },
+         { "17",  NULL },
+         { "18",  NULL },
+         { "19",  NULL },
+         { "20",  NULL },
+         { "21",  NULL },
+         { "22",  NULL },
+         { "23",  NULL },
+         { "24",  NULL },
+         { "25",  NULL },
+         { "26",  NULL },
+         { "27",  NULL },
+         { "28",  NULL },
+         { "29",  NULL },
+         { "30",  NULL },
+         { "31",  NULL },
+         { "32",  NULL },
+         { "33",  NULL },
+         { "34",  NULL },
+         { "35",  NULL },
+         { "36",  NULL },
+         { "37",  NULL },
+         { "38",  NULL },
+         { "39",  NULL },
+         { "40",  NULL },
+         { "41",  NULL },
+         { "42",  NULL },
+         { "43",  NULL },
+         { "44",  NULL },
+         { "45",  NULL },
+         { "46",  NULL },
+         { "47",  NULL },
+         { "48",  NULL },
+         { "49",  NULL },
+         { "50",  NULL },
+         { "51",  NULL },
+         { "52",  NULL },
+         { "53",  NULL },
+         { "54",  NULL },
+         { "55",  NULL },
+         { "56",  NULL },
+         { "57",  NULL },
+         { "58",  NULL },
+         { "59",  NULL },
+         { "60",  NULL },
+         { "61",  NULL },
+         { "62",  NULL },
+         { "63",  NULL },
+         { "64",  NULL },
+         { "65",  NULL },
+         { "66",  NULL },
+         { "67",  NULL },
+         { "68",  NULL },
+         { "69",  NULL },
+         { "70",  NULL },
+         { "71",  NULL },
+         { "72",  NULL },
+         { "73",  NULL },
+         { "74",  NULL },
+         { "75",  NULL },
+         { "76",  NULL },
+         { "77",  NULL },
+         { "78",  NULL },
+         { "79",  NULL },
+         { "80",  NULL },
+         { "81",  NULL },
+         { "82",  NULL },
+         { "83",  NULL },
+         { "84",  NULL },
+         { "85",  NULL },
+         { "86",  NULL },
+         { "87",  NULL },
+         { "88",  NULL },
+         { "89",  NULL },
+         { "90",  NULL },
+         { "91",  NULL },
+         { "92",  NULL },
+         { "93",  NULL },
+         { "94",  NULL },
+         { "95",  NULL },
+         { "96",  NULL },
+         { "97",  NULL },
+         { "98",  NULL },
+         { "99",  NULL },
+         { "100", NULL },
+         { "101", NULL },
+         { "102", NULL },
+         { "103", NULL },
+         { "104", NULL },
+         { "105", NULL },
+         { "106", NULL },
+         { "107", NULL },
+         { "108", NULL },
+         { "109", NULL },
+         { "110", NULL },
+         { "111", NULL },
+         { "112", NULL },
+         { "113", NULL },
+         { "114", NULL },
+         { "115", NULL },
+         { "116", NULL },
+         { "117", NULL },
+         { "118", NULL },
+         { "119", NULL },
+         { "120", NULL },
+         { NULL, NULL },
+      },
+      "4"
+   },
+   {
+      "gambatte_rumble_level",
+      GAMBATTE_RUMBLE_LEVEL_LABEL_TH,
+      NULL,
+      GAMBATTE_RUMBLE_LEVEL_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "0",  NULL },
+         { "1",  NULL },
+         { "2",  NULL },
+         { "3",  NULL },
+         { "4",  NULL },
+         { "5",  NULL },
+         { "6",  NULL },
+         { "7",  NULL },
+         { "8",  NULL },
+         { "9",  NULL },
+         { "10", NULL },
+         { NULL, NULL },
+      },
+      "10"
+   },
+#ifdef HAVE_NETWORK
+   {
+      "gambatte_show_gb_link_settings",
+      GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_TH,
+      NULL,
+      GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_TH,
+      NULL,
+      NULL,
+      {
+         { "enabled",  NULL },
+         { "disabled", NULL },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "gambatte_gb_link_mode",
+      GAMBATTE_GB_LINK_MODE_LABEL_TH,
+      GAMBATTE_GB_LINK_MODE_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_MODE_INFO_0_TH,
+      NULL,
+      "gb_link",
+      {
+         { "Not Connected",  OPTION_VAL_NOT_CONNECTED_TH },
+         { "Network Server", OPTION_VAL_NETWORK_SERVER_TH },
+         { "Network Client", OPTION_VAL_NETWORK_CLIENT_TH },
+         { NULL, NULL },
+      },
+      "Not Connected"
+   },
+   {
+      "gambatte_gb_link_network_port",
+      GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_TH,
+      NULL,
+      "gb_link",
+      {
+         { "56400", NULL },
+         { "56401", NULL },
+         { "56402", NULL },
+         { "56403", NULL },
+         { "56404", NULL },
+         { "56405", NULL },
+         { "56406", NULL },
+         { "56407", NULL },
+         { "56408", NULL },
+         { "56409", NULL },
+         { "56410", NULL },
+         { "56411", NULL },
+         { "56412", NULL },
+         { "56413", NULL },
+         { "56414", NULL },
+         { "56415", NULL },
+         { "56416", NULL },
+         { "56417", NULL },
+         { "56418", NULL },
+         { "56419", NULL },
+         { "56420", NULL },
+         { NULL, NULL },
+      },
+      "56400"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_1",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_2",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_3",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_4",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_5",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_6",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_7",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_8",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_9",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_10",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_11",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+   {
+      "gambatte_gb_link_network_server_ip_12",
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_TH,
+      GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_TH,
+      "gb_link",
+      {
+         { "0", NULL },
+         { "1", NULL },
+         { "2", NULL },
+         { "3", NULL },
+         { "4", NULL },
+         { "5", NULL },
+         { "6", NULL },
+         { "7", NULL },
+         { "8", NULL },
+         { "9", NULL },
+         { NULL, NULL },
+      },
+      "0"
+   },
+#endif
+   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
+};
+struct retro_core_options_v2 options_th = {
+   option_cats_th,
+   option_defs_th
+};
+
 /* RETRO_LANGUAGE_TR */
 
 #define CATEGORY_GB_LINK_LABEL_TR NULL
@@ -60793,7 +62429,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_TR NULL
 #define OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_TR NULL
 #define OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_TR NULL
-#define OPTION_VAL_TWB64_153_HOLOBLUE_TR "TWB64 153 - Holoblue"
+#define OPTION_VAL_TWB64_153_HOLOBLUE_TR NULL
 #define OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_TR NULL
 #define OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_TR NULL
 #define OPTION_VAL_TWB64_156_POKEDEX_RED_TR NULL
@@ -60838,7 +62474,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TWB64_195_EVA_01_TR NULL
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_TR NULL
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_TR NULL
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_TR "TWB64 198 - Niconico Sea Green"
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_TR NULL
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_TR NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_TR NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_TR NULL
@@ -60863,7 +62499,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_TR NULL
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_TR NULL
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_TR "TWB64 220 - Sırıtan Yeşil"
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_TR "TWB64 221 - Animate Vision"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_TR NULL
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_TR NULL
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_TR NULL
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_TR NULL
@@ -60901,7 +62537,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_TR NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_TR NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_TR NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_TR NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_TR NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_TR NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_TR NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_TR NULL
@@ -61352,7 +62988,7 @@ struct retro_core_option_v2_definition option_defs_tr[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_TR },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_TR },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_TR },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_TR },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_TR },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_TR },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_TR },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_TR },
@@ -61397,7 +63033,7 @@ struct retro_core_option_v2_definition option_defs_tr[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_TR },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_TR },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_TR },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_TR },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_TR },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_TR },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_TR },
          { NULL, NULL },
@@ -61432,7 +63068,7 @@ struct retro_core_option_v2_definition option_defs_tr[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_TR },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_TR },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_TR },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_TR },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_TR },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_TR },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_TR },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_TR },
@@ -61470,7 +63106,7 @@ struct retro_core_option_v2_definition option_defs_tr[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_TR },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_TR },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_TR },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_TR },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_TR },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_TR },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_TR },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_TR },
@@ -62537,7 +64173,7 @@ struct retro_core_options_v2 options_tr = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_TT NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_TT NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_TT NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_TT NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_TT NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_TT NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_TT NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_TT NULL
@@ -62988,7 +64624,7 @@ struct retro_core_option_v2_definition option_defs_tt[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_TT },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_TT },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_TT },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_TT },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_TT },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_TT },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_TT },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_TT },
@@ -63033,7 +64669,7 @@ struct retro_core_option_v2_definition option_defs_tt[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_TT },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_TT },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_TT },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_TT },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_TT },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_TT },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_TT },
          { NULL, NULL },
@@ -63068,7 +64704,7 @@ struct retro_core_option_v2_definition option_defs_tt[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_TT },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_TT },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_TT },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_TT },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_TT },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_TT },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_TT },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_TT },
@@ -63106,7 +64742,7 @@ struct retro_core_option_v2_definition option_defs_tt[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_TT },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_TT },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_TT },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_TT },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_TT },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_TT },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_TT },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_TT },
@@ -64173,7 +65809,7 @@ struct retro_core_options_v2 options_tt = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_UK "TWB64 256 - Домініко Піцца"
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_UK NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_UK "TWB64 258 - Екран для Біла ПК"
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_UK NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_UK NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_UK "TWB64 260 - Золото і срібло Дуреня"
 #define OPTION_VAL_TWB64_261_UTA_VISION_UK NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_UK "TWB64 262 - Металева Палдея Брас"
@@ -64624,7 +66260,7 @@ struct retro_core_option_v2_definition option_defs_uk[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_UK },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_UK },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_UK },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_UK },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_UK },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_UK },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_UK },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_UK },
@@ -64669,7 +66305,7 @@ struct retro_core_option_v2_definition option_defs_uk[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_UK },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_UK },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_UK },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_UK },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_UK },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_UK },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_UK },
          { NULL, NULL },
@@ -64704,7 +66340,7 @@ struct retro_core_option_v2_definition option_defs_uk[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_UK },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_UK },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_UK },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_UK },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_UK },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_UK },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_UK },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_UK },
@@ -64742,7 +66378,7 @@ struct retro_core_option_v2_definition option_defs_uk[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_UK },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_UK },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_UK },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_UK },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_UK },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_UK },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_UK },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_UK },
@@ -65809,7 +67445,7 @@ struct retro_core_options_v2 options_uk = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_VAL NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_VAL NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_VAL NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_VAL NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_VAL NULL
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_VAL NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_VAL NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_VAL NULL
@@ -66260,7 +67896,7 @@ struct retro_core_option_v2_definition option_defs_val[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_VAL },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_VAL },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_VAL },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_VAL },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_VAL },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_VAL },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_VAL },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_VAL },
@@ -66305,7 +67941,7 @@ struct retro_core_option_v2_definition option_defs_val[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_VAL },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_VAL },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_VAL },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_VAL },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_VAL },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_VAL },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_VAL },
          { NULL, NULL },
@@ -66340,7 +67976,7 @@ struct retro_core_option_v2_definition option_defs_val[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_VAL },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_VAL },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_VAL },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_VAL },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_VAL },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_VAL },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_VAL },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_VAL },
@@ -66378,7 +68014,7 @@ struct retro_core_option_v2_definition option_defs_val[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_VAL },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_VAL },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_VAL },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_VAL },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_VAL },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_VAL },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_VAL },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_VAL },
@@ -67337,7 +68973,7 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_VN NULL
 #define OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_VN NULL
 #define OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_VN NULL
-#define OPTION_VAL_TWB64_153_HOLOBLUE_VN NULL
+#define OPTION_VAL_TWB64_153_HOLOBLUE_VN "TWB64 153 - Xanh Holoblue"
 #define OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_VN NULL
 #define OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_VN NULL
 #define OPTION_VAL_TWB64_156_POKEDEX_RED_VN NULL
@@ -67382,7 +69018,7 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_195_EVA_01_VN NULL
 #define OPTION_VAL_TWB64_196_WILD_WEST_VISION_VN NULL
 #define OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_VN NULL
-#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_VN NULL
+#define OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_VN "TWB64 198 - Xanh biển Niconico"
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_VN NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_VN NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_VN NULL
@@ -67407,7 +69043,7 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_VN NULL
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_VN NULL
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_VN NULL
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_VN NULL
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_VN "TWB64 221 - Tầm nhìn Animate"
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_VN NULL
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_VN NULL
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_VN NULL
@@ -67445,7 +69081,7 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_VN NULL
 #define OPTION_VAL_TWB64_257_PAC_MAN_VISION_VN NULL
 #define OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_VN NULL
-#define OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_VN NULL
+#define OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_VN "TWB64 259 - Mở đầu Ebott"
 #define OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_VN NULL
 #define OPTION_VAL_TWB64_261_UTA_VISION_VN NULL
 #define OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_VN NULL
@@ -67896,7 +69532,7 @@ struct retro_core_option_v2_definition option_defs_vn[] = {
          { "TWB64 150 - Olympic Bronze",            OPTION_VAL_TWB64_150_OLYMPIC_BRONZE_VN },
          { "TWB64 151 - ANA Flight Blue",           OPTION_VAL_TWB64_151_ANA_FLIGHT_BLUE_VN },
          { "TWB64 152 - Nijigasaki Orange",         OPTION_VAL_TWB64_152_NIJIGASAKI_ORANGE_VN },
-         { "TWB64 153 - holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_VN },
+         { "TWB64 153 - Holoblue",                  OPTION_VAL_TWB64_153_HOLOBLUE_VN },
          { "TWB64 154 - WWE White and Red",         OPTION_VAL_TWB64_154_WWE_WHITE_AND_RED_VN },
          { "TWB64 155 - Yoshi Egg Green",           OPTION_VAL_TWB64_155_YOSHI_EGG_GREEN_VN },
          { "TWB64 156 - Pokedex Red",               OPTION_VAL_TWB64_156_POKEDEX_RED_VN },
@@ -67941,7 +69577,7 @@ struct retro_core_option_v2_definition option_defs_vn[] = {
          { "TWB64 195 - EVA-01",                    OPTION_VAL_TWB64_195_EVA_01_VN },
          { "TWB64 196 - Wild West Vision",          OPTION_VAL_TWB64_196_WILD_WEST_VISION_VN },
          { "TWB64 197 - Optimus Prime Palette",     OPTION_VAL_TWB64_197_OPTIMUS_PRIME_PALETTE_VN },
-         { "TWB64 198 - niconico sea green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_VN },
+         { "TWB64 198 - Niconico Sea Green",        OPTION_VAL_TWB64_198_NICONICO_SEA_GREEN_VN },
          { "TWB64 199 - Duracell Copper",           OPTION_VAL_TWB64_199_DURACELL_COPPER_VN },
          { "TWB64 200 - TOKYO SKYTREE CLOUDY BLUE", OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_VN },
          { NULL, NULL },
@@ -67976,7 +69612,7 @@ struct retro_core_option_v2_definition option_defs_vn[] = {
          { "TWB64 218 - Timing Hero Ver.",          OPTION_VAL_TWB64_218_TIMING_HERO_VER_VN },
          { "TWB64 219 - Invincible Yellow and Blue",OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_VN },
          { "TWB64 220 - Grinchy Green",             OPTION_VAL_TWB64_220_GRINCHY_GREEN_VN },
-         { "TWB64 221 - animate vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_VN },
+         { "TWB64 221 - Animate Vision",            OPTION_VAL_TWB64_221_ANIMATE_VISION_VN },
          { "TWB64 222 - School Idol Mix",           OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_VN },
          { "TWB64 223 - Green Awakening",           OPTION_VAL_TWB64_223_GREEN_AWAKENING_VN },
          { "TWB64 224 - Goomba Brown",              OPTION_VAL_TWB64_224_GOOMBA_BROWN_VN },
@@ -68014,7 +69650,7 @@ struct retro_core_option_v2_definition option_defs_vn[] = {
          { "TWB64 256 - Domino's Pizza Vision",     OPTION_VAL_TWB64_256_DOMINO_S_PIZZA_VISION_VN },
          { "TWB64 257 - Pac-Man Vision",            OPTION_VAL_TWB64_257_PAC_MAN_VISION_VN },
          { "TWB64 258 - Bill's PC Screen",          OPTION_VAL_TWB64_258_BILL_S_PC_SCREEN_VN },
-         { "TWB64 259 - Sonic Mega Blue",           OPTION_VAL_TWB64_259_SONIC_MEGA_BLUE_VN },
+         { "TWB64 259 - Ebott Prolouge",            OPTION_VAL_TWB64_259_EBOTT_PROLOUGE_VN },
          { "TWB64 260 - Fool's Gold and Silver",    OPTION_VAL_TWB64_260_FOOL_S_GOLD_AND_SILVER_VN },
          { "TWB64 261 - UTA VISION",                OPTION_VAL_TWB64_261_UTA_VISION_VN },
          { "TWB64 262 - Metallic Paldea Brass",     OPTION_VAL_TWB64_262_METALLIC_PALDEA_BRASS_VN },
