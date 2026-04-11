@@ -269,12 +269,12 @@ public:
 	SaverList();
 	const_iterator begin() const { return list.begin(); }
 	const_iterator end() const { return list.end(); }
-	unsigned maxLabelsize() const { return maxLabelsize_; }
+	unsigned char maxLabelsize() const { return maxLabelsize_; }
 };
 
 static void pushSaver(SaverList::list_t &list, const char *label,
 		void (*save)(omemstream &file, const SaveState &state),
-		void (*load)(imemstream &file, SaveState &state), unsigned labelsize) {
+		void (*load)(imemstream &file, SaveState &state), unsigned char labelsize) {
 	const Saver saver = { label, save, load, labelsize };
 	list.push_back(saver);
 }
