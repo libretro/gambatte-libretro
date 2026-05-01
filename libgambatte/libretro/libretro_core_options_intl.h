@@ -55664,16 +55664,16 @@ struct retro_core_options_v2 options_ru = {
 /* RETRO_LANGUAGE_SK */
 
 #define CATEGORY_GB_LINK_LABEL_SK NULL
-#define CATEGORY_GB_LINK_INFO_0_SK NULL
-#define GAMBATTE_GB_COLORIZATION_LABEL_SK NULL
-#define GAMBATTE_GB_COLORIZATION_INFO_0_SK NULL
+#define CATEGORY_GB_LINK_INFO_0_SK "Zmení nastavenia sieťového Game Link (multiplayer)."
+#define GAMBATTE_GB_COLORIZATION_LABEL_SK "Kolorizácia GB"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_SK "Povolí kolorizáciu hier Game Boy. 'Auto' zvolí 'najlepšiu' (najfarebnejšiu/najvhodnejšiu) paletu. 'GBC' zvolí hre špecifickú paletu Game Boy Color, ak je definovaná, inak 'GBC - Dark Green'. 'SGB' zvolí hre špecifickú paletu Super Game Boy, ak je definovaná, inak 'SGB - 1A'. 'Internal' použije možnosť 'Internal Palette' jadra. 'Custom' načíta používateľom vytvorenú paletu zo systémového adresára."
 #define OPTION_VAL_AUTO_SK NULL
 #define OPTION_VAL_GBC_SK NULL
 #define OPTION_VAL_SGB_SK NULL
 #define OPTION_VAL_INTERNAL_SK "Interné"
 #define OPTION_VAL_CUSTOM_SK "Vlastné"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_SK "Vnútorná paleta"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_SK NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_SK "Zvolí paletu používanú na kolorizáciu hier Game Boy, keď je 'GB Colorization' nastavené na 'Internal' alebo keď je 'GB Colorization' nastavené na 'Auto' a hra nemá preddefinovanú paletu SGB/GBC. Palety 'GB' napodobňujú zobrazenie pôvodného hardvéru Game Boy. Palety 'GBC' sú zhodné s vstavanými predvoľbami Game Boy Color. Palety 'SGB' sú zhodné s vstavanými predvoľbami Super Game Boy."
 #define OPTION_VAL_GB_DMG_SK NULL
 #define OPTION_VAL_GB_POCKET_SK NULL
 #define OPTION_VAL_GB_LIGHT_SK NULL
@@ -55729,8 +55729,8 @@ struct retro_core_options_v2 options_ru = {
 #define OPTION_VAL_TWB64_PACK_2_SK NULL
 #define OPTION_VAL_TWB64_PACK_3_SK NULL
 #define OPTION_VAL_PIXELSHIFT_PACK_1_SK NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_SK NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_SK NULL
+#define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_SK "> Paleta TWB64 - Pack 1"
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_SK "Zvolí internú paletu kolorizácie, keď je 'Internal Palette' nastavená na 'TWB64 - Pack 1'."
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_SK NULL
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_SK NULL
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_SK NULL
@@ -55768,7 +55768,7 @@ struct retro_core_options_v2 options_ru = {
 #define OPTION_VAL_TWB64_035_POKEMON_VER_SK NULL
 #define OPTION_VAL_TWB64_036_GAME_GRUMP_ORANGE_SK NULL
 #define OPTION_VAL_TWB64_037_SCOOBY_DOO_MYSTERY_VER_SK NULL
-#define OPTION_VAL_TWB64_038_POKEMON_MINI_VER_SK NULL
+#define OPTION_VAL_TWB64_038_POKEMON_MINI_VER_SK "TWB64 038 - Pokémon mini Ver."
 #define OPTION_VAL_TWB64_039_SUPERVISION_VER_SK NULL
 #define OPTION_VAL_TWB64_040_DMG_VER_SK NULL
 #define OPTION_VAL_TWB64_041_POCKET_VER_SK NULL
@@ -55831,8 +55831,8 @@ struct retro_core_options_v2 options_ru = {
 #define OPTION_VAL_TWB64_098_DEKU_ALPHA_EMERALD_SK NULL
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_SK NULL
 #define OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_SK NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_SK NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_SK NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_SK "> Paleta TWB64 - Pack 2"
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_SK "Zvolí internú paletu kolorizácie, keď je 'Internal Palette' nastavená na 'TWB64 - Pack 2'."
 #define OPTION_VAL_TWB64_101_765PRO_PINK_SK NULL
 #define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_SK NULL
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_SK NULL
@@ -55934,7 +55934,7 @@ struct retro_core_options_v2 options_ru = {
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_SK NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_SK NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_SK NULL
-#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_SK NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_SK "Zvolí internú paletu kolorizácie, keď je 'Internal Palette' nastavená na 'TWB64 - Pack 3'."
 #define OPTION_VAL_TWB64_201_DMG_GOLD_SK NULL
 #define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_SK NULL
 #define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_SK NULL
@@ -55946,7 +55946,7 @@ struct retro_core_options_v2 options_ru = {
 #define OPTION_VAL_TWB64_209_KRISPY_KREME_VISION_SK NULL
 #define OPTION_VAL_TWB64_210_STEAM_GRAY_SK NULL
 #define OPTION_VAL_TWB64_211_DREAM_LAND_GB_VER_SK NULL
-#define OPTION_VAL_TWB64_212_POKEMON_PINBALL_VER_SK NULL
+#define OPTION_VAL_TWB64_212_POKEMON_PINBALL_VER_SK "TWB64 212 - Pokémon Pinball Ver."
 #define OPTION_VAL_TWB64_213_POKETCH_VER_SK NULL
 #define OPTION_VAL_TWB64_214_COLLECTION_OF_SAGA_VER_SK NULL
 #define OPTION_VAL_TWB64_215_ROCKY_VALLEY_HOLIDAY_SK NULL
@@ -56036,10 +56036,10 @@ struct retro_core_options_v2 options_ru = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_SK NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_SK NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_SK NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_SK NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_SK "Zvolí internú paletu kolorizácie, keď je 'Internal Palette' nastavená na 'PixelShift - Pack 1'."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_SK NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_SK NULL
-#define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_SK NULL
+#define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_SK "PixelShift 03 - BGB 0,3 Emulator"
 #define OPTION_VAL_PIXELSHIFT_04_CAMOUFLAGE_SK NULL
 #define OPTION_VAL_PIXELSHIFT_05_CHOCOLATE_BAR_SK NULL
 #define OPTION_VAL_PIXELSHIFT_06_CMYK_SK NULL
@@ -56083,100 +56083,100 @@ struct retro_core_options_v2 options_ru = {
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_SK NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_SK NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_SK "Korekcia farieb"
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_SK NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_SK "Upravuje výstupné farby tak, aby zodpovedali zobrazeniu reálneho hardvéru Game Boy Color. 'GBC Only' zabezpečí, že korekcia sa aplikuje iba pri hraní hier Game Boy Color, alebo pri použití palety Game Boy Color na kolorizáciu hry Game Boy. 'Always' aplikuje farebnú korekciu na všetok obsah a pri použití interných farebných paliet 'GB' alebo 'SGB' produkuje neočakávané/suboptimálne výsledky."
 #define OPTION_VAL_GBC_ONLY_SK "Iba GBC"
 #define OPTION_VAL_ALWAYS_SK "Vždy"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_SK NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_SK NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_SK "Režim farebnej korekcie"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_SK "Určuje metódu použitú pri vykonávaní farebnej korekcie. 'Accurate' produkuje výstup takmer nerozoznateľný od reálneho LCD panela Game Boy Color. 'Fast' iba stmaví farby a zníži saturáciu, môže byť použitá na slabšom hardvéri, ak je metóda 'Accurate' príliš pomalá."
 #define OPTION_VAL_ACCURATE_SK "Presné"
 #define OPTION_VAL_FAST_SK "Rýchlo"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_SK NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_SK NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_SK "Farebná korekcia - Pozícia frontlight"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_SK "Simuluje fyzickú odozvu LCD panela Game Boy Color pri osvetlení z rôznych uhlov. 'Central' predstavuje štandardnú reprodukciu farieb. 'Above Screen' zvyšuje jas. 'Below Screen' znižuje jas. Toto nastavenie sa aplikuje len ak je 'Color Correction Mode' nastavené na 'Accurate'."
 #define OPTION_VAL_CENTRAL_SK "Centrálny"
 #define OPTION_VAL_ABOVE_SCREEN_SK "Nad obrazovkou"
 #define OPTION_VAL_BELOW_SCREEN_SK "Pod obrazovkou"
-#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_SK NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_SK NULL
-#define GAMBATTE_MIX_FRAMES_LABEL_SK NULL
-#define GAMBATTE_MIX_FRAMES_INFO_0_SK NULL
+#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_SK "Úroveň tmavého filtra (%)"
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_SK "Povolí redukciu jasu na základe svietivosti. Možno použiť na zabránenie odleskom/námahe očí pri hraní hier s bielymi pozadiami, ktoré sú určené pre zobrazenie na nepodsvietenom Game Boy Color a preto môžu na modernej podsvietenej obrazovke pôsobiť nepríjemne jasne."
+#define GAMBATTE_MIX_FRAMES_LABEL_SK "Medzisnímkové miešanie"
+#define GAMBATTE_MIX_FRAMES_INFO_0_SK "Simuluje efekty LCD ghostingu. 'Simple' vykonáva 50:50 mix aktuálnej a predošlej snímky. 'LCD Ghosting' napodobňuje prirodzené reakčné časy LCD kombinovaním viacerých vyrovnávacích snímok. 'Simple' miešanie je potrebné pri hraní hier, ktoré spoliehajú na LCD ghosting pre efekty priesvitnosti (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
 #define OPTION_VAL_MIX_SK "Jednoduché"
-#define OPTION_VAL_LCD_GHOSTING_SK NULL
+#define OPTION_VAL_LCD_GHOSTING_SK "LCD doznievanie (presné)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_SK "LCD ghosting (rýchle)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_SK "Vzorkovač zvuku"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_SK NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_SK "Určuje, aký algoritmus sa použije pri prevzorkovaní generovaného zvuku (zvuková frekvencia Game Boy je obmedzená iba rýchlosťou zápisu CPU, takže 'natívne' frekvencie sú na moderných zvukových zariadeniach nepraktické a musia byť znížené). 'Sinc' produkuje najvyššiu kvalitu. 'Cosine' zlepšuje výkon na slabšom hardvéri."
 #define OPTION_VAL_SINC_SK NULL
 #define OPTION_VAL_CC_SK "Kosínus"
-#define GAMBATTE_GB_HWMODE_LABEL_SK NULL
-#define GAMBATTE_GB_HWMODE_INFO_0_SK NULL
+#define GAMBATTE_GB_HWMODE_LABEL_SK "Emulovaný hardvér (vyžaduje reštart)"
+#define GAMBATTE_GB_HWMODE_INFO_0_SK "Určuje, aký typ hardvéru sa má emulovať. Odporúča sa 'Auto'. Voľba 'GBA' odomyká extra funkcie v niektorých 'GBA Enhanced' hrách Game Boy Color (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_SK NULL
 #define OPTION_VAL_GBA_SK NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_SK NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_SK NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_SK NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_SK NULL
-#define GAMBATTE_TURBO_PERIOD_LABEL_SK NULL
-#define GAMBATTE_TURBO_PERIOD_INFO_0_SK NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_SK NULL
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_SK NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_SK NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_SK NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_MODE_INFO_0_SK NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_SK "Použiť oficiálny bootloader (vyžaduje reštart)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_SK "Povolí podporu pre oficiálne bootloadery Game Boy a Game Boy Color so zodpovedajúcimi štartovacími logo animáciami."
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_SK "Povoliť protiľahlé smery"
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_SK "Povolenie umožní stláčať/rýchlo striedať/držať smer doľava aj doprava (alebo hore aj dole) súčasne. Toto môže spôsobiť chyby pohybu."
+#define GAMBATTE_TURBO_PERIOD_LABEL_SK "Perióda Turbo tlačidla"
+#define GAMBATTE_TURBO_PERIOD_INFO_0_SK "Určuje interval opakovania (v snímkach) pri držaní tlačidiel Turbo A/B."
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_SK "Sila vibrácií ovládača"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_SK "Povolí efekty haptickej spätnej väzby pre podporované hry (Pokémon Pinball, Perfect Dark...)."
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_SK "Zobraziť nastavenia Game Link"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_SK "Povolí konfiguráciu možností sieťového Game Link (multiplayer). POZNÁMKA: Pre uplatnenie tohto nastavenia môže byť potrebné prepnúť Quick Menu."
+#define GAMBATTE_GB_LINK_MODE_LABEL_SK "Režim Game Link"
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_SK "Režim Link"
+#define GAMBATTE_GB_LINK_MODE_INFO_0_SK "Pri povolení sieťovej funkcie Game Link určuje, či má aktuálna inštancia bežať ako server alebo klient."
 #define OPTION_VAL_NOT_CONNECTED_SK "Nepripojené"
 #define OPTION_VAL_NETWORK_SERVER_SK "Sieťový server"
 #define OPTION_VAL_NETWORK_CLIENT_SK "Sieťový klient"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_SK "Sieťový port Link"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_SK "Určuje port použitý pre sieťovú komunikáciu Game Link."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_SK "1. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_SK "1. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_SK "2. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_SK "2. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_SK "3. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_SK "3. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_SK "4. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_SK "4. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_SK "5. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_SK "5. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_SK "6. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_SK "6. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_SK "7. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_SK "7. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_SK "8. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_SK "8. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_SK "9. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_SK "9. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_SK "10. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_SK "10. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_SK "11. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_SK "11. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_SK NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_SK NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_SK NULL
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_SK "12. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Game Link Mode' nastavené na 'Network Client'."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_SK "12. číslica IP adresy vzdialeného sieťového servera Game Link. Použité len ak je 'Link Mode' nastavené na 'Network Client'."
 
 struct retro_core_option_v2_category option_cats_sk[] = {
    {
@@ -61020,7 +61020,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_GBA_TH NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_TH NULL
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_TH NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_TH NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_TH "อนุญาตทิศทางตรงกันข้าม"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_TH NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_TH NULL
 #define GAMBATTE_TURBO_PERIOD_INFO_0_TH NULL
