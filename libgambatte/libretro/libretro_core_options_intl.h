@@ -23235,7 +23235,7 @@ struct retro_core_options_v2 options_eo = {
 #define OPTION_VAL_TWB64_218_TIMING_HERO_VER_ES "TWB64 218 (versión Timing Hero)"
 #define OPTION_VAL_TWB64_219_INVINCIBLE_YELLOW_AND_BLUE_ES "TWB64 219 (amarillo y azul Invincible)"
 #define OPTION_VAL_TWB64_220_GRINCHY_GREEN_ES "TWB64 220 (verde Grinch)"
-#define OPTION_VAL_TWB64_221_ANIMATE_VISION_ES "TWB64 221 (visión animate)"
+#define OPTION_VAL_TWB64_221_ANIMATE_VISION_ES "TWB64 221 (visión Animate)"
 #define OPTION_VAL_TWB64_222_SCHOOL_IDOL_MIX_ES "TWB64 222 (mezcla School Idol)"
 #define OPTION_VAL_TWB64_223_GREEN_AWAKENING_ES "TWB64 223 (verde Awakening)"
 #define OPTION_VAL_TWB64_224_GOOMBA_BROWN_ES "TWB64 224 (marrón Goomba)"
@@ -60572,16 +60572,16 @@ struct retro_core_options_v2 options_sv = {
 /* RETRO_LANGUAGE_TH */
 
 #define CATEGORY_GB_LINK_LABEL_TH NULL
-#define CATEGORY_GB_LINK_INFO_0_TH NULL
-#define GAMBATTE_GB_COLORIZATION_LABEL_TH NULL
-#define GAMBATTE_GB_COLORIZATION_INFO_0_TH NULL
+#define CATEGORY_GB_LINK_INFO_0_TH "เปลี่ยนการตั้งค่าเชื่อมต่อ Game Link ผ่านเครือข่าย (ผู้เล่นหลายคน)"
+#define GAMBATTE_GB_COLORIZATION_LABEL_TH "การใส่สีให้กับ GB"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_TH "เปิดใช้งานการใส่สีให้กับเกม Game Boy. 'อัตโนมัติ' จะเลือกชุดสีที่ 'ดีที่สุด' (มีสีสัน/เหมาะสมที่สุด). 'GBC' จะเลือกชุดสีเฉพาะของ Game Boy Color หากมีการระบุไว้, มิเช่นนั้นจะใช้ 'GBC - Dark Green'. 'SGB' จะเลือกชุดสีเฉพาะของ Super Game Boy หากมีการระบุไว้, มิเช่นนั้นจะใช้ 'SGB - 1A'. 'ภายใน' จะใช้ตัวเลือกคอร์ 'Internal Palette'. 'กำหนดเอง' จะโหลดชุดสีที่ผู้ใช้สร้างขึ้นจากไดเรกทอรีระบบ."
 #define OPTION_VAL_AUTO_TH "อัตโนมัติ"
 #define OPTION_VAL_GBC_TH NULL
 #define OPTION_VAL_SGB_TH NULL
-#define OPTION_VAL_INTERNAL_TH NULL
+#define OPTION_VAL_INTERNAL_TH "ภายใน"
 #define OPTION_VAL_CUSTOM_TH "กำหนดเอง"
-#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_TH NULL
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_TH NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_TH "ชุดสีภายใน"
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_TH "เลือกชุดสีที่ใช้สำหรับการใส่สีให้กับเกม Game Boy เมื่อตั้งค่า 'การใส่สี GB' เป็น 'ชุดสีภายใน', หรือเมื่อตั้งค่า 'การใส่สี GB' เป็น 'อัตโนมัติ' และเกมนั้นไม่มีการกำหนดชุดสี SGB/GBC ไว้ล่วงหน้า. ชุดสี 'GB' จะจำลองการแสดงผลของฮาร์ดแวร์ Game Boy รุ่นดั้งเดิม. ชุดสี 'GBC' จะเหมือนกับค่าที่ตั้งไว้ล่วงหน้าในตัวของ Game Boy Color. ชุดสี 'SGB' จะเหมือนกับค่าที่ตั้งไว้ล่วงหน้าในตัวของ Super Game Boy."
 #define OPTION_VAL_GB_DMG_TH NULL
 #define OPTION_VAL_GB_POCKET_TH NULL
 #define OPTION_VAL_GB_LIGHT_TH NULL
@@ -60638,7 +60638,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TWB64_PACK_3_TH NULL
 #define OPTION_VAL_PIXELSHIFT_PACK_1_TH NULL
 #define GAMBATTE_GB_PALETTE_TWB64_1_LABEL_TH NULL
-#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_1_INFO_0_TH "เลือก ชุดสีภายใน เมื่อตั้งค่า 'ชุดสีภายใน' เป็น 'TWB64 - Pack 1'"
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_TH NULL
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_TH NULL
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_TH NULL
@@ -60740,7 +60740,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TWB64_099_BLUE_STRIPES_VER_TH NULL
 #define OPTION_VAL_TWB64_100_PRECURE_MARBLE_RASPBERRY_TH NULL
 #define GAMBATTE_GB_PALETTE_TWB64_2_LABEL_TH NULL
-#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_2_INFO_0_TH "เลือก ชุดสีภายในเมื่อตั้งค่า 'ชุดสี' เป็น 'TWB64 - Pack 2'"
 #define OPTION_VAL_TWB64_101_765PRO_PINK_TH NULL
 #define OPTION_VAL_TWB64_102_CINDERELLA_BLUE_TH NULL
 #define OPTION_VAL_TWB64_103_MILLION_YELLOW_TH NULL
@@ -60842,7 +60842,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_TH NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_TH NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_TH NULL
-#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_TH NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_TH "เลือก ชุดสีภายในเมื่อตั้งค่า 'Internal Palette'ชุดสี เป็น 'TWB64 - Pack 3'"
 #define OPTION_VAL_TWB64_201_DMG_GOLD_TH NULL
 #define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_TH NULL
 #define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_TH NULL
@@ -60944,7 +60944,7 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_TH NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_TH NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_TH NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_TH NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_TH "เลือก ชุดสีภายในเมื่อตั้งค่า 'ชุดสีภายใน' เป็น 'PixelShift - Pack 1'"
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_TH NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_TH NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_TH NULL
@@ -60991,100 +60991,100 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_TH NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_TH NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_TH "การปรับแต่งสี"
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_TH NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_TH "ปรับจูนสีของผลลัพธ์ให้ตรงกับการแสดงผลของเครื่อง Game Boy Color ของจริง 'GBC Only' จะทำให้การแก้ไขสีถูกนำมาใช้เฉพาะเมื่อเล่นเกม Game Boy Color หรือเมื่อใช้ชุดสี Game Boy Color เพื่อเปลี่ยนสีเกม Game Boy ส่วน 'Always' จะใช้การแก้ไขสีกับเนื้อหาทั้งหมด และจะทำให้เกิดผลลัพธ์ที่ไม่คาดคิดหรือส่งผลเสียต่องานภาพเมื่อใช้ชุดสีภายในแบบ 'GB' หรือ 'SGB'"
 #define OPTION_VAL_GBC_ONLY_TH NULL
 #define OPTION_VAL_ALWAYS_TH "ตลอดเวลา"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_TH NULL
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_TH NULL
-#define OPTION_VAL_ACCURATE_TH NULL
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_TH "โหมดการแก้ไขสี"
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_TH "ระบุวิธีการที่ใช้เมื่อทำการแก้ไขสี 'แม่นยำ' ให้ผลลัพธ์ที่แทบไม่ต่างจากหน้าจอ LCD ของ Game Boy Color ของจริง 'เร็ว' เพียงแค่ลดความสว่างของสีและลดความอิ่มตัวของสี ซึ่งอาจใช้กับอุปกรณ์สเปกต่ำได้หากวิธี 'แม่นยำ' ช้าเกินไป"
+#define OPTION_VAL_ACCURATE_TH "แม่นยำ"
 #define OPTION_VAL_FAST_TH "เร็ว"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_TH NULL
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_TH NULL
-#define OPTION_VAL_CENTRAL_TH NULL
-#define OPTION_VAL_ABOVE_SCREEN_TH NULL
-#define OPTION_VAL_BELOW_SCREEN_TH NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_TH NULL
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_TH NULL
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_TH "การแก้ไขสี - ตำแหน่งของไฟหน้าจอ"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_TH "จำลองการตอบสนองทางกายภาพของหน้าจอ LCD ของ Game Boy Color เมื่อได้รับแสงจากมุมต่างๆ 'กึ่งกลาง' คือการจำลองสีมาตรฐาน 'เหนือหน้าจอ' จะเพิ่มความสว่าง 'ใต้หน้าจอ' จะลดความสว่าง การตั้งค่านี้จะใช้ได้เฉพาะเมื่อตั้งค่า 'โหมดการแก้ไขสี' เป็น 'แม่นยำ' เท่านั้น"
+#define OPTION_VAL_CENTRAL_TH "กึ่งกลาง"
+#define OPTION_VAL_ABOVE_SCREEN_TH "ใต้หน้าจอ"
+#define OPTION_VAL_BELOW_SCREEN_TH "ใต้หน้าจอ"
+#define GAMBATTE_DARK_FILTER_LEVEL_LABEL_TH "ระดับ Dark Filter (%)"
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_TH "เปิดใช้งานการลดความสว่างตามค่าความสว่าง ใช้เพื่อหลีกเลี่ยงแสงจ้าหรืออาการตาล้าเมื่อเล่นเกมที่มีพื้นหลังสีขาว ซึ่งออกแบบมาเพื่อแสดงผลบน Game Boy Color ที่ไม่มีไฟหลังจอ และอาจดูสว่างเกินไปจนไม่สบายตาเมื่อรับชมบนหน้าจอที่มีไฟหลังจอในปัจจุบัน"
 #define GAMBATTE_MIX_FRAMES_LABEL_TH "การผสมเฟรมระหว่างภาพ"
-#define GAMBATTE_MIX_FRAMES_INFO_0_TH NULL
+#define GAMBATTE_MIX_FRAMES_INFO_0_TH "จำลองผลลัพธ์ภาพซ้อนของจอ LCD 'เรียบง่าย' จะผสมเฟรมปัจจุบันและเฟรมก่อนหน้าแบบ 50:50 'LCD Ghosting' จะเลียนแบบเวลาตอบสนองตามธรรมชาติของจอ LCD โดยรวมเฟรมที่เก็บไว้หลายเฟรมเข้าด้วยกัน จำเป็นต้องใช้การผสมแบบ 'เรียบง่าย' เมื่อเล่นเกมที่ต้องพึ่งพาภาพซ้อนของจอ LCD เพื่อสร้างเอฟเฟกต์ความโปร่งใส (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)"
 #define OPTION_VAL_MIX_TH "เรียบง่าย"
 #define OPTION_VAL_LCD_GHOSTING_TH "ภาพเบลอหน้าจอ LCD (แบบแม่นยำ)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_TH "ภาพเบลอหน้าจอ LCD (เน้นความเร็ว)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_TH "เปลี่ยนความถี่สัญญาณเสียง"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_TH NULL
-#define OPTION_VAL_SINC_TH NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_TH "ระบุอัลกอริทึมที่จะใช้เมื่อทำการสุ่มตัวอย่างเสียงที่สร้างขึ้นใหม่ (อัตราเสียงของ Game Boy ถูกจำกัดด้วยความเร็วในการเขียนของ CPU เท่านั้น ซึ่งทำให้ความถี่แบบ 'ค่าเดิม' ไม่สามารถใช้งานได้จริงบนอุปกรณ์เสียงสมัยใหม่และต้องทำการดาวน์แซมปลิง) 'ซิงค์' ให้คุณภาพสูงสุด 'Cosine' ช่วยเพิ่มประสิทธิภาพในอุปกรณ์สเปกต่ำ"
+#define OPTION_VAL_SINC_TH "ซิงค์"
 #define OPTION_VAL_CC_TH NULL
-#define GAMBATTE_GB_HWMODE_LABEL_TH NULL
-#define GAMBATTE_GB_HWMODE_INFO_0_TH NULL
+#define GAMBATTE_GB_HWMODE_LABEL_TH "ระบบจำลอง (จำเป็นต้องรีสตาร์ท)"
+#define GAMBATTE_GB_HWMODE_INFO_0_TH "ระบุประเภทของฮาร์ดแวร์ที่จะจำลอง แนะนำให้ตั้งค่าเป็น 'อัตโนมัติ' การเลือก 'GBA' จะปลดล็อกคุณสมบัติพิเศษในเกม Game Boy Color บางเกมที่รองรับ 'GBA Enhanced' (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)"
 #define OPTION_VAL_GB_TH NULL
 #define OPTION_VAL_GBA_TH NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_TH NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_TH NULL
+#define GAMBATTE_GB_BOOTLOADER_LABEL_TH "ใช้งาน Bootloader อย่างเป็นทางการ (จำเป็นต้องรีสตาร์ท)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_TH "เปิดใช้งานการรองรับ Bootloader อย่างเป็นทางการของ Game Boy และ Game Boy Color พร้อมแอนิเมชันโลโก้ตอนเริ่มระบบที่เกี่ยวข้อง"
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_TH "อนุญาตทิศทางตรงกันข้าม"
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_TH NULL
-#define GAMBATTE_TURBO_PERIOD_LABEL_TH NULL
-#define GAMBATTE_TURBO_PERIOD_INFO_0_TH NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_TH NULL
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_TH NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_TH NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_MODE_INFO_0_TH NULL
-#define OPTION_VAL_NOT_CONNECTED_TH NULL
-#define OPTION_VAL_NETWORK_SERVER_TH NULL
-#define OPTION_VAL_NETWORK_CLIENT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_TH NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_TH "การเปิดใช้งานสิ่งนี้จะอนุญาตให้กด/สลับอย่างรวดเร็ว/กดค้างทั้งทิศทางซ้ายและขวา (หรือขึ้นและลง) พร้อมกันได้ ซึ่งอาจทำให้เกิดข้อผิดพลาดในด้านการเคลื่อนที่"
+#define GAMBATTE_TURBO_PERIOD_LABEL_TH "ระยะเวลาปุ่ม Turbo"
+#define GAMBATTE_TURBO_PERIOD_INFO_0_TH "ระบุระยะเวลาห่างของการกดซ้ำ (หน่วยเป็นเฟรม) เมื่อกดปุ่ม Turbo A/B ค้างไว้"
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_TH "ความแรงการสั่นของคอนโทรลเลอร์"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_TH "เปิดใช้งานผลลัพธ์การสั่นสำหรับการตอบสนองเมื่อเล่นเกมที่รองรับ (Pokemon Pinball, Perfect Dark...)"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_TH "แสดงการตั้งค่า Game Link"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_TH "เปิดใช้งานการกำหนดค่าตัวเลือก Game Link (ผู้เล่นหลายคน) ผ่านเครือข่าย หมายเหตุ: อาจจำเป็นต้องเปิด-ปิดทางลัดเพื่อให้การตั้งค่านี้มีผล"
+#define GAMBATTE_GB_LINK_MODE_LABEL_TH "โหมด Game Link"
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_TH "โหมด Link"
+#define GAMBATTE_GB_LINK_MODE_INFO_0_TH "เมื่อเปิดใช้งานฟังก์ชัน Game Link ผ่านเครือข่าย ให้ระบุว่าอินสแตนซ์ปัจจุบันควรทำงานเป็นเซิร์ฟเวอร์หรือไคลเอนต์"
+#define OPTION_VAL_NOT_CONNECTED_TH "ไม่ได้เชื่อมต่อ"
+#define OPTION_VAL_NETWORK_SERVER_TH "เซิร์ฟเวอร์เครือข่าย"
+#define OPTION_VAL_NETWORK_CLIENT_TH "ไคลเอนต์เครือข่าย"
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_TH "พอร์ต Network Link"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_TH "พอร์ต"
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_TH NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_TH NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_TH "ระบุพอร์ตที่ใช้สำหรับการสื่อสารผ่านเครือข่าย Game Link"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_TH "ตัวเลขหลักที่ 1 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เมื่อตั้งค่าโหมด Game Link เป็นไคลเอนต์เครือข่ายเท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_TH "ตัวเลขหลักที่ 1 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เมื่อตั้งค่าโหมด Link เป็นไคลเอนต์เครือข่ายเท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 02: _x_.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_TH "ตัวเลขหลักที่ 2 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เมื่อตั้งค่าโหมด Game Link เป็นไคลเอนต์เครือข่ายเท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_TH "ตัวเลขหลักที่ 2 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เมื่อตั้งค่าโหมด Link เป็นไคลเอนต์เครือข่ายเท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 03: __x.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_0_TH "หมายเลขหลักที่ 3 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล จะใช้เฉพาะเมื่อตั้งค่า 'Game Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_3_INFO_1_TH "หมายเลขหลักที่ 3 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล จะใช้เฉพาะเมื่อตั้งค่า 'Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 04: ___.x__.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_0_TH "หมายเลขหลักที่ 4 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Game Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_4_INFO_1_TH "หมายเลขหลักที่ 4 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 05: ___._x_.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_0_TH "หมายเลขหลักที่ 5 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Game Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_5_INFO_1_TH "หมายเลขหลักที่ 5 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 06: ___.__x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 06: ___.__x.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_0_TH "หมายเลขหลักที่ 6 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Game Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_6_INFO_1_TH "หมายเลขหลักที่ 6 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 07: ___.___.x__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 07: ___.___.x__.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_0_TH "หมายเลขหลักที่ 7 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Game Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_7_INFO_1_TH "หมายเลขหลักที่ 7 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 08: ___.___._x_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 08: ___.___._x_.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_0_TH "หมายเลขหลักที่ 8 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Game Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_8_INFO_1_TH "หมายเลขหลักที่ 8 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 09: ___.___.__x.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 09: ___.___.__x.___"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_0_TH "หมายเลขหลักที่ 9 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เฉพาะเมื่อตั้งค่า Game Link Mode เป็น Network Client เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_9_INFO_1_TH "หมายเลขหลักที่ 9 ของ IP address ของเซิร์ฟเวอร์ Game Link network ทางไกล ใช้เฉพาะเมื่อ 'Link Mode' เป็น 'Network Client' เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 10: ___.___.___.x__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 10: ___.___.___.x__"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_0_TH "หมายเลขหลักที่ 10 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เฉพาะเมื่อตั้งค่า Game Link Mode เป็น Network Client เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_10_INFO_1_TH "หมายเลขหลักที่ 10 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เฉพาะเมื่อตั้งค่า Link Mode เป็น Network Client เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 11: ___.___.___._x_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 11: ___.___.___._x_"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_0_TH "หมายเลขหลักที่ 11 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เฉพาะเมื่อตั้งค่า Game Link Mode เป็น Network Client เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_11_INFO_1_TH "หมายเลขหลักที่ 11 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เฉพาะเมื่อตั้งค่า Link Mode เป็น Network Client เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_TH "ที่อยู่เซิร์ฟเวอร์ Network Link ส่วนที่ 12: ___.___.___.__x"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_LABEL_CAT_TH "ที่อยู่เซิร์ฟเวอร์ ส่วนที่ 12: ___.___.___.__x"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_0_TH "หมายเลขหลักที่ 12 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เฉพาะเมื่อตั้งค่า Game Link Mode เป็น Network Client เท่านั้น"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_12_INFO_1_TH "หมายเลขหลักที่ 12 ของที่อยู่ IP เซิร์ฟเวอร์เครือข่าย Game Link ทางไกล ใช้เฉพาะเมื่อตั้งค่า Link Mode เป็น Network Client เท่านั้น"
 
 struct retro_core_option_v2_category option_cats_th[] = {
    {
