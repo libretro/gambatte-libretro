@@ -62,7 +62,9 @@ static bool libretro_supports_ff_override       = false;
 static bool libretro_ff_enabled                 = false;
 static bool libretro_ff_enabled_prev            = false;
 
+#ifdef HAVE_NETWORK
 static bool show_gb_link_settings = true;
+#endif
 
 /* Minimum (and default) turbo pulse train
  * is 2 frames ON, 2 frames OFF */
@@ -2314,9 +2316,12 @@ static void find_internal_palette(const unsigned short **palette, bool *is_gbc)
 static void check_variables(bool startup)
 {
    unsigned i, j;
+   unsigned colorCorrectionMode    = 0;
+   unsigned colorCorrection        = 0;
+   struct retro_variable var       = {0};
+   float colorCorrectionBrightness = 0.5f; /* central */
+   unsigned darkFilterLevel        = 0;
 
-   unsigned colorCorrection = 0;
-   struct retro_variable var = {0};
    var.key = "gambatte_gbc_color_correction";
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
@@ -2326,15 +2331,12 @@ static void check_variables(bool startup)
          colorCorrection = 2;
    }
    
-   unsigned colorCorrectionMode = 0;
    var.key   = "gambatte_gbc_color_correction_mode";
    var.value = NULL;
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "fast")) {
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && !strcmp(var.value, "fast"))
       colorCorrectionMode = 1;
-   }
    gb.setColorCorrectionMode(colorCorrectionMode);
    
-   float colorCorrectionBrightness = 0.5f; /* central */
    var.key   = "gambatte_gbc_frontlight_position";
    var.value = NULL;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
@@ -2346,13 +2348,10 @@ static void check_variables(bool startup)
    }
    gb.setColorCorrectionBrightness(colorCorrectionBrightness);
    
-   unsigned darkFilterLevel = 0;
    var.key   = "gambatte_dark_filter_level";
    var.value = NULL;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
       darkFilterLevel = static_cast<unsigned>(atoi(var.value));
-   }
    gb.setDarkFilterLevel(darkFilterLevel);
 
    bool old_use_cc_resampler = use_cc_resampler;
@@ -2421,16 +2420,15 @@ static void check_variables(bool startup)
    check_frame_blend_variable();
 
 #ifdef HAVE_NETWORK
-
    gb_serialMode = SERIAL_NONE;
-   var.key = "gambatte_gb_link_mode";
-   var.value = NULL;
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-      if (!strcmp(var.value, "Network Server")) {
+   var.key       = "gambatte_gb_link_mode";
+   var.value     = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "Network Server"))
          gb_serialMode = SERIAL_SERVER;
-      } else if (!strcmp(var.value, "Network Client")) {
+      else if (!strcmp(var.value, "Network Client"))
          gb_serialMode = SERIAL_CLIENT;
-      }
    }
 
    var.key = "gambatte_gb_link_network_port";
@@ -2495,7 +2493,6 @@ static void check_variables(bool startup)
 
    /* Show/hide core options */
    update_option_visibility();
-
 #endif
 
    internal_palette_active = false;
@@ -2580,9 +2577,7 @@ static void check_variables(bool startup)
          // If neither GBC nor SGB palettes are defined, set
          // user-defined internal palette
          if (!gbc_bios_palette)
-         {
             find_internal_palette(&gbc_bios_palette, &isGbcPalette);
-         }
          break;
       case GB_COLORIZATION_CUSTOM:
          load_custom_palette();
@@ -2594,18 +2589,14 @@ static void check_variables(bool startup)
          // Force GBC colourisation
          gbc_bios_palette = findGbcTitlePal(internal_game_name);
          if (!gbc_bios_palette)
-         {
             gbc_bios_palette = findGbcDirPal("GBC - Dark Green"); // GBC Default
-         }
          isGbcPalette = true;
          break;
       case GB_COLORIZATION_SGB:
          // Force SGB colourisation
          gbc_bios_palette = findSgbTitlePal(internal_game_name);
          if (!gbc_bios_palette)
-         {
             gbc_bios_palette = findGbcDirPal("SGB - 1A"); // SGB Default
-         }
          break;
       default: // GB_COLORIZATION_DISABLED
          gbc_bios_palette = findGbcDirPal("GBC - Grayscale");
@@ -2638,17 +2629,6 @@ static void check_variables(bool startup)
          }
       }
    }
-}
-
-static unsigned pow2ceil(unsigned n) {
-   --n;
-   n |= n >> 1;
-   n |= n >> 2;
-   n |= n >> 4;
-   n |= n >> 8;
-   ++n;
-
-   return n;
 }
 
 bool retro_load_game(const struct retro_game_info *info)

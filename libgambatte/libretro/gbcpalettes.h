@@ -3293,6 +3293,7 @@ static const unsigned short *findSgbTitlePal(const char *const title)
 	return RHMAP_GET_STR(sgbTitlePaletteMap, title);
 }
 
+#if 0
 static const unsigned short *findGbcPal(const char *const title)
 {
 	const unsigned short *const pal = findGbcDirPal(title);
@@ -3302,6 +3303,7 @@ static const unsigned short *findGbcPal(const char *const title)
 	
 	return findGbcTitlePal(title);
 }
+#endif
 
 }
 
