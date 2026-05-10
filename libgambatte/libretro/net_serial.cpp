@@ -3,17 +3,23 @@
 #include "gambatte_log.h"
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/types.h>
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include <winbase.h>
 #else
+#include <unistd.h>
+#include <errno.h>
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#endif
+
+#ifdef _WIN32
+#define close closesocket
+#define ioctl ioctlsocket
 #endif
 
 NetSerial::NetSerial()
@@ -25,11 +31,19 @@ NetSerial::NetSerial()
 , sockfd_(-1)
 , lastConnectAttempt_(0)
 {
+#ifdef _WIN32
+	//wsaStartupStatus = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	WSADATA data = {};
+	WSAStartup(MAKEWORD(2, 2), &data);
+#endif
 }
 
 NetSerial::~NetSerial()
 {
 	stop();
+#ifdef _WIN32
+	WSACleanup();
+#endif
 }
 
 bool NetSerial::start(bool is_server, int port, const std::string& hostname)
@@ -101,7 +115,14 @@ bool NetSerial::startServerSocket()
 
 		int fd = socket(AF_INET, SOCK_STREAM, 0);
 		if (fd < 0) {
+#ifdef _WIN32
+			LPSTR lpErrorMessage;
+			FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR) &lpErrorMessage, 0, NULL);
+			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", lpErrorMessage);
+			LocalFree(lpErrorMessage);
+#else
 			gambatte_log(RETRO_LOG_ERROR, "Error opening socket: %s\n", strerror(errno));
+#endif
 			return false;
 		}
 
@@ -246,11 +267,7 @@ bool NetSerial::check(unsigned char out, unsigned char& in, bool& fastCgb)
 			return false;
 		}
 	}
-#ifdef _WIN32
-   if (ioctlsocket(sockfd_, FIONREAD, &bytes_avail) < 0)
-#else
 	if (ioctl(sockfd_, FIONREAD, &bytes_avail) < 0)
-#endif
    {
 		gambatte_log(RETRO_LOG_ERROR, "IOCTL Failed: %s\n", strerror(errno));
 		return false;
