@@ -13,7 +13,8 @@ endif
 
 SOURCES_C   := \
 	$(CORE_DIR)/../libretro/gambatte_log.c \
-	$(CORE_DIR)/../libretro/blipper.c
+	$(CORE_DIR)/../libretro/blipper.c \
+	$(CORE_DIR)/../libretro/cc_resampler.c
 
 SOURCES_CXX := \
 	$(CORE_DIR)/bootloader.cpp \

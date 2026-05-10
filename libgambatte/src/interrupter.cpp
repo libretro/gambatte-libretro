@@ -44,7 +44,13 @@ unsigned long Interrupter::interrupt(unsigned const address, unsigned long cc, M
 }
 
 static int asHex(char c) {
-	return c >= 'A' ? c - 'A' + 0xA : c - '0';
+	/* Accept both uppercase and lowercase A-F. The previous
+	 * implementation produced silently-wrong values for
+	 * lowercase letters, leading to no-op cheats when users
+	 * typed codes in lowercase. */
+	if (c >= 'a' && c <= 'f') return c - 'a' + 0xA;
+	if (c >= 'A' && c <= 'F') return c - 'A' + 0xA;
+	return c - '0';
 }
 
 void Interrupter::setGameShark(std::string const &codes) {

@@ -90,7 +90,6 @@ bool NetSerial::checkAndRestoreConnection(bool throttle)
 }
 bool NetSerial::startServerSocket()
 {
-	int fd;
 	struct sockaddr_in server_addr;
 
 	if (server_fd_ < 0) {
@@ -155,7 +154,6 @@ bool NetSerial::acceptClient()
 }
 bool NetSerial::startClientSocket()
 {
-	int fd;
 	struct sockaddr_in server_addr;
 
 	if (sockfd_ < 0) {

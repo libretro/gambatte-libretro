@@ -112,7 +112,11 @@ public:
 	bool isLoaded() const;
 	
    void saveState(void *data);
-   void loadState(const void *data);
+   /* Load a savestate previously produced by saveState. The size
+    * parameter must match the buffer length so the parser can
+    * reject malformed states without reading past the end of the
+    * buffer. Returns true on success. */
+   bool loadState(const void *data, size_t size);
    size_t stateSize() const;
 
    void setColorCorrection(bool enable);

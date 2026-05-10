@@ -82,10 +82,27 @@ namespace gambatte
       eventTimes_(memEventRequester),
       statReg_(0),
       m2IrqStatReg_(0),
-      m1IrqStatReg_(0)
+      m1IrqStatReg_(0),
+      /* Color-correction defaults must be initialized BEFORE the
+       * constructor body runs, because setColorCorrection(true)
+       * below calls refreshPalettes() -> gbcToRgb32(), which
+       * reads colorCorrectionMode/colorCorrectionBrightness/
+       * darkFilterLevel. Previously these members were left
+       * uninitialized at this point and gbcToRgb32 invoked UB
+       * during construction. The values get overwritten by
+       * check_variables() once core options are read, but the
+       * construction-time UB still fires under UBSan. */
+      colorCorrection(true),
+      colorCorrectionMode(0),
+      colorCorrectionBrightness(0.5f),
+      darkFilterLevel(0)
    {
       std::memset( bgpData_, 0, sizeof  bgpData_);
       std::memset(objpData_, 0, sizeof objpData_);
+      /* dmgColorsGBC_ is consumed by refreshPalettes() in the
+       * CGB-running-DMG-game path; if uninitialized it would
+       * produce garbage colours until the game wrote a palette. */
+      std::memset(dmgColorsGBC_, 0, sizeof dmgColorsGBC_);
 
       for (std::size_t i = 0; i < sizeof(dmgColorsRgb32_) / sizeof(dmgColorsRgb32_[0]); ++i)
       {
@@ -107,7 +124,11 @@ namespace gambatte
       }
 
       reset(oamram, vram, false);
-      setVideoBuffer(0, 160);
+      /* PPUFrameBuf is default-constructed with NULL buffer and
+       * pitch 0; the frontend will call setVideoBuffer with the
+       * real buffer via cpu.setVideoBuffer once retro_run begins,
+       * so the previous setVideoBuffer(0, 160) here was a no-op
+       * with a confusing pitch. */
 
       setColorCorrection(true);
    }

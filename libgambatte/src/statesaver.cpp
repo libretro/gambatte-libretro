@@ -59,10 +59,26 @@ class omemstream
 class imemstream
 {
    public:
-      imemstream(const void *data) : rd_ptr(static_cast<const uint8_t*>(data)), has_read(0) {}
+      imemstream(const void *data, size_t size)
+         : rd_ptr(static_cast<const uint8_t*>(data))
+         , rd_end(static_cast<const uint8_t*>(data) + size)
+         , has_read(0)
+         , failed_(false)
+      {}
 
       uint8_t get()
       {
+         /* On underflow return 0 and latch failure. Callers
+          * cannot ignore failure in a way that would dereference
+          * the read pointer because rd_ptr is never advanced past
+          * rd_end. Previously this function unconditionally
+          * dereferenced and incremented rd_ptr, allowing a
+          * malformed savestate to read arbitrary memory past the
+          * buffer end. */
+         if (rd_ptr >= rd_end) {
+            failed_ = true;
+            return 0;
+         }
          uint8_t ret = *rd_ptr++;
          has_read++;
          return ret;
@@ -70,37 +86,58 @@ class imemstream
 
       void read(void *data, size_t size)
       {
-         std::memcpy(data, rd_ptr, size);
-         rd_ptr += size;
+         size_t avail = (size_t)(rd_end - rd_ptr);
+         size_t n     = size < avail ? size : avail;
+         if (n)
+            std::memcpy(data, rd_ptr, n);
+         /* Pad the tail with zeroes if the buffer is short, to
+          * keep caller-visible behavior deterministic when a
+          * truncated state is fed in. */
+         if (n < size) {
+            std::memset(static_cast<uint8_t*>(data) + n, 0, size - n);
+            failed_ = true;
+         }
+         rd_ptr   += n;
          has_read += size;
       }
 
       void ignore(size_t len = 1)
       {
-         rd_ptr += len;
+         size_t avail = (size_t)(rd_end - rd_ptr);
+         size_t n     = len < avail ? len : avail;
+         if (n < len)
+            failed_ = true;
+         rd_ptr   += n;
          has_read += len;
       }
 
       void getline(char *data, size_t size, char delim = '\n')
       {
          size_t count = 0;
-         while ((count < size - 1) && (*rd_ptr != delim))
+         while ((count < size - 1) && (rd_ptr < rd_end) && (*rd_ptr != delim))
          {
             *data++ = *rd_ptr++;
             has_read++;
+            count++;
          }
 
-         rd_ptr++;
-         has_read++;
+         if (rd_ptr < rd_end) {
+            rd_ptr++;
+            has_read++;
+         } else {
+            failed_ = true;
+         }
          *data = '\0';
       }
 
-      bool fail() const { return false; }
-      bool good() const { return true; }
+      bool fail() const { return failed_; }
+      bool good() const { return !failed_ && rd_ptr < rd_end; }
 
    private:
       const uint8_t *rd_ptr;
+      const uint8_t *rd_end;
       size_t has_read;
+      bool failed_;
 };
 
 
@@ -227,17 +264,19 @@ static inline void read(imemstream &file, bool &data) {
 
 static void read(imemstream &file, unsigned char *data, unsigned long sz) {
 	const unsigned long size = get24(file);
-	
+
 	if (size < sz)
 		sz = size;
-	
+
 	file.read(reinterpret_cast<char*>(data), sz);
 	file.ignore(size - sz);
-	
-	if (static_cast<unsigned char>(0x100)) {
-		for (unsigned long i = 0; i < sz; ++i)
-			data[i] &= 0xFF;
-	}
+
+	/* Previous code had:
+	 *   if (static_cast<unsigned char>(0x100))
+	 *     for (...) data[i] &= 0xFF;
+	 * The condition is always false (0x100 truncated to
+	 * unsigned char is 0), so the masking loop was dead.
+	 * Removed. unsigned char already holds 0..0xFF by definition. */
 }
 
 static void read(imemstream &file, bool *data, unsigned long sz) {
@@ -461,7 +500,16 @@ static void writeSnapShot(omemstream &file) {
 	put24(file, 0);
 }
 
-static SaverList list;
+/* Function-local static to make the construction lifetime
+ * explicit. The previous translation-unit-scope static was
+ * constructed at library load (before main / before any libretro
+ * entry point) which made its construction order against other
+ * library-load work implementation-defined. The list itself is
+ * read-only after construction so concurrent reads are safe. */
+static const SaverList &saver_list(void) {
+	static SaverList instance;
+	return instance;
+}
 
 } // anon namespace
 
@@ -477,14 +525,20 @@ void StateSaver::saveState(const SaveState &state, void *data) {
 	
 	writeSnapShot(file);
 	
+	const SaverList &list = saver_list();
 	for (SaverList::const_iterator it = list.begin(); it != list.end(); ++it) {
 		file.write(it->label, it->labelsize);
 		(*it->save)(file, state);
 	}
 }
 
-bool StateSaver::loadState(SaveState &state, const void *data) {
-   imemstream file(data);
+bool StateSaver::loadState(SaveState &state, const void *data, size_t size) {
+   /* The bounds-checked imemstream needs the buffer end so it
+    * can stop at it. Previously this constructor only took a
+    * pointer; a malformed savestate could claim a 24-bit chunk
+    * size of 0xFFFFFF (16 MB) and the parser would happily skip
+    * past the end and read arbitrary memory. */
+   imemstream file(data, size);
 
    if (file.fail() || file.get() != 0)
       return false;
@@ -492,6 +546,7 @@ bool StateSaver::loadState(SaveState &state, const void *data) {
    file.ignore();
    file.ignore(get24(file));
 
+   const SaverList &list = saver_list();
    const Array<char> labelbuf(list.maxLabelsize());
    const Saver labelbufSaver = { labelbuf, 0, 0, list.maxLabelsize() };
 
@@ -518,7 +573,10 @@ bool StateSaver::loadState(SaveState &state, const void *data) {
    state.cpu.cycleCounter &= 0x7FFFFFFF;
    state.spu.cycleCounter &= 0x7FFFFFFF;
 
-   return true;
+   /* If the parser tripped its failure latch the data was
+    * malformed; reject the load so the caller doesn't end up
+    * with a half-applied state. */
+   return !file.fail();
 }
 
 size_t StateSaver::stateSize(const SaveState &state) {
@@ -531,6 +589,7 @@ size_t StateSaver::stateSize(const SaveState &state) {
 
    writeSnapShot(file);
 
+   const SaverList &list = saver_list();
    for (SaverList::const_iterator it = list.begin(); it != list.end(); ++it) {
       file.write(it->label, it->labelsize);
       (*it->save)(file, state);

@@ -24,6 +24,15 @@ namespace gambatte {
 
 CPU::CPU()
 : mem_(Interrupter(sp, pc_))
+/* Subtlety: members are initialized in DECLARATION order, not
+ * the order they appear in this initializer list. mem_ is
+ * declared first in the class body, so it is constructed
+ * BEFORE sp and pc_ are assigned their values below. The
+ * Interrupter passed to mem_ captures sp and pc_ by reference
+ * and never reads through them at construction time, so this
+ * is well-defined today, but a future reorder of the data
+ * members in cpu.h could silently introduce UB. Keep mem_
+ * declared first, before sp/pc_, for this to remain safe. */
 , cycleCounter_(0)
 , pc_(0x100)
 , sp(0xFFFE)

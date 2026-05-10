@@ -104,7 +104,7 @@ void Memory::loadState(SaveState const &state) {
 	dmaSource_ = state.mem.dmaSource;
 	dmaDestination_ = state.mem.dmaDestination;
 	oamDmaPos_ = state.mem.oamDmaPos;
-#ifdef HAVE_NETWOWRK
+#ifdef HAVE_NETWORK
 	serialize_value_ = state.mem.serialize_value;
 	serialize_is_fastcgb_ = state.mem.serialize_is_fastcgb;
 #endif

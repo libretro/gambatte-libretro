@@ -1147,7 +1147,7 @@ static void setInitialDmgIoamhram(unsigned char ioamhram[]) {
 
 } // anon namespace
 
-void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbMode) {
+void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbMode, bool const clearSram) {
 	static unsigned char const cgbObjpDump[0x40] = {
 		0x00, 0x00, 0xF2, 0xAB,
 		0x61, 0xC2, 0xD9, 0xBA,
@@ -1180,7 +1180,13 @@ void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbM
 	state.cpu.l = 0x4D;
 	state.cpu.skip = false;
 
-	std::memset(state.mem.sram.ptr, 0xFF, state.mem.sram.size());
+	/* On a real Game Boy, battery-backed cartridge RAM survives a
+	 * reset (the battery keeps the SRAM contents alive while the
+	 * console is powered down). Only fill SRAM with 0xFF on the
+	 * very first init (i.e. when the cart is freshly loaded);
+	 * leave it untouched on subsequent resets. */
+	if (clearSram)
+		std::memset(state.mem.sram.ptr, 0xFF, state.mem.sram.size());
 
 	setInitialVram(state.mem.vram.ptr, cgb);
 

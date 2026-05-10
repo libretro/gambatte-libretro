@@ -6,8 +6,18 @@
 
 namespace gambatte {
 
-Bootloader::Bootloader() {
-   get_raw_bootloader_data = NULL;
+Bootloader::Bootloader()
+   : addrspace_start(NULL)
+   , bootloadersize(0)
+   , has_called_FF50(false)
+   , get_raw_bootloader_data(NULL)
+   , using_bootloader(false)
+{
+   /* bootromswapspace and rombackup are intentionally left
+    * uninitialized for performance (0x900 bytes each); they
+    * are written before any read in load(). All scalar members
+    * are now initialized so observers (e.g. choosebank() called
+    * before a successful load) cannot read garbage. */
 }
 
 void Bootloader::patch_gbc_to_gba_mode() {

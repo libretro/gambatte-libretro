@@ -512,12 +512,11 @@ namespace gambatte
       mbc->loadState(state.mem);
    }
 
-   static void enforce8bit(unsigned char *data, unsigned long sz)
-   {
-      if (static_cast<unsigned char>(0x100))
-         while (sz--)
-            *data++ &= 0xFF;
-   }
+   /* Note: a previous helper named enforce8bit() iterated every
+    * ROM byte masking with 0xFF, but its enclosing condition
+    *   if (static_cast<unsigned char>(0x100))
+    * is always false (0x100 truncated to unsigned char is 0), so
+    * the body was dead code in every build. Removed. */
 
    static unsigned pow2ceil(unsigned n)
    {
@@ -544,10 +543,8 @@ namespace gambatte
       bool rumble = false;
 
       {
-         unsigned i;
          unsigned char header[0x150];
-         for (i = 0; i < 0x150; i++)
-            header[i] = romdata[i];
+         std::memcpy(header, romdata, 0x150);
 
          switch (header[0x0147])
          {
@@ -632,7 +629,6 @@ namespace gambatte
 
       memcpy(memptrs_.romdata(), romdata, ((romsize / 0x4000) * 0x4000ul) * sizeof(unsigned char));
       std::memset(memptrs_.romdata() + (romsize / 0x4000) * 0x4000ul, 0xFF, (rombanks - romsize / 0x4000) * 0x4000ul);
-      enforce8bit(memptrs_.romdata(), rombanks * 0x4000ul);
 
       switch (type)
       {
@@ -659,7 +655,12 @@ namespace gambatte
 
    static int asHex(const char c)
    {
-      return c >= 'A' ? c - 'A' + 0xA : c - '0';
+      /* Accept both uppercase and lowercase A-F (the previous
+       * implementation silently produced wrong values for
+       * lowercase letters). */
+      if (c >= 'a' && c <= 'f') return c - 'a' + 0xA;
+      if (c >= 'A' && c <= 'F') return c - 'A' + 0xA;
+      return c - '0';
    }
 
    void Cartridge::applyGameGenie(const std::string &code)

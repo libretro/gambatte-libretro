@@ -37,7 +37,10 @@ public:
 	enum { SS_HEIGHT = 144 >> SS_SHIFT };
 	
    static void saveState(const SaveState &state, void *data);
-   static bool loadState(SaveState &state, const void *data);
+   /* size is the size of the input buffer in bytes. The parser
+    * uses it to bound every read so a malformed savestate cannot
+    * cause an OOB read past the end of the buffer. */
+   static bool loadState(SaveState &state, const void *data, size_t size);
    static size_t stateSize(const SaveState &state);
 };
 

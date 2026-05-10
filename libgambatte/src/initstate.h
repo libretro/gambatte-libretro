@@ -20,7 +20,12 @@
 #define INITSTATE_H
 
 namespace gambatte {
-void setInitState(struct SaveState &state, bool cgb, bool gbaCgbMode);
+/* clearSram defaults to true to preserve the historical behavior
+ * for callers that load a fresh cart (uninitialized SRAM should
+ * read as 0xFF). Pass false from a soft-reset path so battery-
+ * backed cartridge RAM survives the reset, matching real
+ * hardware behavior. */
+void setInitState(struct SaveState &state, bool cgb, bool gbaCgbMode, bool clearSram = true);
 }
 
 #endif

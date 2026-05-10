@@ -39,6 +39,7 @@
 #include <cstring>
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 #ifdef _3DS
 extern "C" void* linearMemAlign(size_t size, size_t alignment);
@@ -78,6 +79,24 @@ static unsigned turbo_a_counter      = 0;
 static unsigned turbo_b_counter      = 0;
 
 static bool rom_loaded = false;
+
+/* Frame-pacing counters used to detect frame dupes when the
+ * emulator generates audio faster than video. Previously these
+ * were function-local statics inside retro_run, which meant
+ * they were never reset on retro_load_game / retro_reset /
+ * retro_unserialize. After a state load (or game change) the
+ * stale ratio between the two would cause spurious frame
+ * duplication or a starved video frame for several iterations
+ * until the ratio realigned. Moved to file scope so they can
+ * be cleared in all the right places. */
+static uint64_t libretro_samples_count = 0;
+static uint64_t libretro_frames_count  = 0;
+
+static INLINE void frame_pacing_reset(void)
+{
+   libretro_samples_count = 0;
+   libretro_frames_count  = 0;
+}
 
 //Dual mode runs two GBCs side by side.
 //Currently, they load the same ROM, take the same input, and only the left one supports SRAM, cheats, savestates, or sound.
@@ -157,7 +176,10 @@ static void audio_out_buffer_init(void)
    buffer_size = (buffer_size << 1);
 
    audio_out_buffer        = (int16_t *)malloc(buffer_size * sizeof(int16_t));
-   audio_out_buffer_size   = buffer_size;
+   /* On allocation failure leave the buffer empty; subsequent
+    * audio_out_buffer_write calls become no-ops (audio is
+    * recoverable, crashing isn't). */
+   audio_out_buffer_size   = audio_out_buffer ? buffer_size : 0;
    audio_out_buffer_pos    = 0;
    audio_batch_frames_max  = (1 << 16);
 }
@@ -173,7 +195,7 @@ static void audio_out_buffer_deinit(void)
    audio_batch_frames_max = (1 << 16);
 }
 
-static INLINE void audio_out_buffer_resize(size_t num_samples)
+static INLINE bool audio_out_buffer_resize(size_t num_samples)
 {
    size_t buffer_capacity = (audio_out_buffer_size -
          audio_out_buffer_pos) >> 1;
@@ -186,20 +208,34 @@ static INLINE void audio_out_buffer_resize(size_t num_samples)
       tmp_buffer_size = audio_out_buffer_size +
             ((num_samples - buffer_capacity) << 1);
       tmp_buffer_size = (tmp_buffer_size << 1) - (tmp_buffer_size >> 1);
-      tmp_buffer      = (int16_t *)malloc(tmp_buffer_size * sizeof(int16_t));
 
-      memcpy(tmp_buffer, audio_out_buffer,
-            audio_out_buffer_pos * sizeof(int16_t));
+      /* Use realloc so the allocator can grow in place when
+       * possible. realloc(NULL, n) == malloc(n), and on failure
+       * realloc returns NULL with the original block intact, so
+       * we just report failure to the caller and keep using the
+       * old (possibly NULL) buffer. */
+      tmp_buffer = (int16_t *)realloc(audio_out_buffer,
+            tmp_buffer_size * sizeof(int16_t));
+      if (!tmp_buffer)
+         return false;
 
-      free(audio_out_buffer);
       audio_out_buffer      = tmp_buffer;
       audio_out_buffer_size = tmp_buffer_size;
    }
+
+   return true;
 }
 
-void audio_out_buffer_write(int16_t *samples, size_t num_samples)
+/* C linkage so cc_resampler.c (compiled as C) can call it.
+ * cc_resampler.h declares it inside extern "C", and the previous
+ * upstream layout got away with this only because cc_resampler
+ * was header-only and compiled as C++ in this TU. Now that
+ * cc_resampler.c is a separate translation unit, this definition
+ * must use C linkage to match. */
+extern "C" void audio_out_buffer_write(int16_t *samples, size_t num_samples)
 {
-   audio_out_buffer_resize(num_samples);
+   if (!audio_out_buffer_resize(num_samples))
+      return; /* allocation failure -- drop samples rather than crash */
 
    memcpy(audio_out_buffer + audio_out_buffer_pos,
          samples, (num_samples << 1) * sizeof(int16_t));
@@ -211,7 +247,24 @@ static void audio_out_buffer_read_blipper(size_t num_samples)
 {
    int16_t *audio_out_buffer_ptr = NULL;
 
-   audio_out_buffer_resize(num_samples);
+   if (!audio_out_buffer_resize(num_samples))
+   {
+      /* Out of memory: still drain the blipper to avoid leaving
+       * stale samples in its ring (which would mis-align future
+       * audio with emulator state, especially after a savestate
+       * load). Discard the drained data into a small scratch. */
+      int16_t scratch[64];
+      size_t remaining = num_samples;
+      while (remaining)
+      {
+         size_t chunk = remaining > 32 ? 32 : remaining;
+         blipper_read(resampler_l, scratch    , chunk, 2);
+         blipper_read(resampler_r, scratch + 1, chunk, 2);
+         remaining -= chunk;
+      }
+      return;
+   }
+
    audio_out_buffer_ptr = audio_out_buffer + audio_out_buffer_pos;
 
    blipper_read(resampler_l, audio_out_buffer_ptr    , num_samples, 2);
@@ -318,13 +371,19 @@ static void audio_resampler_init(bool startup)
             environ_cb(RETRO_ENVIRONMENT_SET_VARIABLE, &var);
          }
 
-         /* Notify frontend of sample rate change */
-         if (!startup)
-         {
-            struct retro_system_av_info av_info;
-            retro_get_system_av_info(&av_info);
-            environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &av_info);
-         }
+         /* Notify frontend of sample rate change.
+          * Previously this was only done when !startup, on the
+          * theory that the frontend would re-query AV info after
+          * retro_load_game returns. In practice the AV info has
+          * already been cached by the time retro_load_game runs
+          * (the frontend reads it earlier in the load sequence),
+          * so the cache is wrong until the next time something
+          * changes it. Always notify so the frontend's cached
+          * sample rate matches reality. */
+         struct retro_system_av_info av_info;
+         retro_get_system_av_info(&av_info);
+         environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &av_info);
+         (void)startup;
       }
    }
 
@@ -720,13 +779,32 @@ static void blend_frames_mix(void)
    }
 }
 
+/* Index of the oldest frame in the lcd-ghost history ring.
+ * Each blend_frames_lcd_ghost call advances it by one. The slot
+ * the index points to is overwritten with the current frame's
+ * pixels (replacing the oldest history) and the rotation makes
+ * it the most-recent history for the next call. This avoids
+ * the 4 per-pixel cross-buffer writes the previous implementation
+ * was doing. */
+static unsigned lcd_ghost_oldest = 0;
+
 static void blend_frames_lcd_ghost(void)
 {
+   /* Map "prev_N" labels onto the ring. prev_1 is the most
+    * recent past frame (one frame ago); prev_4 is the oldest
+    * (four frames ago). Each call we'll rotate by one. */
+   gambatte::video_pixel_t * const ring[4] = {
+      video_buf_prev_1, video_buf_prev_2, video_buf_prev_3, video_buf_prev_4
+   };
+   const unsigned i_oldest = lcd_ghost_oldest;
    gambatte::video_pixel_t *curr   = video_buf;
-   gambatte::video_pixel_t *prev_1 = video_buf_prev_1;
-   gambatte::video_pixel_t *prev_2 = video_buf_prev_2;
-   gambatte::video_pixel_t *prev_3 = video_buf_prev_3;
-   gambatte::video_pixel_t *prev_4 = video_buf_prev_4;
+   gambatte::video_pixel_t *prev_4 = ring[ i_oldest         ];
+   gambatte::video_pixel_t *prev_3 = ring[(i_oldest + 1) & 3];
+   gambatte::video_pixel_t *prev_2 = ring[(i_oldest + 2) & 3];
+   gambatte::video_pixel_t *prev_1 = ring[(i_oldest + 3) & 3];
+   /* prev_4's slot is about to receive the current frame's
+    * contents; it becomes the new prev_1 for the next call. */
+   gambatte::video_pixel_t *dst    = prev_4;
    float *response                 = frame_blend_response;
    size_t x, y;
 
@@ -741,11 +819,11 @@ static void blend_frames_lcd_ghost(void)
          gambatte::video_pixel_t rgb_prev_3 = *(prev_3 + x);
          gambatte::video_pixel_t rgb_prev_4 = *(prev_4 + x);
 
-         /* Store colours for next frame */
-         *(prev_1 + x) = rgb_curr;
-         *(prev_2 + x) = rgb_prev_1;
-         *(prev_3 + x) = rgb_prev_2;
-         *(prev_4 + x) = rgb_prev_3;
+         /* Save the ORIGINAL current pixel into the slot that
+          * just yielded its prev_4 value -- that slot becomes
+          * the new prev_1 next call. One write replaces what
+          * used to be four cascading pixel copies. */
+         *(dst + x) = rgb_curr;
 
          /* Unpack colours and convert to float */
 #ifdef VIDEO_RGB565
@@ -836,7 +914,7 @@ static void blend_frames_lcd_ghost(void)
 #ifdef VIDEO_RGB565
          *(curr + x) = r_mix << 11 | g_mix << 6 | b_mix;
 #elif defined(VIDEO_ABGR1555)
-         *(curr + x) = b_mix << 10 | g_mix << 5 | b_mix;
+         *(curr + x) = b_mix << 10 | g_mix << 5 | r_mix;
 #else
          *(curr + x) = r_mix << 16 | g_mix << 8 | b_mix;
 #endif
@@ -847,7 +925,12 @@ static void blend_frames_lcd_ghost(void)
       prev_2 += VIDEO_PITCH;
       prev_3 += VIDEO_PITCH;
       prev_4 += VIDEO_PITCH;
+      dst    += VIDEO_PITCH;
    }
+
+   /* Advance ring index: the slot we just wrote (oldest before
+    * the rotation) is now the freshest history. */
+   lcd_ghost_oldest = (i_oldest + 3) & 3;
 }
 
 static void blend_frames_lcd_ghost_fast(void)
@@ -897,7 +980,7 @@ static void blend_frames_lcd_ghost_fast(void)
          *(curr + x) =   (static_cast<gambatte::video_pixel_t>(r_mix + 0.5f) & 0x1F) << 11
                        | (static_cast<gambatte::video_pixel_t>(g_mix + 0.5f) & 0x1F) << 6
                        | (static_cast<gambatte::video_pixel_t>(b_mix + 0.5f) & 0x1F);
-#elif defined(ABGR1555)
+#elif defined(VIDEO_ABGR1555)
          *(curr + x) =   (static_cast<gambatte::video_pixel_t>(r_mix + 0.5f) & 0x1F)
                        | (static_cast<gambatte::video_pixel_t>(g_mix + 0.5f) & 0x1F) << 5
                        | (static_cast<gambatte::video_pixel_t>(b_mix + 0.5f) & 0x1F) << 10;
@@ -1091,6 +1174,43 @@ static void deinit_frame_blending(void)
 
    frame_blend_type         = FRAME_BLEND_NONE;
    frame_blend_response_set = false;
+}
+
+/* Zero out any allocated frame-blend history buffers without
+ * deallocating them. Called from retro_unserialize so a state
+ * load doesn't carry ghost trails from the pre-load timeline. */
+static void reset_frame_blending_buffers(void)
+{
+   if (video_buf_prev_1)
+      memset(video_buf_prev_1, 0, VIDEO_BUFF_SIZE);
+   if (video_buf_prev_2)
+      memset(video_buf_prev_2, 0, VIDEO_BUFF_SIZE);
+   if (video_buf_prev_3)
+      memset(video_buf_prev_3, 0, VIDEO_BUFF_SIZE);
+   if (video_buf_prev_4)
+      memset(video_buf_prev_4, 0, VIDEO_BUFF_SIZE);
+
+   /* The lcd-ghost ring is content-symmetric when all slots are
+    * zero, but reset the oldest index too so the rotation
+    * state is identical to a fresh init -- this matters if
+    * anything down the line ever cares about which physical
+    * buffer holds which logical position. */
+   lcd_ghost_oldest = 0;
+
+   /* memset is unspecified for floats on exotic platforms (since
+    * IEEE-754 zero is all-bits-zero on every architecture we
+    * actually target this comment is paranoia, but cheap). */
+   if (video_buf_acc_r || video_buf_acc_g || video_buf_acc_b)
+   {
+      size_t i;
+      const size_t n = 256 * NUM_GAMEBOYS * VIDEO_HEIGHT;
+      for (i = 0; i < n; i++)
+      {
+         if (video_buf_acc_r) video_buf_acc_r[i] = 0.0f;
+         if (video_buf_acc_g) video_buf_acc_g[i] = 0.0f;
+         if (video_buf_acc_b) video_buf_acc_b[i] = 0.0f;
+      }
+   }
 }
 
 static void check_frame_blend_variable(void)
@@ -1585,6 +1705,14 @@ void retro_init(void)
 #else
    video_buf = (gambatte::video_pixel_t*)malloc(VIDEO_BUFF_SIZE);
 #endif
+   /* If allocation failed, retro_load_game will fail later when
+    * gb.runFor is asked to render into a NULL buffer; we don't
+    * abort retro_init since the frontend may still inspect the
+    * core for system info. Zero out the buffer when we have it
+    * so the very first frame is deterministic regardless of
+    * whether the allocator returned dirty memory. */
+   if (video_buf)
+      memset(video_buf, 0, VIDEO_BUFF_SIZE);
 
    check_system_specs();
    
@@ -1719,48 +1847,56 @@ void retro_set_controller_port_device(unsigned, unsigned) {}
 
 void retro_reset()
 {
-   // gambatte seems to clear out SRAM on reset.
-   uint8_t *sram = 0;
-   uint8_t *rtc = 0;
-   if (gb.savedata_size())
-   {
-      sram = new uint8_t[gb.savedata_size()];
-      memcpy(sram, gb.savedata_ptr(), gb.savedata_size());
-   }
-   if (gb.rtcdata_size())
-   {
-      rtc = new uint8_t[gb.rtcdata_size()];
-      memcpy(rtc, gb.rtcdata_ptr(), gb.rtcdata_size());
-   }
-
+   /* gb.reset() now preserves battery-backed SRAM and RTC
+    * automatically (matching real Game Boy behavior), so the
+    * old new[]/memcpy/delete[] dance is no longer needed. */
    gb.reset();
 #ifdef DUAL_MODE
    gb2.reset();
 #endif
 
-   if (sram)
-   {
-      memcpy(gb.savedata_ptr(), sram, gb.savedata_size());
-      delete[] sram;
-   }
-   if (rtc)
-   {
-      memcpy(gb.rtcdata_ptr(), rtc, gb.rtcdata_size());
-      delete[] rtc;
-   }
+   /* A reset is not a state load, but the same per-session
+    * counters that need clearing on retro_unserialize need
+    * clearing here too (frame-pacing ratio is invalid after a
+    * reset; blender/resampler history would otherwise carry
+    * pre-reset trails). */
+   frame_pacing_reset();
+   reset_frame_blending_buffers();
+   if (resampler_l)
+      blipper_reset(resampler_l);
+   if (resampler_r)
+      blipper_reset(resampler_r);
+   if (use_cc_resampler)
+      CC_init();
+   audio_out_buffer_pos = 0;
 }
 
+/* Cached serialize size. The state size is invariant for a given
+ * loaded ROM (the savestate format encodes a fixed set of fields),
+ * so caching it avoids reencoding the entire state through a
+ * counting omemstream every time the frontend asks for the size.
+ * Frontends with runahead or rewind enabled call
+ * retro_serialize_size once per frame; that previously meant one
+ * full state-encode of work per frame in addition to the actual
+ * save. Invalidated (set to 0) on retro_load_game,
+ * retro_unload_game, and retro_reset so the next call recomputes. */
 static size_t serialize_size = 0;
+
+static INLINE void invalidate_serialize_size(void)
+{
+   serialize_size = 0;
+}
+
 size_t retro_serialize_size(void)
 {
-   return gb.stateSize();
+   if (serialize_size == 0)
+      serialize_size = gb.stateSize();
+   return serialize_size;
 }
 
 bool retro_serialize(void *data, size_t size)
 {
-   serialize_size = retro_serialize_size();
-
-   if (size != serialize_size)
+   if (size != retro_serialize_size())
       return false;
 
    gb.saveState(data);
@@ -1769,31 +1905,91 @@ bool retro_serialize(void *data, size_t size)
 
 bool retro_unserialize(const void *data, size_t size)
 {
-   serialize_size = retro_serialize_size();
-
-   if (size != serialize_size)
+   if (size != retro_serialize_size())
       return false;
 
-   gb.loadState(data);
+   /* gb.loadState now bounds-checks against the buffer size
+    * and returns false on malformed input. Treat a parser
+    * failure as an unserialize failure so the frontend can
+    * surface it instead of leaving the core in a half-loaded
+    * state. */
+   if (!gb.loadState(data, size))
+      return false;
+
+   /* The audio resampler internal state (blipper integrator,
+    * CC accumulator/highpass) and the frame-blending history
+    * buffers are NOT part of the savestate. If we leave them
+    * carrying state from before the load, audio pops and
+    * ghost-frame bleed across the load boundary -- both visible
+    * during runahead/rewind/netplay rollbacks. Reset all of
+    * them here so the state load is deterministic. */
+   if (resampler_l)
+      blipper_reset(resampler_l);
+   if (resampler_r)
+      blipper_reset(resampler_r);
+   if (use_cc_resampler)
+      CC_init();
+   audio_out_buffer_pos = 0;
+
+   /* Frame-pacing counters track audio-vs-video sample totals
+    * over the lifetime of the running session; the loaded state
+    * carries no such ratio so reset them too. */
+   frame_pacing_reset();
+
+   /* Zero out frame-blend history so ghost trails from the
+    * pre-load timeline don't bleed into the loaded state. */
+   reset_frame_blending_buffers();
+
    return true;
+}
+
+/* Cheats are tracked per-index so we can honor the `enabled` flag
+ * and the `index` slot semantics from the libretro API. The
+ * underlying gambatte::GB only has clearCheats/setGameGenie/
+ * setGameShark, so each retro_cheat_set call clears all cheats
+ * and re-applies the currently-enabled ones. This is O(n) per
+ * call but n is small (typically <16) and frontends only call
+ * it interactively when the user toggles a cheat. */
+struct LibretroCheat {
+   std::string code;
+   bool enabled;
+   bool used;
+};
+static std::vector<LibretroCheat> libretro_cheats;
+
+static void apply_libretro_cheats(void)
+{
+   gb.clearCheats();
+   for (size_t i = 0; i < libretro_cheats.size(); i++) {
+      if (!libretro_cheats[i].used || !libretro_cheats[i].enabled)
+         continue;
+      const std::string &c = libretro_cheats[i].code;
+      if (c.find('-') != std::string::npos)
+         gb.setGameGenie(c);
+      else
+         gb.setGameShark(c);
+   }
 }
 
 void retro_cheat_reset()
 {
+   libretro_cheats.clear();
    gb.clearCheats();
 }
 
 void retro_cheat_set(unsigned index, bool enabled, const char *code)
 {
-   std::string code_str(code);
-
+   std::string code_str(code ? code : "");
    replace(code_str.begin(), code_str.end(), '+', ';');
 
-   if (code_str.find("-") != std::string::npos) {
-      gb.setGameGenie(code_str);
-   } else {
-      gb.setGameShark(code_str);
-   }
+   if (libretro_cheats.size() <= index)
+      libretro_cheats.resize(index + 1);
+
+   libretro_cheats[index].code    = code_str;
+   libretro_cheats[index].enabled = enabled;
+   libretro_cheats[index].used    = true;
+
+   apply_libretro_cheats();
 }
 
 enum gb_colorization_enable_type
@@ -1839,17 +2035,20 @@ static void load_custom_palette(void)
    {
       size_t len = (strlen(rom_file) + 1) * sizeof(char);
       rom_name = (char*)malloc(len);
-      strlcpy(rom_name, rom_file, len);
-      path_remove_extension(rom_name);
-      if (!string_is_empty(rom_name))
+      if (rom_name)
       {
-         fill_pathname_join_special_ext(palette_path,
-               system_dir, "palettes", rom_name, ".pal",
-               sizeof(palette_path));
-         path_valid = path_is_valid(palette_path);
+         strlcpy(rom_name, rom_file, len);
+         path_remove_extension(rom_name);
+         if (!string_is_empty(rom_name))
+         {
+            fill_pathname_join_special_ext(palette_path,
+                  system_dir, "palettes", rom_name, ".pal",
+                  sizeof(palette_path));
+            path_valid = path_is_valid(palette_path);
+         }
+         free(rom_name);
+         rom_name = NULL;
       }
-      free(rom_name);
-      rom_name = NULL;
    }
 
    if (!path_valid)
@@ -2421,6 +2620,14 @@ static void check_variables(bool startup)
    // In this case we can therefore skip this loop.
    if (gb_colorization_enable != GB_COLORIZATION_CUSTOM)
    {
+      /* Defensive: every code path above is supposed to either
+       * leave the function (CUSTOM) or fill gbc_bios_palette via
+       * a hardcoded fallback like findGbcDirPal("GBC - Grayscale").
+       * If a future change breaks that invariant, fail soft
+       * rather than dereference a NULL pointer. */
+      if (!gbc_bios_palette)
+         return;
+
       unsigned rgb32 = 0;
       for (unsigned palnum = 0; palnum < 3; ++palnum)
       {
@@ -2447,6 +2654,29 @@ static unsigned pow2ceil(unsigned n) {
 bool retro_load_game(const struct retro_game_info *info)
 {
    bool can_dupe = false;
+
+   /* Defensive validation. retro_load_game previously read 16
+    * header bytes at info->data + 0x134 with no size check; that
+    * read happens to be safe today by transitivity through
+    * Cartridge::loadROM's romsize >= 0x4000 check, but that is a
+    * non-obvious invariant. Validate explicitly so a future
+    * change to loadROM cannot reintroduce the OOB read. */
+   if (!info || !info->data || info->size < 0x150)
+   {
+      gambatte_log(RETRO_LOG_ERROR, "ROM is missing or too small.\n");
+      return false;
+   }
+
+   /* Reset per-session state that does not belong to the
+    * cartridge or the gambatte core proper but does affect
+    * libretro-visible behavior. Frontends may call
+    * retro_load_game multiple times against the same loaded
+    * library, so anything that persisted from a previous game
+    * must be cleared here. */
+   frame_pacing_reset();
+   invalidate_serialize_size();
+   reset_frame_blending_buffers();
+
    environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
    if (!can_dupe)
    {
@@ -2650,6 +2880,16 @@ bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t) { 
 void retro_unload_game()
 {
    rom_loaded = false;
+   /* Clear per-game state so a subsequent retro_load_game with
+    * a different ROM doesn't see leftovers (palette autodetect
+    * keying off internal_game_name, frame-pacing ratio, cached
+    * state size, residual cheat slots). */
+   frame_pacing_reset();
+   invalidate_serialize_size();
+   reset_frame_blending_buffers();
+   libretro_cheats.clear();
+   memset(internal_game_name, 0, sizeof(internal_game_name));
+   rom_path.clear();
 }
 
 unsigned retro_get_region() { return RETRO_REGION_NTSC; }
@@ -2697,17 +2937,18 @@ size_t retro_get_memory_size(unsigned id)
 
 void retro_run()
 {
-   static uint64_t samples_count = 0;
-   static uint64_t frames_count = 0;
+   /* libretro_samples_count and libretro_frames_count are
+    * file-scope so they can be reset in retro_load_game,
+    * retro_reset, and retro_unserialize. */
 
    input_poll_cb();
    update_input_state();
 
-   uint64_t expected_frames = samples_count / SOUND_SAMPLES_PER_FRAME;
-   if (frames_count < expected_frames) // Detect frame dupes.
+   uint64_t expected_frames = libretro_samples_count / SOUND_SAMPLES_PER_FRAME;
+   if (libretro_frames_count < expected_frames) // Detect frame dupes.
    {
       video_cb(NULL, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_PITCH * sizeof(gambatte::video_pixel_t));
-      frames_count++;
+      libretro_frames_count++;
       return;
    }
 
@@ -2731,7 +2972,7 @@ void retro_run()
             audio_out_buffer_read_blipper(read_avail);
       }
 
-      samples_count += samples;
+      libretro_samples_count += samples;
       samples = SOUND_SAMPLES_PER_RUN;
    }
 #ifdef DUAL_MODE
@@ -2753,14 +2994,14 @@ void retro_run()
       unsigned read_avail = blipper_read_avail(resampler_l);
       audio_out_buffer_read_blipper(read_avail);
    }
-   samples_count += samples;
+   libretro_samples_count += samples;
    audio_upload_samples();
 
    /* Apply any 'pending' rumble effects */
    if (rumble_active)
       apply_rumble();
 
-   frames_count++;
+   libretro_frames_count++;
 
    bool updated = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)

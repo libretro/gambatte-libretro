@@ -42,6 +42,13 @@ private:
 	video_pixel_t *fbline_;
 	std::ptrdiff_t pitch_;
 
+	/* Shared 160-pixel scratch used as a destination when no real
+	 * framebuf is attached. With DUAL_MODE compiled in, both PPU
+	 * instances would write to this same buffer; the libretro
+	 * core is single-threaded so there is no data race, but it is
+	 * shared mutable state and nothing in the current code path
+	 * actually reads it back. Make it a non-static member of
+	 * PPUFrameBuf if DUAL_MODE is ever revived as a real feature. */
 	static video_pixel_t * nullfbline() { static video_pixel_t nullfbline_[160]; return nullfbline_; }
 };
 
