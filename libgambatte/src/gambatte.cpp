@@ -75,8 +75,17 @@ void GB::Priv::full_init(bool const clearSram) {
       ioamhram[0x148] = 0xFC;//object palette 0
       ioamhram[0x149] = 0xFC;//object palette 1
    }
-   
+
    cpu.loadState(state);
+
+   /* Sachen MMC1 carts need their lock-state overlay installed
+    * (or their VRAM logo injected) AFTER the generic state
+    * restore has finished, so the MBC's loadState handler can't
+    * tear down the overlay based on the default-initialized
+    * SaveState fields. For every non-Sachen cart this is a
+    * no-op; for Sachen carts it also wires the read-count
+    * unlock trigger into the Memory hot path. */
+   cpu.mem_.sachenLockSetup(cpu.mem_.bootloader.using_bootloader);
 }
 
 void GB::reset() {

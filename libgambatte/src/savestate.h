@@ -76,6 +76,7 @@ struct SaveState {
 		unsigned char rambank;
 		unsigned char oamDmaPos;
 		unsigned char HuC3RAMflag;
+		unsigned char sachenOuterMask;
 #ifdef HAVE_NETWORK
 		unsigned char serialize_value;
 		bool serialize_is_fastcgb;

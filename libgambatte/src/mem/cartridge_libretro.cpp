@@ -42,6 +42,12 @@ namespace gambatte
 
    void *Cartridge::savedata_ptr()
    {
+      /* Sachen MMC1 carts have no SRAM, and the byte at 0x0147 is
+       * the descrambled cartridge type which has no Nintendo
+       * meaning anyway -- skip the hasBattery() check entirely so
+       * we never hand the frontend a bogus save pointer. */
+      if (isSachen_)
+         return 0;
       // Check ROM header for battery.
       if (hasBattery(memptrs_.romdata()[0x147]))
          return memptrs_.rambankdata();
@@ -50,6 +56,8 @@ namespace gambatte
 
    unsigned Cartridge::savedata_size()
    {
+      if (isSachen_)
+         return 0;
       if (hasBattery(memptrs_.romdata()[0x147]))
          return memptrs_.rambankdataend() - memptrs_.rambankdata();
       return 0;
@@ -57,6 +65,8 @@ namespace gambatte
 
    void *Cartridge::rtcdata_ptr()
    {
+      if (isSachen_)
+         return 0;
       if (hasRtc(memptrs_.romdata()[0x147])) {
          if (isHuC3()) {
             return &huc3_.getBaseTime();
@@ -69,6 +79,8 @@ namespace gambatte
 
    unsigned Cartridge::rtcdata_size()
    { 
+      if (isSachen_)
+         return 0;
       if (hasRtc(memptrs_.romdata()[0x147])) {
          if (isHuC3()) {
             return sizeof(huc3_.getBaseTime());

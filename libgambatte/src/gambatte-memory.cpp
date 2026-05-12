@@ -44,6 +44,7 @@ Memory::Memory(Interrupter const &interrupter) :
 , oamDmaPos_(0xFE)
 , serialCnt_(0)
 , blanklcd_(false)
+, sachenLockCounter_(0)
 {
 	intreq_.setEventTime<intevent_blit>(144 * 456ul);
 	intreq_.setEventTime<intevent_end>(0);
@@ -1027,6 +1028,12 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 		return;
    case 0x50://for bootloader, swap bootloader with rom
       bootloader.call_FF50();
+      /* Some unlicensed mappers (currently Sachen MMC1) need to
+       * leave a "locked" boot-time state when control transfers
+       * from the bootstrap to the cartridge. Notify the cartridge
+       * after the bootloader has finished its own restore so the
+       * mapper's overlay sits on top of the original cart bytes. */
+      cart_.onBootloaderFinished();
       ioamhram_[0x150] = 0xFF;
       return;
 	case 0x51:
@@ -1181,6 +1188,11 @@ int Memory::loadROM(const void *romdata, unsigned int romsize, unsigned int forc
    psg_.init(cart_.isCgb());
    lcd_.reset(ioamhram_, cart_.vramdata(), cart_.isCgb());
    interrupter_.clearCheats();
+   /* Clear the Sachen lock counter on every new cart load; the
+    * pointer is set later by sachenLockSetup() once the MBC has
+    * been constructed and the bootloader (if any) has been
+    * installed. */
+   sachenLockCounter_ = 0;
    return 0;
 }
 

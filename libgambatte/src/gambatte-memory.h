@@ -92,7 +92,27 @@ public:
 	}
 
 	unsigned read(unsigned p, unsigned long cc) {
-		return cart_.rmem(p >> 12) ? cart_.rmem(p >> 12)[p] : nontrivial_read(p, cc);
+		/* Sachen MMC1 carts need to count CPU reads of 0x0100..0x01FF
+		 * so the mapper can leave its boot-time locked state
+		 * between the bootstrap's logo-display pass (48 cart
+		 * reads of 0x0104..0x0133) and its logo-verify pass
+		 * (another 48 reads of the same range). The counter
+		 * pointer is null for every other cartridge, so the
+		 * branch below is a single predictable null-check on
+		 * the hot path. The unlock fires AFTER the 48th locked
+		 * read has returned its byte, so the display pass sees a
+		 * full Sachen-logo sequence and the very next read
+		 * (first byte of the verify pass) sees the unlocked
+		 * Nintendo bytes. */
+		const unsigned char *const rm = cart_.rmem(p >> 12);
+		const unsigned value = rm ? rm[p] : nontrivial_read(p, cc);
+		if (sachenLockCounter_ && (p & 0xFF00) == 0x0100) {
+			if (*sachenLockCounter_ < 48) {
+				if (++*sachenLockCounter_ == 48)
+					cart_.onSachenUnlock();
+			}
+		}
+		return value;
 	}
 
 	void write(unsigned p, unsigned data, unsigned long cc) {
@@ -140,9 +160,32 @@ public:
 
    int loadROM(const void *romdata, unsigned int romsize, unsigned int forceModel, const bool multicartCompat);
 
+   /* Forwarders for unlicensed-mapper hooks. Currently only Sachen
+    * MMC1 carts use them; for every other cartridge type these are
+    * no-ops and isSachen() returns false. Called by
+    * GB::Priv::full_init after the bootloader has been installed
+    * (or skipped). */
+   bool isSachen() const { return cart_.isSachen(); }
+   void sachenLockSetup(bool bootloaderUsed) {
+      cart_.sachenLockSetup(bootloaderUsed);
+      /* Pick up the MBC's lock-counter address now that the cart
+       * has decided whether to enter the locked state. For a
+       * Sachen cart, sachenLockCounterPtr() returns a real
+       * address; for any other cart it returns null and the read
+       * fast path stays in single-branch territory. */
+      sachenLockCounter_ = cart_.sachenLockCounterPtr();
+   }
+   void onSachenUnlock() { cart_.onSachenUnlock(); }
+
 private:
 	Cartridge cart_;
 	unsigned char ioamhram_[0x200];
+	/* Pointer to the Sachen MBC's read counter, or null for any
+	 * non-Sachen cart. When non-null, Memory::read bumps it on
+	 * every CPU read of 0x0100..0x01FF and signals the cart on
+	 * the 48th such read so the mapper can leave its locked
+	 * state between the bootstrap's display and verify passes. */
+	unsigned char *sachenLockCounter_;
 #ifdef HAVE_NETWORK
 	unsigned char serialize_value_;
 	bool serialize_is_fastcgb_;

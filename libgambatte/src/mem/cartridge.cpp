@@ -194,6 +194,247 @@ namespace gambatte
          return (addr < 0x4000) == ((bank & 0xF) == 0);
       }
    };
+   /* ---------------------------------------------------------------- *
+    *  Sachen MMC1                                                     *
+    * ---------------------------------------------------------------- *
+    *  Unlicensed Game Boy mapper used by Sachen multi-cart releases   *
+    *  such as "4 in 1 (Europe) (4B-001)" -- the cartridge that        *
+    *  prompted this implementation (libretro/gambatte-libretro #190). *
+    *                                                                  *
+    *  Reference: https://wiki.tauwasser.eu/view/Sachen_MMC1           *
+    *  Original implementation by NewRisingSun in hhugboy 1.3.0        *
+    *  (MbcUnlSachenMMC1.cpp / .h, released under CC0 and GPL-2).      *
+    *  See also mGBA 0.10 which ports the same logic.                  *
+    *                                                                  *
+    *  Salient hardware quirks that this implementation reproduces:    *
+    *                                                                  *
+    *  1. Header scramble. While the CPU bus address satisfies         *
+    *        A8 = 1 and A15..A9 = 0  (i.e. 0x0100..0x01FF),            *
+    *     the mapper performs the bit permutation                      *
+    *        RA0 <- A6 , RA1 <- A4 , RA4 <- A1 , RA6 <- A0             *
+    *     when fetching from the attached ROM. The permutation is an   *
+    *     involution -- doing it twice yields the original address --  *
+    *     and it is used to obscure each game's header in the ROM      *
+    *     image. We undo it at load time by *pre-descrambling* the     *
+    *     0x100..0x1FF window of every 16 KiB bank in place. This      *
+    *     keeps the hot read path (a single pointer indirection in     *
+    *     MemPtrs) free of any per-access conditional. The only        *
+    *     visible side effect is that addresses 0x4100..0x41FF of any  *
+    *     bank that ends up mapped at the 0x4000..0x7FFF window will   *
+    *     now read descrambled bytes too, but no real Sachen game ever *
+    *     touches its own header through that window.                  *
+    *                                                                  *
+    *  2. Lock / unlock state. After reset the mapper is "locked":     *
+    *     every cartridge read in 0x0000..0x7FFF has its A7 forced     *
+    *     high, so the bootstrap ROM that compares logo bytes against  *
+    *     0x0104..0x0133 actually sees the bytes stored at             *
+    *     0x0184..0x01B3 of the active ROM bank. That second region    *
+    *     holds the Sachen logo (descrambled at load), which means     *
+    *     the boot ROM passes its Nintendo-logo check while the cart   *
+    *     still displays Sachen branding. On real hardware the         *
+    *     mapper unlocks after 49 high->low transitions of A15; in     *
+    *     gambatte we cannot observe A15 from outside the CPU core,    *
+    *     so we approximate by unlocking on the 0xFF50 write that      *
+    *     hands control from the bootstrap to the cartridge. This is   *
+    *     functionally correct for every known Sachen cart because     *
+    *     the boot ROM is the only thing that ever exercises the      *
+    *     lock state. When gambatte is configured to run without any   *
+    *     bootstrap (the common case for libretro builds) the lock     *
+    *     is dropped at load time and the Sachen logo tiles are        *
+    *     written directly into VRAM so the game's own copy-protection *
+    *     check still finds them.                                      *
+    *                                                                  *
+    *  3. Banking. Three internal registers control which physical ROM *
+    *     banks appear at 0x0000..0x3FFF (the "base" window) and       *
+    *     0x4000..0x7FFF (the "switch" window):                        *
+    *                                                                  *
+    *        base bank      : 0x0000..0x1FFF writes -- gated           *
+    *        ROM bank       : 0x2000..0x3FFF writes                    *
+    *        ROM bank mask  : 0x4000..0x5FFF writes -- gated           *
+    *                                                                  *
+    *     The map-enable gate consults bits 4 and 5 of the current     *
+    *     ROM-bank value: writes to the base and mask registers only   *
+    *     take effect when both bits are set (rom_bank & 0x30 ==       *
+    *     0x30). The mapping formula is                                *
+    *                                                                  *
+    *        base  : (base & mask) | 0                                 *
+    *        switch: (base & mask) | (rom_bank & ~mask)                *
+    *                                                                  *
+    *     and the ROM-bank register is zero-adjusted (a write of 0     *
+    *     stores 1) so the base window can never alias the switch.     *
+    *                                                                  *
+    *  The mapper has no SRAM and no battery; the savestate fields     *
+    *  reused below (rombank, rambank, enableRam) carry rom_bank,      *
+    *  outerBank, and the lock flag respectively. outerMask gets its   *
+    *  own dedicated field (SaveState::Mem::sachenOuterMask).          *
+    * ---------------------------------------------------------------- */
+
+   /* Apply the Sachen MMC1 address bit permutation to a 16-bit
+    * address. Bits 0,1,4,6 are swapped pairwise (A0<->A6, A1<->A4);
+    * all other bits pass through unchanged. The transform is its
+    * own inverse. */
+   static inline unsigned sachenScramble(unsigned addr) {
+      return (addr & ~0x53u)
+           | ((addr >> 6) & 0x01u)
+           | ((addr >> 3) & 0x02u)
+           | ((addr << 3) & 0x10u)
+           | ((addr << 6) & 0x40u);
+   }
+
+   class Mbc1Sachen : public Mbc {
+      MemPtrs &memptrs;
+      unsigned char rom_bank;
+      unsigned char outerBank;
+      unsigned char outerMask;
+      bool          locked;
+      /* CPU reads of 0x0100..0x01FF observed by Memory::read while
+       * the cart is in its locked boot state. The DMG bootstrap's
+       * display pass performs exactly 48 such reads (cart 0x0104..
+       * 0x0133); when this counter hits 48 the mapper unlocks so
+       * the bootstrap's later verify pass sees the unscrambled
+       * Nintendo-logo bytes and proceeds to FF50. The counter
+       * itself lives here so a single byte address can be shared
+       * with Memory at setup time; the public lockCounterPtr()
+       * returns it. */
+      unsigned char lockCount;
+      /* Original (unlocked) bytes at offsets 0x100..0x1FF of physical
+       * bank 0, captured after descrambling. The lock overlay writes
+       * a permuted view derived from this back into the same ROM
+       * region; on unlock we copy these bytes back to restore the
+       * descrambled header. */
+      unsigned char unlockedBank0Header[0x100];
+
+      unsigned rombankMask() const {
+         /* Physical ROM banks present in the loaded image, expressed
+          * as a mask suitable for clamping a bank index. The pow2ceil
+          * call in loadROM guarantees rombanks() is a power of two. */
+         return rombanks(memptrs) - 1;
+      }
+
+      void applyBanks() const {
+         const unsigned mask = rombankMask();
+         memptrs.setRombank0((outerBank & outerMask) & mask);
+         memptrs.setRombank(((outerBank & outerMask) | (rom_bank & ~outerMask)) & mask);
+      }
+
+   public:
+      explicit Mbc1Sachen(MemPtrs &memptrs)
+         : memptrs(memptrs),
+           rom_bank(1),
+           outerBank(0),
+           outerMask(0),
+           locked(true),
+           lockCount(0)
+      {
+         /* Capture the descrambled header bytes that loadROM has
+          * already written to physical bank 0. These are what reads
+          * at 0x0100..0x01FF will see once we drop the lock. */
+         std::memcpy(unlockedBank0Header,
+                     memptrs.romdata() + 0x100,
+                     sizeof unlockedBank0Header);
+      }
+
+      /* Write a "locked" view of the header to physical bank 0's
+       * 0x100..0x1FF window. While locked, every read in
+       * 0x0000..0x7FFF has its A7 forced high, so a read of logical
+       * 0x104 returns the byte at logical 0x184, etc. We achieve the
+       * same effect statically by mirroring the upper 128 bytes of
+       * the descrambled header into the lower 128 bytes. The upper
+       * 128 bytes (already at offsets 0x180..0x1FF) need no change
+       * because A7 is already set there. */
+      void installLockOverlay() {
+         unsigned char *const dst = memptrs.romdata() + 0x100;
+         for (unsigned i = 0; i < 0x80; ++i)
+            dst[i] = unlockedBank0Header[i | 0x80];
+         /* The upper half is already correct; rewrite it for clarity
+          * so a partial load (savestate, soft reset) cannot leave
+          * the buffer in an inconsistent state. */
+         for (unsigned i = 0x80; i < 0x100; ++i)
+            dst[i] = unlockedBank0Header[i];
+         locked    = true;
+         lockCount = 0;
+      }
+
+      void removeLockOverlay() {
+         std::memcpy(memptrs.romdata() + 0x100,
+                     unlockedBank0Header,
+                     sizeof unlockedBank0Header);
+         locked = false;
+      }
+
+      virtual unsigned char *lockCounterPtr() { return &lockCount; }
+      virtual void unlock() {
+         if (locked)
+            removeLockOverlay();
+      }
+
+      virtual void romWrite(const unsigned P, const unsigned data) {
+         switch (P >> 13) {
+            case 0: /* 0x0000..0x1FFF -- base ROM bank, gated */
+               if ((rom_bank & 0x30) == 0x30)
+                  outerBank = data;
+               break;
+            case 1: /* 0x2000..0x3FFF -- ROM bank (zero-adjusted) */
+               rom_bank = data ? data : 1;
+               break;
+            case 2: /* 0x4000..0x5FFF -- ROM bank mask, gated */
+               if ((rom_bank & 0x30) == 0x30)
+                  outerMask = data;
+               break;
+            default:
+               /* 0x6000..0x7FFF and any unmapped range -- ignored. */
+               return;
+         }
+         applyBanks();
+      }
+
+      /* No FF50 hook required: the lock state now drops on the
+       * 48th cart read in 0x0100..0x01FF, which the DMG bootstrap
+       * reaches at the end of its logo display pass, well before
+       * the verify pass that needs the unlocked bytes. */
+
+      /* The Sachen MMC1 has no on-cart SRAM; the area
+       * 0xA000..0xBFFF reads back open-bus and writes there have no
+       * effect. Returning false here keeps Game Genie cheat
+       * application limited to the lower 32 KiB. */
+      virtual bool isAddressWithinAreaRombankCanBeMappedTo(unsigned addr, unsigned bank) const {
+         (void)bank;
+         return addr < 0x8000;
+      }
+
+      virtual void saveState(SaveState::Mem &ss) const {
+         ss.rombank          = rom_bank;
+         ss.rambank          = outerBank;
+         ss.enableRam        = locked;
+         ss.sachenOuterMask  = outerMask;
+      }
+      virtual void loadState(const SaveState::Mem &ss) {
+         rom_bank   = ss.rombank ? ss.rombank : 1;
+         outerBank  = ss.rambank;
+         outerMask  = ss.sachenOuterMask;
+         const bool wasLocked = locked;
+         const bool wantLocked = ss.enableRam;
+         /* Synchronize the in-ROM lock overlay with the restored
+          * state. A savestate captured mid-boot (locked=true) will
+          * re-install the overlay; one captured post-boot
+          * (locked=false) will leave the descrambled bytes in
+          * place. The lockCount is not preserved across saves --
+          * mid-boot saves restore as count=0, which means the
+          * mapper unlocks 48 reads later instead of at exactly the
+          * same point. This is invisible after the bootstrap has
+          * unlocked the cart once. */
+         if (wantLocked && !wasLocked) {
+            installLockOverlay();
+         } else if (!wantLocked && wasLocked) {
+            removeLockOverlay();
+         } else if (wantLocked) {
+            /* Reset progress on a locked->locked restore. */
+            lockCount = 0;
+         }
+         applyBanks();
+      }
+   };
+
    class Mbc2 : public DefaultMbc {
       MemPtrs &memptrs;
       unsigned char rombank;
@@ -530,6 +771,65 @@ namespace gambatte
       return n;
    }
 
+   /* Sum the bytes that the bootstrap logo check would actually
+    * fetch from a locked Sachen MMC1 cartridge across logical
+    * addresses 0x0104..0x0133. While locked, the mapper forces A7
+    * high, so reads of logical 0x104..0x133 are routed to
+    * logical 0x184..0x1B3; the address scrambler then permutes
+    * bits 0,1,4,6 of each address before indexing the ROM. The
+    * resulting byte stream from a genuine Sachen MMC1 dump always
+    * sums to one of two magic constants (SACHEN_LOGO_SUM_A/B),
+    * which is what detectSachenMmc1() compares against.
+    *
+    * Implementation note: the address bit permutation is its own
+    * inverse, so applying sachenScramble to 0x184+i yields the
+    * physical ROM offset that the mapper would supply when the
+    * CPU reads logical 0x104+i in the locked state. */
+   static unsigned sachenScrambledLogoSum(const uint8_t *rom) {
+      unsigned sum = 0;
+      for (unsigned i = 0; i < 0x30; ++i)
+         sum += rom[sachenScramble(0x184 + i)];
+      return sum;
+   }
+
+   /* Magic checksums of the two Sachen logo variants that NewRisingSun
+    * identified by scanning known dumps. The 5446 value is the
+    * unscrambled Nintendo-logo byte sum, used here only as a negative
+    * filter -- if the cart already contains a plain Nintendo logo at
+    * 0x0104 it is not a Sachen cart no matter what else looks odd. */
+   enum {
+      NINTENDO_LOGO_SUM      = 5446,
+      SACHEN_LOGO_SUM_A      = 5542,
+      SACHEN_LOGO_SUM_B      = 7484
+   };
+
+   static bool detectSachenMmc1(const uint8_t *rom, unsigned romsize) {
+      if (romsize < 0x200)
+         return false;
+
+      unsigned plainSum = 0;
+      for (unsigned i = 0; i < 0x30; ++i)
+         plainSum += rom[0x104 + i];
+      if (plainSum == NINTENDO_LOGO_SUM)
+         return false; /* legitimate Nintendo logo present -> not Sachen */
+
+      /* Only the variant whose scrambled logo lives at offset 0x184
+       * corresponds to a Sachen *MMC1* dump (the 0x104 variant is
+       * MMC2, which this implementation does not handle). */
+      if (romsize < 0x1B4)
+         return false;
+      const unsigned sum184 = sachenScrambledLogoSum(rom);
+      return sum184 == SACHEN_LOGO_SUM_A || sum184 == SACHEN_LOGO_SUM_B;
+   }
+
+   /* Read one byte from the cartridge image as it would appear at
+    * logical CPU address `logicalAddr` once the Sachen MMC1 scramble
+    * has been undone. `logicalAddr` must lie in 0x0100..0x01FF. */
+   static inline uint8_t sachenReadUnscrambled(const uint8_t *rom,
+                                               unsigned logicalAddr) {
+      return rom[sachenScramble(logicalAddr)];
+   }
+
    int Cartridge::loadROM(const void *data, unsigned int romsize, unsigned int forceModel, const bool multiCartCompat)
    {
       const uint8_t *romdata = (uint8_t*)data;
@@ -539,13 +839,35 @@ namespace gambatte
       unsigned rambanks = 1;
       unsigned rombanks = 2;
       bool cgb = false;
-      enum Cartridgetype { PLAIN, MBC1, MBC2, MBC3, MBC5, HUC1, HUC3 } type = PLAIN;
+      enum Cartridgetype { PLAIN, MBC1, MBC2, MBC3, MBC5, HUC1, HUC3, SACHEN_MMC1 } type = PLAIN;
       bool rumble = false;
+
+      isSachen_ = detectSachenMmc1(romdata, romsize);
 
       {
          unsigned char header[0x150];
-         std::memcpy(header, romdata, 0x150);
+         /* For a Sachen cart the bytes at offsets 0x0100..0x014F in
+          * the raw ROM image are scrambled. Run them through the
+          * descrambler before the header switch so the cartridge
+          * type, RAM size and CGB-flag bytes read as the publisher
+          * intended. The pre-0x0100 region is untouched -- that is
+          * the entry vector area and is not subject to scramble. */
+         if (isSachen_) {
+            std::memcpy(header, romdata, 0x100);
+            for (unsigned i = 0x100; i < 0x150; ++i)
+               header[i] = sachenReadUnscrambled(romdata, i);
+         } else {
+            std::memcpy(header, romdata, 0x150);
+         }
 
+         if (isSachen_) {
+            /* Sachen MMC1 carts have no SRAM, no battery, and are
+             * always DMG. Skip the normal header dispatch -- the
+             * descrambled byte at 0x0147 carries an unlicensed code
+             * that no legitimate switch case would accept anyway. */
+            gambatte_log(RETRO_LOG_INFO, "Sachen MMC1 ROM loaded.\n");
+            type = SACHEN_MMC1;
+         } else
          switch (header[0x0147])
          {
             case 0x00: gambatte_log(RETRO_LOG_INFO, "Plain ROM loaded.\n"); type = PLAIN; break;
@@ -604,6 +926,12 @@ namespace gambatte
                   break;
          }
 
+         /* Sachen MMC1 has no SRAM regardless of what the descrambled
+          * header byte at 0x0149 claims; override to avoid allocating
+          * useless save memory. */
+         if (type == SACHEN_MMC1)
+            rambanks = 0;
+
          switch(forceModel){
             case 1://FORCE_DMG
                cgb = false;
@@ -614,6 +942,12 @@ namespace gambatte
             case 0://dont force anything
                cgb = header[0x0143] >> 7;
          }
+
+         /* Sachen cartridges are mono-only DMG units; if a user
+          * forces CGB mode keep the request, but never auto-detect
+          * CGB from the (scrambled-then-unscrambled) flag byte. */
+         if (type == SACHEN_MMC1 && forceModel == 0)
+            cgb = false;
       }
 
       gambatte_log(RETRO_LOG_INFO, "rambanks: %u\n", rambanks);
@@ -629,6 +963,28 @@ namespace gambatte
 
       memcpy(memptrs_.romdata(), romdata, ((romsize / 0x4000) * 0x4000ul) * sizeof(unsigned char));
       std::memset(memptrs_.romdata() + (romsize / 0x4000) * 0x4000ul, 0xFF, (rombanks - romsize / 0x4000) * 0x4000ul);
+
+      /* Pre-descramble every 16 KiB bank's 0x100..0x1FF window so the
+       * scrambled header region reads correctly through the normal
+       * MemPtrs fast path. The bit permutation is its own inverse, so
+       * a 256-byte in-place pass that swaps each pair of permuted
+       * offsets exactly once does the job; we iterate over the
+       * lexicographically smaller half and skip the fixed points to
+       * avoid double-swapping. */
+      if (type == SACHEN_MMC1) {
+         const unsigned filledBanks = romsize / 0x4000;
+         for (unsigned bank = 0; bank < filledBanks; ++bank) {
+            unsigned char *const window = memptrs_.romdata() + bank * 0x4000ul + 0x100;
+            for (unsigned i = 0; i < 0x100; ++i) {
+               const unsigned j = sachenScramble(0x100 + i) - 0x100;
+               if (j > i) {
+                  const unsigned char tmp = window[i];
+                  window[i] = window[j];
+                  window[j] = tmp;
+               }
+            }
+         }
+      }
 
       switch (type)
       {
@@ -647,6 +1003,9 @@ namespace gambatte
          case HUC3:
             huc3_.set(true);
             mbc.reset(new HuC3(memptrs_, &huc3_));
+            break;
+         case SACHEN_MMC1:
+            mbc.reset(new Mbc1Sachen(memptrs_));
             break;
       }
 
@@ -711,6 +1070,104 @@ namespace gambatte
           }
 
        ggUndoList_.clear();
+   }
+
+   /* Inject the Sachen logo into VRAM so the cartridge's
+    * self-protection check finds it even when running without a
+    * Game Boy boot ROM. The expansion below replicates the boot
+    * ROM's logic: every source byte represents 8 horizontal pixels,
+    * each pixel doubling vertically and horizontally into a 2x2 tile
+    * block. The boot ROM writes interleaved planes 0 and 1 to
+    * 0x8010..0x81... for the Nintendo logo; we do the same with the
+    * Sachen logo bytes that the mapper would have presented through
+    * the lock overlay.
+    *
+    * `srcBank0` must point at the descrambled physical bank 0 (i.e.
+    * memptrs_.romdata() right after loadROM has descrambled the
+    * 0x100..0x1FF window). The 48 logo bytes live at offsets
+    * 0x184..0x1B3 of that bank -- this is the "lock-view" of
+    * 0x104..0x133, since A7|=1 maps the latter to the former.
+    *
+    * Logic ported from NewRisingSun's hhugboy MbcUnlSachenMMC1.cpp,
+    * CC0-licensed. */
+   static void injectSachenVramLogo(unsigned char *vram,
+                                    const unsigned char *srcBank0) {
+      /* setInitialVram() in initstate.cpp pre-populates VRAM with the
+       * Nintendo logo tile data plus a trailing trademark-R tile so
+       * that boot-ROM-less DMG runs display a plausible power-on
+       * screen. For a Sachen cart we must replace the logo bytes
+       * with the Sachen-logo expansion, and also blank out the R
+       * tile that sits just after the logo region (offsets
+       * 0x190..0x1A7) so the Sachen logo does not get a stray
+       * Nintendo trademark drawn next to it. */
+      std::memset(vram + 0x190, 0, 0x1A8 - 0x190);
+
+      for (unsigned i = 0; i < 0x30; ++i) {
+         const unsigned char logoByte = srcBank0[0x184 + i];
+         const unsigned char b1 =
+              ((logoByte >> 0) & 0x80) | ((logoByte >> 1) & 0x40)
+            | ((logoByte >> 1) & 0x20) | ((logoByte >> 2) & 0x10)
+            | ((logoByte >> 2) & 0x08) | ((logoByte >> 3) & 0x04)
+            | ((logoByte >> 3) & 0x02) | ((logoByte >> 4) & 0x01);
+         const unsigned char b2 =
+              ((logoByte << 4) & 0x80) | ((logoByte << 3) & 0x40)
+            | ((logoByte << 3) & 0x20) | ((logoByte << 2) & 0x10)
+            | ((logoByte << 2) & 0x08) | ((logoByte << 1) & 0x04)
+            | ((logoByte << 1) & 0x02) | ((logoByte << 0) & 0x01);
+         /* Boot-ROM logo tile data starts at VRAM offset 0x10 (i.e.
+          * logical 0x8010). Each source byte occupies 8 destination
+          * bytes: planes 0 and 1 of two adjacent 2-row tile pairs. */
+         const unsigned base = 0x10 + i * 8;
+         vram[base + 0] = b1;
+         vram[base + 2] = b1;
+         vram[base + 4] = b2;
+         vram[base + 6] = b2;
+         vram[base + 1] = 0;
+         vram[base + 3] = 0;
+         vram[base + 5] = 0;
+         vram[base + 7] = 0;
+      }
+   }
+
+   void Cartridge::sachenLockSetup(bool bootloaderUsed)
+   {
+      if (!isSachen_ || !mbc.get())
+         return;
+
+      Mbc1Sachen *const sachen = static_cast<Mbc1Sachen*>(mbc.get());
+
+      if (bootloaderUsed) {
+         /* The bootstrap is going to scan the logo at 0x0104..0x0133
+          * during its display pass; present the locked view so VRAM
+          * receives the Sachen-logo expansion. The mapper will then
+          * unlock after the 48th cart read in 0x0100..0x01FF (the
+          * count is bumped by Memory::read and lands precisely at
+          * the end of the bootstrap's display pass), so the verify
+          * pass that immediately follows sees the unscrambled
+          * Nintendo-logo bytes and proceeds to FF50. */
+         sachen->installLockOverlay();
+      } else {
+         /* No bootstrap is going to run. The cartridge itself will
+          * verify the logo in VRAM as a self-test, so we inject the
+          * Sachen logo there directly and drop straight into the
+          * unlocked state. The descrambled header is already in
+          * place from loadROM(). */
+         injectSachenVramLogo(memptrs_.vramdata(), memptrs_.romdata());
+         sachen->unlock();
+      }
+   }
+
+   /* Memory wires its read-count-and-trigger machinery to these two
+    * methods; both indirect through the loaded MBC so non-Sachen
+    * carts return null/no-op and Memory's hot read path stays a
+    * single null-check branch. */
+   unsigned char *Cartridge::sachenLockCounterPtr() {
+      return mbc.get() ? mbc->lockCounterPtr() : 0;
+   }
+
+   void Cartridge::onSachenUnlock() {
+      if (mbc.get())
+         mbc->unlock();
    }
 
 }

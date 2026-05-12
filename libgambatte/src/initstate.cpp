@@ -1223,6 +1223,8 @@ void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbM
 	state.mem.enableRam = false;
 	state.mem.rambankMode = false;
 	state.mem.hdmaTransfer = false;
+	/* Sachen MMC1 outer-bank mask register; harmless default for non-Sachen carts. */
+	state.mem.sachenOuterMask = 0;
 
 
 	for (int i = 0x00; i < 0x40; i += 0x02) {
