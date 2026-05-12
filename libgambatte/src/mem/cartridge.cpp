@@ -265,8 +265,12 @@ namespace gambatte
     *                                                                  *
     *  The mapper has no SRAM and no battery; the savestate fields     *
     *  reused below (rombank, rambank, enableRam) carry rom_bank,      *
-    *  outerBank, and the lock flag respectively. outerMask gets its   *
-    *  own dedicated field (SaveState::Mem::sachenOuterMask).          *
+    *  outerBank, and the lock flag respectively. outerMask and the   *
+    *  lock-progress counter get their own dedicated fields           *
+    *  (SaveState::Mem::sachenOuterMask, ::sachenLockCount); the      *
+    *  latter is needed so a savestate captured mid-bootstrap         *
+    *  resumes with the exact read-count progress and the verify     *
+    *  pass still unlocks at the right point.                         *
     * ---------------------------------------------------------------- */
 
    /* Apply the Sachen MMC1 address bit permutation to a 16-bit
@@ -407,6 +411,7 @@ namespace gambatte
          ss.rambank          = outerBank;
          ss.enableRam        = locked;
          ss.sachenOuterMask  = outerMask;
+         ss.sachenLockCount  = lockCount;
       }
       virtual void loadState(const SaveState::Mem &ss) {
          rom_bank   = ss.rombank ? ss.rombank : 1;
@@ -418,18 +423,19 @@ namespace gambatte
           * state. A savestate captured mid-boot (locked=true) will
           * re-install the overlay; one captured post-boot
           * (locked=false) will leave the descrambled bytes in
-          * place. The lockCount is not preserved across saves --
-          * mid-boot saves restore as count=0, which means the
-          * mapper unlocks 48 reads later instead of at exactly the
-          * same point. This is invisible after the bootstrap has
-          * unlocked the cart once. */
+          * place. The lock-progress counter is preserved across
+          * saves so a mid-bootstrap save restores at exactly the
+          * same read count and the verify pass unlocks at the
+          * right moment. installLockOverlay() resets lockCount to
+          * zero, so any preserved value must be restored
+          * afterwards. */
          if (wantLocked && !wasLocked) {
             installLockOverlay();
+            lockCount = ss.sachenLockCount;
          } else if (!wantLocked && wasLocked) {
             removeLockOverlay();
          } else if (wantLocked) {
-            /* Reset progress on a locked->locked restore. */
-            lockCount = 0;
+            lockCount = ss.sachenLockCount;
          }
          applyBanks();
       }

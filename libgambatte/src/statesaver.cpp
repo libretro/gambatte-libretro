@@ -384,6 +384,8 @@ SaverList::SaverList() {
 	{ static const char label[] = { r,a,m,b,m,o,d, NUL }; ADD(mem.rambankMode); }
 	{ static const char label[] = { h,d,m,a,       NUL }; ADD(mem.hdmaTransfer); }
 	{ static const char label[] = { h,u,c,NO3,r,a,m, NUL }; ADD(mem.HuC3RAMflag); }
+	{ static const char label[] = { s,c,h,n,o,m,k,   NUL }; ADD(mem.sachenOuterMask); }
+	{ static const char label[] = { s,c,h,n,l,c,t,   NUL }; ADD(mem.sachenLockCount); }
 	{ static const char label[] = { b,g,p,         NUL }; ADDPTR(ppu.bgpData); }
 	{ static const char label[] = { o,b,j,p,       NUL }; ADDPTR(ppu.objpData); }
 	{ static const char label[] = { s,p,o,s,b,u,f, NUL }; ADDPTR(ppu.oamReaderBuf); }
