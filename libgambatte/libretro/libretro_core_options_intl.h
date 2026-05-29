@@ -54035,7 +54035,7 @@ struct retro_core_options_v2 options_pt_pt = {
 #define OPTION_VAL_GBC_RU NULL
 #define OPTION_VAL_SGB_RU NULL
 #define OPTION_VAL_INTERNAL_RU "Встроенная"
-#define OPTION_VAL_CUSTOM_RU "Ручная установка"
+#define OPTION_VAL_CUSTOM_RU "Ручная настройка"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_RU "Встроенная палитра"
 #define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_RU "Палитра, используемая для раскрашивания игр Game Boy при установке опции 'Колоризация GB' в режим 'Встроенная' или когда установлен режим 'Авто' и для игры нет предустановленной палитры SGB/GBC. Палитры 'GB' имитируют оригинальное изображение консоли. Палитры 'GBC' идентичны встроенным пресетам Game Boy Color. Палитры 'SGB' соответствуют встроенным пресетам Super Game Boy."
 #define OPTION_VAL_GB_DMG_RU NULL
