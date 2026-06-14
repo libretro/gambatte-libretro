@@ -333,14 +333,20 @@ static void doFullTilesUnrolledDmg(PPUPriv &p, int const xend, video_pixel_t *co
 				ntileword = expand_lut[(tileDataLine + tno * 16 - (tno & tileIndexSign) * 32)[0]]
 				          + expand_lut[(tileDataLine + tno * 16 - (tno & tileIndexSign) * 32)[1]] * 2;
 			} else do {
-				dst[0] = p.bgPalette[ ntileword & 0x0003       ];
-				dst[1] = p.bgPalette[(ntileword & 0x000C) >>  2];
-				dst[2] = p.bgPalette[(ntileword & 0x0030) >>  4];
-				dst[3] = p.bgPalette[(ntileword & 0x00C0) >>  6];
-				dst[4] = p.bgPalette[(ntileword & 0x0300) >>  8];
-				dst[5] = p.bgPalette[(ntileword & 0x0C00) >> 10];
-				dst[6] = p.bgPalette[(ntileword & 0x3000) >> 12];
-				dst[7] = p.bgPalette[ ntileword           >> 14];
+				/* DMG fast path: a precomputed 256-entry expansion of
+				 * bgPalette[0..3] turns the 8-dependent-load gather
+				 * (gcc 13 -O3 refuses to vectorise -- SSE2 has no u32
+				 * gather, so the missed log shows
+				 * "no vectype for stmt: _ = bgPalette[_];" at every
+				 * call site) into two 16-byte memcpys.  The expansion
+				 * is rebuilt by LCD on every BG palette write via
+				 * refreshBgPaletteExpansion(). */
+				{
+					unsigned const lo = ntileword & 0xFF;
+					unsigned const hi = ntileword >> 8;
+					std::memcpy(&dst[0], p.bgPaletteExpanded[lo], 4 * sizeof(video_pixel_t));
+					std::memcpy(&dst[4], p.bgPaletteExpanded[hi], 4 * sizeof(video_pixel_t));
+				}
 				dst += 8;
 
 				unsigned const tno = tileMapLine[tileMapXpos & 0x1F];
@@ -1475,6 +1481,11 @@ PPUPriv::PPUPriv(NextM0Time &nextM0Time, unsigned char const *const oamram, unsi
 {
 	std::memset(spriteList, 0, sizeof spriteList);
 	std::memset(spwordList, 0, sizeof spwordList);
+	/* The expansion will be properly filled by LCD::refreshPalettes()
+	 * via PPU::refreshBgPaletteExpansion() before the first frame is
+	 * rendered, but zero it to keep the struct deterministic at
+	 * construction (saves don't carry derived state). */
+	std::memset(bgPaletteExpanded, 0, sizeof bgPaletteExpanded);
 }
 
 static void saveSpriteList(PPUPriv const &p, SaveState &ss) {

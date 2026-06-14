@@ -63,6 +63,22 @@ struct PPUState {
 struct PPUPriv {
 	video_pixel_t bgPalette[8 * 4];
 	video_pixel_t spPalette[8 * 4];
+	/* Precomputed BG palette expansion for the DMG fast path.
+	 *
+	 * Indexed by the low/high byte of ntileword: each byte packs four
+	 * 2-bit palette indices (lanes 0..3 in byte order), so each
+	 * bgPaletteExpanded[byte] entry holds the four resolved colours
+	 * for that nibble of the tile word.  doFullTilesUnrolledDmg
+	 * issues two 16-byte loads + two 16-byte stores per 8-pixel tile
+	 * instead of eight dependent scalar loads from bgPalette[0..3].
+	 *
+	 * Rebuilt only when the BG palette changes (BGP / refresh path).
+	 * DMG-only: the CGB BG renderer at doFullTilesUnrolledCgb does
+	 * per-tile palette selection via the attribute byte and would
+	 * need a [8][256][4] expansion (~32 KB working set) which can
+	 * thrash L1 on smaller AArch targets, so it is left for a
+	 * separate audit. */
+	video_pixel_t bgPaletteExpanded[256][4];
 	struct Sprite { unsigned char spx, oampos, line, attrib; } spriteList[11];
 	unsigned short spwordList[11];
 	unsigned char nextSprite;
@@ -113,6 +129,27 @@ public:
 	}
 
 	video_pixel_t * bgPalette() { return p_.bgPalette; }
+
+	/* Recompute bgPaletteExpanded from the current bgPalette[0..3].
+	 *
+	 * Must be called by the LCD whenever the DMG BG palette is
+	 * written: BGP register write (dmgBgPaletteChange), the DMG
+	 * branch of refreshPalettes(), and savestate loads.  Idempotent
+	 * and side-effect-free; safe to call extra times. */
+	void refreshBgPaletteExpansion()
+	{
+		video_pixel_t const c0 = p_.bgPalette[0];
+		video_pixel_t const c1 = p_.bgPalette[1];
+		video_pixel_t const c2 = p_.bgPalette[2];
+		video_pixel_t const c3 = p_.bgPalette[3];
+		video_pixel_t const cs[4] = { c0, c1, c2, c3 };
+		for (int b = 0; b < 256; ++b) {
+			p_.bgPaletteExpanded[b][0] = cs[ b       & 3];
+			p_.bgPaletteExpanded[b][1] = cs[(b >> 2) & 3];
+			p_.bgPaletteExpanded[b][2] = cs[(b >> 4) & 3];
+			p_.bgPaletteExpanded[b][3] = cs[ b >> 6      ];
+		}
+	}
 	bool cgb() const { return p_.cgb; }
    void setDmgMode(bool mode) { p_.dmgMode = mode; }
    bool inDmgMode() const { return p_.dmgMode; }

@@ -156,6 +156,10 @@ void LCD::refreshPalettes()
       setDmgPalette(ppu_.spPalette()    , dmgColorsRgb32_ + 4, objpData_[0]);
       setDmgPalette(ppu_.spPalette() + 4, dmgColorsRgb32_ + 8, objpData_[1]);
    }
+   /* Always refresh the DMG BG palette expansion: in CGB mode it is
+    * unused by the CGB renderer, but the precompute is cheap and
+    * keeps the table in sync if/when DMG mode is toggled back on. */
+   ppu_.refreshBgPaletteExpansion();
 }
 
 void LCD::resetCc(const unsigned long oldCc, const unsigned long newCc)
