@@ -61,7 +61,7 @@ class LCD
          update(cycleCounter);
          bgpData_[0] = data;
          setDmgPalette(ppu_.bgPalette(), dmgColorsRgb32_, data);
-         ppu_.refreshBgPaletteExpansion();
+         ppu_.refreshBgPaletteExpansion(0);
       }
 
       void dmgSpPalette1Change(const unsigned data, const unsigned long cycleCounter) {

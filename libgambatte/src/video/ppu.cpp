@@ -333,19 +333,20 @@ static void doFullTilesUnrolledDmg(PPUPriv &p, int const xend, video_pixel_t *co
 				ntileword = expand_lut[(tileDataLine + tno * 16 - (tno & tileIndexSign) * 32)[0]]
 				          + expand_lut[(tileDataLine + tno * 16 - (tno & tileIndexSign) * 32)[1]] * 2;
 			} else do {
-				/* DMG fast path: a precomputed 256-entry expansion of
-				 * bgPalette[0..3] turns the 8-dependent-load gather
-				 * (gcc 13 -O3 refuses to vectorise -- SSE2 has no u32
-				 * gather, so the missed log shows
+				/* DMG fast path: a precomputed expansion of
+				 * bgPalette[0..3] (slot 0 of bgPaletteExpanded)
+				 * turns the 8-dependent-load gather (gcc 13 -O3
+				 * refuses to vectorise -- SSE2 has no u32 gather,
+				 * so the missed log shows
 				 * "no vectype for stmt: _ = bgPalette[_];" at every
-				 * call site) into two 16-byte memcpys.  The expansion
-				 * is rebuilt by LCD on every BG palette write via
-				 * refreshBgPaletteExpansion(). */
+				 * call site) into two 16-byte memcpys.  The
+				 * expansion is rebuilt by LCD on every BG palette
+				 * write via refreshBgPaletteExpansion(0). */
 				{
 					unsigned const lo = ntileword & 0xFF;
 					unsigned const hi = ntileword >> 8;
-					std::memcpy(&dst[0], p.bgPaletteExpanded[lo], 4 * sizeof(video_pixel_t));
-					std::memcpy(&dst[4], p.bgPaletteExpanded[hi], 4 * sizeof(video_pixel_t));
+					std::memcpy(&dst[0], p.bgPaletteExpanded[0][lo], 4 * sizeof(video_pixel_t));
+					std::memcpy(&dst[4], p.bgPaletteExpanded[0][hi], 4 * sizeof(video_pixel_t));
 				}
 				dst += 8;
 
@@ -515,15 +516,19 @@ static void doFullTilesUnrolledCgb(PPUPriv &p, int const xend, video_pixel_t *co
 			xpos += n;
 
 			do {
-				video_pixel_t const *const bgPalette = p.bgPalette + (nattrib & 7) * 4;
-				dst[0] = bgPalette[ ntileword & 0x0003       ];
-				dst[1] = bgPalette[(ntileword & 0x000C) >>  2];
-				dst[2] = bgPalette[(ntileword & 0x0030) >>  4];
-				dst[3] = bgPalette[(ntileword & 0x00C0) >>  6];
-				dst[4] = bgPalette[(ntileword & 0x0300) >>  8];
-				dst[5] = bgPalette[(ntileword & 0x0C00) >> 10];
-				dst[6] = bgPalette[(ntileword & 0x3000) >> 12];
-				dst[7] = bgPalette[ ntileword           >> 14];
+				/* CGB fast path: same precomputed expansion as the
+				 * DMG path above, but the per-tile palette is
+				 * selected by the attribute byte's low 3 bits.
+				 * Each frame typically activates only a few
+				 * palettes, so the hot working set stays well
+				 * inside L1 even though the full table is 32 KiB
+				 * (u32 build). */
+				{
+					unsigned const lo = ntileword & 0xFF;
+					unsigned const hi = ntileword >> 8;
+					std::memcpy(&dst[0], p.bgPaletteExpanded[nattrib & 7][lo], 4 * sizeof(video_pixel_t));
+					std::memcpy(&dst[4], p.bgPaletteExpanded[nattrib & 7][hi], 4 * sizeof(video_pixel_t));
+				}
 				dst += 8;
 
 				unsigned const tno = tileMapLine[ tileMapXpos & 0x1F          ];

@@ -144,6 +144,10 @@ void LCD::refreshPalettes()
          ppu_.bgPalette()[i >> 1] = gbcToRgb32( bgpData_[i] |  bgpData_[i + 1] << 8);
          ppu_.spPalette()[i >> 1] = gbcToRgb32(objpData_[i] | objpData_[i + 1] << 8);
       }
+      /* CGB mode: rebuild all 8 BG palette expansions, the CGB
+       * renderer's hot do-while indexes [nattrib & 7] per tile. */
+      for (unsigned p = 0; p < 8; ++p)
+         ppu_.refreshBgPaletteExpansion(p);
    }
    else
    {
@@ -155,11 +159,10 @@ void LCD::refreshPalettes()
       setDmgPalette(ppu_.bgPalette()    , dmgColorsRgb32_    ,  bgpData_[0]);
       setDmgPalette(ppu_.spPalette()    , dmgColorsRgb32_ + 4, objpData_[0]);
       setDmgPalette(ppu_.spPalette() + 4, dmgColorsRgb32_ + 8, objpData_[1]);
+      /* DMG mode: only palette 0 is used by doFullTilesUnrolledDmg.
+       * Rebuild slot 0; slots 1..7 are unused but stay zero-init. */
+      ppu_.refreshBgPaletteExpansion(0);
    }
-   /* Always refresh the DMG BG palette expansion: in CGB mode it is
-    * unused by the CGB renderer, but the precompute is cheap and
-    * keeps the table in sync if/when DMG mode is toggled back on. */
-   ppu_.refreshBgPaletteExpansion();
 }
 
 void LCD::resetCc(const unsigned long oldCc, const unsigned long newCc)
@@ -289,6 +292,12 @@ void LCD::doCgbBgColorChange(unsigned index, const unsigned data, const unsigned
    {
       update(cc);
       doCgbColorChange(bgpData_, ppu_.bgPalette(), index, data);
+      /* CGB BCPD writes one 16-bit colour entry at a time
+       * (palette[index >> 1] in doCgbColorChange).  Each CGB palette
+       * has 4 entries x 2 bytes = 8 bytes, so the affected palette
+       * is (index >> 1) >> 2 = index >> 3.  Only that slot needs
+       * its expansion rebuilt. */
+      ppu_.refreshBgPaletteExpansion(index >> 3);
    }
 }
 
