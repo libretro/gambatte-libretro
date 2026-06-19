@@ -34844,7 +34844,7 @@ struct retro_core_options_v2 options_he = {
 #define OPTION_VAL_GBA_HR NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_HR NULL
 #define GAMBATTE_GB_BOOTLOADER_INFO_0_HR NULL
-#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_HR NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_LABEL_HR "Dopusti suprotne smjerove"
 #define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_HR NULL
 #define GAMBATTE_TURBO_PERIOD_LABEL_HR NULL
 #define GAMBATTE_TURBO_PERIOD_INFO_0_HR NULL
@@ -49119,26 +49119,26 @@ struct retro_core_options_v2 options_or = {
 
 /* RETRO_LANGUAGE_PL */
 
-#define CATEGORY_GB_LINK_LABEL_PL "Link do gry"
-#define CATEGORY_GB_LINK_INFO_0_PL NULL
+#define CATEGORY_GB_LINK_LABEL_PL NULL
+#define CATEGORY_GB_LINK_INFO_0_PL "Zmień opcje sieciowego Game Link (multiplayer)."
 #define GAMBATTE_GB_COLORIZATION_LABEL_PL "Koloryzacja GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_PL NULL
-#define OPTION_VAL_AUTO_PL "Automatyczny"
+#define GAMBATTE_GB_COLORIZATION_INFO_0_PL "Włącza koloryzację gier Game Boy. 'Automatyczna' wybiera 'najlepszą' paletę (najbardziej kolorową/właściwą). 'GBC' wybiera paletę kolorów specyficzną dla gry na Game Boy Color, jeśli jest zdefiniowana, w przeciwnym razie wybierana jest 'GBC - Ciemny Zielony'. 'SGB' wybiera paletę Super Game Boy, jeśli jest zdefiniowana, w przeciwnym razie wybierana jest 'SGB - 1A', 'Wewnętrzna' wykorzystuje podstawową opcję 'Wewnętrzna paleta'. 'Własna' ładuje paletę utworzoną przez użytkownika z katalogu systemowego."
+#define OPTION_VAL_AUTO_PL "Automatyczna"
 #define OPTION_VAL_GBC_PL NULL
 #define OPTION_VAL_SGB_PL NULL
 #define OPTION_VAL_INTERNAL_PL "Wewnętrzna"
-#define OPTION_VAL_CUSTOM_PL "Niestandardowy"
+#define OPTION_VAL_CUSTOM_PL "Niestandardowa"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_PL "Paleta wewnętrzna"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_PL NULL
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_PL "Wybiera paletę używaną do kolorowania gier Game Boy kiedy 'Koloryzacja GB' jest ustawiony na 'Wewnętrzną', lub gdy 'Koloryzacja GB' jest ustawiona na 'Automatyczną' i gra nie ma wcześniej zdefiniowanej palety SGB/GBC. Palety \"GB\" naśladują wyświetlanie oryginalnego sprzętu Game Boy. Palety \"GBC\" są identyczne z wbudowanymi ustawieniami koloru Game Boy Color. Palety 'SGB' są identyczne z wbudowanymi ustawieniami Super Game Boy."
 #define OPTION_VAL_GB_DMG_PL NULL
 #define OPTION_VAL_GB_POCKET_PL NULL
-#define OPTION_VAL_GB_LIGHT_PL "GB - Lekki"
+#define OPTION_VAL_GB_LIGHT_PL NULL
 #define OPTION_VAL_GBC_BLUE_PL "GBC - Niebieski"
 #define OPTION_VAL_GBC_BROWN_PL "GBC - Brązowy"
 #define OPTION_VAL_GBC_DARK_BLUE_PL "GBC - Ciemnoniebieski"
 #define OPTION_VAL_GBC_DARK_BROWN_PL "GBC - Ciemno brązowy"
 #define OPTION_VAL_GBC_DARK_GREEN_PL "GBC - Ciemno zielony"
-#define OPTION_VAL_GBC_GRAYSCALE_PL "GBC - Skala szarości"
+#define OPTION_VAL_GBC_GRAYSCALE_PL "GBC - Odcienie szarości"
 #define OPTION_VAL_GBC_GREEN_PL "GBC - Zielony"
 #define OPTION_VAL_GBC_INVERTED_PL "GBC - Odwrócone"
 #define OPTION_VAL_GBC_ORANGE_PL "GBC - Pomarańczowy"
@@ -49190,7 +49190,7 @@ struct retro_core_options_v2 options_or = {
 #define OPTION_VAL_TWB64_001_AQOURS_BLUE_PL NULL
 #define OPTION_VAL_TWB64_002_ANIME_EXPO_VER_PL NULL
 #define OPTION_VAL_TWB64_003_SPONGEBOB_YELLOW_PL "TWB64 003 - Żółty SpongeBob"
-#define OPTION_VAL_TWB64_004_PATRICK_STAR_PINK_PL NULL
+#define OPTION_VAL_TWB64_004_PATRICK_STAR_PINK_PL "TWB64 004 - Różowy Patryka Rozgwiazdy"
 #define OPTION_VAL_TWB64_005_NEON_RED_PL NULL
 #define OPTION_VAL_TWB64_006_NEON_BLUE_PL NULL
 #define OPTION_VAL_TWB64_007_NEON_YELLOW_PL NULL
@@ -49390,7 +49390,7 @@ struct retro_core_options_v2 options_or = {
 #define OPTION_VAL_TWB64_199_DURACELL_COPPER_PL NULL
 #define OPTION_VAL_TWB64_200_TOKYO_SKYTREE_CLOUDY_BLUE_PL NULL
 #define GAMBATTE_GB_PALETTE_TWB64_3_LABEL_PL NULL
-#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_PL NULL
+#define GAMBATTE_GB_PALETTE_TWB64_3_INFO_0_PL "Wybiera wewnętrzną paletę kolorów, gdy 'Wewnętrzna paleta' jest ustawiona na 'TWB64 - Pack 3'."
 #define OPTION_VAL_TWB64_201_DMG_GOLD_PL NULL
 #define OPTION_VAL_TWB64_202_LCD_CLOCK_GREEN_PL NULL
 #define OPTION_VAL_TWB64_203_FAMICOM_FRENZY_PL NULL
@@ -49492,7 +49492,7 @@ struct retro_core_options_v2 options_or = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_PL NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_PL NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_PL NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_PL NULL
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_PL "Wybiera wewnętrzną paletę kolorów, gdy 'Wewnętrzna paleta' jest ustawiona na 'PixelShift - Pack 1'."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_PL NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_PL NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_PL NULL
@@ -49539,57 +49539,57 @@ struct retro_core_options_v2 options_or = {
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_PL NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_PL NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_PL "Korekcja kolorów"
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_PL "Dostosowuje kolory wyjściowe, aby pasowały do wyświetlania prawdziwego urządzenia Game Boy Color. 'Tylko GBC' zapewnia, że korekta będzie stosowana tylko podczas grania w Game Boy Color lub podczas używania palety kolorów Game Boy Boy Color do kolorowania gry Game Boy. 'Zawsze' stosuje korektę kolorów do wszystkich treści i przyniesie niespodziewane / nieoptymalne wyniki podczas używania wewnętrznych palet kolorów 'GB' lub 'SGB'."
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_PL "Dostosowuje kolory wyjściowe, aby pasowały do wyświetlacza prawdziwego urządzenia Game Boy Color. 'Tylko GBC' zapewnia, że korekta będzie stosowana tylko podczas grania w Game Boy Color lub podczas używania palety kolorów Game Boy Boy Color do kolorowania gier z Game Boya. 'Zawsze' stosuje korektę kolorów do wszystkich treści i przyniesie niespodziewane / nieoptymalne wyniki podczas używania wewnętrznych palet kolorów 'GB' lub 'SGB'."
 #define OPTION_VAL_GBC_ONLY_PL "Tylko GBC"
 #define OPTION_VAL_ALWAYS_PL "Zawsze"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_PL "Tryb korekcji kolorów"
-#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_PL "Określa metodę używaną przy korekcji kolorów. \"Dokładność\" wytwarza dane wyjściowe prawie niepodzielne z prawdziwego panelu LCD-u Game Boy Color. 'Szybko' tylko ciemni kolory i zmniejsza nasycenie i może być użyty na sprzęcie niskiej klasy jeśli metoda 'dokładności' jest zbyt wolna."
-#define OPTION_VAL_ACCURATE_PL "Dokładny"
-#define OPTION_VAL_FAST_PL "Szybko"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_PL "Korekcja kolorów - Pozycja światła głównego"
-#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_PL "Symuluje reakcję fizyczną panelu LCD koloru Game Boy Color LCD podświetlonego pod różnymi kątami. „Centralny” reprezentuje standardową reprodukcję kolorów. 'Powyżej ekranu' zwiększa jasność. 'Poniżej ekranu' zmniejsza jasność. To ustawienie ma zastosowanie tylko wtedy, gdy 'Tryb korekcji kolorów' jest ustawiony na 'dokładny'."
+#define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_PL "Określa metodę używaną przy korekcji kolorów. \"Dokładna\" wytwarza dane wyjściowe prawie nie do odróżnienia od prawdziwego panelu LCD Game Boy Color. 'Szybka' tylko ściemnia kolory i zmniejsza nasycenie i może być używana na słabym sprzęcie jeśli metoda 'Dokładna' jest zbyt wolna."
+#define OPTION_VAL_ACCURATE_PL "Dokładna"
+#define OPTION_VAL_FAST_PL "Szybka"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_PL "Korekcja kolorów - Pozycja przedniego światła"
+#define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_PL "Symuluje reakcję fizyczną panelu LCD Game Boy Color podczas podświetlenia z różnych kątów. „Centralny” reprezentuje standardową reprodukcję kolorów. 'Powyżej ekranu' zwiększa jasność. 'Poniżej ekranu' zmniejsza jasność. To ustawienie ma zastosowanie tylko wtedy, gdy 'Tryb korekcji kolorów' jest ustawiony na 'dokładny'."
 #define OPTION_VAL_CENTRAL_PL "Centralny"
 #define OPTION_VAL_ABOVE_SCREEN_PL "Powyżej ekranu"
 #define OPTION_VAL_BELOW_SCREEN_PL "Poniżej ekranu"
 #define GAMBATTE_DARK_FILTER_LEVEL_LABEL_PL "Poziom ciemnego filtra (%)"
-#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_PL "Włącz zmniejszenie jasności oparte na luminancji. Może być stosowany w celu uniknięcia kontaktu z oczami podczas grania w gry z białymi tłami, które są przeznaczone do wyświetlania na niepodświetlonym kolorze Chłopiec z gry, i w związku z tym mogą wydawać się niewygodnie jasne, gdy są oglądane na nowoczesnym ekranie z tyłu."
+#define GAMBATTE_DARK_FILTER_LEVEL_INFO_0_PL "Włącz zmniejszenie jasności oparte na luminancji. Może być stosowane w celu uniknięcia odbić/zmęczenia oczu podczas grania w gry z białym tłem, które były przeznaczone do wyświetlania na niepodświetlonym Game Boyu Color, i w związku z tym mogą wydawać się zbyt jasne, gdy są oglądane na nowoczesnym ekranie z podświetleniem."
 #define GAMBATTE_MIX_FRAMES_LABEL_PL "Łączenie międzyramowe"
-#define GAMBATTE_MIX_FRAMES_INFO_0_PL "Symuluje efekty duchowe LCD. 'Proste' wykonuje mieszankę 50:50 bieżących i poprzednich ramek. \"LCD Ghosting\" naśladuje naturalne czasy reakcji LCD przez połączenie wielu zbuforowanych ram. \"Proste\" mieszanie jest wymagane podczas grania w gry, które polegają na duchach LCD dla efektów przezroczystości (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
-#define OPTION_VAL_MIX_PL "Prosty"
-#define OPTION_VAL_LCD_GHOSTING_PL "Ghosting LCD (dokładny)"
-#define OPTION_VAL_LCD_GHOSTING_FAST_PL "LCD Ghosting (szybki)"
+#define GAMBATTE_MIX_FRAMES_INFO_0_PL "Symuluje efekty rozmycia LCD. 'Proste' wykonuje mieszankę 50:50 bieżących i poprzednich klatek. \"Rozmycie LCD\" naśladuje naturalne czasy reakcji LCD przez połączenie wielu zbuforowanych klatek. \"Proste\" mieszanie jest wymagane podczas grania w gry, które polegają na rozmyciach LCD dla efektów przezroczystości (Wave Race, Ballistic, Chikyuu Kaihou Gun ZAS...)."
+#define OPTION_VAL_MIX_PL "Proste"
+#define OPTION_VAL_LCD_GHOSTING_PL "Rozmycie LCD (dokładne)"
+#define OPTION_VAL_LCD_GHOSTING_FAST_PL "Rozmycie LCD (szybkie)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_PL "Resampler dźwięku"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_PL NULL
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_PL "Określ którego algorytmu używać podczas resamplingu wygenerowanego dźwięku (częstotliwość dźwięku Game Boya jest ograniczona tylko przez szybkość zapisu jego procesora, w taki sposób że 'natywne' częstotliwości są niepraktyczne na nowoczesnych urządzeniach dźwiękowych i muszą być zdownsamplowane). 'Sinc' produkuje najwyższą jakość. 'Cosine' poprawia wydajność na słabym sprzęcie."
 #define OPTION_VAL_SINC_PL NULL
 #define OPTION_VAL_CC_PL NULL
 #define GAMBATTE_GB_HWMODE_LABEL_PL "Emulacja sprzętowa (wymagany restart)"
-#define GAMBATTE_GB_HWMODE_INFO_0_PL NULL
+#define GAMBATTE_GB_HWMODE_INFO_0_PL "Określ rodzaj sprzętu, który ma być emulowany. Zalecane jest użycie \"Auto\". Wybranie 'GBA' odblokowuje dodatkowe funkcje w niektórych 'Ulepszony dla GBA' grach Game Boy Color (Shantae, Wendy - Every Witch Way, Legenda Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_PL NULL
 #define OPTION_VAL_GBA_PL NULL
-#define GAMBATTE_GB_BOOTLOADER_LABEL_PL NULL
-#define GAMBATTE_GB_BOOTLOADER_INFO_0_PL "Włącz wsparcie dla oficjalnych bootloaderów Game Boy i Game Boy Color, z odpowiednimi animacjami logo startu."
+#define GAMBATTE_GB_BOOTLOADER_LABEL_PL "Użyj Oficjalnego Bootloadera (Wymagany Restart)"
+#define GAMBATTE_GB_BOOTLOADER_INFO_0_PL "Włącz wsparcie dla oficjalnych bootloaderów Game Boy i Game Boy Color, z ich animacjami startowymi."
 #define GAMBATTE_UP_DOWN_ALLOWED_LABEL_PL "Zezwalaj na przeciwne kierunki"
-#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_PL NULL
+#define GAMBATTE_UP_DOWN_ALLOWED_INFO_0_PL "Włączenie tego pozwala na wciskanie/szybkie zamienianie/trzymanie naraz lewego i prawego (lub górnego i dolnego) kierunku w tym samym czasie. To może powodować błędu związane z poruszaniem się."
 #define GAMBATTE_TURBO_PERIOD_LABEL_PL "Okres przycisków Turbo"
-#define GAMBATTE_TURBO_PERIOD_INFO_0_PL NULL
-#define GAMBATTE_RUMBLE_LEVEL_LABEL_PL NULL
-#define GAMBATTE_RUMBLE_LEVEL_INFO_0_PL NULL
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_PL "Pokaż ustawienia linku do gry"
-#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_PL "Włącz konfigurację sieciowego łącza do gry (wieloosobowej). UWAGA: Szybkie menu może wymagać przełączania, aby to ustawienie zaczęło obowiązywać."
-#define GAMBATTE_GB_LINK_MODE_LABEL_PL "Tryb łącza do gry"
-#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_PL "Tryb linku"
-#define GAMBATTE_GB_LINK_MODE_INFO_0_PL NULL
+#define GAMBATTE_TURBO_PERIOD_INFO_0_PL "Określ interwał powtarzania (w klatkach) gdy przytrzymane są przyciski turbo A/B."
+#define GAMBATTE_RUMBLE_LEVEL_LABEL_PL "Siła wibracji kontrolera"
+#define GAMBATTE_RUMBLE_LEVEL_INFO_0_PL "Włącza efekty wibracji dla wspieranych gier (Pokemon Pinball, Perfect Dark...)."
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_LABEL_PL "Pokaż ustawienia Game Link"
+#define GAMBATTE_SHOW_GB_LINK_SETTINGS_INFO_0_PL "Włącz konfigurację sieciowego Game Link (multiplayer). UWAGA: Szybkie menu może wymagać przełączenia, aby to ustawienie przyniosło efekt."
+#define GAMBATTE_GB_LINK_MODE_LABEL_PL "Tryb Game Link"
+#define GAMBATTE_GB_LINK_MODE_LABEL_CAT_PL "Tryb łączenia"
+#define GAMBATTE_GB_LINK_MODE_INFO_0_PL "Podczas włączania funkcjonalności sieciowego Game Link, określ czy aktualne instancja powinna działać jako klient czy serwer."
 #define OPTION_VAL_NOT_CONNECTED_PL "Nie połączono"
 #define OPTION_VAL_NETWORK_SERVER_PL "Serwer sieciowy"
-#define OPTION_VAL_NETWORK_CLIENT_PL "Klient sieci"
+#define OPTION_VAL_NETWORK_CLIENT_PL "Klient sieciowy"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_PL "Port łącza sieciowego"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_PL NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_PL NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_PL "Adres serwera łącza sieciowego, Pt. 01: x__.___.___.___"
+#define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_PL "Określ port używany do komunikacji sieciowego Game Link."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_PL "Adres serwera Cz. 01: x__.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_PL "Adres serwera 01: x__.___.___.___ _"
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_PL NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_PL NULL
-#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_PL "Adres serwera łącza sieciowego, Pt. 02: _x_.___.___.___ _"
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_0_PL "Pierwsza cyfra zdalnego adresu IP serwera sieciowego 'Game Link'. Używana tylko wtedy, gdy \"Tryb Game Link\" jest ustawione na \"NetClient\"."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_INFO_1_PL "Pierwsza cyfra zdalnego adresu IP serwera sieciowego 'Game Link'. Używana tylko wtedy, gdy \"Tryb Game Link\" jest ustawione na \"Klient sieciowy\"."
+#define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_PL "Adres serwera Cz. 02: x_.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_LABEL_CAT_PL "Adres serwera 02: _x_.___.___.___.___"
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_0_PL NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_2_INFO_1_PL NULL
