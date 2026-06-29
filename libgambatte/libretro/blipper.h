@@ -24,66 +24,33 @@
  * IN THE SOFTWARE.
  */
 
+/*
+ * Note (2026 audit): this resampler is no longer a drop-in copy of the
+ * upstream dual-precision blipper. The optional floating-point build
+ * (BLIPPER_FIXED_POINT 0 / BLIPPER_REAL_T) has been removed and the
+ * sample types are pinned to int16/int32. The Kaiser-windowed sinc
+ * filter bank that upstream synthesized at runtime with double-precision
+ * libm is now precomputed and baked as a const int16 table
+ * (blipper_filter_bank.h), so this translation unit pulls in no libm and
+ * emits no floating-point instructions, and the resampled output is
+ * bit-identical across every target and compiler. The remaining public
+ * surface matches the subset gambatte-libretro uses.
+ */
+
 #ifndef BLIPPER_H__
 #define BLIPPER_H__
-
-/* Compile time configurables. */
-#ifndef BLIPPER_LOG_PERFORMANCE
-#define BLIPPER_LOG_PERFORMANCE 0
-#endif
-
-#ifndef BLIPPER_FIXED_POINT
-#define BLIPPER_FIXED_POINT 1
-#endif
-
-/* Set to float or double.
- * long double is unlikely to provide any improved precision. */
-#ifndef BLIPPER_REAL_T
-#define BLIPPER_REAL_T float
-#endif
-
-/* Allows including several implementations in one lib. */
-#if BLIPPER_FIXED_POINT
-#define BLIPPER_MANGLE(x) x##_fixed
-#else
-#define BLIPPER_MANGLE(x) x##_##BLIPPER_REAL_T
-#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <limits.h>
+#include <stdint.h>
 
 typedef struct blipper blipper_t;
-typedef BLIPPER_REAL_T blipper_real_t;
 
-#if BLIPPER_FIXED_POINT
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
+/* Fixed-point only. int16 in/out, int32 intermediate. */
 typedef int16_t blipper_sample_t;
 typedef int32_t blipper_long_sample_t;
-#else
-#if SHRT_MAX == 0x7fff
-typedef short blipper_sample_t;
-#elif INT_MAX == 0x7fff
-typedef int blipper_sample_t;
-#else
-#error "Cannot find suitable type for blipper_sampler_t."
-#endif
-
-#if INT_MAX == 0x7fffffffl
-typedef int blipper_long_sample_t;
-#elif LONG_MAX == 0x7fffffffl
-typedef long blipper_long_sample_t;
-#else
-#error "Cannot find suitable type for blipper_long_sample_t."
-#endif
-#endif
-#else
-typedef BLIPPER_REAL_T blipper_sample_t;
-typedef BLIPPER_REAL_T blipper_long_sample_t; /* Meaningless for float version. */
-#endif
 
 /* Create a new blipper.
  * taps: Number of filter taps per impulse.
@@ -94,33 +61,37 @@ typedef BLIPPER_REAL_T blipper_long_sample_t; /* Meaningless for float version. 
  *
  * decimation: Sets decimation rate. Must be power-of-two (2^n).
  * The input sampling rate is then output_rate * 2^decimation.
+ *
  * buffer_samples: The maximum number of processed output samples that can be
  * buffered up by blipper.
  *
  * filter_bank: An optional filter which has already been created by
  * blipper_create_filter_bank(). blipper_new() does not take ownership
- * of the buffer and must be freed by caller.
- * If non-NULL, cutoff and beta will be ignored.
+ * of the buffer and the caller must keep it alive for the blipper's
+ * lifetime. If NULL, the baked-in const filter bank is used, which is
+ * valid only for the (decimation, taps) pair the table was generated
+ * for (see blipper_filter_bank.h). cutoff and beta are encoded in the
+ * baked table and are ignored when filter_bank is NULL.
  *
- * Some sane values:
- * taps = 64, cutoff = 0.85, beta = 8.0
+ * The configuration shipped by gambatte-libretro is:
+ *   taps = 32, cutoff = 0.85, beta = 6.5, decimation = 64
  */
-#define blipper_new BLIPPER_MANGLE(blipper_new)
 blipper_t *blipper_new(unsigned taps, double cutoff, double beta,
       unsigned decimation, unsigned buffer_samples, const blipper_sample_t *filter_bank);
 
 /* Reset the blipper to its initiate state. */
-#define blipper_reset BLIPPER_MANGLE(blipper_reset)
 void blipper_reset(blipper_t *blip);
 
-/* Create a filter which can be passed to blipper_new() in filter_bank.
- * Arguments to decimation and taps must match. */
-#define blipper_create_filter_bank BLIPPER_MANGLE(blipper_create_filter_bank)
-blipper_sample_t *blipper_create_filter_bank(unsigned decimation,
+/* Returns a pointer to the baked-in const filter bank for the supported
+ * (decimation, taps) configuration, or NULL if the requested parameters
+ * do not match the precomputed table. The returned pointer is owned by
+ * the library (it points at static const storage) and must NOT be freed.
+ * cutoff and beta are accepted for source compatibility but are encoded
+ * in the baked table; mismatching values are not validated. */
+const blipper_sample_t *blipper_create_filter_bank(unsigned decimation,
       unsigned taps, double cutoff, double beta);
 
 /* Frees the blipper. blip can be NULL (no-op). */
-#define blipper_free BLIPPER_MANGLE(blipper_free)
 void blipper_free(blipper_t *blip);
 
 /* Data pushing interfaces. One of these should be used exclusively. */
@@ -135,7 +106,6 @@ void blipper_free(blipper_t *blip);
  * The caller must ensure not to push deltas in a way that can destabilize
  * the final integration.
  */
-#define blipper_push_delta BLIPPER_MANGLE(blipper_push_delta)
 void blipper_push_delta(blipper_t *blip, blipper_long_sample_t delta, unsigned clocks_step);
 
 /* Push raw samples. blipper will find the deltas themself and push them.
@@ -143,14 +113,12 @@ void blipper_push_delta(blipper_t *blip, blipper_long_sample_t delta, unsigned c
  * This can be used to push interleaved stereo data to two independent
  * blippers.
  */
-#define blipper_push_samples BLIPPER_MANGLE(blipper_push_samples)
 void blipper_push_samples(blipper_t *blip, const blipper_sample_t *delta,
       unsigned samples, unsigned stride);
 
 /* Returns the number of samples available for reading using
  * blipper_read().
  */
-#define blipper_read_avail BLIPPER_MANGLE(blipper_read_avail)
 unsigned blipper_read_avail(blipper_t *blip);
 
 /* Reads processed samples. The caller must ensure to not read
@@ -159,7 +127,6 @@ unsigned blipper_read_avail(blipper_t *blip);
  * between each output sample in output.
  * Can be used to write to an interleaved stereo buffer.
  */
-#define blipper_read BLIPPER_MANGLE(blipper_read)
 void blipper_read(blipper_t *blip, blipper_sample_t *output, unsigned samples,
       unsigned stride);
 
@@ -168,4 +135,3 @@ void blipper_read(blipper_t *blip, blipper_sample_t *output, unsigned samples,
 #endif
 
 #endif
-
