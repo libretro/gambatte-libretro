@@ -201,12 +201,32 @@ void Memory::checkSerial(unsigned long const cc) {
 }
 #endif
 
+#ifdef HAVE_NETWORK
+/* Shift the incoming bits between `from` and `to` into SB.
+ *
+ * `from` and `to` count the bits still to come, so the bits arriving in this step
+ * are the ones sitting just above `to`. Reading them off the TOP of the incoming
+ * byte instead shifts in the same bit every step, and a transfer stepped through
+ * bit by bit then lands as 0x00 or 0xFF rather than what the other machine sent.
+ * Those are the only two bytes an unanswered cable produces, so nothing but a real
+ * peer can tell the difference.
+ *
+ * Stepping happens whenever the guest reads SB or SC, which polling SC's start bit
+ * does constantly, so this runs far more often than once per transfer. */
+static unsigned char shiftInSerial(unsigned sb, unsigned in, int from, int to) {
+	int const bits = from - to;
+	if (bits <= 0)
+		return static_cast<unsigned char>(sb);
+
+	return static_cast<unsigned char>(((sb << bits) | ((in >> to) & ((1 << bits) - 1))) & 0xFF);
+}
+#endif
+
 void Memory::updateSerial(unsigned long const cc) {	if (intreq_.eventTime(intevent_serial) != disabled_time) {
 		if (intreq_.eventTime(intevent_serial) <= cc) {
 #ifdef HAVE_NETWORK
 			bool fire = ((ioamhram_[0x102] & 0x80) == 0x80);
-			ioamhram_[0x101] = ((ioamhram_[0x101] << serialCnt_) |
-					    (serialize_value_ >> (8 - serialCnt_))) & 0xFF;
+			ioamhram_[0x101] = shiftInSerial(ioamhram_[0x101], serialize_value_, serialCnt_, 0);
 #else
          ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << serialCnt_) - 1) & 0xFF;
 #endif
@@ -223,8 +243,8 @@ void Memory::updateSerial(unsigned long const cc) {	if (intreq_.eventTime(inteve
 			int const targetCnt = serialCntFrom(intreq_.eventTime(intevent_serial) - cc,
 #ifdef HAVE_NETWORK
 			                                    serialize_is_fastcgb_);
-			ioamhram_[0x101] = ((ioamhram_[0x101] << (serialCnt_ - targetCnt)) |
-					    (serialize_value_ >> (8 - (serialCnt_ - targetCnt)))) & 0xFF;
+			ioamhram_[0x101] = shiftInSerial(ioamhram_[0x101], serialize_value_,
+			                 serialCnt_, targetCnt);
 #else
                                              ioamhram_[0x102] & isCgb() * 2);
          ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << (serialCnt_ - targetCnt)) - 1) & 0xFF;
