@@ -28,6 +28,25 @@ class SerialIO
 
 		virtual bool check(unsigned char out, unsigned char& in, bool& fastCgb) = 0;
 		virtual unsigned char send(unsigned char data, bool fastCgb) = 0;
+
+		/** Where this machine's clock stands, and what its serial registers
+		  * hold. Called at every event boundary, and again after either register
+		  * is written, so an implementation that has to place a transfer on a
+		  * timeline it shares with another machine can, without having to guess
+		  * when the write happened.
+		  *
+		  * Not pure, and a no-op by default: a serial link over a socket has
+		  * nobody to agree a clock with and wants none of this.
+		  *
+		  * @param cc cycle counter, in CPU cycles since the last rebase
+		  * @param doubleSpeed whether a CPU cycle is currently a half-length one
+		  * @param sb SB, 0xFF01, the serial transfer register
+		  * @param sc SC, 0xFF02, the serial control register
+		  */
+		virtual void tick(unsigned long cc, bool doubleSpeed,
+		                  unsigned char sb, unsigned char sc) {
+			(void)cc; (void)doubleSpeed; (void)sb; (void)sc;
+		}
 };
 
 }

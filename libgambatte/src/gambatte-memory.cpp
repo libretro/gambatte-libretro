@@ -178,9 +178,19 @@ void Memory::startSerialTransfer(unsigned long cc, unsigned char data, bool fast
 }
 
 void Memory::checkSerial(unsigned long const cc) {
+	if (serial_io_ == 0)
+		return;
+
+	// Where the machine's clock stands, whether or not it is expecting
+	// anything. A serial link that has to agree a timeline with another
+	// machine needs this on every pass, not only on the passes where a
+	// transfer is already armed: it is how the two of them stay in step at
+	// all, and a machine that only spoke while it was waiting for a byte
+	// would hold up the one waiting for it.
+	serial_io_->tick(cc, isDoubleSpeed(), ioamhram_[0x101], ioamhram_[0x102]);
+
 	// Periodically checks if serial data is received
-	if ((serial_io_ != 0) &&
-		 ((ioamhram_[0x102] & 0x80) == 0x80) &&
+	if (((ioamhram_[0x102] & 0x80) == 0x80) &&
 		 (intreq_.eventTime(intevent_serial) == disabled_time)) {
 		unsigned char data;
 		bool fastCgb;
@@ -191,8 +201,7 @@ void Memory::checkSerial(unsigned long const cc) {
 }
 #endif
 
-void Memory::updateSerial(unsigned long const cc) {
-	if (intreq_.eventTime(intevent_serial) != disabled_time) {
+void Memory::updateSerial(unsigned long const cc) {	if (intreq_.eventTime(intevent_serial) != disabled_time) {
 		if (intreq_.eventTime(intevent_serial) <= cc) {
 #ifdef HAVE_NETWORK
 			bool fire = ((ioamhram_[0x102] & 0x80) == 0x80);
@@ -1149,6 +1158,16 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 	}
 
 	ioamhram_[p + 0x100] = data;
+
+#ifdef HAVE_NETWORK
+	// And again with what the write left behind. The reading taken on the way
+	// in is of the register the guest is about to replace, so a link that
+	// publishes what this machine is offering would always be one write behind
+	// -- offering the byte before the one the game just loaded, which is the
+	// kind of fault a protocol survives for exactly one exchange.
+	if (serial_io_ != 0 && (p == 0x01 || p == 0x02))
+		serial_io_->tick(cc, isDoubleSpeed(), ioamhram_[0x101], ioamhram_[0x102]);
+#endif
 }
 
 void Memory::nontrivial_write(unsigned const p, unsigned const data, unsigned long const cc) {
