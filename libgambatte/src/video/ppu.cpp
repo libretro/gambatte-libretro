@@ -1643,8 +1643,10 @@ void PPU::loadState(SaveState const &ss, unsigned char const *const oamram) {
 	p_.wx = ss.mem.ioamhram.get()[0x14B];
    p_.dmgMode = (ss.mem.ioamhram.get()[0x14C] == 0x04);
 	p_.xpos = std::min<int>(ss.ppu.xpos, 168);
-	p_.endx = (p_.xpos & ~7) + (ss.ppu.endx & 7);
-	p_.endx = std::min(p_.endx <= p_.xpos ? p_.endx + 8 : p_.endx, 168);
+	// endx was rebuilt from its low three bits plus xpos, which is exact only
+	// while endx is in (xpos, xpos + 8]. saveState writes the whole byte, so
+	// take it: a state holding xpos = 168 with endx = 8 came back as endx = 168.
+	p_.endx = std::min<int>(ss.ppu.endx, 168);
 	p_.reg0 = ss.ppu.reg0 & 0xFF;
 	p_.reg1 = ss.ppu.reg1 & 0xFF;
 	p_.tileword = ss.ppu.tileword & 0xFFFF;
