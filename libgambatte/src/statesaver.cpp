@@ -370,6 +370,8 @@ SaverList::SaverList() {
 	{ static const char label[] = { l,o,d,m,a,u,p, NUL }; ADD(mem.lastOamDmaUpdate); }
 	{ static const char label[] = { m,i,n,i,n,t,t, NUL }; ADD(mem.minIntTime); }
 	{ static const char label[] = { u,n,h,a,l,t,t, NUL }; ADD(mem.unhaltTime); }
+	{ static const char label[] = { b,l,i,t,t,i,m, NUL }; ADD(mem.blitTime); }
+	{ static const char label[] = { b,l,n,k,l,c,d, NUL }; ADD(mem.blanklcd); }
 	{ static const char label[] = { r,o,m,b,a,n,k, NUL }; ADD(mem.rombank); }
 	{ static const char label[] = { d,m,a,s,r,c,   NUL }; ADD(mem.dmaSource); }
 	{ static const char label[] = { d,m,a,d,s,t,   NUL }; ADD(mem.dmaDestination); }

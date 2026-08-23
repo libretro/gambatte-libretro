@@ -146,6 +146,12 @@ bool GB::loadState(const void *data, size_t size) {
    SaveState state;
    p_->cpu.setStatePtrs(state);
 
+   /* SaveState is a plain local with no default initialiser, so a field the
+    * incoming state does not carry would otherwise be read off the stack.
+    * disabled_time is the "this state predates the field" sentinel. */
+   state.mem.blitTime = disabled_time;
+   state.mem.blanklcd = false;
+
    if (StateSaver::loadState(state, data, size)) {
       p_->cpu.loadState(state);
       p_->cpu.mem_.bootloader.choosebank(state.mem.ioamhram.get()[0x150] != 0xFF);

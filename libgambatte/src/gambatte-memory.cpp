@@ -67,6 +67,8 @@ unsigned long Memory::saveState(SaveState &state, unsigned long cc) {
 	state.mem.divLastUpdate = divLastUpdate_;
 	state.mem.nextSerialtime = intreq_.eventTime(intevent_serial);
 	state.mem.unhaltTime = intreq_.eventTime(intevent_unhalt);
+	state.mem.blitTime = intreq_.eventTime(intevent_blit);
+	state.mem.blanklcd = blanklcd_;
 	state.mem.lastOamDmaUpdate = lastOamDmaUpdate_;
 	state.mem.dmaSource = dmaSource_;
 	state.mem.dmaDestination = dmaDestination_;
@@ -131,10 +133,23 @@ void Memory::loadState(SaveState const &state) {
 			lastOamDmaUpdate_ + (oamEventPos - oamDmaPos_) * 4);
 	}
 
-	intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
-	                                 ? lcd_.nextMode1IrqTime()
-	                                 : state.cpu.cycleCounter);
-	blanklcd_ = false;
+	/* The blit event is the frame boundary the frontend sees, and it was
+	 * rebuilt here rather than restored. With the LCD on that guess is the
+	 * next mode-1 IRQ and usually right; with it off the machine paces blank
+	 * frames off a schedule nothing else knows, and blanklcd_ says whether the
+	 * next event paints one or skips it. Losing them resumed the machine a
+	 * whole frame out of step -- invisible to one mid-run reload, fatal to
+	 * rollback, which reloads every few frames. States written before these
+	 * were saved arrive with the sentinel, and keep the old reconstruction. */
+	if (state.mem.blitTime != disabled_time) {
+		intreq_.setEventTime<intevent_blit>(state.mem.blitTime);
+		blanklcd_ = state.mem.blanklcd;
+	} else {
+		intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
+		                                 ? lcd_.nextMode1IrqTime()
+		                                 : state.cpu.cycleCounter);
+		blanklcd_ = false;
+	}
 
 	if (!isCgb())
 		std::memset(cart_.vramdata() + 0x2000, 0, 0x2000);
