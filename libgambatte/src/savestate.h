@@ -70,6 +70,15 @@ struct SaveState {
 		unsigned long lastOamDmaUpdate;
 		unsigned long minIntTime;
 		unsigned long unhaltTime;
+		/* The blit event's time and the blank-LCD flag are the frame
+		 * boundary itself: the event decides when retro_run returns a
+		 * frame, and blanklcd_ decides whether the next one paints. Both
+		 * were left out of the state and rebuilt on load, which a machine
+		 * with its LCD off cannot survive -- it resumes a frame out of
+		 * step with the run the state came from. A state written before
+		 * these existed carries neither; blitTime then arrives as the
+		 * sentinel below and the old reconstruction is used. */
+		unsigned long blitTime;
 		unsigned short rombank;
 		unsigned short dmaSource;
 		unsigned short dmaDestination;
@@ -95,6 +104,7 @@ struct SaveState {
 		bool enableRam;
 		bool rambankMode;
 		bool hdmaTransfer;
+		bool blanklcd;
 	} mem;
 
 	struct PPU {
