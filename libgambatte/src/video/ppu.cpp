@@ -1657,7 +1657,14 @@ void PPU::loadState(SaveState const &ss, unsigned char const *const oamram) {
 	p_.lastM0Time = p_.now - ss.ppu.lastM0Time;
 	loadSpriteList(p_, ss);
 
+	/* A sprite fetch needs a real sprite, not the sentinel at the end
+	 * of spriteList. A malformed state can otherwise resume f5 with
+	 * nextSprite == numSprites and increment it past the array. */
+	bool const spriteFetchState = ss.ppu.state >= M3Loop::LoadSprites::ID0
+	                          && ss.ppu.state <= M3Loop::LoadSprites::ID5;
+
 	if (m3loopState && videoCycles < 144 * 456L && p_.xpos < 168
+			&& (!spriteFetchState || p_.currentSprite < p_.spriteMapper.numSprites(videoCycles / 456))
 			&& lineCycles + cyclesUntilM0Upperbound(p_) < weMasterCheckPriorToLyIncLineCycle(p_.cgb)) {
 		p_.nextCallPtr = m3loopState;
 		p_.cycles = -1;
