@@ -22,6 +22,9 @@
 #include "sound.h"
 #include "video.h"
 #include "bootloader.h"
+#ifdef HAVE_NETWORK
+#include "infrared_io.h"
+#endif
 #include <cstring>
 
 namespace gambatte {
@@ -34,6 +37,7 @@ Memory::Memory(Interrupter const &interrupter) :
    getInput_(0)
 #ifdef HAVE_NETWORK
 , serial_io_(0)
+, infrared_io_(0)
 #endif
 , divLastUpdate_(0)
 , lastOamDmaUpdate_(disabled_time)
@@ -121,6 +125,14 @@ void Memory::loadState(SaveState const &state) {
                               )
 	           : 8;
 
+#ifdef HAVE_NETWORK
+	// A reset and a loaded state both come through here, and both replace RP
+	// without the guest writing it. An LED left lit in the other machine's
+	// eyes by a register that no longer says so would stay lit for ever.
+	if (infrared_io_ != 0)
+		infrared_io_->restored(isCgb() ? ioamhram_[0x156] : 0);
+#endif
+
 	cart_.setVrambank(ioamhram_[0x14F] & isCgb());
 	cart_.setOamDmaSrc(oam_dma_src_off);
 	cart_.setWrambank(isCgb() && (ioamhram_[0x170] & 0x07) ? ioamhram_[0x170] & 0x07 : 1);
@@ -162,6 +174,11 @@ void Memory::setEndtime(unsigned long cc, unsigned long inc) {
 		                                   + (70224 << is_doublespeed));
 
 	intreq_.setEventTime<intevent_end>(cc + (inc << is_doublespeed));
+
+#ifdef HAVE_NETWORK
+	if (infrared_io_ != 0)
+		infrared_io_->begin(cc, is_doublespeed != 0);
+#endif
 }
 
 #ifdef HAVE_NETWORK
@@ -631,6 +648,17 @@ unsigned Memory::nontrivial_ff_read(unsigned const p, unsigned long const cc) {
 		return ioamhram_[0x141] | lcd_.getStat(ioamhram_[0x145], cc);
 	case 0x44:
 		return lcd_.getLyReg(cc);
+#ifdef HAVE_NETWORK
+	case 0x56:
+		// Bit 1 is the photodiode, and reads 0 while it is lit -- but only with
+		// the receiver switched on, which takes both of bits 6 and 7. Everything
+		// else is the register as written.
+		if (infrared_io_ != 0 && isCgb() && (ioamhram_[0x156] & 0xC0) == 0xC0
+				&& infrared_io_->lit(cc, isDoubleSpeed()))
+			return ioamhram_[0x156] & ~2u;
+
+		break;
+#endif
 	case 0x69:
 		return lcd_.cgbBgColorRead(ioamhram_[0x168] & 0x3F, cc);
 	case 0x6B:
@@ -1114,8 +1142,13 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 
 		return;
 	case 0x56:
-		if (isCgb())
+		if (isCgb()) {
 			ioamhram_[0x156] = data | 0x3E;
+#ifdef HAVE_NETWORK
+			if (infrared_io_ != 0)
+				infrared_io_->write(cc, isDoubleSpeed(), data);
+#endif
+		}
 
 		return;
 	case 0x68:

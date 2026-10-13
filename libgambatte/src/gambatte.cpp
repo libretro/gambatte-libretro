@@ -126,6 +126,10 @@ void GB::setBootloaderGetter(bool (*getter)(void* userdata, bool isgbc, uint8_t*
 void GB::setSerialIO(SerialIO *serial_io) {
 	p_->cpu.setSerialIO(serial_io);
 }
+
+void GB::setInfraredIO(InfraredIO *infrared_io) {
+	p_->cpu.setInfraredIO(infrared_io);
+}
 #endif
 
 void *GB::savedata_ptr() { return p_->cpu.savedata_ptr(); }

@@ -27,6 +27,7 @@ namespace gambatte {
 
 #ifdef HAVE_NETWORK
 class SerialIO;
+class InfraredIO;
 #endif
 
 class CPU {
@@ -68,6 +69,10 @@ public:
 #ifdef HAVE_NETWORK
 	void setSerialIO(SerialIO *serial_io) {
 		mem_.setSerialIO(serial_io);
+	}
+
+	void setInfraredIO(InfraredIO *infrared_io) {
+		mem_.setInfraredIO(infrared_io);
 	}
 #endif
 

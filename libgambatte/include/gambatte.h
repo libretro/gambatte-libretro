@@ -22,6 +22,7 @@
 #include "inputgetter.h"
 #ifdef HAVE_NETWORK
 #include "serial_io.h"
+#include "infrared_io.h"
 #endif
 #include "gbint.h"
 #include <string>
@@ -106,6 +107,9 @@ public:
 #ifdef HAVE_NETWORK
 	/** Sets the callback used for transferring serial data. */
 	void setSerialIO(SerialIO *serial_io);
+
+	/** Sets the far end of the Game Boy Color's infrared port. */
+	void setInfraredIO(InfraredIO *infrared_io);
 #endif
 	
 	/** Sets the directory used for storing save data. The default is the same directory as the ROM Image file. */
