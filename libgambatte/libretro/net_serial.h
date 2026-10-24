@@ -6,6 +6,10 @@
 #include <sys/select.h>
 #endif
 
+#if _WIN32
+#include <winsock2.h>
+#endif
+
 #include <gambatte.h>
 #include <time.h>
 
@@ -36,6 +40,11 @@ class NetSerial : public gambatte::SerialIO
 		int sockfd_;
 
 		clock_t lastConnectAttempt_;
+
+#ifdef __WIN32
+		WSADATA wsaData;
+		int wsaStartupStatus;
+#endif
 };
 
 #endif
