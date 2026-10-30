@@ -89,6 +89,13 @@ void GB::Priv::full_init(bool const clearSram) {
 }
 
 void GB::reset() {
+   /* full_init() reloads the boot ROM and snapshots ROM bank 0 as the
+    * cartridge backup. A reset before the FF50 write would snapshot the
+    * boot ROM overlay instead, and after FF50 the cartridge header would
+    * never come back (white screen). Put the cartridge back first; this
+    * does nothing once the boot ROM is unmapped or when none is used. */
+   p_->cpu.mem_.bootloader.call_FF50();
+
    /* Battery-backed SRAM and RTC must persist across a soft reset
     * (matching real-hardware behavior; the cart battery keeps
     * volatile SRAM alive while the console is power-cycled). */
