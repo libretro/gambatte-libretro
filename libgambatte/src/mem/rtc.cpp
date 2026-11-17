@@ -41,7 +41,9 @@ namespace gambatte
 
    void Rtc::doLatch()
    {
-      uint64_t tmp = ((dataDh_ & 0x40) ? haltTime_ : clock_.now()) - baseTime_;
+      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : clock_.now();
+      /* A time before baseTime_ would wrap and spin the carry loop below. */
+      uint64_t tmp = unixtime < baseTime_ ? 0 : unixtime - baseTime_;
 
       while (tmp > 0x1FF * 86400)
       {
