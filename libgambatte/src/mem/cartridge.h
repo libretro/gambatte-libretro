@@ -55,7 +55,7 @@ namespace gambatte
    class Cartridge
    {
       public:
-         Cartridge() : isSachen_(false) {}
+         Cartridge() : rtc_(clock_), huc3_(clock_), isSachen_(false) {}
          void setStatePtrs(SaveState &);
          void saveState(SaveState &) const;
          void loadState(const SaveState &);
@@ -152,6 +152,7 @@ namespace gambatte
          bool isHuC3() const { return huc3_.isHuC3(); }
          unsigned char HuC3Read(unsigned p, unsigned long const cc) { return huc3_.read(p, cc); }
          void HuC3Write(unsigned p, unsigned data) { huc3_.write(p, data); }
+         CalendarClock &calendarClock() { return clock_; }
 
          /* Sachen MMC1 (unlicensed mapper used by Sachen 4-in-1 etc.):
           * the cartridge header is bit-scrambled and a "locked" boot
@@ -203,6 +204,7 @@ namespace gambatte
             }
          };
          MemPtrs memptrs_;
+         CalendarClock clock_;
          Rtc rtc_;
          HuC3Chip huc3_;
          /* True only when the loaded ROM was identified as a Sachen

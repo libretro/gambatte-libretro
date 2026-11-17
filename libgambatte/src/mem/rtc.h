@@ -19,7 +19,7 @@
 #ifndef RTC_H
 #define RTC_H
 
-#include <ctime>
+#include "calendar_clock.h"
 #include <stdint.h>
 
 namespace gambatte
@@ -30,7 +30,7 @@ namespace gambatte
    class Rtc
    {
       public:
-         Rtc();
+         explicit Rtc(const CalendarClock &clock);
 
          const unsigned char* getActive() const
          {
@@ -76,6 +76,7 @@ namespace gambatte
          }
 
       private:
+         const CalendarClock &clock_;
          unsigned char *activeData_;
          void (Rtc::*activeSet_)(unsigned);
          uint64_t baseTime_;

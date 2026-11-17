@@ -750,6 +750,7 @@ namespace gambatte
       mbc->saveState(state.mem);
       rtc_.saveState(state);
       huc3_.saveState(state);
+      clock_.saveState(state);
    }
 
    void Cartridge::loadState(const SaveState &state)
@@ -757,6 +758,7 @@ namespace gambatte
       huc3_.loadState(state);
       rtc_.loadState(state);
       mbc->loadState(state.mem);
+      clock_.loadState(state);
    }
 
    /* Note: a previous helper named enforce8bit() iterated every

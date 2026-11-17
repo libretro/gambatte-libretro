@@ -80,6 +80,17 @@ public:
 	  * Equivalent to reloading a ROM image, or turning a Game Boy Color off and on again.
 	  */
 	void reset();
+
+	/** Sets the calendar time the MBC3 and HuC3 clocks read, in seconds and nanoseconds
+	  * since 1970. Until the first call they read the host clock.
+	  */
+	void setCalendarTime(uint64_t sec, unsigned long nsec);
+
+	/** Returns the MBC3 and HuC3 clocks to the host clock, as before the first setCalendarTime. */
+	void clearCalendarTime();
+
+	/** While running, a time set with setCalendarTime advances with emulated time. */
+	void setCalendarClockRunning(bool running);
 	
 	/** @param palNum 0 <= palNum < 3. One of BG_PALETTE, SP1_PALETTE and SP2_PALETTE.
 	  * @param colorNum 0 <= colorNum < 4
