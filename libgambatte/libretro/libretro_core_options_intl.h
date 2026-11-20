@@ -1694,7 +1694,7 @@ struct retro_core_options_v2 options_ar = {
 #define OPTION_VAL_GBC_DARK_BLUE_AST "GBC - Azul escuro"
 #define OPTION_VAL_GBC_DARK_BROWN_AST "GBC - Marrón escuro"
 #define OPTION_VAL_GBC_DARK_GREEN_AST "GBC - Verde escuro"
-#define OPTION_VAL_GBC_GRAYSCALE_AST "GBC - Escala de buxos"
+#define OPTION_VAL_GBC_GRAYSCALE_AST "GBC - Escala de grises"
 #define OPTION_VAL_GBC_GREEN_AST "GBC - Verde"
 #define OPTION_VAL_GBC_INVERTED_AST NULL
 #define OPTION_VAL_GBC_ORANGE_AST "GBC - Naranxa"
@@ -58945,7 +58945,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_INTERNAL_SV "Intern"
 #define OPTION_VAL_CUSTOM_SV "Anpassa"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_SV "Intern palett"
-#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_SV "Väljer en palett som används för att färglägga Game Boy-spel när ”GB-färgläggning” är inställd på ”Intern”, eller när ”GB-färgläggning” är inställd på ”Automatiskt” och spelet inte har någon fördefinierad SGB/GBC-palett. GB-paletter återskapar skärmen hos ursprunglig Game Boy-hårdvara. GBC-paletter är identiska med de inbyggda förinställningarna för Game Boy Color. SGB-paletter är identiska med de inbyggda förinställningarna för Super Game Boy."
+#define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_SV "Väljer den palett som används för att färglägga Game Boy-spel när ”GB-färgläggning” är inställd på ”Intern”, eller när ”GB-färgläggning” är inställd på ”Automatiskt” och spelet saknar en fördefinierad SGB- eller GBC-palett. GB-paletter efterliknar skärmen på den ursprungliga Game Boy-maskinvaran. GBC-paletter är identiska med de inbyggda förinställningarna för Game Boy Color. SGB-paletter är identiska med de inbyggda förinställningarna för Super Game Boy."
 #define OPTION_VAL_GB_DMG_SV NULL
 #define OPTION_VAL_GB_POCKET_SV NULL
 #define OPTION_VAL_GB_LIGHT_SV "GB - Ljus"
@@ -59308,7 +59308,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_TWB64_299_3DS_VIRTUAL_CONSOLE_GREEN_SV NULL
 #define OPTION_VAL_TWB64_300_WONDER_PURPLE_SV NULL
 #define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_LABEL_SV NULL
-#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_SV "Väljer intern färgsättningspalett när ”Intern palett” är inställd på ”PixelShift - Pack 1”."
+#define GAMBATTE_GB_PALETTE_PIXELSHIFT_1_INFO_0_SV "Väljer intern färgläggningspalett när ”Intern palett” är inställd på ”PixelShift - Pack 1”."
 #define OPTION_VAL_PIXELSHIFT_01_ARCTIC_GREEN_SV NULL
 #define OPTION_VAL_PIXELSHIFT_02_ARDUBOY_SV NULL
 #define OPTION_VAL_PIXELSHIFT_03_BGB_0_3_EMULATOR_SV NULL
@@ -59355,7 +59355,7 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_PIXELSHIFT_44_VIRTUAL_BOY_SV NULL
 #define OPTION_VAL_PIXELSHIFT_45_WISH_SV NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_SV "Färgkorrigering"
-#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_SV "Justerar utgångsfärgerna så att de matchar visningen på riktig Game Boy Color-hårdvara. ”Endast GBC” säkerställer att korrigeringen endast tillämpas när du spelar Game Boy Color-spel eller när du använder en Game Boy Color-palett för att färglägga ett Game Boy-spel. ”Alltid” tillämpar färgkorrigering på allt innehåll och ger oväntade eller mindre lämpliga resultat när du använder interna färgpaletter av typen GB eller SGB."
+#define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_SV "Justerar utgångsfärgerna så att de matchar skärmen på äkta Game Boy Color-maskinvara. ”Endast GBC” ser till att korrigeringen bara tillämpas när du spelar Game Boy Color-spel eller använder en Game Boy Color-palett för att färglägga ett Game Boy-spel. ”Alltid” tillämpar färgkorrigering på allt innehåll och kan ge oväntade eller mindre bra resultat när interna GB- eller SGB-färgpaletter används."
 #define OPTION_VAL_GBC_ONLY_SV "Endast GBC"
 #define OPTION_VAL_ALWAYS_SV "Alltid"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_SV "Färgkorrigeringsläge"
@@ -59375,11 +59375,11 @@ struct retro_core_options_v2 options_sr = {
 #define OPTION_VAL_LCD_GHOSTING_SV "LCD-efterbilder (Noggrann)"
 #define OPTION_VAL_LCD_GHOSTING_FAST_SV "LCD-efterbilder (snabb)"
 #define GAMBATTE_AUDIO_RESAMPLER_LABEL_SV "Ljudomsamplare"
-#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_SV "Ange vilken algoritm som ska användas vid omsampling av genererat ljud. Game Boys ljudfrekvens begränsas endast av processorns skrivhastighet, vilket innebär att ursprungliga frekvenser är opraktiska på moderna ljudenheter och måste nedsamplas. ”Sinc” ger högst kvalitet. ”Cosinus” förbättrar prestandan på mindre avancerad hårdvara."
+#define GAMBATTE_AUDIO_RESAMPLER_INFO_0_SV "Ange vilken algoritm som ska användas vid omsampling av genererat ljud (Game Boys ljudfrekvens begränsas endast av Game Boy-processorns skrivhastighet, vilket gör ”ursprungliga” frekvenser opraktiska på moderna ljudenheter och kräver nedsampling). ”Sinc” ger högst kvalitet. ”Cosinus” förbättrar prestandan på mindre kraftfull maskinvara."
 #define OPTION_VAL_SINC_SV NULL
 #define OPTION_VAL_CC_SV "Cosinus"
 #define GAMBATTE_GB_HWMODE_LABEL_SV "Emulerad hårdvara (Omstart krävs)"
-#define GAMBATTE_GB_HWMODE_INFO_0_SV "Ange vilken typ av maskinvara som ska emuleras. ”Automatiskt” rekommenderas. Om du väljer ”GBA” låses extrafunktioner upp i vissa Game Boy Color-spel med GBA Enhanced-stöd, som Shantae, Wendy - Every Witch Way och Legend of Zelda: Oracle of Seasons/Ages."
+#define GAMBATTE_GB_HWMODE_INFO_0_SV "Ange vilken maskinvarutyp som ska emuleras. ”Automatiskt” rekommenderas. Om du väljer ”GBA” låses extrafunktioner upp i vissa Game Boy Color-spel med stöd för ”GBA Enhanced” (Shantae, Wendy - Every Witch Way, Legend of Zelda: Oracle of Seasons/Ages...)."
 #define OPTION_VAL_GB_SV NULL
 #define OPTION_VAL_GBA_SV NULL
 #define GAMBATTE_GB_BOOTLOADER_LABEL_SV "Använd officiell bootloader (omstart krävs)"
