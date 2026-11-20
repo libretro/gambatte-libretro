@@ -22,8 +22,9 @@
 
 namespace gambatte {
 
-HuC3Chip::HuC3Chip()
-: baseTime_(0)
+HuC3Chip::HuC3Chip(CalendarClock const &clock)
+: clock_(clock)
+, baseTime_(0)
 , haltTime_(0)
 , dataTime_(0)
 , writingTime_(0)
@@ -39,7 +40,7 @@ HuC3Chip::HuC3Chip()
 }
 
 void HuC3Chip::doLatch() {
-	uint64_t tmp = (halted_ ? haltTime_ : std::time(0)) - baseTime_;
+	uint64_t tmp = (halted_ ? haltTime_ : clock_.now()) - baseTime_;
     
     unsigned minute = (tmp / 60) % 1440;
     unsigned day = (tmp / 86400) & 0xFFF;
@@ -181,7 +182,7 @@ void HuC3Chip::write(unsigned p, unsigned data) {
 void HuC3Chip::updateTime() {
     unsigned minute = (writingTime_ & 0xFFF) % 1440;
     unsigned day = (writingTime_ & 0xFFF000) >> 12;
-    baseTime_ = std::time(0) - minute*60 - day*86400;
+    baseTime_ = clock_.now() - minute*60 - day*86400;
     haltTime_ = baseTime_;
     
 }

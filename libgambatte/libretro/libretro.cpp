@@ -1314,6 +1314,76 @@ static void deactivate_rumble(void)
 /* Rumble support END */
 /**********************/
 
+/*******************************/
+/* Calendar time support START */
+/*******************************/
+
+static struct retro_calendar_time_interface calendar_iface;
+static bool calendar_available; /* interface version >= 1 with both time getters */
+static bool calendar_active;    /* the RTC follows the calendar clock for this content */
+
+static void calendar_init(void)
+{
+   memset(&calendar_iface, 0, sizeof(calendar_iface));
+   calendar_iface.interface_version = RETRO_CALENDAR_TIME_INTERFACE_VERSION;
+
+   calendar_available =
+         environ_cb(RETRO_ENVIRONMENT_GET_CALENDAR_TIME_INTERFACE, &calendar_iface) &&
+         calendar_iface.interface_version >= 1 &&
+         calendar_iface.get_start_time &&
+         calendar_iface.get_current_time;
+}
+
+/* Reset reads only the current time, and only if load set the clock, so a
+ * session loaded without a time stays on the host clock. */
+static void calendar_start(bool load)
+{
+   struct retro_calendar_time t;
+
+   if (load)
+   {
+      /* gb outlives the content, and with it the last content's clock. */
+      calendar_active = false;
+      gb.clearCalendarTime();
+   }
+   else if (!calendar_active)
+      return;
+
+   if (!calendar_available)
+      return;
+
+   if (!(calendar_iface.get_current_time(&t) && t.sec > 0) &&
+       !(load && calendar_iface.get_start_time(&t) && t.sec > 0))
+      return;
+
+   gb.setCalendarTime((uint64_t)t.sec, (unsigned long)t.nsec);
+   gb.setCalendarClockRunning(true);
+   calendar_active = true;
+}
+
+/* While the current time reads, the RTC shows it and does not run ahead
+ * within the frame; while the frontend holds it fixed (netplay, replays),
+ * the RTC runs on emulated time. */
+static void calendar_frame(void)
+{
+   struct retro_calendar_time t;
+
+   if (!calendar_active)
+      return;
+
+   if (calendar_iface.get_current_time(&t) && t.sec > 0)
+   {
+      gb.setCalendarTime((uint64_t)t.sec, (unsigned long)t.nsec);
+      gb.setCalendarClockRunning(false);
+   }
+   else
+      gb.setCalendarClockRunning(true);
+}
+
+/*****************************/
+/* Calendar time support END */
+/*****************************/
+
 #ifdef HAVE_NETWORK
 /* Core options 'update display' callback */
 static bool update_option_visibility(void)
@@ -1750,6 +1820,8 @@ void retro_init(void)
    libretro_supports_ff_override = false;
    if (environ_cb(RETRO_ENVIRONMENT_SET_FASTFORWARDING_OVERRIDE, NULL))
       libretro_supports_ff_override = true;
+
+   calendar_init();
 }
 
 void retro_deinit(void)
@@ -1852,6 +1924,7 @@ void retro_reset()
    /* gb.reset() now preserves battery-backed SRAM and RTC
     * automatically (matching real Game Boy behavior), so the
     * old new[]/memcpy/delete[] dance is no longer needed. */
+   calendar_start(false);
    gb.reset();
 #ifdef DUAL_MODE
    gb2.reset();
@@ -1917,6 +1990,10 @@ bool retro_unserialize(const void *data, size_t size)
     * state. */
    if (!gb.loadState(data, size))
       return false;
+
+   /* A state's calendar clock applies only while the frontend gives one. */
+   if (!calendar_active)
+      gb.clearCalendarTime();
 
    /* The audio resampler internal state (blipper integrator,
     * CC accumulator/highpass) and the frame-blending history
@@ -2788,12 +2865,16 @@ bool retro_load_game(const struct retro_game_info *info)
       }
    }
 
+   calendar_start(true);
    if (gb.load(info->data, info->size, flags) != 0)
       return false;
 #ifdef DUAL_MODE
    if (gb2.load(info->data, info->size, flags) != 0)
       return false;
 #endif
+
+   if (calendar_active && gb.rtcdata_size())
+      gambatte_log(RETRO_LOG_INFO, "RTC follows the frontend's calendar time.\n");
 
    rom_path = info->path ? info->path : "";
    strncpy(internal_game_name, (const char*)info->data + 0x134, sizeof(internal_game_name) - 1);
@@ -2931,6 +3012,8 @@ void retro_run()
       libretro_frames_count++;
       return;
    }
+
+   calendar_frame();
 
    union
    {

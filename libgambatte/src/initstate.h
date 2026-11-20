@@ -25,7 +25,7 @@ namespace gambatte {
  * read as 0xFF). Pass false from a soft-reset path so battery-
  * backed cartridge RAM survives the reset, matching real
  * hardware behavior. */
-void setInitState(struct SaveState &state, bool cgb, bool gbaCgbMode, bool clearSram = true);
+void setInitState(struct SaveState &state, bool cgb, bool gbaCgbMode, unsigned long rtcNow, bool clearSram = true);
 }
 
 #endif

@@ -36,7 +36,7 @@ struct SaveState {
 		void set(T *p, std::size_t size) { ptr = p; size_ = size; }
 
 		friend class SaverList;
-		friend void setInitState(SaveState &, bool, bool, bool);
+		friend void setInitState(SaveState &, bool, bool, unsigned long, bool);
 
 	private:
 		T *ptr;
@@ -222,6 +222,13 @@ struct SaveState {
 		unsigned char modeflag;
 		bool irReceivingPulse;
 	} huc3;
+
+	// No labels of its own: GB::saveState puts it in the fields of the
+	// RTC chip the cartridge lacks.
+	struct Calendar {
+		unsigned long sec;
+		unsigned long samples;
+	} calendar;
 };
 
 }

@@ -176,6 +176,8 @@ public:
       sachenLockCounter_ = cart_.sachenLockCounterPtr();
    }
    void onSachenUnlock() { cart_.onSachenUnlock(); }
+   bool isHuC3() const { return cart_.isHuC3(); }
+   CalendarClock &calendarClock() { return cart_.calendarClock(); }
 
 private:
 	Cartridge cart_;

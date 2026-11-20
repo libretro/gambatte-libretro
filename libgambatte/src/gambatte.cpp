@@ -49,6 +49,7 @@ long GB::runFor(gambatte::video_pixel_t *const videoBuf, const int pitch,
 	p_->cpu.setSoundBuffer(soundBuf, soundBufSize);
 	const long cyclesSinceBlit = p_->cpu.runFor(samples * 2);
 	samples = p_->cpu.fillSoundBuffer();
+	p_->cpu.mem_.calendarClock().advance(samples);
 	
 	return cyclesSinceBlit < 0 ? cyclesSinceBlit : static_cast<long>(samples) - (cyclesSinceBlit >> 1);
 }
@@ -57,7 +58,7 @@ void GB::Priv::full_init(bool const clearSram) {
    SaveState state;
    
    cpu.setStatePtrs(state);
-   setInitState(state, cpu.isCgb(), gbaCgbMode, clearSram);
+   setInitState(state, cpu.isCgb(), gbaCgbMode, cpu.mem_.calendarClock().now(), clearSram);
    
    cpu.mem_.bootloader.reset();
    cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
@@ -93,6 +94,19 @@ void GB::reset() {
     * (matching real-hardware behavior; the cart battery keeps
     * volatile SRAM alive while the console is power-cycled). */
    p_->full_init(false);
+}
+
+void GB::setCalendarTime(uint64_t const sec, unsigned long const nsec) {
+   p_->cpu.mem_.calendarClock().set(sec,
+         static_cast<unsigned long>(uint64_t(nsec) * CalendarClock::samples_per_sec / 1000000000));
+}
+
+void GB::clearCalendarTime() {
+   p_->cpu.mem_.calendarClock().clear();
+}
+
+void GB::setCalendarClockRunning(bool const running) {
+   p_->cpu.mem_.calendarClock().setRunning(running);
 }
 
 void GB::setInputGetter(InputGetter *getInput) {
@@ -142,11 +156,43 @@ void GB::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) 
 	p_->cpu.setDmgPaletteColor(palNum, colorNum, rgb32);
 }
 
+/* A cartridge has the MBC3 RTC or the HuC3 chip, not both. The calendar
+ * clock rides in state fields of the chip it lacks, which earlier builds
+ * leave 0 (no clock), so states keep their size. */
+static void packCalendar(SaveState &state, bool const huc3) {
+   unsigned long const sec = state.calendar.sec;
+
+   if (huc3) {
+      state.rtc.dataDh   = sec >> 24 & 0xFF;
+      state.rtc.dataDl   = sec >> 16 & 0xFF;
+      state.rtc.dataH    = sec >> 8 & 0xFF;
+      state.rtc.dataM    = sec & 0xFF;
+      state.rtc.haltTime = state.calendar.samples;
+   } else {
+      state.huc3.dataTime    = sec;
+      state.huc3.writingTime = state.calendar.samples;
+   }
+}
+
+static void unpackCalendar(SaveState &state, bool const huc3) {
+   if (huc3) {
+      state.calendar.sec = static_cast<unsigned long>(state.rtc.dataDh) << 24
+         | static_cast<unsigned long>(state.rtc.dataDl) << 16
+         | static_cast<unsigned long>(state.rtc.dataH) << 8
+         | state.rtc.dataM;
+      state.calendar.samples = state.rtc.haltTime;
+   } else {
+      state.calendar.sec     = state.huc3.dataTime;
+      state.calendar.samples = state.huc3.writingTime;
+   }
+}
+
 bool GB::loadState(const void *data, size_t size) {
    SaveState state;
    p_->cpu.setStatePtrs(state);
 
    if (StateSaver::loadState(state, data, size)) {
+      unpackCalendar(state, p_->cpu.mem_.isHuC3());
       p_->cpu.loadState(state);
       p_->cpu.mem_.bootloader.choosebank(state.mem.ioamhram.get()[0x150] != 0xFF);
       return true;
@@ -158,6 +204,7 @@ void GB::saveState(void *data) {
    SaveState state;
    p_->cpu.setStatePtrs(state);
    p_->cpu.saveState(state);
+   packCalendar(state, p_->cpu.mem_.isHuC3());
    StateSaver::saveState(state, data);
 }
 

@@ -22,7 +22,6 @@
 #include "sound/sound_unit.h"
 #include <algorithm>
 #include <cstring>
-#include <ctime>
 
 namespace {
 
@@ -1147,7 +1146,7 @@ static void setInitialDmgIoamhram(unsigned char ioamhram[]) {
 
 } // anon namespace
 
-void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbMode, bool const clearSram) {
+void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbMode, unsigned long const rtcNow, bool const clearSram) {
 	static unsigned char const cgbObjpDump[0x40] = {
 		0x00, 0x00, 0xF2, 0xAB,
 		0x61, 0xC2, 0xD9, 0xBA,
@@ -1336,7 +1335,7 @@ void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbM
 	state.spu.ch4.nr4 = 0;
 	state.spu.ch4.master = false;
 
-	state.rtc.baseTime = std::time(0);
+	state.rtc.baseTime = rtcNow;
 	state.rtc.haltTime = state.rtc.baseTime;
 	state.rtc.dataDh = 0;
 	state.rtc.dataDl = 0;
@@ -1345,7 +1344,7 @@ void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbM
 	state.rtc.dataS = 0;
 	state.rtc.lastLatchData = false;
 
-	state.huc3.baseTime = std::time(0);
+	state.huc3.baseTime = rtcNow;
 	state.huc3.haltTime = state.huc3.baseTime;
 	state.huc3.dataTime = 0;
 	state.huc3.writingTime = 0;
@@ -1355,4 +1354,7 @@ void gambatte::setInitState(SaveState &state, bool const cgb, bool const gbaCgbM
 	state.huc3.ramValue = 1;
 	state.huc3.modeflag = 2; // huc3_none
 	state.huc3.irReceivingPulse = false;
+
+	state.calendar.sec = 0;
+	state.calendar.samples = 0;
 }
