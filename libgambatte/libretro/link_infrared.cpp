@@ -4,24 +4,36 @@
 
 #include "gambatte_log.h"
 
-/* How late a flash arrives, and how often two units in use rendezvous: 122
- * microseconds, which is 512 cycles of an undoubled CPU.
+/* How late a flash arrives, and how often two units in use rendezvous: 15
+ * microseconds, which is 64 cycles of an undoubled CPU.
  *
  * Light takes no time and this is not light, so it is as small as it can be
- * afforded. Every edge is late by the same amount, which no receiver can see;
- * what a game CAN see is its partner's answers arriving twice this late, once
- * for each direction. The protocols leave room for that because the hardware
- * needed it -- Pokemon waits two milliseconds before it answers and eight
- * before it gives up -- and a game polling the port from a timer interrupt
- * cannot resolve much under thirty microseconds to begin with.
+ * afforded. Every edge is late by the same amount, which no receiver can see
+ * in the length of a flash; what a game CAN see is its partner's answers
+ * arriving twice this late, once for each direction. The protocols leave room
+ * for that because the hardware needed it -- Pokemon waits two milliseconds
+ * before it answers and eight before it gives up.
+ *
+ * What it must not be is as long as a flash, or as long as a receiver takes to
+ * look again. Two machines run by one frontend are in step, frame for frame:
+ * each takes its interrupts and turns its polling loop at the moment the other
+ * does, so a delay moves every flash against that work by the same amount,
+ * every time. Pokemon Pinball opens with a 112-microsecond flash, and a flash
+ * 122 microseconds late falls inside the interrupt the receiver takes as the
+ * sender's flash ends. Super Mario Bros. Deluxe, at double speed, sends
+ * 56-microsecond flashes and looks for one every 57; in step it stops catching
+ * the first once it is 26 microseconds late.
  *
  * Smaller is a rendezvous between two machines that much more often. */
-#define IR_LATENCY ((uint64_t)1024)
+#define IR_LATENCY ((uint64_t)128)
 
 /* The horizon of a port nobody is using, about two milliseconds. A promise this
- * long is still standing when the port wakes, and is what the first flash after
- * that has to wait out -- once, at the head of a conversation, where every
- * protocol is waiting for a button to be pressed anyway. */
+ * long is still standing when the port wakes, and the first burst after that
+ * goes out as late as the promise reaches, up to this many ticks, every edge
+ * alike. That is far more than two machines in step allow (above), so a
+ * protocol that flashes first from a port that has not been listening can fail
+ * here. Both ends of a symmetric protocol listen before either flashes, which
+ * keeps their ports in use. */
 #define IR_IDLE_HORIZON ((uint64_t)16384)
 
 /* How long after its last flash a port still counts as in use: an eighth of a

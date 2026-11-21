@@ -33,8 +33,8 @@
  * thing this must not do is move two edges by different amounts.
  *
  * Which is why every edge is stamped the same distance ahead. The delay is the
- * promise the bus needs anyway, and a flash arriving a tenth of a millisecond
- * late is still exactly as long as it was sent.
+ * promise the bus needs anyway, and a flash arriving fifteen microseconds late
+ * is still exactly as long as it was sent.
  *
  * HOW MANY. The receiver reads lit while the LED of any unit on the bus is,
  * however many the frontend joins.
