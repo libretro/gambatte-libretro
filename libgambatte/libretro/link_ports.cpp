@@ -91,7 +91,10 @@ void LinkPorts::advance(bool frameStart)
 		w->grant = RETRO_LINK_UNBOUNDED;
 		/* Any value but RETRO_LINK_WAKE_NONE asks for reports. */
 		w->wake_flags = RETRO_LINK_WAKE_TOPOLOGY;
-		if (ports_[i]->onBus() && w->safe_tick < earliest)
+		/* A bus is joined or left at a frame edge, and a port hears of it
+		 * when its frame-start advance returns: that one counts every
+		 * port, as any of them may be on a bus by now. */
+		if ((frameStart || ports_[i]->onBus()) && w->safe_tick < earliest)
 			earliest = w->safe_tick;
 		listed[n++] = i;
 	}

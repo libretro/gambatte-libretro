@@ -11,6 +11,7 @@
 #ifdef HAVE_NETWORK
 #include "net_serial.h"
 #include "link_serial.h"
+#include "link_infrared.h"
 #endif
 
 #if defined(__DJGPP__) && defined(__STRICT_ANSI__)
@@ -1748,10 +1749,18 @@ static NetSerial gb_net_serial;
 static LinkSerial gb_link_serial;
 static SerialMode gb_serialMode = SERIAL_NONE;
 
+/* The Game Boy Color's infrared port, on a link port of its own: what a lead
+ * joins and what two units facing each other join are different things, and
+ * the frontend seats them separately. Only a Game Boy Color has one; an
+ * original Game Boy and a Game Boy Advance stay off that bus. */
+static LinkInfrared gb_link_infrared;
+static bool gb_has_infrared = false;
+
 static LinkPorts link_ports;
 
 static const struct retro_link_port_info link_port_list[] = {
    { 0, LINK_SERIAL_PROTOCOL, "Link cable", LINK_SERIAL_CLOCK_RATE, 2, 0, 0 },
+   { 1, LINK_INFRARED_PROTOCOL, "Infrared port", LINK_INFRARED_CLOCK_RATE, 2, 0, 0 },
    { 0, NULL, NULL, 0, 0, 0, 0 }
 };
 static int gb_NetworkPort = 12345;
@@ -1812,8 +1821,10 @@ void retro_init(void)
       link.ports             = link_port_list;
       given = environ_cb(RETRO_ENVIRONMENT_GET_LINK_INTERFACE, &link) ? &link : NULL;
       gb_link_serial.setInterface(given, 0);
+      gb_link_infrared.setInterface(given, 1);
       link_ports.setInterface(given);
       link_ports.add(&gb_link_serial);
+      link_ports.add(&gb_link_infrared);
    }
 #endif
 
@@ -1931,6 +1942,7 @@ void retro_deinit(void)
 
 #ifdef HAVE_NETWORK
    gb_link_serial.stop();
+   gb_link_infrared.stop();
 #endif
 }
 
@@ -2673,6 +2685,17 @@ static void check_variables(bool startup)
          break;
    }
 
+   /* The infrared port is attached with the cable's, so a machine set to
+    * Not Connected attaches nothing. */
+   if (gb_serialMode == SERIAL_LINK_CABLE && gb_has_infrared
+         && gb_link_infrared.start())
+      gb.setInfraredIO(&gb_link_infrared);
+   else
+   {
+      gb_link_infrared.stop();
+      gb.setInfraredIO(NULL);
+   }
+
    /* Show/hide core options */
    update_option_visibility();
 #endif
@@ -2986,6 +3009,11 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
 #endif
 
+#ifdef HAVE_NETWORK
+   /* A Game Boy Advance runs these games and leaves the window out. */
+   gb_has_infrared = gb.isCgb() && !(flags & gambatte::GB::GBA_CGB);
+#endif
+
    if (calendar_active && gb.rtcdata_size())
       gambatte_log(RETRO_LOG_INFO, "RTC follows the frontend's calendar time.\n");
 
@@ -3058,6 +3086,8 @@ void retro_unload_game()
    /* Off the bus before the machine goes away. */
    gb_link_serial.stop();
    gb.setSerialIO(NULL);
+   gb_link_infrared.stop();
+   gb.setInfraredIO(NULL);
 #endif
    /* Clear per-game state so a subsequent retro_load_game with
     * a different ROM doesn't see leftovers (palette autodetect
