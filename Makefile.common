@@ -50,7 +50,9 @@ SOURCES_CXX := \
 
 ifeq ($(HAVE_NETWORK),1)
 	SOURCES_CXX += \
-		$(CORE_DIR)/../libretro/net_serial.cpp
+		$(CORE_DIR)/../libretro/net_serial.cpp \
+		$(CORE_DIR)/../libretro/link_ports.cpp \
+		$(CORE_DIR)/../libretro/link_serial.cpp
 endif
 
 ifneq ($(STATIC_LINKING), 1)

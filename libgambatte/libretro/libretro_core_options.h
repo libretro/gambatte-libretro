@@ -53,7 +53,7 @@ struct retro_core_option_v2_category option_cats_us[] = {
    {
       "gb_link",
       "Game Link",
-      "Change networked Game Link (multiplayer) settings."
+      "Change Game Link (multiplayer) settings."
    },
    { NULL, NULL, NULL },
 };
@@ -839,7 +839,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_show_gb_link_settings",
       "Show Game Link Settings",
       NULL,
-      "Enable configuration of networked Game Link (multiplayer) options. NOTE: Quick Menu may need to be toggled for this setting to take effect.",
+      "Enable configuration of Game Link (multiplayer) options, Link Cable among them. NOTE: Quick Menu may need to be toggled for this setting to take effect.",
       NULL,
       NULL,
       {
@@ -853,10 +853,11 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "gambatte_gb_link_mode",
       "Game Link Mode",
       "Link Mode",
-      "When enabling networked Game Link functionality, specify whether current instance should run as a server or client.",
+      "How this Game Boy reaches another one. Not Connected leaves the link port empty. To cable this Game Boy to another one running in the same frontend, choose Link Cable for both; the frontend decides what is cabled to what and must support the link interface, and where it does not, Link Cable behaves as Not Connected. The two Network modes instead join two frontends over a socket, one running as server and the other as client.",
       NULL,
       "gb_link",
       {
+         { "Link Cable",     NULL },
          { "Not Connected",  NULL },
          { "Network Server", NULL },
          { "Network Client", NULL },

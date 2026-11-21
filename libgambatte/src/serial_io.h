@@ -30,10 +30,20 @@ class SerialIO
 		virtual unsigned char send(unsigned char data, bool fastCgb) = 0;
 
 		/** Where this machine's clock stands, and what its serial registers
-		  * hold. Called at every event boundary, and again after either register
-		  * is written, so an implementation that has to place a transfer on a
-		  * timeline it shares with another machine can, without having to guess
-		  * when the write happened.
+		  * hold. Called from the top of every pass of CPU::process, so at the
+		  * start of every run, before its first instruction, and at every
+		  * event boundary; whenever the serial state is brought up to date --
+		  * at serial events, on reads and writes of SB, SC and IF, and when
+		  * the cycle counter is rebased -- and again after SB or SC is
+		  * written, so an implementation that has to place a transfer on a
+		  * timeline it shares with another machine can, without having to
+		  * guess when the write happened.
+		  *
+		  * Not only while the machine runs: saving a state calls this twice,
+		  * rebasing the cycle counter in between, so cc can also step back.
+		  * An implementation that keeps time by cc ignores the calls made
+		  * outside its own runs of emulation and takes a smaller cc as a
+		  * rebase.
 		  *
 		  * Not pure, and a no-op by default: a serial link over a socket has
 		  * nobody to agree a clock with and wants none of this.
