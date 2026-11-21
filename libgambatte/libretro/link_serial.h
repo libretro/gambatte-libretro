@@ -6,7 +6,7 @@
 
 #include <libretro.h>
 
-#include "link_ports.h"
+#include "link_port_base.h"
 
 /* Names the emulated wire. Peers whose ids differ are never joined, which is
  * what keeps a Game Boy link lead out of a Game Boy Advance's socket: mGBA's
@@ -14,7 +14,7 @@
  * common but the shape of the connector. */
 #define LINK_SERIAL_PROTOCOL "gb-sio"
 
-/* Twice 4194304, the Game Boy's normal CPU clock. See the note on now_. */
+/* Twice 4194304, the Game Boy's normal CPU clock. See LinkPortBase::now_. */
 #define LINK_SERIAL_CLOCK_RATE 8388608
 
 /* A Game Boy link cable carried by the frontend's link bus.
@@ -51,20 +51,11 @@
  * could. Anything past a pair is refused, and both machines fall back to the
  * 0xFF an unanswered cable gives.
  */
-class LinkSerial : public gambatte::SerialIO, public LinkPort
+class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 {
 	public:
 		LinkSerial();
 		virtual ~LinkSerial();
-
-		/* Remember the bus. Called once, from retro_init, whether or not the
-		 * cable is ever switched on: the interface stays valid for the life of
-		 * the core and holding it costs nothing. */
-		void setInterface(const struct retro_link_interface *link, unsigned port);
-		bool available() const { return link_ != 0; }
-
-		bool start();
-		void stop();
 
 		/* The console's reset button. The cable stays plugged in and the link
 		 * keeps its ticks, its promise, the messages received and what the
@@ -73,18 +64,23 @@ class LinkSerial : public gambatte::SerialIO, public LinkPort
 		void reset();
 
 		/* LinkPort. */
-		virtual retro_link_port_t *handle() const { return handle_; }
-		virtual bool onBus() const { return handle_ != 0 && onBus_; }
 		virtual void ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_t &request);
-		virtual void answered(uint64_t tick, uint64_t grant, uint32_t wakeFlags);
-		virtual void running(uint64_t tick);
-		virtual void stopped();
 
 		/* SerialIO. */
 		virtual bool check(unsigned char out, unsigned char &in, bool &fastCgb);
 		virtual unsigned char send(unsigned char data, bool fastCgb);
 		virtual void tick(unsigned long cc, bool doubleSpeed,
 		                  unsigned char sb, unsigned char sc);
+
+	protected:
+		/* LinkPortBase. */
+		virtual void attached();
+		virtual void detached();
+		virtual bool carries(unsigned count);
+		virtual void membership(bool changed);
+		virtual void received(uint64_t tick, unsigned from,
+		                      const unsigned char *data, size_t len);
+		virtual void due();
 
 	private:
 		/* A message from a peer, held until this machine's clock reaches the
@@ -104,45 +100,16 @@ class LinkSerial : public gambatte::SerialIO, public LinkPort
 		enum { PENDING_MAX = 16 };
 
 		void publish(unsigned char sb, unsigned char sc);
-		void drain();
 		void queue(const Pending &msg);
 		void apply(const Pending &msg);
 		void applyDue();
 		void settle();
-		void refreshPeers();
-		void note(unsigned long cc, bool doubleSpeed);
 		uint64_t transferTicks(bool fastCgb) const;
 		void wire(uint64_t tick, unsigned char type, unsigned char sb, unsigned char flags);
 
-		const struct retro_link_interface *link_;
-		unsigned port_;
-		retro_link_port_t *handle_;
-
-		int selfId_;
-		unsigned peers_;
-		bool onBus_;
-
-		/* This machine's position on the link timeline, in ticks of a clock
-		 * running at twice the Game Boy's normal 4.194304 MHz.
-		 *
-		 * Twice, so that double speed is expressible. gambatte's cycle counter
-		 * is not a real-time clock: it advances one tick per CPU cycle and the
-		 * CPU cycle itself halves in double speed, which is exactly what makes a
-		 * serial transfer's fixed cycle count come out twice as fast on a Game
-		 * Boy Color running flat out, the way the hardware does. Handing those
-		 * raw cycles to the bus as a fixed rate would have it believe a machine
-		 * in double speed is running at twice real time and throttle it to half,
-		 * so the doubling is undone here instead.
-		 *
-		 * A chunk of emulation starts at the tick LinkPorts gives it, and the
-		 * cycle counter moves it on from the chunk's first reading. Readings
-		 * outside a chunk, as while a state is saved, are not emulation and
-		 * are ignored. */
-		uint64_t now_;
-		unsigned long lastRaw_;
-		bool haveRaw_;
+		/* Whether the machine was in double speed at the last reading of its
+		 * cycle counter. */
 		bool doubleSpeed_;
-		bool running_;
 
 		/* How far ahead of itself this machine promises not to originate
 		 * anything, and how far it asks to run between rendezvous.
@@ -153,11 +120,6 @@ class LinkSerial : public gambatte::SerialIO, public LinkPort
 		uint64_t horizon_;
 		uint64_t grain_;
 		bool fastSeen_;
-
-		/* The highest promise published, below which nothing is stamped, and
-		 * the last stamp, below which nothing later is. */
-		uint64_t promise_;
-		uint64_t lastStamp_;
 
 		/* The peer's serial register, as of the last state it published that
 		 * this machine's clock has reached. */

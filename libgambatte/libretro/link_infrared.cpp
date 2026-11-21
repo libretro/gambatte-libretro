@@ -51,24 +51,14 @@ enum
 #define IR_MSG_SIZE 8
 
 LinkInfrared::LinkInfrared()
-	: link_(0)
-	, port_(0)
-	, handle_(0)
-	, selfId_(0)
-	, peers_(0)
-	, onBus_(false)
-	, now_(0)
-	, lastRaw_(0)
-	, haveRaw_(false)
-	, running_(false)
+	: LinkPortBase(LINK_INFRARED_PROTOCOL, LINK_INFRARED_CLOCK_RATE,
+	               "Infrared", "unit(s) in view")
 	, horizon_(IR_IDLE_HORIZON)
-	, promise_(0)
 	, rp_(0)
 	, led_(false)
 	, told_(false)
 	, delay_(IR_LATENCY)
 	, lastEdge_(0)
-	, lastStamp_(0)
 	, edgeSeen_(false)
 	, lit_(0)
 	, edgeHead_(0)
@@ -83,55 +73,19 @@ LinkInfrared::~LinkInfrared()
 	stop();
 }
 
-void LinkInfrared::setInterface(const struct retro_link_interface *link, unsigned port)
+void LinkInfrared::attached()
 {
-	link_ = link;
-	port_ = port;
-}
-
-bool LinkInfrared::start()
-{
-	if (handle_)
-		return true;
-	if (!link_)
-		return false;
-
-	handle_ = link_->attach(port_, LINK_INFRARED_PROTOCOL, LINK_INFRARED_CLOCK_RATE);
-	if (!handle_)
-	{
-		gambatte_log(RETRO_LOG_WARN, "Infrared: the frontend refused port %u\n", port_);
-		return false;
-	}
-
-	/* A port attached afresh starts a timeline of its own, with its LED
-	 * dark until the game next writes RP. */
-	now_ = 0;
-	haveRaw_ = false;
-	running_ = false;
-	promise_ = 0;
+	/* The LED is taken as dark and the receiver as off until RP is next
+	 * written or restored. */
 	rp_ = 0;
 	led_ = false;
 	delay_ = IR_LATENCY;
-	lastStamp_ = 0;
 	edgeSeen_ = false;
 	overflowed_ = false;
-	refreshPeers();
-	gambatte_log(RETRO_LOG_INFO, "Infrared: attached to port %u, %u unit(s) in view\n",
-	             port_, peers_);
-	return true;
 }
 
-void LinkInfrared::stop()
+void LinkInfrared::detached()
 {
-	if (!handle_)
-		return;
-
-	link_->detach(handle_);
-	handle_ = 0;
-	peers_ = 0;
-	onBus_ = false;
-	selfId_ = 0;
-	running_ = false;
 	forgetPeers();
 }
 
@@ -149,55 +103,32 @@ bool LinkInfrared::hot() const
 	 * nothing but that one bit and is dark between flashes. */
 	if (rp_ & 0xC1)
 		return true;
-	return edgeSeen_ && now_ - lastEdge_ < IR_HOLD;
+	return edgeSeen_ && now() - lastEdge_ < IR_HOLD;
 }
 
 void LinkInfrared::begin(unsigned long cc, bool doubleSpeed)
 {
 	(void)doubleSpeed;
 
-	if (!running_)
-		return;
-	lastRaw_ = cc;
-	haveRaw_ = true;
-}
-
-void LinkInfrared::note(unsigned long cc, bool doubleSpeed)
-{
-	/* One tick a cycle in double speed and two outside it. A step backwards is
-	 * the counter having been rebased, which happens between chunks and which
-	 * begin() covers: it is given up rather than guessed at. */
-	if (haveRaw_ && cc > lastRaw_)
-		now_ += (uint64_t)(cc - lastRaw_) << (doubleSpeed ? 0 : 1);
-
-	lastRaw_ = cc;
-	haveRaw_ = true;
+	anchor(cc);
 }
 
 void LinkInfrared::wire(bool on)
 {
 	unsigned char msg[IR_MSG_SIZE];
-	uint64_t stamp;
 
 	/* The promise made to the bus has to be kept, and it may reach further
 	 * than the latency if it was made while the port was idle. Then the delay
 	 * grows to meet it and stays grown: this edge and the next must be moved
 	 * by the same amount. */
-	stamp = now_ + delay_;
-	if (stamp < promise_)
-	{
-		delay_ = promise_ - now_;
-		stamp = promise_;
-	}
-	if (stamp < lastStamp_)
-		stamp = lastStamp_;
-	lastStamp_ = stamp;
+	if (now() + delay_ < promise())
+		delay_ = promise() - now();
 
 	memset(msg, 0, sizeof(msg));
 	msg[0] = IR_LEVEL;
-	msg[1] = (unsigned char)selfId_;
+	msg[1] = (unsigned char)busIndex();
 	msg[2] = on ? 1 : 0;
-	link_->send_msg(handle_, stamp, RETRO_LINK_BROADCAST, msg, sizeof(msg));
+	broadcast(now() + delay_, msg, sizeof(msg));
 }
 
 /* Sends the LED's state when it is not what the peers last heard. Only inside
@@ -205,7 +136,7 @@ void LinkInfrared::wire(bool on)
  * machine's clock. */
 void LinkInfrared::tell()
 {
-	if (!handle_ || !running_ || peers_ < 2 || told_ == led_)
+	if (!handle() || !inChunk() || peers() < 2 || told_ == led_)
 		return;
 
 	told_ = led_;
@@ -216,8 +147,7 @@ void LinkInfrared::write(unsigned long cc, bool doubleSpeed, unsigned char rp)
 {
 	bool on = (rp & 1) != 0;
 
-	if (running_)
-		note(cc, doubleSpeed);
+	note(cc, doubleSpeed);
 	rp_ = rp;
 
 	if (on != led_)
@@ -226,10 +156,10 @@ void LinkInfrared::write(unsigned long cc, bool doubleSpeed, unsigned char rp)
 
 		/* A new burst, if the last edge was long enough ago that nothing can
 		 * be timing the gap between the two. */
-		if (!edgeSeen_ || now_ - lastEdge_ >= IR_HOLD)
+		if (!edgeSeen_ || now() - lastEdge_ >= IR_HOLD)
 			delay_ = IR_LATENCY;
 		edgeSeen_ = true;
-		lastEdge_ = now_;
+		lastEdge_ = now();
 	}
 
 	tell();
@@ -240,18 +170,17 @@ void LinkInfrared::restored(unsigned char rp)
 	/* No clock, and no chunk running: the cycle counter has just been
 	 * replaced. The machine stands where the last chunk left it, and the
 	 * peers hear of the LED as the next one starts. */
-	haveRaw_ = false;
+	unanchor();
 	rp_ = rp;
 	led_ = (rp & 1) != 0;
 }
 
 bool LinkInfrared::lit(unsigned long cc, bool doubleSpeed)
 {
-	if (!handle_ || peers_ < 2)
+	if (!handle() || peers() < 2)
 		return false;
 
-	if (running_)
-		note(cc, doubleSpeed);
+	note(cc, doubleSpeed);
 	applyDue();
 	return lit_ != 0;
 }
@@ -293,7 +222,7 @@ void LinkInfrared::queue(const Edge &edge)
 
 void LinkInfrared::applyDue()
 {
-	while (edgeCount_ > 0 && edges_[edgeHead_].tick <= now_)
+	while (edgeCount_ > 0 && edges_[edgeHead_].tick <= now())
 	{
 		apply(edges_[edgeHead_]);
 		edgeHead_ = (edgeHead_ + 1) % EDGE_MAX;
@@ -301,48 +230,23 @@ void LinkInfrared::applyDue()
 	}
 }
 
-void LinkInfrared::drain()
+void LinkInfrared::received(uint64_t tick, unsigned from, const unsigned char *data, size_t len)
 {
-	const unsigned char *buf;
-	uint64_t tick;
-	unsigned from;
-	size_t len;
+	Edge edge;
 
-	/* Every message that can be handed out is taken, one this driver does
-	 * not speak included, so none holds up those behind it. */
-	while ((buf = (const unsigned char*)link_->peek(handle_, &tick, &from, &len)) != 0)
-	{
-		if (len == IR_MSG_SIZE && buf[0] == IR_LEVEL)
-		{
-			Edge edge;
-			edge.tick = tick;
-			edge.from = (unsigned char)(from < 255 ? from : 255);
-			edge.on = buf[2] & 1;
-			queue(edge);
-		}
-		if (!link_->recv_msg(handle_, &tick, &from, 0, &len))
-			break;
-	}
+	/* A message this driver does not speak is dropped. */
+	if (len != IR_MSG_SIZE || data[0] != IR_LEVEL)
+		return;
+
+	edge.tick = tick;
+	edge.from = (unsigned char)(from < 255 ? from : 255);
+	edge.on = data[2] & 1;
+	queue(edge);
 }
 
-void LinkInfrared::refreshPeers()
+void LinkInfrared::membership(bool changed)
 {
-	unsigned was = peers_;
-	unsigned count = 0;
-	int id;
-
-	id = link_->peers(handle_, &count);
-	onBus_ = id >= 0;
-	if (id < 0)
-	{
-		selfId_ = 0;
-		peers_ = 0;
-	}
-	else
-	{
-		selfId_ = id;
-		peers_ = count;
-	}
+	(void)changed;
 
 	/* Forget who was lit, and say so again if this machine is. What was in
 	 * view a moment ago is not evidence about what is in view now, and a unit
@@ -351,19 +255,13 @@ void LinkInfrared::refreshPeers()
 	 * the count alone cannot be trusted to say so. */
 	forgetPeers();
 	told_ = false;
-
-	if (peers_ != was)
-		gambatte_log(RETRO_LOG_INFO, "Infrared: %u unit(s) in view, this one is %d\n",
-		             peers_, selfId_);
 }
 
 void LinkInfrared::ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_t &request)
 {
 	horizon_ = hot() ? IR_LATENCY : IR_IDLE_HORIZON;
 
-	if (promise_ < tick + horizon_)
-		promise_ = tick + horizon_;
-	safe = promise_;
+	safe = promiseTo(tick + horizon_);
 
 	/* Never more than its own horizon, which is what keeps two units from
 	 * each waiting for the other to go first: whichever has promised the
@@ -373,31 +271,13 @@ void LinkInfrared::ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_
 		request = frameEnd;
 }
 
-void LinkInfrared::answered(uint64_t tick, uint64_t grant, uint32_t wakeFlags)
+void LinkInfrared::due()
 {
-	(void)grant;
-
-	if (wakeFlags & RETRO_LINK_WAKE_TOPOLOGY)
-		refreshPeers();
-	drain();
-
-	if (now_ < tick)
-		now_ = tick;
 	applyDue();
 }
 
 void LinkInfrared::running(uint64_t tick)
 {
-	running_ = true;
-	haveRaw_ = false;
-	if (now_ < tick)
-		now_ = tick;
-	applyDue();
+	LinkPortBase::running(tick);
 	tell();
-}
-
-void LinkInfrared::stopped()
-{
-	running_ = false;
-	haveRaw_ = false;
 }
