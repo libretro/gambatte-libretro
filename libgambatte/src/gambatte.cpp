@@ -154,8 +154,12 @@ bool GB::loadState(const void *data, size_t size) {
    return false;
 }
 
+/* Static storage is zero-initialised, so a state copied from this one saves 0
+ * in every field nothing writes, such as the registers of another mapper. */
+static SaveState zeroedState;
+
 void GB::saveState(void *data) {
-   SaveState state;
+   SaveState state(zeroedState);
    p_->cpu.setStatePtrs(state);
    p_->cpu.saveState(state);
    StateSaver::saveState(state, data);
