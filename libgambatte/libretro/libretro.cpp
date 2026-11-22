@@ -2155,15 +2155,26 @@ static void link_state_save(unsigned char *out)
    link_state_save_picture(out, video_buf_draw);
 }
 
-/* Whether a block this version wrote starts at 'in'. */
-static bool link_state_valid(const unsigned char *in)
+/* Whether the 'len' bytes at 'in' are a block, of any version. */
+static bool link_state_block(const unsigned char *in, size_t len)
 {
    LinkStateIn head(in);
 
-   return head.u8() == 'G' && head.u8() == 'B'
-       && head.u8() == 'L' && head.u8() == 'K'
-       && head.u32() == LINK_STATE_VERSION
-       && head.u32() == link_state_size();
+   if (len < LINK_STATE_HEADER_SIZE
+         || head.u8() != 'G' || head.u8() != 'B'
+         || head.u8() != 'L' || head.u8() != 'K')
+      return false;
+   head.u32();
+   return head.u32() == len;
+}
+
+/* Whether a block this version wrote starts at 'in'. */
+static bool link_state_valid(const unsigned char *in)
+{
+   LinkStateIn head(in + 4);
+
+   return link_state_block(in, link_state_size())
+       && head.u32() == LINK_STATE_VERSION;
 }
 
 static void link_state_load(const unsigned char *in)
@@ -2224,7 +2235,9 @@ bool retro_unserialize(const void *data, size_t size)
    const unsigned char *link_state = NULL;
 
    /* While a port is attached a state is the machine's with the link's
-    * block after it, or the machine's alone, taken with no port attached. */
+    * block after it, or the machine's alone, taken with no port attached.
+    * With none attached, a state saved while one was loads the machine
+    * alone and leaves the block. */
    if (link_ports.attached())
    {
       gb_size -= link_state_size();
@@ -2236,6 +2249,9 @@ bool retro_unserialize(const void *data, size_t size)
          size = gb_size;
       }
    }
+   else if (size > gb_size
+         && link_state_block((const unsigned char*)data + gb_size, size - gb_size))
+      size = gb_size;
 #endif
 
    /* gb.loadState now bounds-checks against the buffer size
