@@ -181,8 +181,10 @@ void Memory::updateSerial(unsigned long const cc) {
 		if (intreq_.eventTime(intevent_serial) <= cc) {
 #ifdef HAVE_NETWORK
 			bool fire = ((ioamhram_[0x102] & 0x80) == 0x80);
+			/* the bits of the incoming byte that are not shifted in yet */
+			unsigned const rest = (serialize_value_ << (8 - serialCnt_)) & 0xFF;
 			ioamhram_[0x101] = ((ioamhram_[0x101] << serialCnt_) |
-					    (serialize_value_ >> (8 - serialCnt_))) & 0xFF;
+					    (rest >> (8 - serialCnt_))) & 0xFF;
 #else
          ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << serialCnt_) - 1) & 0xFF;
 #endif
@@ -199,8 +201,16 @@ void Memory::updateSerial(unsigned long const cc) {
 			int const targetCnt = serialCntFrom(intreq_.eventTime(intevent_serial) - cc,
 #ifdef HAVE_NETWORK
 			                                    serialize_is_fastcgb_);
-			ioamhram_[0x101] = ((ioamhram_[0x101] << (serialCnt_ - targetCnt)) |
-					    (serialize_value_ >> (8 - (serialCnt_ - targetCnt)))) & 0xFF;
+			{
+				/* Shift in the next bits of the incoming byte, after the
+				 * 8 - serialCnt_ bits already shifted in, not its top bits
+				 * again: a game that reads SB/SC/IF while a byte is on the
+				 * wire otherwise receives it rotated (0x20 arrived as 0x08). */
+				int const done = serialCnt_ - targetCnt;
+				unsigned const rest = (serialize_value_ << (8 - serialCnt_)) & 0xFF;
+				ioamhram_[0x101] = ((ioamhram_[0x101] << done) |
+						    (rest >> (8 - done))) & 0xFF;
+			}
 #else
                                              ioamhram_[0x102] & isCgb() * 2);
          ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << (serialCnt_ - targetCnt)) - 1) & 0xFF;
