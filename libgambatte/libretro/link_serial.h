@@ -67,6 +67,7 @@ class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 		virtual void ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_t &request);
 		virtual uint64_t dueAt() const;
 		virtual void running(uint64_t tick);
+		virtual void stopped();
 		virtual void saveState(LinkStateOut &out) const;
 		virtual void loadState(LinkStateIn &in);
 		virtual void forget();
@@ -119,7 +120,8 @@ class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 		/* The machine's first report in a chunk, and the check that comes
 		 * with it. A clocked transfer starts there and nowhere else: the
 		 * machine also reports and checks wherever its own events fall, and
-		 * a loaded state does not put those where they were. */
+		 * a loaded state does not put those where they were. Both end with
+		 * the chunk. */
 		bool atStart_;
 		bool checkable_;
 

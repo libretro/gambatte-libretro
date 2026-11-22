@@ -333,9 +333,17 @@ void LinkSerial::running(uint64_t tick)
 	checkable_ = false;
 }
 
+void LinkSerial::stopped()
+{
+	LinkPortBase::stopped();
+	atStart_ = false;
+	checkable_ = false;
+}
+
 /* Not in the record: doubleSpeed_, which the machine's first report of a
- * chunk sets before anything reads it, and horizon_ and grain_, which ask()
- * sets from fastSeen_ at every advance. The slots of pending_ past
+ * chunk sets before anything reads it, atStart_ and checkable_, which end
+ * with the chunk, and horizon_ and grain_, which ask() sets from fastSeen_
+ * at every advance. The slots of pending_ past
  * pendingCount_ hold messages already applied, so they are written as
  * zeros: two machines in one state save the same bytes however they came
  * to it. */
@@ -436,7 +444,7 @@ bool LinkSerial::check(unsigned char out, unsigned char &in, bool &fastCgb)
 	 * clock arrives -- there is nothing to ask for and nobody to ask. */
 	(void)out;
 
-	if (!checkable_)
+	if (!inChunk() || !checkable_)
 		return false;
 	checkable_ = false;
 
