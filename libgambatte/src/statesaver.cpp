@@ -555,6 +555,7 @@ bool StateSaver::loadState(SaveState &state, const void *data, size_t size) {
    const Saver labelbufSaver = { labelbuf, 0, 0, list.maxLabelsize() };
 
    SaverList::const_iterator done = list.begin();
+   bool reachedLast = false;
 
    while (file.good() && done != list.end()) {
       file.getline(labelbuf, list.maxLabelsize(), NUL);
@@ -572,6 +573,9 @@ bool StateSaver::loadState(SaveState &state, const void *data, size_t size) {
          ++done;
 
       (*it->load)(file, state);
+
+      if (it + 1 == list.end())
+         reachedLast = true;
    }
 
    state.cpu.cycleCounter &= 0x7FFFFFFF;
@@ -579,8 +583,9 @@ bool StateSaver::loadState(SaveState &state, const void *data, size_t size) {
 
    /* If the parser tripped its failure latch the data was
     * malformed; reject the load so the caller doesn't end up
-    * with a half-applied state. */
-   return !file.fail();
+    * with a half-applied state. Every Gambatte state holds the
+    * list's last field, so one that ends before it was cut short. */
+   return !file.fail() && reachedLast;
 }
 
 size_t StateSaver::stateSize(const SaveState &state) {
