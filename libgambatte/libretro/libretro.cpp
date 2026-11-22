@@ -1907,15 +1907,23 @@ bool retro_serialize(void *data, size_t size)
 
 bool retro_unserialize(const void *data, size_t size)
 {
-   if (size != retro_serialize_size())
+   size_t gb_size = retro_serialize_size();
+   if (size > gb_size)
       return false;
+
+   /* A Gambatte that saved fewer fields wrote a shorter state. The parser
+    * skips what it does not know and leaves a field the state lacks as
+    * GB::loadState starts it. It refuses a state cut inside a field or
+    * ending before the last field, which every Gambatte state holds. */
+   if (size < gb_size)
+      gb_size = size;
 
    /* gb.loadState now bounds-checks against the buffer size
     * and returns false on malformed input. Treat a parser
     * failure as an unserialize failure so the frontend can
     * surface it instead of leaving the core in a half-loaded
     * state. */
-   if (!gb.loadState(data, size))
+   if (!gb.loadState(data, gb_size))
       return false;
 
    /* The audio resampler internal state (blipper integrator,

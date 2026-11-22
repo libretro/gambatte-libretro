@@ -147,15 +147,22 @@ void GB::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) 
 	p_->cpu.setDmgPaletteColor(palNum, colorNum, rgb32);
 }
 
+/* Static storage is zero-initialised, so a state copied from this one saves 0
+ * in every field nothing writes, such as the registers of another mapper, and
+ * loads 0 in every field an older state does not carry. */
+static SaveState zeroedState;
+
 bool GB::loadState(const void *data, size_t size) {
-   SaveState state;
+   SaveState state(zeroedState);
    p_->cpu.setStatePtrs(state);
 
-   /* SaveState is a plain local with no default initialiser, so a field the
-    * incoming state does not carry would otherwise be read off the stack.
-    * disabled_time is the "this state predates the field" sentinel. */
+   /* A field the incoming state does not carry keeps the value it starts
+    * with. disabled_time is the "this state predates the field" sentinel. */
    state.mem.blitTime = disabled_time;
    state.mem.blanklcd = false;
+#ifdef HAVE_NETWORK
+   state.mem.serialize_value = 0xFF;
+#endif
 
    if (StateSaver::loadState(state, data, size)) {
       p_->cpu.loadState(state);
@@ -164,10 +171,6 @@ bool GB::loadState(const void *data, size_t size) {
    }
    return false;
 }
-
-/* Static storage is zero-initialised, so a state copied from this one saves 0
- * in every field nothing writes, such as the registers of another mapper. */
-static SaveState zeroedState;
 
 void GB::saveState(void *data) {
    SaveState state(zeroedState);
