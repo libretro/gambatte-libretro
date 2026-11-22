@@ -10,25 +10,31 @@
 #define LINK_XFER_NORMAL ((uint64_t)8192)
 #define LINK_XFER_FAST ((uint64_t)256)
 
-/* Rendezvous roughly every quarter of a transfer.
+/* How far ahead of itself a machine promises not to originate anything, and
+ * so how late every message lands and how far it runs between rendezvous.
  *
- * The horizon is how far two machines may drift apart, and it is also how stale
- * the peer's serial register can be when this one clocks a byte out of it. A
- * game arms its end -- writes SB, then SC -- and then waits, so the value is
- * settled well before it is read, and a quarter of a byte time (244us of a
- * millisecond) is comfortably inside the gap every link protocol leaves between
- * bytes. Real ones leave far more: a Pokemon trade moves a byte every few
- * milliseconds and Tetris one a frame.
+ * A clock lands on the other machine a horizon after it is sent, and that
+ * machine's re-arm lands back a horizon after it is made, so the clocking end
+ * finds the other armed only if it leaves more than about two horizons and
+ * an interrupt between one byte and the next. Pokemon's exchange leaves about
+ * 2600 ticks, so a cable in use promises 64, a quarter of a Game Boy Color
+ * fast transfer.
  *
- * The floor is cost. Every grain is a rendezvous: the frontend stops one
- * machine there and runs the other up to it, so this cannot go much lower
- * without both cores spending their time changing places instead of
- * emulating. The fast figure is a quarter of a fast transfer by the same
- * reasoning and is thirty-two times as expensive; it is paid only while a Game
- * Boy Color is actually running its link at 256 kHz, which almost nothing
- * does. */
-#define LINK_GRAIN_NORMAL ((uint64_t)2048)
-#define LINK_GRAIN_FAST ((uint64_t)64)
+ * Every horizon is a rendezvous, though: the frontend stops one machine there
+ * and runs the other up to it. A linked pair spends most of a session with
+ * its cable silent, and an idle cable promises a quarter of a normal transfer
+ * instead, which costs a thirty-second as much. A cable whose last transfer
+ * ran at the fast rate keeps the short horizon while silent too: the first
+ * clock after idle can land a whole idle horizon late, eight fast transfers,
+ * and only the rare game that uses that rate pays for it. */
+#define LINK_HORIZON_IN_USE ((uint64_t)64)
+#define LINK_HORIZON_IDLE ((uint64_t)2048)
+
+/* How long after its last clock, sent or received, the cable still counts as
+ * in use: an eighth of a second, as for the infrared port. A protocol clocks
+ * a byte every few milliseconds, or one a frame as Tetris does, so the cable
+ * stays in use from the first byte of a session to its last. */
+#define LINK_IN_USE_HOLD ((uint64_t)1048576)
 
 /* Bus message. Packed by hand rather than shipped as a struct: both ends are
  * the same build today, but protocol_id exists so that another Game Boy core
@@ -54,9 +60,10 @@ LinkSerial::LinkSerial()
 	, doubleSpeed_(false)
 	, atStart_(false)
 	, checkable_(false)
-	, horizon_(LINK_GRAIN_NORMAL)
-	, grain_(LINK_GRAIN_NORMAL)
+	, horizon_(LINK_HORIZON_IDLE)
 	, fastSeen_(false)
+	, lastClock_(0)
+	, clockSeen_(false)
 	, peerSb_(0xFF)
 	, peerArmed_(false)
 	, lastSb_(0)
@@ -81,6 +88,7 @@ LinkSerial::~LinkSerial()
 void LinkSerial::attached()
 {
 	fastSeen_ = false;
+	clockSeen_ = false;
 	pendingCount_ = 0;
 	published_ = false;
 	clockReady_ = false;
@@ -114,6 +122,21 @@ uint64_t LinkSerial::transferTicks(bool fastCgb) const
 	 * a Game Boy Color in double speed really does clock its serial port twice
 	 * as fast. */
 	return doubleSpeed_ ? (ticks >> 1) : ticks;
+}
+
+/* A clock went down the wire at `tick`, from either end, whether or not this
+ * machine answered it. The horizon shortens at once, so this clock's own
+ * stamp and those after it are as early as the promise already given allows. */
+void LinkSerial::clocked(uint64_t tick)
+{
+	lastClock_ = tick;
+	clockSeen_ = true;
+	horizon_ = LINK_HORIZON_IN_USE;
+}
+
+bool LinkSerial::inUse() const
+{
+	return clockSeen_ && now() - lastClock_ < LINK_IN_USE_HOLD;
 }
 
 /* A transfer this machine took part in has run its course. */
@@ -217,6 +240,7 @@ void LinkSerial::apply(const Pending &msg)
 		peerArmed_ = (msg.flags & LS_FLAG_ARMED) != 0;
 		break;
 	case LS_CLOCK:
+		clocked(msg.tick);
 		clockReady_ = true;
 		clockAt_ = msg.tick;
 		clockSb_ = msg.sb;
@@ -295,14 +319,11 @@ void LinkSerial::membership()
 
 void LinkSerial::ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_t &request)
 {
-	grain_ = fastSeen_ ? LINK_GRAIN_FAST : LINK_GRAIN_NORMAL;
-	horizon_ = grain_;
+	horizon_ = (inUse() || fastSeen_) ? LINK_HORIZON_IN_USE : LINK_HORIZON_IDLE;
 
 	safe = promiseTo(tick + horizon_);
 
-	request = tick + grain_;
-	if (request > safe)
-		request = safe;
+	request = tick + horizon_;
 	if (request > frameEnd)
 		request = frameEnd;
 }
@@ -342,8 +363,8 @@ void LinkSerial::stopped()
 
 /* Not in the record: doubleSpeed_, which the machine's first report of a
  * chunk sets before anything reads it, atStart_ and checkable_, which end
- * with the chunk, and horizon_ and grain_, which ask() sets from fastSeen_
- * at every advance. The slots of pending_ past
+ * with the chunk, and horizon_, which ask() sets from the last clock and
+ * fastSeen_ at every advance. The slots of pending_ past
  * pendingCount_ hold messages already applied, so they are written as
  * zeros: two machines in one state save the same bytes however they came
  * to it. */
@@ -353,6 +374,8 @@ void LinkSerial::saveState(LinkStateOut &out) const
 
 	LinkPortBase::saveState(out);
 	out.u8(fastSeen_);
+	out.u64(lastClock_);
+	out.u8(clockSeen_);
 	out.u8(peerSb_);
 	out.u8(peerArmed_);
 	out.u8(lastSb_);
@@ -385,6 +408,8 @@ void LinkSerial::loadState(LinkStateIn &in)
 
 	LinkPortBase::loadState(in);
 	fastSeen_ = in.u8() != 0;
+	lastClock_ = in.u64();
+	clockSeen_ = in.u8() != 0;
 	peerSb_ = in.u8();
 	peerArmed_ = in.u8() != 0;
 	lastSb_ = in.u8();
@@ -481,14 +506,20 @@ unsigned char LinkSerial::send(unsigned char data, bool fastCgb)
 
 	applyDue();
 	fastSeen_ = fastCgb;
+	clocked(now());
 
 	/* Announced a horizon out, not at this instant. The peer may have run as far
 	 * as this machine's published horizon and no further, so a transfer stamped
 	 * there is one it is guaranteed not to have passed -- which is the whole
 	 * reason the promise exists. It also means the peer's half of the transfer
 	 * starts a horizon after this machine's; the two interrupts land that far
-	 * apart, and no link protocol notices, because on real hardware the gap
-	 * between one byte and the next is measured in milliseconds. */
+	 * apart.
+	 *
+	 * A promise is never lowered, so the first clock after the cable was idle
+	 * lands as late as the promise made while idle reaches, up to the idle
+	 * horizon, and the peer re-arms that much later too: the next byte finds
+	 * it armed only if the game leaves the idle horizon and an interrupt
+	 * between the two. */
 	wire(now() + horizon_, LS_CLOCK, data, fastCgb ? LS_FLAG_FAST : 0);
 
 	busy_ = true;

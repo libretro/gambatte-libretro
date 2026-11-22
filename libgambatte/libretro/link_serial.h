@@ -111,6 +111,8 @@ class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 		void applyDue();
 		void settle();
 		uint64_t transferTicks(bool fastCgb) const;
+		void clocked(uint64_t tick);
+		bool inUse() const;
 		void wire(uint64_t tick, unsigned char type, unsigned char sb, unsigned char flags);
 
 		/* Whether the machine was in double speed at the last reading of its
@@ -126,14 +128,20 @@ class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 		bool checkable_;
 
 		/* How far ahead of itself this machine promises not to originate
-		 * anything, and how far it asks to run between rendezvous.
-		 *
-		 * Both follow the transfer speed, because the shortest transfer does: a
-		 * normal one is 8192 ticks and a Game Boy Color fast one is 256, and a
-		 * horizon that suited the first would swallow the second whole. */
+		 * anything, and how far it asks to run between rendezvous: short
+		 * while the cable is in use or its last transfer was a fast one, and
+		 * long otherwise. */
 		uint64_t horizon_;
-		uint64_t grain_;
+
+		/* Whether the last transfer this machine clocked or answered ran at
+		 * the Game Boy Color's fast rate. */
 		bool fastSeen_;
+
+		/* The last clock on the wire, sent or received, and whether there
+		 * has been one since the port was attached. They decide whether the
+		 * cable is in use. */
+		uint64_t lastClock_;
+		bool clockSeen_;
 
 		/* The peer's serial register, as of the last state it published that
 		 * this machine's clock has reached. */
