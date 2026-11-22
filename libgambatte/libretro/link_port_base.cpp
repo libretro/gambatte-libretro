@@ -71,9 +71,8 @@ void LinkPortBase::stop()
 	detached();
 }
 
-void LinkPortBase::refreshPeers()
+void LinkPortBase::readPeers()
 {
-	unsigned was = peers_;
 	unsigned count = 0;
 	int id;
 
@@ -89,8 +88,14 @@ void LinkPortBase::refreshPeers()
 		index_ = id;
 		peers_ = count;
 	}
+}
 
-	membership(peers_ != was);
+void LinkPortBase::refreshPeers()
+{
+	unsigned was = peers_;
+
+	readPeers();
+	membership();
 	if (peers_ != was)
 		gambatte_log(RETRO_LOG_INFO, "%s: %u %s, this one is %d\n",
 		             name_, peers_, company_, index_);
@@ -182,4 +187,24 @@ void LinkPortBase::stopped()
 {
 	running_ = false;
 	haveRaw_ = false;
+}
+
+/* Not in the record: the membership, which a load reads from the bus as
+ * it stands then, cabled as it may be since the state was saved; and
+ * running_, haveRaw_ and lastRaw_, as stopped() ends every chunk without
+ * an anchor: a state is saved between two frames, where no chunk runs and
+ * lastRaw_ is not read. */
+void LinkPortBase::saveState(LinkStateOut &out) const
+{
+	out.u64(now_);
+	out.u64(promise_);
+	out.u64(lastStamp_);
+}
+
+void LinkPortBase::loadState(LinkStateIn &in)
+{
+	now_ = in.u64();
+	promise_ = in.u64();
+	lastStamp_ = in.u64();
+	readPeers();
 }

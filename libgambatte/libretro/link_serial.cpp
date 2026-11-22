@@ -268,28 +268,29 @@ bool LinkSerial::carries(unsigned count)
 	return false;
 }
 
-void LinkSerial::membership(bool changed)
+void LinkSerial::membership()
 {
-	if (changed)
-	{
-		/* Forget the other end, and say everything again.
-		 *
-		 * What was on the wire a moment ago is not evidence about what is on it
-		 * now: a lead that has moved may be joining two different machines, and
-		 * even the same one has been running unwatched in the meantime. Keeping
-		 * the last state read would let a machine clock a byte out of a register
-		 * it has not been told the contents of since before the cable moved.
-		 *
-		 * And a machine cabled in after the last change would otherwise never hear
-		 * a state at all, leaving both ends waiting to be told the other was
-		 * there. Anything already in flight belonged to the old cable and goes
-		 * with it. */
-		peerSb_ = 0xFF;
-		peerArmed_ = false;
-		published_ = false;
-		clockReady_ = false;
-		pendingCount_ = 0;
-	}
+	/* Forget the other end, and say everything again.
+	 *
+	 * What was on the wire a moment ago is not evidence about what is on it
+	 * now: a lead that has moved may be joining two different machines, and
+	 * even the same one has been running unwatched in the meantime. Keeping
+	 * the last state read would let a machine clock a byte out of a register
+	 * it has not been told the contents of since before the cable moved.
+	 *
+	 * And a machine cabled in after the last change would otherwise never hear
+	 * a state at all, leaving both ends waiting to be told the other was
+	 * there. Anything already in flight belonged to the old cable and goes
+	 * with it.
+	 *
+	 * The count need not have changed: a peer may leave and come back at one
+	 * frame edge, and a state saved before this port heard of a change loads
+	 * with the count the change left. */
+	peerSb_ = 0xFF;
+	peerArmed_ = false;
+	published_ = false;
+	clockReady_ = false;
+	pendingCount_ = 0;
 }
 
 void LinkSerial::ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_t &request)
@@ -330,6 +331,85 @@ void LinkSerial::running(uint64_t tick)
 	LinkPortBase::running(tick);
 	atStart_ = true;
 	checkable_ = false;
+}
+
+/* Not in the record: doubleSpeed_, which the machine's first report of a
+ * chunk sets before anything reads it, and horizon_ and grain_, which ask()
+ * sets from fastSeen_ at every advance. The slots of pending_ past
+ * pendingCount_ hold messages already applied, so they are written as
+ * zeros: two machines in one state save the same bytes however they came
+ * to it. */
+void LinkSerial::saveState(LinkStateOut &out) const
+{
+	unsigned i;
+
+	LinkPortBase::saveState(out);
+	out.u8(fastSeen_);
+	out.u8(peerSb_);
+	out.u8(peerArmed_);
+	out.u8(lastSb_);
+	out.u8(lastFlags_);
+	out.u8(published_);
+	out.u64(busyUntil_);
+	out.u8(busy_);
+	out.u8(clockReady_);
+	out.u64(clockAt_);
+	out.u8(clockSb_);
+	out.u8(clockFast_);
+	out.u8(pendingCount_);
+	for (i = 0; i < PENDING_MAX; i++)
+	{
+		if (i < pendingCount_)
+		{
+			out.u64(pending_[i].tick);
+			out.u8(pending_[i].type);
+			out.u8(pending_[i].sb);
+			out.u8(pending_[i].flags);
+		}
+		else
+			out.zeros(8 + 3);
+	}
+}
+
+void LinkSerial::loadState(LinkStateIn &in)
+{
+	unsigned i;
+
+	LinkPortBase::loadState(in);
+	fastSeen_ = in.u8() != 0;
+	peerSb_ = in.u8();
+	peerArmed_ = in.u8() != 0;
+	lastSb_ = in.u8();
+	lastFlags_ = in.u8();
+	published_ = in.u8() != 0;
+	busyUntil_ = in.u64();
+	busy_ = in.u8() != 0;
+	clockReady_ = in.u8() != 0;
+	clockAt_ = in.u64();
+	clockSb_ = in.u8();
+	clockFast_ = in.u8() != 0;
+	pendingCount_ = in.u8();
+	if (pendingCount_ > PENDING_MAX)
+		pendingCount_ = PENDING_MAX;
+	for (i = 0; i < PENDING_MAX; i++)
+	{
+		pending_[i].tick = in.u64();
+		pending_[i].type = in.u8();
+		pending_[i].sb = in.u8();
+		pending_[i].flags = in.u8();
+	}
+}
+
+void LinkSerial::forget()
+{
+	/* The machine's registers are another state's: its own side of the
+	 * wire starts again, as at a reset, and what the peer had said or
+	 * clocked was said to the machine that is gone. */
+	reset();
+	peerSb_ = 0xFF;
+	peerArmed_ = false;
+	clockReady_ = false;
+	pendingCount_ = 0;
 }
 
 void LinkSerial::tick(unsigned long cc, bool doubleSpeed, unsigned char sb, unsigned char sc)

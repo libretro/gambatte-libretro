@@ -53,6 +53,9 @@ class LinkInfrared : public gambatte::InfraredIO, public LinkPortBase
 		/* LinkPort. */
 		virtual void ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_t &request);
 		virtual void running(uint64_t tick);
+		virtual void saveState(LinkStateOut &out) const;
+		virtual void loadState(LinkStateIn &in);
+		virtual void forget();
 
 		/* InfraredIO. */
 		virtual void begin(unsigned long cc, bool doubleSpeed);
@@ -64,7 +67,7 @@ class LinkInfrared : public gambatte::InfraredIO, public LinkPortBase
 		/* LinkPortBase. */
 		virtual void attached();
 		virtual void detached();
-		virtual void membership(bool changed);
+		virtual void membership();
 		virtual void received(uint64_t tick, unsigned from,
 		                      const unsigned char *data, size_t len);
 		virtual void due();

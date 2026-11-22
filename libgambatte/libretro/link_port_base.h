@@ -30,6 +30,8 @@ class LinkPortBase : public LinkPort
 		virtual void running(uint64_t tick);
 		virtual void stopped();
 		virtual uint64_t dueAt() const { return RETRO_LINK_UNBOUNDED; }
+		virtual void saveState(LinkStateOut &out) const;
+		virtual void loadState(LinkStateIn &in);
 
 	protected:
 		/* `name` starts the port's log lines; `company` is what the ones
@@ -46,9 +48,9 @@ class LinkPortBase : public LinkPort
 		 * cannot, the port behaves as if nobody else were there. */
 		virtual bool carries(unsigned count) { (void)count; return true; }
 
-		/* The membership was read again; `changed` when the count the
-		 * driver sees is not what it was. */
-		virtual void membership(bool changed) = 0;
+		/* The membership was read again: the port was attached, or the bus
+		 * reported a change, which the count need not show. */
+		virtual void membership() = 0;
 
 		/* A message the last advance made receivable. `data` is the bus's
 		 * own copy, gone when this returns. */
@@ -85,6 +87,7 @@ class LinkPortBase : public LinkPort
 		void broadcast(uint64_t tick, const unsigned char *msg, size_t len);
 
 	private:
+		void readPeers();
 		void refreshPeers();
 		void drain();
 

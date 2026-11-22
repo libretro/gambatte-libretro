@@ -6,6 +6,77 @@
 
 #include <libretro.h>
 
+/* The fields of a save state record, little-endian. Without a buffer the
+ * writer only counts, which is how a record's size is found. */
+class LinkStateOut
+{
+	public:
+		explicit LinkStateOut(unsigned char *to) : to_(to), size_(0) {}
+
+		void u8(unsigned value)
+		{
+			if (to_)
+				to_[size_] = (unsigned char)value;
+			size_++;
+		}
+
+		void u32(uint32_t value)
+		{
+			unsigned i;
+
+			for (i = 0; i < 4; i++)
+				u8((value >> (8 * i)) & 0xFF);
+		}
+
+		void u64(uint64_t value)
+		{
+			u32((uint32_t)value);
+			u32((uint32_t)(value >> 32));
+		}
+
+		void zeros(size_t count)
+		{
+			while (count--)
+				u8(0);
+		}
+
+		size_t size() const { return size_; }
+
+	private:
+		unsigned char *to_;
+		size_t size_;
+};
+
+class LinkStateIn
+{
+	public:
+		explicit LinkStateIn(const unsigned char *from) : from_(from) {}
+
+		unsigned u8() { return *from_++; }
+
+		uint32_t u32()
+		{
+			uint32_t value = 0;
+			unsigned i;
+
+			for (i = 0; i < 4; i++)
+				value |= (uint32_t)u8() << (8 * i);
+			return value;
+		}
+
+		uint64_t u64()
+		{
+			uint64_t value = u32();
+
+			return value | ((uint64_t)u32() << 32);
+		}
+
+		void skip(size_t count) { from_ += count; }
+
+	private:
+		const unsigned char *from_;
+};
+
 /* One port of the frontend's link bus, driven by LinkPorts. Ticks are link
  * ticks of 1/8388608 s, four to a sample of the machine's sound. */
 class LinkPort
@@ -38,6 +109,17 @@ class LinkPort
 		 * apply; RETRO_LINK_UNBOUNDED when nothing waits. The machine stops
 		 * there, and running() of the next chunk does it. */
 		virtual uint64_t dueAt() const = 0;
+
+		/* What the port holds at a frame edge, as a record of one size
+		 * whatever it holds: a state loaded in another process must go on
+		 * as this one would have. */
+		virtual void saveState(LinkStateOut &out) const = 0;
+		virtual void loadState(LinkStateIn &in) = 0;
+
+		/* A state with no record of the port was loaded. The port keeps
+		 * its ticks, and forgets what its peers sent and what it took
+		 * from them. */
+		virtual void forget() = 0;
 };
 
 /* The machine's clock on the link while a port is attached: every retro_run
@@ -70,8 +152,21 @@ class LinkPorts
 
 		void frameEnd();
 
+		/* The clock and every port at a frame edge, for a save state: the
+		 * frame-start tick, the carry, then each port's record, or zeros
+		 * for a port that is not attached. */
+		size_t stateSize() const;
+		void saveState(unsigned char *out) const;
+		void loadState(const unsigned char *in);
+
+		/* A state taken with no port attached was loaded. */
+		void forget();
+
 	private:
 		enum { MAX_PORTS = 2 };
+
+		void save(LinkStateOut &out) const;
+		size_t recordSize(unsigned i) const;
 
 		void advance(bool frameStart);
 		uint64_t reported(unsigned i, uint64_t now) const;

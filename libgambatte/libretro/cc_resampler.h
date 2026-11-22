@@ -37,6 +37,13 @@ extern void audio_out_buffer_write(int16_t *samples, size_t num_samples);
 void CC_init(void);
 void CC_renderaudio(audio_frame_t *sound_buf, unsigned samples);
 
+/* The resampler's state, for a save state: CC_STATE_SIZE bytes,
+ * little-endian. */
+#define CC_STATE_SIZE 36
+
+void CC_save_state(uint8_t *out);
+void CC_load_state(const uint8_t *in);
+
 #ifdef __cplusplus
 }
 #endif

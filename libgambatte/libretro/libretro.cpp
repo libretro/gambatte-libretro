@@ -161,6 +161,7 @@ bool use_official_bootloader = false;
  * buffer no more than ~50% full. (2 * 549) = 1098,
  * so add some padding and round up to (1024 + 512) */
 #define BLIP_BUFFER_SIZE (1024 + 512)
+#define BLIP_TAPS 32
 
 static blipper_t *resampler_l = NULL;
 static blipper_t *resampler_r = NULL;
@@ -337,8 +338,8 @@ static void audio_resampler_init(bool startup)
       CC_init();
    else
    {
-      resampler_l = blipper_new(32, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
-      resampler_r = blipper_new(32, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
+      resampler_l = blipper_new(BLIP_TAPS, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
+      resampler_r = blipper_new(BLIP_TAPS, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
 
       /* It is possible for blipper_new() to fail,
        * must handle errors */
@@ -2055,10 +2056,151 @@ static INLINE void invalidate_serialize_size(void)
    serialize_size = 0;
 }
 
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+/* While a port is attached a state ends with a block of what a frame edge
+ * leaves outside the machine: the link's clock and ports, the resampler and
+ * both pictures. A fixed span ends most frames in the middle of a picture,
+ * so the one being drawn is part of the state, and a resampler started
+ * again would not give the next frame the samples it gave the run the
+ * state was saved in. Little-endian:
+ *
+ *    "GBLK" | u32 version | u32 size of the block | the link's record |
+ *    u8 resampler | its state, in a field as long as the longest |
+ *    the picture shown | the picture being drawn
+ *
+ * each picture VIDEO_HEIGHT rows of GB_SCREEN_WIDTH pixels. */
+#define LINK_STATE_VERSION     1
+#define LINK_STATE_HEADER_SIZE 12
+#define LINK_STATE_CC          1
+#define LINK_STATE_BLIPPER     2
+#define LINK_STATE_PICTURE_SIZE \
+   (GB_SCREEN_WIDTH * VIDEO_HEIGHT * sizeof(gambatte::video_pixel_t))
+
+static size_t link_state_audio_size(void)
+{
+   size_t blip = 2 * blipper_state_size(BLIP_TAPS, BLIP_BUFFER_SIZE);
+   return blip > CC_STATE_SIZE ? blip : CC_STATE_SIZE;
+}
+
+static size_t link_state_size(void)
+{
+   static size_t size = 0;
+   if (size == 0)
+      size = LINK_STATE_HEADER_SIZE + link_ports.stateSize()
+            + 1 + link_state_audio_size() + 2 * LINK_STATE_PICTURE_SIZE;
+   return size;
+}
+
+static unsigned char *link_state_save_picture(unsigned char *out,
+      const gambatte::video_pixel_t *picture)
+{
+   unsigned x, y, i;
+
+   for (y = 0; y < VIDEO_HEIGHT; y++, picture += VIDEO_PITCH)
+      for (x = 0; x < GB_SCREEN_WIDTH; x++)
+         for (i = 0; i < sizeof(gambatte::video_pixel_t); i++)
+            *out++ = (unsigned char)(picture[x] >> (8 * i));
+   return out;
+}
+
+static const unsigned char *link_state_load_picture(const unsigned char *in,
+      gambatte::video_pixel_t *picture)
+{
+   unsigned x, y, i;
+
+   for (y = 0; y < VIDEO_HEIGHT; y++, picture += VIDEO_PITCH)
+   {
+      for (x = 0; x < GB_SCREEN_WIDTH; x++)
+      {
+         gambatte::video_pixel_t pixel = 0;
+         for (i = 0; i < sizeof(gambatte::video_pixel_t); i++)
+            pixel |= (gambatte::video_pixel_t)*in++ << (8 * i);
+         picture[x] = pixel;
+      }
+   }
+   return in;
+}
+
+static void link_state_save(unsigned char *out)
+{
+   LinkStateOut head(out);
+   size_t blip = blipper_state_size(BLIP_TAPS, BLIP_BUFFER_SIZE);
+
+   head.u8('G');
+   head.u8('B');
+   head.u8('L');
+   head.u8('K');
+   head.u32(LINK_STATE_VERSION);
+   head.u32((uint32_t)link_state_size());
+   out += LINK_STATE_HEADER_SIZE;
+
+   link_ports.saveState(out);
+   out += link_ports.stateSize();
+
+   memset(out, 0, 1 + link_state_audio_size());
+   if (use_cc_resampler)
+   {
+      out[0] = LINK_STATE_CC;
+      CC_save_state(out + 1);
+   }
+   else
+   {
+      out[0] = LINK_STATE_BLIPPER;
+      blipper_save_state(resampler_l, out + 1);
+      blipper_save_state(resampler_r, out + 1 + blip);
+   }
+   out += 1 + link_state_audio_size();
+
+   out = link_state_save_picture(out, video_buf);
+   link_state_save_picture(out, video_buf_draw);
+}
+
+/* Whether a block this version wrote starts at 'in'. */
+static bool link_state_valid(const unsigned char *in)
+{
+   LinkStateIn head(in);
+
+   return head.u8() == 'G' && head.u8() == 'B'
+       && head.u8() == 'L' && head.u8() == 'K'
+       && head.u32() == LINK_STATE_VERSION
+       && head.u32() == link_state_size();
+}
+
+static void link_state_load(const unsigned char *in)
+{
+   size_t blip = blipper_state_size(BLIP_TAPS, BLIP_BUFFER_SIZE);
+
+   in += LINK_STATE_HEADER_SIZE;
+   link_ports.loadState(in);
+   in += link_ports.stateSize();
+
+   /* A state saved under the other resampler has nothing for this one,
+    * which stays as retro_unserialize has just started it. */
+   if (use_cc_resampler)
+   {
+      if (in[0] == LINK_STATE_CC)
+         CC_load_state(in + 1);
+   }
+   else if (in[0] == LINK_STATE_BLIPPER)
+   {
+      blipper_load_state(resampler_l, in + 1);
+      blipper_load_state(resampler_r, in + 1 + blip);
+   }
+   in += 1 + link_state_audio_size();
+
+   in = link_state_load_picture(in, video_buf);
+   link_state_load_picture(in, video_buf_draw);
+}
+#endif
+
 size_t retro_serialize_size(void)
 {
    if (serialize_size == 0)
       serialize_size = gb.stateSize();
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   if (link_ports.attached())
+      return serialize_size + link_state_size();
+#endif
    return serialize_size;
 }
 
@@ -2068,11 +2210,34 @@ bool retro_serialize(void *data, size_t size)
       return false;
 
    gb.saveState(data);
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   if (link_ports.attached())
+      link_state_save((unsigned char*)data + size - link_state_size());
+#endif
    return true;
 }
 
 bool retro_unserialize(const void *data, size_t size)
 {
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   size_t gb_size = retro_serialize_size();
+   const unsigned char *link_state = NULL;
+
+   /* While a port is attached a state is the machine's with the link's
+    * block after it, or the machine's alone, taken with no port attached. */
+   if (link_ports.attached())
+   {
+      gb_size -= link_state_size();
+      if (size > gb_size)
+      {
+         link_state = (const unsigned char*)data + gb_size;
+         if (size != gb_size + link_state_size() || !link_state_valid(link_state))
+            return false;
+         size = gb_size;
+      }
+   }
+#endif
+
    /* gb.loadState now bounds-checks against the buffer size
     * and returns false on malformed input. Treat a parser
     * failure as an unserialize failure so the frontend can
@@ -2113,6 +2278,21 @@ bool retro_unserialize(const void *data, size_t size)
    /* Zero out frame-blend history so ghost trails from the
     * pre-load timeline don't bleed into the loaded state. */
    reset_frame_blending_buffers();
+
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   /* The link's block puts the resampler and both pictures back as they
+    * stood, and the next frame goes on from them. A state without it has
+    * neither: the pictures go black, the resampler stays as started above
+    * and the link keeps its ticks and forgets the rest. */
+   if (link_state)
+      link_state_load(link_state);
+   else if (link_ports.attached())
+   {
+      link_ports.forget();
+      memset(video_buf, 0, VIDEO_BUFF_SIZE);
+      memset(video_buf_draw, 0, VIDEO_BUFF_SIZE);
+   }
+#endif
 
    return true;
 }

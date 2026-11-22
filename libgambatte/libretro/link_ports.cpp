@@ -58,6 +58,91 @@ void LinkPorts::restart()
 		grant_[i] = RETRO_LINK_UNBOUNDED;
 }
 
+/* A state is saved between two frames, where ran_ is 0 and the grants of
+ * the frame before bind nothing: the next frame-start advance reports the
+ * frame edge and replaces them. The carry is saved, as the machine still
+ * stands that far past the edge. */
+void LinkPorts::save(LinkStateOut &out) const
+{
+	unsigned i;
+
+	out.u64(start_);
+	out.u32((uint32_t)carry_);
+	for (i = 0; i < count_; i++)
+	{
+		if (ports_[i]->handle())
+		{
+			out.u8(1);
+			ports_[i]->saveState(out);
+		}
+		else
+			out.zeros(1 + recordSize(i));
+	}
+}
+
+size_t LinkPorts::recordSize(unsigned i) const
+{
+	LinkStateOut count(0);
+
+	ports_[i]->saveState(count);
+	return count.size();
+}
+
+size_t LinkPorts::stateSize() const
+{
+	LinkStateOut count(0);
+
+	save(count);
+	return count.size();
+}
+
+void LinkPorts::saveState(unsigned char *out) const
+{
+	LinkStateOut to(out);
+
+	save(to);
+}
+
+void LinkPorts::loadState(const unsigned char *in)
+{
+	LinkStateIn from(in);
+	unsigned i;
+
+	start_ = from.u64();
+	carry_ = from.u32();
+	/* A real carry is one instruction's overrun. */
+	if (carry_ >= FRAME_SAMPLES)
+		carry_ = 0;
+	ran_ = 0;
+	for (i = 0; i < MAX_PORTS; i++)
+		grant_[i] = RETRO_LINK_UNBOUNDED;
+
+	for (i = 0; i < count_; i++)
+	{
+		bool held = from.u8() != 0;
+
+		if (held && ports_[i]->handle())
+			ports_[i]->loadState(from);
+		else
+		{
+			if (ports_[i]->handle())
+				ports_[i]->forget();
+			from.skip(recordSize(i));
+		}
+	}
+}
+
+void LinkPorts::forget()
+{
+	unsigned i;
+
+	carry_ = 0;
+	ran_ = 0;
+	for (i = 0; i < count_; i++)
+		if (ports_[i]->handle())
+			ports_[i]->forget();
+}
+
 /* An instruction run past a grant or the span's end counts as stopping there,
  * so no port is told it stands past either. */
 uint64_t LinkPorts::reported(unsigned i, uint64_t now) const
@@ -180,7 +265,8 @@ void LinkPorts::produced(unsigned samples)
 void LinkPorts::frameEnd()
 {
 	advance(false);
-	carry_ = carry_ + ran_ - FRAME_SAMPLES;
+	/* Nothing ran if a loaded start_ wrapped the span's end. */
+	carry_ = carry_ + ran_ > FRAME_SAMPLES ? carry_ + ran_ - FRAME_SAMPLES : 0;
 	ran_ = 0;
 	start_ += SPAN;
 }

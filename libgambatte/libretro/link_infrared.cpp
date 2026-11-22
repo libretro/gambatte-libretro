@@ -244,10 +244,8 @@ void LinkInfrared::received(uint64_t tick, unsigned from, const unsigned char *d
 	queue(edge);
 }
 
-void LinkInfrared::membership(bool changed)
+void LinkInfrared::membership()
 {
-	(void)changed;
-
 	/* Forget who was lit, and say so again if this machine is. What was in
 	 * view a moment ago is not evidence about what is in view now, and a unit
 	 * that came into view since has never been told anything. The count may
@@ -280,4 +278,71 @@ void LinkInfrared::running(uint64_t tick)
 {
 	LinkPortBase::running(tick);
 	tell();
+}
+
+/* The waiting edges are written oldest first and field by field, and the
+ * rest of the ring as zeros: where the ring's head stands, what an Edge's
+ * padding holds and what the free slots last held are not the port's
+ * state, and two machines in one state save the same bytes. horizon_ is
+ * not in the record: ask() sets it at every advance. */
+void LinkInfrared::saveState(LinkStateOut &out) const
+{
+	unsigned i;
+
+	LinkPortBase::saveState(out);
+	out.u8(rp_);
+	out.u8(led_);
+	out.u8(told_);
+	out.u64(delay_);
+	out.u64(lastEdge_);
+	out.u8(edgeSeen_);
+	out.u32(lit_);
+	out.u32(edgeCount_);
+	for (i = 0; i < EDGE_MAX; i++)
+	{
+		if (i < edgeCount_)
+		{
+			const Edge &edge = edges_[(edgeHead_ + i) % EDGE_MAX];
+
+			out.u64(edge.tick);
+			out.u8(edge.from);
+			out.u8(edge.on);
+		}
+		else
+			out.zeros(8 + 2);
+	}
+}
+
+void LinkInfrared::loadState(LinkStateIn &in)
+{
+	unsigned i;
+
+	LinkPortBase::loadState(in);
+	rp_ = in.u8();
+	led_ = in.u8() != 0;
+	told_ = in.u8() != 0;
+	delay_ = in.u64();
+	/* It grows only to meet a promise, at most the idle horizon ahead. */
+	if (delay_ > IR_IDLE_HORIZON)
+		delay_ = IR_IDLE_HORIZON;
+	lastEdge_ = in.u64();
+	edgeSeen_ = in.u8() != 0;
+	lit_ = in.u32();
+	edgeCount_ = in.u32();
+	if (edgeCount_ > EDGE_MAX)
+		edgeCount_ = EDGE_MAX;
+	edgeHead_ = 0;
+	for (i = 0; i < EDGE_MAX; i++)
+	{
+		edges_[i].tick = in.u64();
+		edges_[i].from = in.u8();
+		edges_[i].on = in.u8();
+	}
+}
+
+void LinkInfrared::forget()
+{
+	/* restored() has taken the LED from the state's RP, and the peers
+	 * hear of it as the next chunk starts. */
+	forgetPeers();
 }

@@ -67,6 +67,9 @@ class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 		virtual void ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_t &request);
 		virtual uint64_t dueAt() const;
 		virtual void running(uint64_t tick);
+		virtual void saveState(LinkStateOut &out) const;
+		virtual void loadState(LinkStateIn &in);
+		virtual void forget();
 
 		/* SerialIO. */
 		virtual bool check(unsigned char out, unsigned char &in, bool &fastCgb);
@@ -79,7 +82,7 @@ class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 		virtual void attached();
 		virtual void detached();
 		virtual bool carries(unsigned count);
-		virtual void membership(bool changed);
+		virtual void membership();
 		virtual void received(uint64_t tick, unsigned from,
 		                      const unsigned char *data, size_t len);
 		virtual void due();
