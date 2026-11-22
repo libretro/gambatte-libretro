@@ -59,6 +59,11 @@ void GB::Priv::full_init(bool const clearSram) {
    
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode, cpu.mem_.calendarClock().now(), clearSram);
+
+   /* A machine that starts has no blit event to restore: loadState works
+    * one out, as for a state from before the event was saved. */
+   state.mem.blitTime = disabled_time;
+   state.mem.blanklcd = false;
    
    cpu.mem_.bootloader.reset();
    cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
