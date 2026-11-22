@@ -32,6 +32,12 @@ class LinkPort
 		 * emulation and must not move the link. */
 		virtual void running(uint64_t tick) = 0;
 		virtual void stopped() = 0;
+
+		/* The tick at which the port next has something to do that no
+		 * report from the machine brings on, such as a received message to
+		 * apply; RETRO_LINK_UNBOUNDED when nothing waits. The machine stops
+		 * there, and running() of the next chunk does it. */
+		virtual uint64_t dueAt() const = 0;
 };
 
 /* The machine's clock on the link while a port is attached: every retro_run

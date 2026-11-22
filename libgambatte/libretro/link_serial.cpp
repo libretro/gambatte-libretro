@@ -52,6 +52,8 @@ LinkSerial::LinkSerial()
 	: LinkPortBase(LINK_SERIAL_PROTOCOL, LINK_SERIAL_CLOCK_RATE,
 	               "Link cable", "machine(s) on the wire")
 	, doubleSpeed_(false)
+	, atStart_(false)
+	, checkable_(false)
 	, horizon_(LINK_GRAIN_NORMAL)
 	, grain_(LINK_GRAIN_NORMAL)
 	, fastSeen_(false)
@@ -233,14 +235,6 @@ void LinkSerial::applyDue()
 		memmove(&pending_[0], &pending_[1], sizeof(Pending) * (pendingCount_ - 1));
 		--pendingCount_;
 	}
-
-	/* A clock nobody answered. The guest was not armed when the peer drove the
-	 * line, so this machine took no part in that transfer and must not take part
-	 * in it later either: leaving it standing would hand the byte to whatever
-	 * the game arms NEXT, one transfer out of step, and a link protocol that
-	 * slips a byte never recovers. */
-	if (clockReady_ && now() > clockAt_ + transferTicks(clockFast_))
-		clockReady_ = false;
 }
 
 void LinkSerial::received(uint64_t tick, unsigned from, const unsigned char *data, size_t len)
@@ -318,15 +312,38 @@ void LinkSerial::due()
 	settle();
 }
 
+/* The machine stops at a waiting message's tick and at the end of its own
+ * transfer, so that each is acted on as the chunk after it starts. */
+uint64_t LinkSerial::dueAt() const
+{
+	uint64_t at = RETRO_LINK_UNBOUNDED;
+
+	if (pendingCount_ > 0)
+		at = pending_[0].tick;
+	if (busy_ && busyUntil_ < at)
+		at = busyUntil_;
+	return at;
+}
+
+void LinkSerial::running(uint64_t tick)
+{
+	LinkPortBase::running(tick);
+	atStart_ = true;
+	checkable_ = false;
+}
+
 void LinkSerial::tick(unsigned long cc, bool doubleSpeed, unsigned char sb, unsigned char sc)
 {
-	if (!handle() || !inChunk())
+	if (!inChunk())
 		return;
 
+	/* What time brings, a message coming due or a transfer ending, is
+	 * acted on as a chunk starts (due()) and not here: only the registers
+	 * are the machine's to report. */
+	checkable_ = atStart_;
+	atStart_ = false;
 	doubleSpeed_ = doubleSpeed;
 	note(cc, doubleSpeed);
-	settle();
-	applyDue();
 	publish(sb, sc);
 }
 
@@ -339,30 +356,39 @@ bool LinkSerial::check(unsigned char out, unsigned char &in, bool &fastCgb)
 	 * clock arrives -- there is nothing to ask for and nobody to ask. */
 	(void)out;
 
-	if (!handle() || !inChunk() || peers() < 2)
+	if (!checkable_)
 		return false;
+	checkable_ = false;
 
-	/* The queue was drained when the last advance returned, and nothing
-	 * receivable can have arrived since. */
-	applyDue();
-
-	if (!clockReady_ || now() < clockAt_)
+	if (peers() < 2 || !clockReady_ || now() < clockAt_)
 		return false;
 
 	clockReady_ = false;
+
+	/* A clock nobody answered. The guest was not armed when the peer drove the
+	 * line, so this machine took no part in that transfer and must not take part
+	 * in it later either: leaving it standing would hand the byte to whatever
+	 * the game arms NEXT, one transfer out of step, and a link protocol that
+	 * slips a byte never recovers. */
+	if (now() > clockAt_ + transferTicks(clockFast_))
+		return false;
+
 	in = clockSb_;
 	fastCgb = clockFast_;
 	fastSeen_ = clockFast_;
 
+	/* The register is being shifted through from here on: said at once,
+	 * not when the machine next happens to report. */
 	busy_ = true;
 	busyUntil_ = now() + transferTicks(clockFast_);
 	published_ = false;
+	publish(0xFF, 0);
 	return true;
 }
 
 unsigned char LinkSerial::send(unsigned char data, bool fastCgb)
 {
-	if (!handle() || peers() < 2)
+	if (!inChunk() || peers() < 2)
 		return 0xFF;
 
 	applyDue();
@@ -380,6 +406,7 @@ unsigned char LinkSerial::send(unsigned char data, bool fastCgb)
 	busy_ = true;
 	busyUntil_ = now() + transferTicks(fastCgb);
 	published_ = false;
+	publish(0xFF, 0);
 
 	/* What the other end had in its register. An unarmed peer reads back as the
 	 * 0xFF of an open line, which is what a Game Boy clocking a cable with

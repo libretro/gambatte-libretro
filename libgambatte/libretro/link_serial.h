@@ -65,6 +65,8 @@ class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 
 		/* LinkPort. */
 		virtual void ask(uint64_t tick, uint64_t frameEnd, uint64_t &safe, uint64_t &request);
+		virtual uint64_t dueAt() const;
+		virtual void running(uint64_t tick);
 
 		/* SerialIO. */
 		virtual bool check(unsigned char out, unsigned char &in, bool &fastCgb);
@@ -110,6 +112,13 @@ class LinkSerial : public gambatte::SerialIO, public LinkPortBase
 		/* Whether the machine was in double speed at the last reading of its
 		 * cycle counter. */
 		bool doubleSpeed_;
+
+		/* The machine's first report in a chunk, and the check that comes
+		 * with it. A clocked transfer starts there and nowhere else: the
+		 * machine also reports and checks wherever its own events fall, and
+		 * a loaded state does not put those where they were. */
+		bool atStart_;
+		bool checkable_;
 
 		/* How far ahead of itself this machine promises not to originate
 		 * anything, and how far it asks to run between rendezvous.

@@ -136,7 +136,7 @@ void LinkInfrared::wire(bool on)
  * machine's clock. */
 void LinkInfrared::tell()
 {
-	if (!handle() || !inChunk() || peers() < 2 || told_ == led_)
+	if (!inChunk() || peers() < 2 || told_ == led_)
 		return;
 
 	told_ = led_;
@@ -177,7 +177,7 @@ void LinkInfrared::restored(unsigned char rp)
 
 bool LinkInfrared::lit(unsigned long cc, bool doubleSpeed)
 {
-	if (!handle() || peers() < 2)
+	if (peers() < 2)
 		return false;
 
 	note(cc, doubleSpeed);

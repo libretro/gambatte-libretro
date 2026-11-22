@@ -141,12 +141,22 @@ unsigned LinkPorts::budget(unsigned wanted)
 		if (limit >= now + SAMPLE_TICKS)
 		{
 			uint64_t fit = (limit - now) / SAMPLE_TICKS;
-			unsigned samples = fit < wanted ? (unsigned)fit : wanted;
 
+			/* A port with something due before the grant has the machine
+			 * stop at the first sample at or past that tick. */
 			for (i = 0; i < count_; i++)
-				if (ports_[i]->handle())
-					ports_[i]->running(now);
-			return samples;
+			{
+				uint64_t due;
+
+				if (!ports_[i]->handle())
+					continue;
+				ports_[i]->running(now);
+				due = ports_[i]->dueAt();
+				if (due != RETRO_LINK_UNBOUNDED && due > now
+						&& (due - now + SAMPLE_TICKS - 1) / SAMPLE_TICKS < fit)
+					fit = (due - now + SAMPLE_TICKS - 1) / SAMPLE_TICKS;
+			}
+			return fit < wanted ? (unsigned)fit : wanted;
 		}
 		if (now >= end && limit == end)
 			return 0;

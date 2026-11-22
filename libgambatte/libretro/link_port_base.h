@@ -29,6 +29,7 @@ class LinkPortBase : public LinkPort
 		virtual void answered(uint64_t tick, uint64_t grant, uint32_t wakeFlags);
 		virtual void running(uint64_t tick);
 		virtual void stopped();
+		virtual uint64_t dueAt() const { return RETRO_LINK_UNBOUNDED; }
 
 	protected:
 		/* `name` starts the port's log lines; `company` is what the ones
