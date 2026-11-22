@@ -196,8 +196,11 @@ void Channel1::saveState(SaveState &state) {
 	envelopeUnit_.saveState(state.spu.ch1.env);
 	lengthCounter_.saveState(state.spu.ch1.lcounter);
 
+	// The sweep moves the frequency with no write to NR14, and a load
+	// rebuilds the period from this and the duty unit's nr3: the top bits
+	// are the frequency's, as nr3 is.
 	state.spu.cycleCounter = cycleCounter_;
-	state.spu.ch1.nr4 = nr4_;
+	state.spu.ch1.nr4 = (nr4_ & ~7u) | (dutyUnit_.freq() >> 8);
 	state.spu.ch1.master = master_;
 }
 
