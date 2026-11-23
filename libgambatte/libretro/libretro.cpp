@@ -2956,7 +2956,7 @@ void retro_run()
       samples = SOUND_SAMPLES_PER_RUN;
    }
 #ifdef DUAL_MODE
-   while (gb2.runFor(video_buf + GB_SCREEN_WIDTH, VIDEO_PITCH, sound_buf.u32, samples) == -1) {}
+   while (gb2.runFor(video_buf + GB_SCREEN_WIDTH, VIDEO_PITCH, sound_buf.u32, SOUND_BUFF_SIZE, samples) == -1) {}
 #endif
 
    /* Perform interframe blending, if required */
