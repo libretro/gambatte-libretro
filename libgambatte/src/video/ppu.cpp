@@ -1713,7 +1713,7 @@ void PPU::speedChange(unsigned long const cycleCounter)
 	p_.spriteMapper.postSpeedChange(cycleCounter);
 
 	if (&M2_Ly0::f0_ == p_.nextCallPtr || &M2_LyNon0::f0_ == p_.nextCallPtr) {
-		if ((bool)is_doublespeed)
+		if (p_.lyCounter.isDoubleSpeed())
 			p_.cycles -= m2_ds_offset;
       else
 			p_.cycles += m2_ds_offset;
