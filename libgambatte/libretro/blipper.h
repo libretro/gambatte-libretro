@@ -44,6 +44,7 @@
 extern "C" {
 #endif
 
+#include <stddef.h>
 #include <stdint.h>
 
 typedef struct blipper blipper_t;
@@ -129,6 +130,17 @@ unsigned blipper_read_avail(blipper_t *blip);
  */
 void blipper_read(blipper_t *blip, blipper_sample_t *output, unsigned samples,
       unsigned stride);
+
+/* The state of a blipper, for a save state: the samples not yet read, the
+ * phase, the integrator and the last input sample, little-endian.
+ * blipper_state_size() is its size for a blipper made with these taps and
+ * buffer_samples; it holds the same bytes whatever was read or reset
+ * before. blipper_load_state() takes a state saved by a blipper made with
+ * the same parameters.
+ */
+size_t blipper_state_size(unsigned taps, unsigned buffer_samples);
+void blipper_save_state(const blipper_t *blip, uint8_t *out);
+void blipper_load_state(blipper_t *blip, const uint8_t *in);
 
 #ifdef __cplusplus
 }

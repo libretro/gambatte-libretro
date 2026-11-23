@@ -19,6 +19,24 @@
  * because cc_resampler.c is compiled exactly once. */
 unsigned int CC_accumulated_samples = 0;
 
+static uint8_t *CC_put32(uint8_t *out, uint32_t value)
+{
+   out[0] = (uint8_t)value;
+   out[1] = (uint8_t)(value >> 8);
+   out[2] = (uint8_t)(value >> 16);
+   out[3] = (uint8_t)(value >> 24);
+   return out + 4;
+}
+
+static uint32_t CC_get32(const uint8_t **in)
+{
+   const uint8_t *p = *in;
+
+   *in += 4;
+   return (uint32_t)p[0] | ((uint32_t)p[1] << 8)
+        | ((uint32_t)p[2] << 16) | ((uint32_t)p[3] << 24);
+}
+
 #ifdef _MIPS_ARCH_ALLEGREX
 void CC_init(void)
 {
@@ -121,6 +139,26 @@ void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
 
    if (write_pos > 0)
       audio_out_buffer_write((int16_t*)out_buf, write_pos);
+}
+
+/* The sums are kept in VFPU registers here and are not saved: a loaded
+ * state keeps its place in the kernel and starts them again. */
+void CC_save_state(uint8_t *out)
+{
+   unsigned i;
+
+   out = CC_put32(out, CC_accumulated_samples);
+   for (i = 4; i < CC_STATE_SIZE; i++)
+      *out++ = 0;
+}
+
+void CC_load_state(const uint8_t *in)
+{
+   uint32_t accumulated = CC_get32(&in);
+
+   CC_init();
+   if (accumulated < 32)
+      CC_accumulated_samples = accumulated;
 }
 #else /* !_MIPS_ARCH_ALLEGREX */
 
@@ -229,5 +267,45 @@ void CC_renderaudio(audio_frame_t* sound_buf, unsigned samples)
    CC_current_r = current_r;
    CC_next_l    = next_l;
    CC_next_r    = next_r;
+}
+
+void CC_save_state(uint8_t *out)
+{
+   out = CC_put32(out, CC_accumulated_samples);
+   out = CC_put32(out, (uint32_t)CC_current_l);
+   out = CC_put32(out, (uint32_t)CC_current_r);
+   out = CC_put32(out, (uint32_t)CC_next_l);
+   out = CC_put32(out, (uint32_t)CC_next_r);
+#ifndef CC_RESAMPLER_NO_HIGHPASS
+   out = CC_put32(out, (uint32_t)CC_prevsmpl_l);
+   out = CC_put32(out, (uint32_t)CC_prevsmpl_r);
+   out = CC_put32(out, (uint32_t)CC_highpass_l);
+   out = CC_put32(out, (uint32_t)CC_highpass_r);
+#else
+   out = CC_put32(out, 0);
+   out = CC_put32(out, 0);
+   out = CC_put32(out, 0);
+   out = CC_put32(out, 0);
+#endif
+}
+
+void CC_load_state(const uint8_t *in)
+{
+   CC_accumulated_samples = CC_get32(&in);
+   CC_current_l = (int32_t)CC_get32(&in);
+   CC_current_r = (int32_t)CC_get32(&in);
+   CC_next_l    = (int32_t)CC_get32(&in);
+   CC_next_r    = (int32_t)CC_get32(&in);
+#ifndef CC_RESAMPLER_NO_HIGHPASS
+   CC_prevsmpl_l = (int16_t)CC_get32(&in);
+   CC_prevsmpl_r = (int16_t)CC_get32(&in);
+   CC_highpass_l = (int32_t)CC_get32(&in);
+   CC_highpass_r = (int32_t)CC_get32(&in);
+#endif
+
+   /* Not a state this resampler saved: the place in the kernel would be
+    * outside it. */
+   if (CC_accumulated_samples >= 32)
+      CC_init();
 }
 #endif /* _MIPS_ARCH_ALLEGREX */

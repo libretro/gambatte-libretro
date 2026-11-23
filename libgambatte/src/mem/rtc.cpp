@@ -22,8 +22,9 @@
 namespace gambatte
 {
 
-   Rtc::Rtc()
-      : activeData_(NULL),
+   Rtc::Rtc(const CalendarClock &clock)
+      : clock_(clock),
+      activeData_(NULL),
       activeSet_(NULL),
       baseTime_(0),
       haltTime_(0),
@@ -40,7 +41,9 @@ namespace gambatte
 
    void Rtc::doLatch()
    {
-      uint64_t tmp = ((dataDh_ & 0x40) ? haltTime_ : std::time(0)) - baseTime_;
+      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : clock_.now();
+      /* A time before baseTime_ would wrap and spin the carry loop below. */
+      uint64_t tmp = unixtime < baseTime_ ? 0 : unixtime - baseTime_;
 
       while (tmp > 0x1FF * 86400)
       {
@@ -123,7 +126,7 @@ namespace gambatte
 
    void Rtc::setDh(const unsigned new_dh)
    {
-      const uint64_t unixtime     = (dataDh_ & 0x40) ? haltTime_ : std::time(0);
+      const uint64_t unixtime     = (dataDh_ & 0x40) ? haltTime_ : clock_.now();
       const uint64_t old_highdays = ((unixtime - baseTime_) / 86400) & 0x100;
       baseTime_                   += old_highdays * 86400;
       baseTime_                   -= ((new_dh & 0x1) << 8) * 86400;
@@ -131,15 +134,15 @@ namespace gambatte
       if ((dataDh_ ^ new_dh) & 0x40)
       {
          if (new_dh & 0x40)
-            haltTime_ = std::time(0);
+            haltTime_ = clock_.now();
          else
-            baseTime_ += std::time(0) - haltTime_;
+            baseTime_ += clock_.now() - haltTime_;
       }
    }
 
    void Rtc::setDl(const unsigned new_lowdays)
    {
-      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : std::time(0);
+      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : clock_.now();
       const uint64_t old_lowdays = ((unixtime - baseTime_) / 86400) & 0xFF;
       baseTime_ += old_lowdays * 86400;
       baseTime_ -= new_lowdays * 86400;
@@ -147,7 +150,7 @@ namespace gambatte
 
    void Rtc::setH(const unsigned new_hours)
    {
-      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : std::time(0);
+      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : clock_.now();
       const uint64_t old_hours = ((unixtime - baseTime_) / 3600) % 24;
       baseTime_ += old_hours * 3600;
       baseTime_ -= new_hours * 3600;
@@ -155,7 +158,7 @@ namespace gambatte
 
    void Rtc::setM(const unsigned new_minutes)
    {
-      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : std::time(0);
+      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : clock_.now();
       const uint64_t old_minutes = ((unixtime - baseTime_) / 60) % 60;
       baseTime_ += old_minutes * 60;
       baseTime_ -= new_minutes * 60;
@@ -163,7 +166,7 @@ namespace gambatte
 
    void Rtc::setS(const unsigned new_seconds)
    {
-      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : std::time(0);
+      const uint64_t unixtime = (dataDh_ & 0x40) ? haltTime_ : clock_.now();
       baseTime_ += (unixtime - baseTime_) % 60;
       baseTime_ -= new_seconds;
    }

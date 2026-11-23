@@ -26,7 +26,7 @@ enum
     HUC3_NONE = 2
 };
 
-#include <ctime>
+#include "calendar_clock.h"
 #include <stdint.h>
 
 namespace gambatte {
@@ -35,7 +35,7 @@ struct SaveState;
 
 class HuC3Chip {
 public:
-	HuC3Chip();
+	explicit HuC3Chip(CalendarClock const &clock);
 	uint64_t baseTime() const { return baseTime_; }
 	void setBaseTime(uint64_t baseTime) { baseTime_ = baseTime; }
 
@@ -57,6 +57,7 @@ public:
 	void write(unsigned p, unsigned data);
 
 private:
+	CalendarClock const &clock_;
 	uint64_t baseTime_;
 	uint64_t haltTime_;
 	unsigned dataTime_;

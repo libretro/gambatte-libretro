@@ -243,3 +243,59 @@ void blipper_read(blipper_t *blip, blipper_sample_t *output, unsigned samples,
 
    blip->integrator = sum;
 }
+
+static uint8_t *blipper_put32(uint8_t *out, uint32_t value)
+{
+   out[0] = (uint8_t)value;
+   out[1] = (uint8_t)(value >> 8);
+   out[2] = (uint8_t)(value >> 16);
+   out[3] = (uint8_t)(value >> 24);
+   return out + 4;
+}
+
+static uint32_t blipper_get32(const uint8_t **in)
+{
+   const uint8_t *p = *in;
+
+   *in += 4;
+   return (uint32_t)p[0] | ((uint32_t)p[1] << 8)
+        | ((uint32_t)p[2] << 16) | ((uint32_t)p[3] << 24);
+}
+
+size_t blipper_state_size(unsigned taps, unsigned buffer_samples)
+{
+   return 4 * (4 + (size_t)buffer_samples + taps);
+}
+
+void blipper_save_state(const blipper_t *blip, uint8_t *out)
+{
+   unsigned i;
+
+   out = blipper_put32(out, blip->phase);
+   out = blipper_put32(out, blip->output_avail);
+   out = blipper_put32(out, (uint32_t)blip->integrator);
+   out = blipper_put32(out, (uint32_t)blip->last_sample);
+   for (i = 0; i < blip->output_buffer_samples; i++)
+      out = blipper_put32(out, (uint32_t)blip->output_buffer[i]);
+}
+
+void blipper_load_state(blipper_t *blip, const uint8_t *in)
+{
+   unsigned i;
+
+   blip->phase        = blipper_get32(&in);
+   blip->output_avail = blipper_get32(&in);
+   blip->integrator   = (blipper_long_sample_t)blipper_get32(&in);
+   blip->last_sample  = (blipper_sample_t)blipper_get32(&in);
+   for (i = 0; i < blip->output_buffer_samples; i++)
+      blip->output_buffer[i] = (blipper_long_sample_t)blipper_get32(&in);
+
+   /* Not a state this blipper saved: start clean rather than read past
+    * the buffer. */
+   if (blip->output_avail > blip->output_buffer_samples - blip->taps ||
+       blip->output_avail != ((blip->phase + blip->phases - 1) >> blip->phases_log2))
+   {
+      blip->output_avail = blip->output_buffer_samples - blip->taps;
+      blipper_reset(blip);
+   }
+}

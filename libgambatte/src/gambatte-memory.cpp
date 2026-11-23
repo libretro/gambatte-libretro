@@ -22,6 +22,9 @@
 #include "sound.h"
 #include "video.h"
 #include "bootloader.h"
+#ifdef HAVE_NETWORK
+#include "infrared_io.h"
+#endif
 #include <cstring>
 
 namespace gambatte {
@@ -34,6 +37,7 @@ Memory::Memory(Interrupter const &interrupter) :
    getInput_(0)
 #ifdef HAVE_NETWORK
 , serial_io_(0)
+, infrared_io_(0)
 #endif
 , divLastUpdate_(0)
 , lastOamDmaUpdate_(disabled_time)
@@ -67,6 +71,8 @@ unsigned long Memory::saveState(SaveState &state, unsigned long cc) {
 	state.mem.divLastUpdate = divLastUpdate_;
 	state.mem.nextSerialtime = intreq_.eventTime(intevent_serial);
 	state.mem.unhaltTime = intreq_.eventTime(intevent_unhalt);
+	state.mem.blitTime = intreq_.eventTime(intevent_blit);
+	state.mem.blanklcd = blanklcd_;
 	state.mem.lastOamDmaUpdate = lastOamDmaUpdate_;
 	state.mem.dmaSource = dmaSource_;
 	state.mem.dmaDestination = dmaDestination_;
@@ -119,6 +125,14 @@ void Memory::loadState(SaveState const &state) {
                               )
 	           : 8;
 
+#ifdef HAVE_NETWORK
+	// A reset and a loaded state both come through here, and both replace RP
+	// without the guest writing it. An LED left lit in the other machine's
+	// eyes by a register that no longer says so would stay lit for ever.
+	if (infrared_io_ != 0)
+		infrared_io_->restored(isCgb() ? ioamhram_[0x156] : 0);
+#endif
+
 	cart_.setVrambank(ioamhram_[0x14F] & isCgb());
 	cart_.setOamDmaSrc(oam_dma_src_off);
 	cart_.setWrambank(isCgb() && (ioamhram_[0x170] & 0x07) ? ioamhram_[0x170] & 0x07 : 1);
@@ -131,10 +145,23 @@ void Memory::loadState(SaveState const &state) {
 			lastOamDmaUpdate_ + (oamEventPos - oamDmaPos_) * 4);
 	}
 
-	intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
-	                                 ? lcd_.nextMode1IrqTime()
-	                                 : state.cpu.cycleCounter);
-	blanklcd_ = false;
+	/* The blit event is the frame boundary the frontend sees, and it was
+	 * rebuilt here rather than restored. With the LCD on that guess is the
+	 * next mode-1 IRQ and usually right; with it off the machine paces blank
+	 * frames off a schedule nothing else knows, and blanklcd_ says whether the
+	 * next event paints one or skips it. Losing them resumed the machine a
+	 * whole frame out of step -- invisible to one mid-run reload, fatal to
+	 * rollback, which reloads every few frames. States written before these
+	 * were saved arrive with the sentinel, and keep the old reconstruction. */
+	if (state.mem.blitTime != disabled_time) {
+		intreq_.setEventTime<intevent_blit>(state.mem.blitTime);
+		blanklcd_ = state.mem.blanklcd;
+	} else {
+		intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
+		                                 ? lcd_.nextMode1IrqTime()
+		                                 : state.cpu.cycleCounter);
+		blanklcd_ = false;
+	}
 
 	if (!isCgb())
 		std::memset(cart_.vramdata() + 0x2000, 0, 0x2000);
@@ -147,6 +174,11 @@ void Memory::setEndtime(unsigned long cc, unsigned long inc) {
 		                                   + (70224 << is_doublespeed));
 
 	intreq_.setEventTime<intevent_end>(cc + (inc << is_doublespeed));
+
+#ifdef HAVE_NETWORK
+	if (infrared_io_ != 0)
+		infrared_io_->begin(cc, is_doublespeed != 0);
+#endif
 }
 
 #ifdef HAVE_NETWORK
@@ -163,9 +195,19 @@ void Memory::startSerialTransfer(unsigned long cc, unsigned char data, bool fast
 }
 
 void Memory::checkSerial(unsigned long const cc) {
+	if (serial_io_ == 0)
+		return;
+
+	// Where the machine's clock stands, whether or not it is expecting
+	// anything. A serial link that has to agree a timeline with another
+	// machine needs this on every pass, not only on the passes where a
+	// transfer is already armed: it is how the two of them stay in step at
+	// all, and a machine that only spoke while it was waiting for a byte
+	// would hold up the one waiting for it.
+	serial_io_->tick(cc, isDoubleSpeed(), ioamhram_[0x101], ioamhram_[0x102]);
+
 	// Periodically checks if serial data is received
-	if ((serial_io_ != 0) &&
-		 ((ioamhram_[0x102] & 0x80) == 0x80) &&
+	if (((ioamhram_[0x102] & 0x80) == 0x80) &&
 		 (intreq_.eventTime(intevent_serial) == disabled_time)) {
 		unsigned char data;
 		bool fastCgb;
@@ -176,13 +218,33 @@ void Memory::checkSerial(unsigned long const cc) {
 }
 #endif
 
+#ifdef HAVE_NETWORK
+/* Shift the incoming bits between `from` and `to` into SB.
+ *
+ * `from` and `to` count the bits still to come, so the bits arriving in this step
+ * are the ones sitting just above `to`. Reading them off the TOP of the incoming
+ * byte instead shifts in the same bit every step, and a transfer stepped through
+ * bit by bit then lands as 0x00 or 0xFF rather than what the other machine sent.
+ * Those are the only two bytes an unanswered cable produces, so nothing but a real
+ * peer can tell the difference.
+ *
+ * Stepping happens whenever the guest reads SB or SC, which polling SC's start bit
+ * does constantly, so this runs far more often than once per transfer. */
+static unsigned char shiftInSerial(unsigned sb, unsigned in, int from, int to) {
+	int const bits = from - to;
+	if (bits <= 0)
+		return static_cast<unsigned char>(sb);
+
+	return static_cast<unsigned char>(((sb << bits) | ((in >> to) & ((1 << bits) - 1))) & 0xFF);
+}
+#endif
+
 void Memory::updateSerial(unsigned long const cc) {
 	if (intreq_.eventTime(intevent_serial) != disabled_time) {
 		if (intreq_.eventTime(intevent_serial) <= cc) {
 #ifdef HAVE_NETWORK
 			bool fire = ((ioamhram_[0x102] & 0x80) == 0x80);
-			ioamhram_[0x101] = ((ioamhram_[0x101] << serialCnt_) |
-					    (serialize_value_ >> (8 - serialCnt_))) & 0xFF;
+			ioamhram_[0x101] = shiftInSerial(ioamhram_[0x101], serialize_value_, serialCnt_, 0);
 #else
          ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << serialCnt_) - 1) & 0xFF;
 #endif
@@ -199,8 +261,8 @@ void Memory::updateSerial(unsigned long const cc) {
 			int const targetCnt = serialCntFrom(intreq_.eventTime(intevent_serial) - cc,
 #ifdef HAVE_NETWORK
 			                                    serialize_is_fastcgb_);
-			ioamhram_[0x101] = ((ioamhram_[0x101] << (serialCnt_ - targetCnt)) |
-					    (serialize_value_ >> (8 - (serialCnt_ - targetCnt)))) & 0xFF;
+			ioamhram_[0x101] = shiftInSerial(ioamhram_[0x101], serialize_value_,
+			                 serialCnt_, targetCnt);
 #else
                                              ioamhram_[0x102] & isCgb() * 2);
          ioamhram_[0x101] = (((ioamhram_[0x101] + 1) << (serialCnt_ - targetCnt)) - 1) & 0xFF;
@@ -587,6 +649,17 @@ unsigned Memory::nontrivial_ff_read(unsigned const p, unsigned long const cc) {
 		return ioamhram_[0x141] | lcd_.getStat(ioamhram_[0x145], cc);
 	case 0x44:
 		return lcd_.getLyReg(cc);
+#ifdef HAVE_NETWORK
+	case 0x56:
+		// Bit 1 is the photodiode, and reads 0 while it is lit -- but only with
+		// the receiver switched on, which takes both of bits 6 and 7. Everything
+		// else is the register as written.
+		if (infrared_io_ != 0 && isCgb() && (ioamhram_[0x156] & 0xC0) == 0xC0
+				&& infrared_io_->lit(cc, isDoubleSpeed()))
+			return ioamhram_[0x156] & ~2u;
+
+		break;
+#endif
 	case 0x69:
 		return lcd_.cgbBgColorRead(ioamhram_[0x168] & 0x3F, cc);
 	case 0x6B:
@@ -1070,8 +1143,13 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 
 		return;
 	case 0x56:
-		if (isCgb())
+		if (isCgb()) {
 			ioamhram_[0x156] = data | 0x3E;
+#ifdef HAVE_NETWORK
+			if (infrared_io_ != 0)
+				infrared_io_->write(cc, isDoubleSpeed(), data);
+#endif
+		}
 
 		return;
 	case 0x68:
@@ -1134,6 +1212,16 @@ void Memory::nontrivial_ff_write(unsigned const p, unsigned data, unsigned long 
 	}
 
 	ioamhram_[p + 0x100] = data;
+
+#ifdef HAVE_NETWORK
+	// And again with what the write left behind. The reading taken on the way
+	// in is of the register the guest is about to replace, so a link that
+	// publishes what this machine is offering would always be one write behind
+	// -- offering the byte before the one the game just loaded, which is the
+	// kind of fault a protocol survives for exactly one exchange.
+	if (serial_io_ != 0 && (p == 0x01 || p == 0x02))
+		serial_io_->tick(cc, isDoubleSpeed(), ioamhram_[0x101], ioamhram_[0x102]);
+#endif
 }
 
 void Memory::nontrivial_write(unsigned const p, unsigned const data, unsigned long const cc) {

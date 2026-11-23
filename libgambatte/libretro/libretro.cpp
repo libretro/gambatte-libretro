@@ -10,6 +10,8 @@
 #include "bootloader.h"
 #ifdef HAVE_NETWORK
 #include "net_serial.h"
+#include "link_serial.h"
+#include "link_infrared.h"
 #endif
 
 #if defined(__DJGPP__) && defined(__STRICT_ANSI__)
@@ -52,6 +54,11 @@ static retro_input_state_t input_state_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
 static gambatte::video_pixel_t* video_buf;
+#ifdef HAVE_NETWORK
+/* While linked the PPU draws into video_buf_draw, and a finished frame
+ * swaps it with video_buf, the picture shown. */
+static gambatte::video_pixel_t* video_buf_draw;
+#endif
 static gambatte::GB gb;
 
 static bool libretro_supports_option_categories = false;
@@ -64,6 +71,7 @@ static bool libretro_ff_enabled_prev            = false;
 
 #ifdef HAVE_NETWORK
 static bool show_gb_link_settings = true;
+static bool show_gb_link_mode     = true;
 #endif
 
 /* Minimum (and default) turbo pulse train
@@ -153,6 +161,7 @@ bool use_official_bootloader = false;
  * buffer no more than ~50% full. (2 * 549) = 1098,
  * so add some padding and round up to (1024 + 512) */
 #define BLIP_BUFFER_SIZE (1024 + 512)
+#define BLIP_TAPS 32
 
 static blipper_t *resampler_l = NULL;
 static blipper_t *resampler_r = NULL;
@@ -329,8 +338,8 @@ static void audio_resampler_init(bool startup)
       CC_init();
    else
    {
-      resampler_l = blipper_new(32, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
-      resampler_r = blipper_new(32, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
+      resampler_l = blipper_new(BLIP_TAPS, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
+      resampler_r = blipper_new(BLIP_TAPS, 0.85, 6.5, 64, BLIP_BUFFER_SIZE, NULL);
 
       /* It is possible for blipper_new() to fail,
        * must handle errors */
@@ -1314,6 +1323,76 @@ static void deactivate_rumble(void)
 /* Rumble support END */
 /**********************/
 
+/*******************************/
+/* Calendar time support START */
+/*******************************/
+
+static struct retro_calendar_time_interface calendar_iface;
+static bool calendar_available; /* interface version >= 1 with both time getters */
+static bool calendar_active;    /* the RTC follows the calendar clock for this content */
+
+static void calendar_init(void)
+{
+   memset(&calendar_iface, 0, sizeof(calendar_iface));
+   calendar_iface.interface_version = RETRO_CALENDAR_TIME_INTERFACE_VERSION;
+
+   calendar_available =
+         environ_cb(RETRO_ENVIRONMENT_GET_CALENDAR_TIME_INTERFACE, &calendar_iface) &&
+         calendar_iface.interface_version >= 1 &&
+         calendar_iface.get_start_time &&
+         calendar_iface.get_current_time;
+}
+
+/* Reset reads only the current time, and only if load set the clock, so a
+ * session loaded without a time stays on the host clock. */
+static void calendar_start(bool load)
+{
+   struct retro_calendar_time t;
+
+   if (load)
+   {
+      /* gb outlives the content, and with it the last content's clock. */
+      calendar_active = false;
+      gb.clearCalendarTime();
+   }
+   else if (!calendar_active)
+      return;
+
+   if (!calendar_available)
+      return;
+
+   if (!(calendar_iface.get_current_time(&t) && t.sec > 0) &&
+       !(load && calendar_iface.get_start_time(&t) && t.sec > 0))
+      return;
+
+   gb.setCalendarTime((uint64_t)t.sec, (unsigned long)t.nsec);
+   gb.setCalendarClockRunning(true);
+   calendar_active = true;
+}
+
+/* While the current time reads, the RTC shows it and does not run ahead
+ * within the frame; while the frontend holds it fixed (netplay, replays),
+ * the RTC runs on emulated time. */
+static void calendar_frame(void)
+{
+   struct retro_calendar_time t;
+
+   if (!calendar_active)
+      return;
+
+   if (calendar_iface.get_current_time(&t) && t.sec > 0)
+   {
+      gb.setCalendarTime((uint64_t)t.sec, (unsigned long)t.nsec);
+      gb.setCalendarClockRunning(false);
+   }
+   else
+      gb.setCalendarClockRunning(true);
+}
+
+/*****************************/
+/* Calendar time support END */
+/*****************************/
+
 #ifdef HAVE_NETWORK
 /* Core options 'update display' callback */
 static bool update_option_visibility(void)
@@ -1334,19 +1413,35 @@ static bool update_option_visibility(void)
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
       bool show_gb_link_settings_prev = show_gb_link_settings;
+      bool show_gb_link_mode_prev     = show_gb_link_mode;
 
       show_gb_link_settings = true;
       if (strcmp(var.value, "disabled") == 0)
          show_gb_link_settings = false;
+
+      /* A Link Cable in use is never hidden. */
+      var.key   = "gambatte_gb_link_mode";
+      var.value = NULL;
+      show_gb_link_mode = show_gb_link_settings
+            || (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value
+               && strcmp(var.value, "Link Cable") == 0);
+
+      if (show_gb_link_mode != show_gb_link_mode_prev)
+      {
+         struct retro_core_option_display option_display;
+
+         option_display.visible = show_gb_link_mode;
+         option_display.key     = "gambatte_gb_link_mode";
+         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
+
+         updated = true;
+      }
 
       if (show_gb_link_settings != show_gb_link_settings_prev)
       {
          struct retro_core_option_display option_display;
 
          option_display.visible = show_gb_link_settings;
-
-         option_display.key = "gambatte_gb_link_mode";
-         environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
 
          option_display.key = "gambatte_gb_link_network_port";
          environ_cb(RETRO_ENVIRONMENT_SET_CORE_OPTIONS_DISPLAY, &option_display);
@@ -1642,10 +1737,33 @@ class SNESInput : public gambatte::InputGetter
 enum SerialMode {
    SERIAL_NONE,
    SERIAL_SERVER,
-   SERIAL_CLIENT
+   SERIAL_CLIENT,
+   SERIAL_LINK_CABLE
 };
 static NetSerial gb_net_serial;
+
+/* The frontend-hosted link cable. The interface is fetched once in retro_init
+ * and stays valid for the life of the core, so holding one only means the
+ * frontend can host a cable -- never that anything is plugged into this
+ * machine. With nothing on the other end the bus grants without bound and the
+ * driver behaves exactly as an empty socket does. */
+static LinkSerial gb_link_serial;
 static SerialMode gb_serialMode = SERIAL_NONE;
+
+/* The Game Boy Color's infrared port, on a link port of its own: what a lead
+ * joins and what two units facing each other join are different things, and
+ * the frontend seats them separately. Only a Game Boy Color has one; an
+ * original Game Boy and a Game Boy Advance stay off that bus. */
+static LinkInfrared gb_link_infrared;
+static bool gb_has_infrared = false;
+
+static LinkPorts link_ports;
+
+static const struct retro_link_port_info link_port_list[] = {
+   { 0, LINK_SERIAL_PROTOCOL, "Link cable", LINK_SERIAL_CLOCK_RATE, 2, 0, 0 },
+   { 1, LINK_INFRARED_PROTOCOL, "Infrared port", LINK_INFRARED_CLOCK_RATE, 2, 0, 0 },
+   { 0, NULL, NULL, 0, 0, 0, 0 }
+};
 static int gb_NetworkPort = 12345;
 static std::string gb_NetworkClientAddr;
 #endif
@@ -1695,6 +1813,22 @@ void retro_init(void)
    else
       gambatte_log_set_cb(NULL);
 
+#ifdef HAVE_NETWORK
+   {
+      static struct retro_link_interface link;
+      const struct retro_link_interface *given;
+      memset(&link, 0, sizeof(link));
+      link.interface_version = RETRO_LINK_INTERFACE_VERSION;
+      link.ports             = link_port_list;
+      given = environ_cb(RETRO_ENVIRONMENT_GET_LINK_INTERFACE, &link) ? &link : NULL;
+      gb_link_serial.setInterface(given, 0);
+      gb_link_infrared.setInterface(given, 1);
+      link_ports.setInterface(given);
+      link_ports.add(&gb_link_serial);
+      link_ports.add(&gb_link_infrared);
+   }
+#endif
+
    // Using uint_least32_t in an audio interface expecting you to cast to short*? :( Weird stuff.
    assert(sizeof(gambatte::uint_least32_t) == sizeof(uint32_t));
    gb.setInputGetter(&gb_input);
@@ -1704,8 +1838,14 @@ void retro_init(void)
 
 #ifdef _3DS
    video_buf = (gambatte::video_pixel_t*)linearMemAlign(VIDEO_BUFF_SIZE, 128);
+#ifdef HAVE_NETWORK
+   video_buf_draw = (gambatte::video_pixel_t*)linearMemAlign(VIDEO_BUFF_SIZE, 128);
+#endif
 #else
    video_buf = (gambatte::video_pixel_t*)malloc(VIDEO_BUFF_SIZE);
+#ifdef HAVE_NETWORK
+   video_buf_draw = (gambatte::video_pixel_t*)malloc(VIDEO_BUFF_SIZE);
+#endif
 #endif
    /* If allocation failed, retro_load_game will fail later when
     * gb.runFor is asked to render into a NULL buffer; we don't
@@ -1715,6 +1855,10 @@ void retro_init(void)
     * whether the allocator returned dirty memory. */
    if (video_buf)
       memset(video_buf, 0, VIDEO_BUFF_SIZE);
+#ifdef HAVE_NETWORK
+   if (video_buf_draw)
+      memset(video_buf_draw, 0, VIDEO_BUFF_SIZE);
+#endif
 
    check_system_specs();
    
@@ -1750,16 +1894,27 @@ void retro_init(void)
    libretro_supports_ff_override = false;
    if (environ_cb(RETRO_ENVIRONMENT_SET_FASTFORWARDING_OVERRIDE, NULL))
       libretro_supports_ff_override = true;
+
+   calendar_init();
 }
 
 void retro_deinit(void)
 {
 #ifdef _3DS
    linearFree(video_buf);
+#ifdef HAVE_NETWORK
+   linearFree(video_buf_draw);
+#endif
 #else
    free(video_buf);
+#ifdef HAVE_NETWORK
+   free(video_buf_draw);
+#endif
 #endif
    video_buf = NULL;
+#ifdef HAVE_NETWORK
+   video_buf_draw = NULL;
+#endif
    deinit_frame_blending();
    audio_resampler_deinit();
 
@@ -1785,6 +1940,11 @@ void retro_deinit(void)
    deactivate_rumble();
    memset(&rumble, 0, sizeof(struct retro_rumble_interface));
    rumble_level = 0;
+
+#ifdef HAVE_NETWORK
+   gb_link_serial.stop();
+   gb_link_infrared.stop();
+#endif
 }
 
 void retro_set_environment(retro_environment_t cb)
@@ -1852,9 +2012,16 @@ void retro_reset()
    /* gb.reset() now preserves battery-backed SRAM and RTC
     * automatically (matching real Game Boy behavior), so the
     * old new[]/memcpy/delete[] dance is no longer needed. */
+   calendar_start(false);
    gb.reset();
 #ifdef DUAL_MODE
    gb2.reset();
+#endif
+#ifdef HAVE_NETWORK
+   /* A reset puts the cycle counter back to zero. The cable stays plugged in
+    * and the machine stays where it was on the shared timeline; only the clock
+    * it is read from starts again. */
+   gb_link_serial.reset();
 #endif
 
    /* A reset is not a state load, but the same per-session
@@ -1889,10 +2056,162 @@ static INLINE void invalidate_serialize_size(void)
    serialize_size = 0;
 }
 
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+/* While a port is attached a state ends with a block of what a frame edge
+ * leaves outside the machine: the link's clock and ports, the resampler and
+ * both pictures. A fixed span ends most frames in the middle of a picture,
+ * so the one being drawn is part of the state, and a resampler started
+ * again would not give the next frame the samples it gave the run the
+ * state was saved in. Little-endian:
+ *
+ *    "GBLK" | u32 version | u32 size of the block | the link's record |
+ *    u8 resampler | its state, in a field as long as the longest |
+ *    the picture shown | the picture being drawn
+ *
+ * each picture VIDEO_HEIGHT rows of GB_SCREEN_WIDTH pixels. */
+#define LINK_STATE_VERSION     1
+#define LINK_STATE_HEADER_SIZE 12
+#define LINK_STATE_CC          1
+#define LINK_STATE_BLIPPER     2
+#define LINK_STATE_PICTURE_SIZE \
+   (GB_SCREEN_WIDTH * VIDEO_HEIGHT * sizeof(gambatte::video_pixel_t))
+
+static size_t link_state_audio_size(void)
+{
+   size_t blip = 2 * blipper_state_size(BLIP_TAPS, BLIP_BUFFER_SIZE);
+   return blip > CC_STATE_SIZE ? blip : CC_STATE_SIZE;
+}
+
+static size_t link_state_size(void)
+{
+   static size_t size = 0;
+   if (size == 0)
+      size = LINK_STATE_HEADER_SIZE + link_ports.stateSize()
+            + 1 + link_state_audio_size() + 2 * LINK_STATE_PICTURE_SIZE;
+   return size;
+}
+
+static unsigned char *link_state_save_picture(unsigned char *out,
+      const gambatte::video_pixel_t *picture)
+{
+   unsigned x, y, i;
+
+   for (y = 0; y < VIDEO_HEIGHT; y++, picture += VIDEO_PITCH)
+      for (x = 0; x < GB_SCREEN_WIDTH; x++)
+         for (i = 0; i < sizeof(gambatte::video_pixel_t); i++)
+            *out++ = (unsigned char)(picture[x] >> (8 * i));
+   return out;
+}
+
+static const unsigned char *link_state_load_picture(const unsigned char *in,
+      gambatte::video_pixel_t *picture)
+{
+   unsigned x, y, i;
+
+   for (y = 0; y < VIDEO_HEIGHT; y++, picture += VIDEO_PITCH)
+   {
+      for (x = 0; x < GB_SCREEN_WIDTH; x++)
+      {
+         gambatte::video_pixel_t pixel = 0;
+         for (i = 0; i < sizeof(gambatte::video_pixel_t); i++)
+            pixel |= (gambatte::video_pixel_t)*in++ << (8 * i);
+         picture[x] = pixel;
+      }
+   }
+   return in;
+}
+
+static void link_state_save(unsigned char *out)
+{
+   LinkStateOut head(out);
+   size_t blip = blipper_state_size(BLIP_TAPS, BLIP_BUFFER_SIZE);
+
+   head.u8('G');
+   head.u8('B');
+   head.u8('L');
+   head.u8('K');
+   head.u32(LINK_STATE_VERSION);
+   head.u32((uint32_t)link_state_size());
+   out += LINK_STATE_HEADER_SIZE;
+
+   link_ports.saveState(out);
+   out += link_ports.stateSize();
+
+   memset(out, 0, 1 + link_state_audio_size());
+   if (use_cc_resampler)
+   {
+      out[0] = LINK_STATE_CC;
+      CC_save_state(out + 1);
+   }
+   else
+   {
+      out[0] = LINK_STATE_BLIPPER;
+      blipper_save_state(resampler_l, out + 1);
+      blipper_save_state(resampler_r, out + 1 + blip);
+   }
+   out += 1 + link_state_audio_size();
+
+   out = link_state_save_picture(out, video_buf);
+   link_state_save_picture(out, video_buf_draw);
+}
+
+/* Whether the 'len' bytes at 'in' are a block, of any version. */
+static bool link_state_block(const unsigned char *in, size_t len)
+{
+   LinkStateIn head(in);
+
+   if (len < LINK_STATE_HEADER_SIZE
+         || head.u8() != 'G' || head.u8() != 'B'
+         || head.u8() != 'L' || head.u8() != 'K')
+      return false;
+   head.u32();
+   return head.u32() == len;
+}
+
+/* Whether a block this version wrote starts at 'in'. */
+static bool link_state_valid(const unsigned char *in)
+{
+   LinkStateIn head(in + 4);
+
+   return link_state_block(in, link_state_size())
+       && head.u32() == LINK_STATE_VERSION;
+}
+
+static void link_state_load(const unsigned char *in)
+{
+   size_t blip = blipper_state_size(BLIP_TAPS, BLIP_BUFFER_SIZE);
+
+   in += LINK_STATE_HEADER_SIZE;
+   link_ports.loadState(in);
+   in += link_ports.stateSize();
+
+   /* A state saved under the other resampler has nothing for this one,
+    * which stays as retro_unserialize has just started it. */
+   if (use_cc_resampler)
+   {
+      if (in[0] == LINK_STATE_CC)
+         CC_load_state(in + 1);
+   }
+   else if (in[0] == LINK_STATE_BLIPPER)
+   {
+      blipper_load_state(resampler_l, in + 1);
+      blipper_load_state(resampler_r, in + 1 + blip);
+   }
+   in += 1 + link_state_audio_size();
+
+   in = link_state_load_picture(in, video_buf);
+   link_state_load_picture(in, video_buf_draw);
+}
+#endif
+
 size_t retro_serialize_size(void)
 {
    if (serialize_size == 0)
       serialize_size = gb.stateSize();
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   if (link_ports.attached())
+      return serialize_size + link_state_size();
+#endif
    return serialize_size;
 }
 
@@ -1902,21 +2221,55 @@ bool retro_serialize(void *data, size_t size)
       return false;
 
    gb.saveState(data);
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   if (link_ports.attached())
+      link_state_save((unsigned char*)data + size - link_state_size());
+#endif
    return true;
 }
 
 bool retro_unserialize(const void *data, size_t size)
 {
-   if (size != retro_serialize_size())
-      return false;
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   size_t gb_size = retro_serialize_size();
+   const unsigned char *link_state = NULL;
+
+   /* While a port is attached a state is the machine's with the link's
+    * block after it, or the machine's alone, taken with no port attached.
+    * With none attached, a state saved while one was loads the machine
+    * alone and leaves the block. */
+   if (link_ports.attached())
+   {
+      gb_size -= link_state_size();
+      if (size > gb_size)
+      {
+         link_state = (const unsigned char*)data + gb_size;
+         if (size != gb_size + link_state_size() || !link_state_valid(link_state))
+            return false;
+         size = gb_size;
+      }
+   }
+   else if (size > gb_size
+         && link_state_block((const unsigned char*)data + gb_size, size - gb_size))
+      size = gb_size;
+#endif
 
    /* gb.loadState now bounds-checks against the buffer size
     * and returns false on malformed input. Treat a parser
     * failure as an unserialize failure so the frontend can
     * surface it instead of leaving the core in a half-loaded
     * state. */
+
+   /* Any size goes to the parser. It skips a field it does not know (a
+    * HAVE_NETWORK build saves two more), leaves one an older state lacks
+    * as GB::loadState starts it, and refuses a state cut short or whose
+    * WRAM or SRAM is not this machine's size. */
    if (!gb.loadState(data, size))
       return false;
+
+   /* A state's calendar clock applies only while the frontend gives one. */
+   if (!calendar_active)
+      gb.clearCalendarTime();
 
    /* The audio resampler internal state (blipper integrator,
     * CC accumulator/highpass) and the frame-blending history
@@ -1941,6 +2294,21 @@ bool retro_unserialize(const void *data, size_t size)
    /* Zero out frame-blend history so ghost trails from the
     * pre-load timeline don't bleed into the loaded state. */
    reset_frame_blending_buffers();
+
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   /* The link's block puts the resampler and both pictures back as they
+    * stood, and the next frame goes on from them. A state without it has
+    * neither: the pictures go black, the resampler stays as started above
+    * and the link keeps its ticks and forgets the rest. */
+   if (link_state)
+      link_state_load(link_state);
+   else if (link_ports.attached())
+   {
+      link_ports.forget();
+      memset(video_buf, 0, VIDEO_BUFF_SIZE);
+      memset(video_buf_draw, 0, VIDEO_BUFF_SIZE);
+   }
+#endif
 
    return true;
 }
@@ -2429,7 +2797,15 @@ static void check_variables(bool startup)
          gb_serialMode = SERIAL_SERVER;
       else if (!strcmp(var.value, "Network Client"))
          gb_serialMode = SERIAL_CLIENT;
+      else if (!strcmp(var.value, "Link Cable"))
+         gb_serialMode = SERIAL_LINK_CABLE;
    }
+
+   /* On a frontend that cannot host a cable, Link Cable behaves as Not
+    * Connected, as the option says, rather than keeping the game from
+    * starting. */
+   if (gb_serialMode == SERIAL_LINK_CABLE && !gb_link_serial.available())
+      gb_serialMode = SERIAL_NONE;
 
    var.key = "gambatte_gb_link_network_port";
    var.value = NULL;
@@ -2478,17 +2854,42 @@ static void check_variables(bool startup)
    switch(gb_serialMode)
    {
       case SERIAL_SERVER:
+         gb_link_serial.stop();
          gb_net_serial.start(true, gb_NetworkPort, gb_NetworkClientAddr);
          gb.setSerialIO(&gb_net_serial);
          break;
       case SERIAL_CLIENT:
+         gb_link_serial.stop();
          gb_net_serial.start(false, gb_NetworkPort, gb_NetworkClientAddr);
          gb.setSerialIO(&gb_net_serial);
          break;
+      case SERIAL_LINK_CABLE:
+         /* Joining the bus is what tells it this machine's serial hardware is
+          * live. What the machine is cabled TO is the frontend's business and
+          * can change at any frame edge, which is why this is safe to do at
+          * load and never has to be repeated. */
+         gb_net_serial.stop();
+         if (gb_link_serial.start())
+            gb.setSerialIO(&gb_link_serial);
+         else
+            gb.setSerialIO(NULL);
+         break;
       default:
+         gb_link_serial.stop();
          gb_net_serial.stop();
          gb.setSerialIO(NULL);
          break;
+   }
+
+   /* The infrared port is attached with the cable's, so a machine set to
+    * Not Connected attaches nothing. */
+   if (gb_serialMode == SERIAL_LINK_CABLE && gb_has_infrared
+         && gb_link_infrared.start())
+      gb.setInfraredIO(&gb_link_infrared);
+   else
+   {
+      gb_link_infrared.stop();
+      gb.setInfraredIO(NULL);
    }
 
    /* Show/hide core options */
@@ -2656,6 +3057,14 @@ bool retro_load_game(const struct retro_game_info *info)
    frame_pacing_reset();
    invalidate_serialize_size();
    reset_frame_blending_buffers();
+#ifdef HAVE_NETWORK
+   /* A linked game starts on a black screen at link tick 0. */
+   if (video_buf)
+      memset(video_buf, 0, VIDEO_BUFF_SIZE);
+   if (video_buf_draw)
+      memset(video_buf_draw, 0, VIDEO_BUFF_SIZE);
+   link_ports.restart();
+#endif
 
    environ_cb(RETRO_ENVIRONMENT_GET_CAN_DUPE, &can_dupe);
    if (!can_dupe)
@@ -2788,12 +3197,21 @@ bool retro_load_game(const struct retro_game_info *info)
       }
    }
 
+   calendar_start(true);
    if (gb.load(info->data, info->size, flags) != 0)
       return false;
 #ifdef DUAL_MODE
    if (gb2.load(info->data, info->size, flags) != 0)
       return false;
 #endif
+
+#ifdef HAVE_NETWORK
+   /* A Game Boy Advance runs these games and leaves the window out. */
+   gb_has_infrared = gb.isCgb() && !(flags & gambatte::GB::GBA_CGB);
+#endif
+
+   if (calendar_active && gb.rtcdata_size())
+      gambatte_log(RETRO_LOG_INFO, "RTC follows the frontend's calendar time.\n");
 
    rom_path = info->path ? info->path : "";
    strncpy(internal_game_name, (const char*)info->data + 0x134, sizeof(internal_game_name) - 1);
@@ -2860,6 +3278,13 @@ bool retro_load_game_special(unsigned, const struct retro_game_info*, size_t) { 
 void retro_unload_game()
 {
    rom_loaded = false;
+#ifdef HAVE_NETWORK
+   /* Off the bus before the machine goes away. */
+   gb_link_serial.stop();
+   gb.setSerialIO(NULL);
+   gb_link_infrared.stop();
+   gb.setInfraredIO(NULL);
+#endif
    /* Clear per-game state so a subsequent retro_load_game with
     * a different ROM doesn't see leftovers (palette autodetect
     * keying off internal_game_name, frame-pacing ratio, cached
@@ -2915,6 +3340,68 @@ size_t retro_get_memory_size(unsigned id)
    return 0;
 }
 
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+/* While a port is attached every retro_run is one Game Boy frame of link
+ * time, whatever the PPU does: the frame-start advance, chunks no longer
+ * than the grants allow, the frame-end publish. It shows the last frame
+ * that finished in the span, or the one before again if none did. */
+static void run_linked_frame(void)
+{
+   union
+   {
+      gambatte::uint_least32_t u32[SOUND_BUFF_SIZE];
+      int16_t i16[2 * SOUND_BUFF_SIZE];
+   } static sound_buf;
+   bool finished = false;
+   unsigned samples;
+
+   calendar_frame();
+   link_ports.frameStart();
+
+   while ((samples = link_ports.budget(SOUND_SAMPLES_PER_RUN)) != 0)
+   {
+      if (gb.runFor(video_buf_draw, VIDEO_PITCH, sound_buf.u32, SOUND_BUFF_SIZE, samples) != -1)
+      {
+         gambatte::video_pixel_t *done = video_buf_draw;
+         video_buf_draw = video_buf;
+         video_buf      = done;
+         finished       = true;
+      }
+      link_ports.produced(samples);
+
+      if (use_cc_resampler)
+         CC_renderaudio((audio_frame_t*)sound_buf.u32, samples);
+      else
+      {
+         blipper_renderaudio(sound_buf.i16, samples);
+
+         unsigned read_avail = blipper_read_avail(resampler_l);
+         if (read_avail >= (BLIP_BUFFER_SIZE >> 1))
+            audio_out_buffer_read_blipper(read_avail);
+      }
+   }
+
+   link_ports.frameEnd();
+
+   /* A span in which no frame finished shows the blended picture again. */
+   if (finished && blend_frames)
+      blend_frames();
+
+   video_cb(video_buf, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_PITCH * sizeof(gambatte::video_pixel_t));
+
+   if (!use_cc_resampler)
+      audio_out_buffer_read_blipper(blipper_read_avail(resampler_l));
+   audio_upload_samples();
+
+   if (rumble_active)
+      apply_rumble();
+
+   bool updated = false;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
+      check_variables(false);
+}
+#endif
+
 void retro_run()
 {
    /* libretro_samples_count and libretro_frames_count are
@@ -2924,6 +3411,14 @@ void retro_run()
    input_poll_cb();
    update_input_state();
 
+#if defined(HAVE_NETWORK) && !defined(DUAL_MODE)
+   if (link_ports.attached())
+   {
+      run_linked_frame();
+      return;
+   }
+#endif
+
    uint64_t expected_frames = libretro_samples_count / SOUND_SAMPLES_PER_FRAME;
    if (libretro_frames_count < expected_frames) // Detect frame dupes.
    {
@@ -2931,6 +3426,8 @@ void retro_run()
       libretro_frames_count++;
       return;
    }
+
+   calendar_frame();
 
    union
    {

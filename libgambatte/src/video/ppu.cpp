@@ -1493,6 +1493,12 @@ PPUPriv::PPUPriv(NextM0Time &nextM0Time, unsigned char const *const oamram, unsi
 	std::memset(bgPaletteExpanded, 0, sizeof bgPaletteExpanded);
 }
 
+static bool isLoadSprites(PPUState const *const state) {
+	return state == &M3Loop::LoadSprites::f0_ || state == &M3Loop::LoadSprites::f1_
+	    || state == &M3Loop::LoadSprites::f2_ || state == &M3Loop::LoadSprites::f3_
+	    || state == &M3Loop::LoadSprites::f4_ || state == &M3Loop::LoadSprites::f5_;
+}
+
 static void saveSpriteList(PPUPriv const &p, SaveState &ss) {
 	for (unsigned i = 0; i < 10; ++i) {
 		ss.ppu.spAttribList[i] = p.spriteList[i].attrib;
@@ -1500,8 +1506,12 @@ static void saveSpriteList(PPUPriv const &p, SaveState &ss) {
 		ss.ppu.spByte1List[i] = p.spwordList[i] >> 8;
 	}
 
+	// Only a sprite fetch reads which sprite is being fetched. Between
+	// fetches it is the last one stepped through, and whether a fetch is
+	// stepped through or done within the tile loop depends on how far each
+	// update ran the PPU, not on the machine: 0xFF then, as before the first.
 	ss.ppu.nextSprite    = p.nextSprite;
-	ss.ppu.currentSprite = p.currentSprite;
+	ss.ppu.currentSprite = isLoadSprites(p.nextCallPtr) ? p.currentSprite : 0xFF;
 }
 
 void PPU::saveState(SaveState &ss) const {
@@ -1591,6 +1601,13 @@ static long cyclesUntilM0Upperbound(PPUPriv const &p) {
 }
 
 static void loadSpriteList(PPUPriv &p, SaveState const &ss) {
+	// All ten, the ones this line does not use too: what a state saves, a
+	// machine loaded from it saves again.
+	for (unsigned i = 0; i < 10; ++i) {
+		p.spriteList[i].attrib = ss.ppu.spAttribList[i] & 0xFF;
+		p.spwordList[i] = (ss.ppu.spByte1List[i] * 0x100 + ss.ppu.spByte0List[i]) & 0xFFFF;
+	}
+
 	if (ss.ppu.videoCycles < 144 * 456UL && ss.ppu.xpos < 168) {
 		unsigned const ly = ss.ppu.videoCycles / 456;
 		unsigned const numSprites = p.spriteMapper.numSprites(ly);
@@ -1604,8 +1621,6 @@ static void loadSpriteList(PPUPriv &p, SaveState const &ss) {
 			p.spriteList[i].spx    = spx;
 			p.spriteList[i].line   = ly + 16u - spy;
 			p.spriteList[i].oampos = pos * 2;
-			p.spriteList[i].attrib = ss.ppu.spAttribList[i] & 0xFF;
-			p.spwordList[i] = (ss.ppu.spByte1List[i] * 0x100 + ss.ppu.spByte0List[i]) & 0xFFFF;
 		}
 
 		p.spriteList[numSprites].spx = 0xFF;
@@ -1643,8 +1658,10 @@ void PPU::loadState(SaveState const &ss, unsigned char const *const oamram) {
 	p_.wx = ss.mem.ioamhram.get()[0x14B];
    p_.dmgMode = (ss.mem.ioamhram.get()[0x14C] == 0x04);
 	p_.xpos = std::min<int>(ss.ppu.xpos, 168);
-	p_.endx = (p_.xpos & ~7) + (ss.ppu.endx & 7);
-	p_.endx = std::min(p_.endx <= p_.xpos ? p_.endx + 8 : p_.endx, 168);
+	// endx was rebuilt from its low three bits plus xpos, which is exact only
+	// while endx is in (xpos, xpos + 8]. saveState writes the whole byte, so
+	// take it: a state holding xpos = 168 with endx = 8 came back as endx = 168.
+	p_.endx = std::min<int>(ss.ppu.endx, 168);
 	p_.reg0 = ss.ppu.reg0 & 0xFF;
 	p_.reg1 = ss.ppu.reg1 & 0xFF;
 	p_.tileword = ss.ppu.tileword & 0xFFFF;
@@ -1684,6 +1701,12 @@ void PPU::loadState(SaveState const &ss, unsigned char const *const oamram) {
 		p_.cycles = vcycs - 70224;
 		p_.nextCallPtr = &M2_Ly0::f0_;
 	}
+
+	// Outside mode 3 nothing reads the next sprite before a line sets it.
+	// There it is taken as saved rather than bounded by this line's sprites,
+	// for the same reason as the ten above.
+	if (p_.nextCallPtr != m3loopState)
+		p_.nextSprite = ss.ppu.nextSprite;
 }
 
 void PPU::reset(unsigned char const *oamram, unsigned char const *vram, bool cgb) {

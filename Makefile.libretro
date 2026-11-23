@@ -68,6 +68,9 @@ ifneq (,$(findstring unix,$(platform)))
    TARGET := $(TARGET_NAME)_libretro.so
    fpic := -fPIC
    SHARED := -shared -Wl,-version-script=$(version_script)
+   ifeq (,$(findstring clang,$(shell $(CXX) --version)))
+      CXXFLAGS += -fno-gnu-unique
+   endif
    HAVE_NETWORK=1
    ifneq (,$(findstring Haiku,$(shell uname -s)))
    LDFLAGS += -lnetwork -lroot
