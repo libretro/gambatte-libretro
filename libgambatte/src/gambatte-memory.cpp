@@ -239,7 +239,8 @@ static unsigned char shiftInSerial(unsigned sb, unsigned in, int from, int to) {
 }
 #endif
 
-void Memory::updateSerial(unsigned long const cc) {	if (intreq_.eventTime(intevent_serial) != disabled_time) {
+void Memory::updateSerial(unsigned long const cc) {
+	if (intreq_.eventTime(intevent_serial) != disabled_time) {
 		if (intreq_.eventTime(intevent_serial) <= cc) {
 #ifdef HAVE_NETWORK
 			bool fire = ((ioamhram_[0x102] & 0x80) == 0x80);
