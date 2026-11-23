@@ -747,6 +747,11 @@ namespace gambatte
 
    void Cartridge::saveState(SaveState &state) const
    {
+      /* Only the MBC1 family writes rambankMode, and SaveState is a plain
+       * local with no default initialiser, so every other cart serialised
+       * whatever was on the stack: the same machine state saved twice
+       * produced two different blobs. */
+      state.mem.rambankMode = false;
       mbc->saveState(state.mem);
       rtc_.saveState(state);
       huc3_.saveState(state);

@@ -82,7 +82,10 @@ void LCD::setStatePtrs(SaveState &state)
 void LCD::saveState(SaveState &state) const
 {
    state.mem.hdmaTransfer = hdmaIsEnabled();
-   state.ppu.nextM0Irq = eventTimes_(MODE0_IRQ) - ppu_.now();
+   /* With no mode 0 interrupt scheduled nothing loads this field, and the
+    * difference would save how far the PPU happens to have been run. */
+   state.ppu.nextM0Irq = eventTimes_(MODE0_IRQ) != disabled_time
+                       ? eventTimes_(MODE0_IRQ) - ppu_.now() : 0;
    state.ppu.pendingLcdstatIrq = eventTimes_(ONESHOT_LCDSTATIRQ) != disabled_time;
    
    if (isCgb())

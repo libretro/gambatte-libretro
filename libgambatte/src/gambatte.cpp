@@ -58,6 +58,11 @@ void GB::Priv::full_init(bool const clearSram) {
    
    cpu.setStatePtrs(state);
    setInitState(state, cpu.isCgb(), gbaCgbMode, clearSram);
+
+   /* A machine that starts has no blit event to restore: loadState works
+    * one out, as for a state from before the event was saved. */
+   state.mem.blitTime = disabled_time;
+   state.mem.blanklcd = false;
    
    cpu.mem_.bootloader.reset();
    cpu.mem_.bootloader.set_address_space_start((void*)cpu.rombank0_ptr());
@@ -142,9 +147,22 @@ void GB::setDmgPaletteColor(unsigned palNum, unsigned colorNum, unsigned rgb32) 
 	p_->cpu.setDmgPaletteColor(palNum, colorNum, rgb32);
 }
 
+/* Static storage is zero-initialised, so a state copied from this one saves 0
+ * in every field nothing writes, such as the registers of another mapper, and
+ * loads 0 in every field an older state does not carry. */
+static SaveState zeroedState;
+
 bool GB::loadState(const void *data, size_t size) {
-   SaveState state;
+   SaveState state(zeroedState);
    p_->cpu.setStatePtrs(state);
+
+   /* A field the incoming state does not carry keeps the value it starts
+    * with. disabled_time is the "this state predates the field" sentinel. */
+   state.mem.blitTime = disabled_time;
+   state.mem.blanklcd = false;
+#ifdef HAVE_NETWORK
+   state.mem.serialize_value = 0xFF;
+#endif
 
    if (StateSaver::loadState(state, data, size)) {
       p_->cpu.loadState(state);
@@ -155,7 +173,7 @@ bool GB::loadState(const void *data, size_t size) {
 }
 
 void GB::saveState(void *data) {
-   SaveState state;
+   SaveState state(zeroedState);
    p_->cpu.setStatePtrs(state);
    p_->cpu.saveState(state);
    StateSaver::saveState(state, data);

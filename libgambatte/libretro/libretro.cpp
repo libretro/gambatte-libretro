@@ -1907,14 +1907,16 @@ bool retro_serialize(void *data, size_t size)
 
 bool retro_unserialize(const void *data, size_t size)
 {
-   if (size != retro_serialize_size())
-      return false;
-
    /* gb.loadState now bounds-checks against the buffer size
     * and returns false on malformed input. Treat a parser
     * failure as an unserialize failure so the frontend can
     * surface it instead of leaving the core in a half-loaded
     * state. */
+
+   /* Any size goes to the parser. It skips a field it does not know (a
+    * HAVE_NETWORK build saves two more), leaves one an older state lacks
+    * as GB::loadState starts it, and refuses a state cut short or whose
+    * WRAM or SRAM is not this machine's size. */
    if (!gb.loadState(data, size))
       return false;
 
