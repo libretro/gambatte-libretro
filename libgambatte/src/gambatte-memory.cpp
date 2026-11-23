@@ -387,6 +387,7 @@ unsigned long Memory::stop(unsigned long cc) {
       psg_.generateSamples(cc, is_doublespeed);
       lcd_.speedChange(cc);
       ioamhram_[0x14D] ^= 0x81;
+      is_doublespeed = (unsigned)isDoubleSpeed();
       intreq_.setEventTime<intevent_blit>((ioamhram_[0x140] & lcdc_en)
             ? lcd_.nextMode1IrqTime()
             : cc + (70224 << is_doublespeed));
