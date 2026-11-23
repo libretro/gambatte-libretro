@@ -1761,8 +1761,10 @@ static LinkPorts link_ports;
 
 static const struct retro_link_port_info link_port_list[] = {
    { 0, LINK_SERIAL_PROTOCOL, "Link cable", LINK_SERIAL_CLOCK_RATE, 2, 0, 0 },
-   { 1, LINK_INFRARED_PROTOCOL, "Infrared port", LINK_INFRARED_CLOCK_RATE, 2, 0, 0 },
-   { 0, NULL, NULL, 0, 0, 0, 0 }
+   { 1, LINK_INFRARED_PROTOCOL, "Infrared port", LINK_INFRARED_CLOCK_RATE, 2, 0, 0 }
+};
+static const struct retro_link_port_info *const link_port_ptrs[] = {
+   &link_port_list[0], &link_port_list[1], NULL
 };
 static int gb_NetworkPort = 12345;
 static std::string gb_NetworkClientAddr;
@@ -1819,7 +1821,7 @@ void retro_init(void)
       const struct retro_link_interface *given;
       memset(&link, 0, sizeof(link));
       link.interface_version = RETRO_LINK_INTERFACE_VERSION;
-      link.ports             = link_port_list;
+      link.ports             = link_port_ptrs;
       given = environ_cb(RETRO_ENVIRONMENT_GET_LINK_INTERFACE, &link) ? &link : NULL;
       gb_link_serial.setInterface(given, 0);
       gb_link_infrared.setInterface(given, 1);

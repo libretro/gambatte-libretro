@@ -158,6 +158,7 @@ uint64_t LinkPorts::reported(unsigned i, uint64_t now) const
 void LinkPorts::advance(bool frameStart)
 {
 	struct retro_link_wait waits[MAX_PORTS];
+	struct retro_link_wait *wait_ptrs[MAX_PORTS];
 	unsigned listed[MAX_PORTS];
 	uint64_t now = tick();
 	uint64_t end = start_ + SPAN;
@@ -181,6 +182,7 @@ void LinkPorts::advance(bool frameStart)
 		 * port, as any of them may be on a bus by now. */
 		if ((frameStart || ports_[i]->onBus()) && w->safe_tick < earliest)
 			earliest = w->safe_tick;
+		wait_ptrs[n] = w;
 		listed[n++] = i;
 	}
 
@@ -193,7 +195,7 @@ void LinkPorts::advance(bool frameStart)
 			if (waits[i].request_tick > earliest)
 				waits[i].request_tick = earliest > waits[i].local_tick
 					? earliest : waits[i].local_tick;
-		link_->advance_multi(waits, n);
+		link_->advance_multi(wait_ptrs, n);
 	}
 
 	for (i = 0; i < n; i++)
