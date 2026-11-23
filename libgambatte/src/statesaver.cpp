@@ -160,6 +160,7 @@ struct Saver {
 	const char *label;
 	void (*save)(omemstream &file, const SaveState &state);
 	void (*load)(imemstream &file, SaveState &state);
+	bool (*check)(imemstream &file, const SaveState &state);
 	unsigned char labelsize;
 };
 
@@ -291,6 +292,20 @@ static void read(imemstream &file, bool *data, unsigned long sz) {
 	file.ignore(size - sz);
 }
 
+static bool skipField(imemstream &file, const SaveState &) {
+	file.ignore(get24(file));
+	return true;
+}
+
+/* The machine sets the size of WRAM and the cartridge that of SRAM, so a
+ * state that saved either at another size is of another machine or game. */
+static bool checkSize(imemstream &file, const unsigned long sz) {
+	const unsigned long size = get24(file);
+
+	file.ignore(size);
+	return size == sz;
+}
+
 } // anon namespace
 
 namespace gambatte {
@@ -313,8 +328,9 @@ public:
 
 static void pushSaver(SaverList::list_t &list, const char *label,
 		void (*save)(omemstream &file, const SaveState &state),
-		void (*load)(imemstream &file, SaveState &state), unsigned char labelsize) {
-	const Saver saver = { label, save, load, labelsize };
+		void (*load)(imemstream &file, SaveState &state),
+		bool (*check)(imemstream &file, const SaveState &state), unsigned char labelsize) {
+	const Saver saver = { label, save, load, check, labelsize };
 	list.push_back(saver);
 }
 
@@ -325,7 +341,7 @@ SaverList::SaverList() {
 		static void load(imemstream &file, SaveState &state) { read(file, state.arg); } \
 	}; \
 	\
-	pushSaver(list, label, Func::save, Func::load, sizeof label); \
+	pushSaver(list, label, Func::save, Func::load, skipField, sizeof label); \
 } while (0)
 
 #define ADDPTR(arg) do { \
@@ -334,7 +350,17 @@ SaverList::SaverList() {
 		static void load(imemstream &file, SaveState &state) { read(file, state.arg.ptr, state.arg.size()); } \
 	}; \
 	\
-	pushSaver(list, label, Func::save, Func::load, sizeof label); \
+	pushSaver(list, label, Func::save, Func::load, skipField, sizeof label); \
+} while (0)
+
+#define ADDSIZEDPTR(arg) do { \
+	struct Func { \
+		static void save(omemstream &file, const SaveState &state) { write(file, state.arg.get(), state.arg.size()); } \
+		static void load(imemstream &file, SaveState &state) { read(file, state.arg.ptr, state.arg.size()); } \
+		static bool check(imemstream &file, const SaveState &state) { return checkSize(file, state.arg.size()); } \
+	}; \
+	\
+	pushSaver(list, label, Func::save, Func::load, Func::check, sizeof label); \
 } while (0)
 
 #define ADDARRAY(arg) do { \
@@ -343,7 +369,7 @@ SaverList::SaverList() {
 		static void load(imemstream &file, SaveState &state) { read(file, state.arg, sizeof(state.arg)); } \
 	}; \
 	\
-	pushSaver(list, label, Func::save, Func::load, sizeof label); \
+	pushSaver(list, label, Func::save, Func::load, skipField, sizeof label); \
 } while (0)
 	
 	{ static const char label[] = { c,c,           NUL }; ADD(cpu.cycleCounter); }
@@ -360,8 +386,8 @@ SaverList::SaverList() {
 	{ static const char label[] = { s,k,i,p,       NUL }; ADD(cpu.skip); }
 	{ static const char label[] = { h,a,l,t,       NUL }; ADD(mem.halted); }
 	{ static const char label[] = { v,r,a,m,       NUL }; ADDPTR(mem.vram); }
-	{ static const char label[] = { s,r,a,m,       NUL }; ADDPTR(mem.sram); }
-	{ static const char label[] = { w,r,a,m,       NUL }; ADDPTR(mem.wram); }
+	{ static const char label[] = { s,r,a,m,       NUL }; ADDSIZEDPTR(mem.sram); }
+	{ static const char label[] = { w,r,a,m,       NUL }; ADDSIZEDPTR(mem.wram); }
 	{ static const char label[] = { h,r,a,m,       NUL }; ADDPTR(mem.ioamhram); }
 	{ static const char label[] = { l,d,i,v,u,p,   NUL }; ADD(mem.divLastUpdate); }
 	{ static const char label[] = { l,t,i,m,a,u,p, NUL }; ADD(mem.timaLastUpdate); }
@@ -483,6 +509,7 @@ SaverList::SaverList() {
 	
 #undef ADD
 #undef ADDPTR
+#undef ADDSIZEDPTR
 #undef ADDARRAY
 
 	list.resize(list.size());
@@ -536,7 +563,9 @@ void StateSaver::saveState(const SaveState &state, void *data) {
 	}
 }
 
-bool StateSaver::loadState(SaveState &state, const void *data, size_t size) {
+/* Loads the fields of a state, or with load false checks them and writes
+ * nothing. */
+static bool readFields(SaveState &state, const void *data, size_t size, bool load) {
    /* The bounds-checked imemstream needs the buffer end so it
     * can stop at it. Previously this constructor only took a
     * pointer; a malformed savestate could claim a 24-bit chunk
@@ -552,7 +581,7 @@ bool StateSaver::loadState(SaveState &state, const void *data, size_t size) {
 
    const SaverList &list = saver_list();
    const Array<char> labelbuf(list.maxLabelsize());
-   const Saver labelbufSaver = { labelbuf, 0, 0, list.maxLabelsize() };
+   const Saver labelbufSaver = { labelbuf, 0, 0, 0, list.maxLabelsize() };
 
    SaverList::const_iterator done = list.begin();
    bool reachedLast = false;
@@ -572,20 +601,32 @@ bool StateSaver::loadState(SaveState &state, const void *data, size_t size) {
       } else
          ++done;
 
-      (*it->load)(file, state);
+      if (load)
+         (*it->load)(file, state);
+      else if (!(*it->check)(file, state))
+         return false;
 
       if (it + 1 == list.end())
          reachedLast = true;
    }
-
-   state.cpu.cycleCounter &= 0x7FFFFFFF;
-   state.spu.cycleCounter &= 0x7FFFFFFF;
 
    /* If the parser tripped its failure latch the data was
     * malformed; reject the load so the caller doesn't end up
     * with a half-applied state. Every Gambatte state holds the
     * list's last field, so one that ends before it was cut short. */
    return !file.fail() && reachedLast;
+}
+
+bool StateSaver::loadState(SaveState &state, const void *data, size_t size) {
+   /* The blocks load straight into the machine's memory, so a state is
+    * checked whole first: one refused leaves the machine as it was. */
+   if (!readFields(state, data, size, false) || !readFields(state, data, size, true))
+      return false;
+
+   state.cpu.cycleCounter &= 0x7FFFFFFF;
+   state.spu.cycleCounter &= 0x7FFFFFFF;
+
+   return true;
 }
 
 size_t StateSaver::stateSize(const SaveState &state) {
