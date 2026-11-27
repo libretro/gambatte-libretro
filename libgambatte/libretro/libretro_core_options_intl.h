@@ -32763,11 +32763,11 @@ struct retro_core_options_v2 options_gl = {
 #define CATEGORY_GB_LINK_INFO_0_HE NULL
 #define GAMBATTE_GB_COLORIZATION_LABEL_HE NULL
 #define GAMBATTE_GB_COLORIZATION_INFO_0_HE NULL
-#define OPTION_VAL_AUTO_HE NULL
+#define OPTION_VAL_AUTO_HE "אוטומטי"
 #define OPTION_VAL_GBC_HE NULL
 #define OPTION_VAL_SGB_HE NULL
 #define OPTION_VAL_INTERNAL_HE NULL
-#define OPTION_VAL_CUSTOM_HE NULL
+#define OPTION_VAL_CUSTOM_HE "מותאם אישית"
 #define GAMBATTE_GB_INTERNAL_PALETTE_LABEL_HE NULL
 #define GAMBATTE_GB_INTERNAL_PALETTE_INFO_0_HE NULL
 #define OPTION_VAL_GB_DMG_HE NULL
@@ -33181,11 +33181,11 @@ struct retro_core_options_v2 options_gl = {
 #define GAMBATTE_GBC_COLOR_CORRECTION_LABEL_HE NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_INFO_0_HE NULL
 #define OPTION_VAL_GBC_ONLY_HE NULL
-#define OPTION_VAL_ALWAYS_HE NULL
+#define OPTION_VAL_ALWAYS_HE "תמיד"
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_LABEL_HE NULL
 #define GAMBATTE_GBC_COLOR_CORRECTION_MODE_INFO_0_HE NULL
 #define OPTION_VAL_ACCURATE_HE NULL
-#define OPTION_VAL_FAST_HE NULL
+#define OPTION_VAL_FAST_HE "מהיר"
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_LABEL_HE NULL
 #define GAMBATTE_GBC_FRONTLIGHT_POSITION_INFO_0_HE NULL
 #define OPTION_VAL_CENTRAL_HE NULL
@@ -33198,7 +33198,7 @@ struct retro_core_options_v2 options_gl = {
 #define OPTION_VAL_MIX_HE NULL
 #define OPTION_VAL_LCD_GHOSTING_HE NULL
 #define OPTION_VAL_LCD_GHOSTING_FAST_HE NULL
-#define GAMBATTE_AUDIO_RESAMPLER_LABEL_HE NULL
+#define GAMBATTE_AUDIO_RESAMPLER_LABEL_HE "דוגם מחדש לשמע"
 #define GAMBATTE_AUDIO_RESAMPLER_INFO_0_HE NULL
 #define OPTION_VAL_SINC_HE NULL
 #define OPTION_VAL_CC_HE NULL
@@ -33223,7 +33223,7 @@ struct retro_core_options_v2 options_gl = {
 #define OPTION_VAL_NETWORK_SERVER_HE NULL
 #define OPTION_VAL_NETWORK_CLIENT_HE NULL
 #define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_HE NULL
-#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_HE NULL
+#define GAMBATTE_GB_LINK_NETWORK_PORT_LABEL_CAT_HE "יציאה"
 #define GAMBATTE_GB_LINK_NETWORK_PORT_INFO_0_HE NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_HE NULL
 #define GAMBATTE_GB_LINK_NETWORK_SERVER_IP_1_LABEL_CAT_HE NULL
@@ -68754,7 +68754,7 @@ struct retro_core_options_v2 options_val = {
 #define CATEGORY_GB_LINK_LABEL_VN NULL
 #define CATEGORY_GB_LINK_INFO_0_VN "Thay đổi cài đặt mạng Game Link (chơi nhiều người)."
 #define GAMBATTE_GB_COLORIZATION_LABEL_VN "Chỉnh màu GB"
-#define GAMBATTE_GB_COLORIZATION_INFO_0_VN "Bật màu cho các game Game Boy. 'Tự động' chọn bảng màu 'phù hợp nhất' (nhiều màu hoặc phù hợp nhất). 'GBC' chọn bảng màu Game Boy Color riêng của từng game nếu có, nếu không sẽ dùng 'GBC - Xanh lá đậm'. 'SGB' chọn bảng màu Super Game Boy riêng của từng game nếu có, nếu không sẽ dùng 'SGB - 1A'. 'Nội bộ' sử dụng tùy chọn lõi 'Bảng màu nội bộ'. 'Tùy chỉnh' tải bảng màu do người dùng tạo từ thư mục hệ thống."
+#define GAMBATTE_GB_COLORIZATION_INFO_0_VN "Bật màu cho các game Game Boy. 'Tự động' chọn bảng màu 'phù hợp nhất' (nhiều màu hoặc phù hợp nhất). 'GBC' chọn bảng màu Game Boy Color riêng của từng game nếu có, nếu không sẽ dùng 'GBC - Xanh lá đậm'. 'SGB' chọn bảng màu Super Game Boy riêng của từng game nếu có, nếu không sẽ dùng 'SGB - 1A'. 'Nội bộ' sử dụng tùy chọn trình giả lập 'Bảng màu nội bộ'. 'Tùy chỉnh' tải bảng màu do người dùng tạo từ thư mục hệ thống."
 #define OPTION_VAL_AUTO_VN "Tự động"
 #define OPTION_VAL_GBC_VN NULL
 #define OPTION_VAL_SGB_VN NULL
